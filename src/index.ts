@@ -1,5 +1,5 @@
 import Renderer from './renderer'
-import Entity from './entity'
+import Player from './player'
 import EntityManager from './entityManager'
 import { Vector2 } from './util'
 
@@ -9,7 +9,7 @@ class Main {
     Renderer.init()
     EntityManager.init()
 
-    const testEntity = new Entity(new Vector2(250, 100))
+    const testEntity = new Player(new Vector2(250, 100))
     EntityManager.add(testEntity)
 
     this.update()
