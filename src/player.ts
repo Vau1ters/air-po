@@ -1,9 +1,24 @@
 import Entity from './entity'
 import { Vector2 } from './util'
+import Input from './input'
 
 export default class Player extends Entity {
   constructor(position: Vector2) {
     super(position)
+  }
+  input() {
+    if (Input.isKeyInput('RIGHT')) {
+      this.position.x += 5
+    }
+    if (Input.isKeyInput('LEFT')) {
+      this.position.x -= 5
+    }
+    if (Input.isKeyInput('UP')) {
+      this.position.y -= 5
+    }
+    if (Input.isKeyInput('DOWN')) {
+      this.position.y += 5
+    }
   }
   // 単振動するだけ
   phys(): void {
@@ -18,7 +33,8 @@ export default class Player extends Entity {
     this.position.y += this.velocity.y
   }
   update() {
-    this.phys()
+    this.input()
+    // this.phys()
     this.sprite.position.x = this.position.x
     this.sprite.position.y = this.position.y
   }
