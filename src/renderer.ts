@@ -27,11 +27,6 @@ export default class Renderer {
       }
       onResizeCallback()
       window.addEventListener('resize', onResizeCallback)
-      const g = new PIXI.Graphics()
-      g.beginFill(0xff0000)
-      g.drawRect(10, 10, 780, 580)
-      g.endFill()
-      app.stage.addChild(g)
     }
   }
 }
