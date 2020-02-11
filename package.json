@@ -1,0 +1,8 @@
+{
+  "name": "air-po",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Skroig0010/air-po.git",
+  "author": "Poly <0122Haruo@gmail.com>",
+  "license": "MIT"
+}
