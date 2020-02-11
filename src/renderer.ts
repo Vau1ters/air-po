@@ -5,13 +5,15 @@ const windowOption = {
 }
 
 export default class Renderer {
+  static app: PIXI.Application
+
   static init(): void {
     const container = document.getElementById('container')
     if (container) {
-      const app = new PIXI.Application({
+      this.app = new PIXI.Application({
         ...windowOption,
       })
-      container.appendChild(app.view)
+      container.appendChild(this.app.view)
 
       const onResizeCallback = (): void => {
         const rect = container.getBoundingClientRect()
@@ -19,8 +21,8 @@ export default class Renderer {
           rect.width / windowOption.width,
           rect.height / windowOption.height
         )
-        app.stage.scale.set(scale)
-        app.renderer.resize(
+        this.app.stage.scale.set(scale)
+        this.app.renderer.resize(
           windowOption.width * scale,
           windowOption.height * scale
         )
@@ -28,5 +30,9 @@ export default class Renderer {
       onResizeCallback()
       window.addEventListener('resize', onResizeCallback)
     }
+  }
+  // note : のちのち画像を使いたくなったらここはPIXI.Spriteにするべきかもしれない
+  static add(sprite: PIXI.Graphics): void {
+    this.app.stage.addChild(sprite)
   }
 }

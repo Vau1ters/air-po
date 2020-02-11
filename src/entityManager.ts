@@ -1,4 +1,5 @@
 import Entity from './entity'
+import Renderer from './renderer'
 
 export default class EntityManager {
   static list: Array<Entity> // 全Entityのリスト
@@ -6,14 +7,16 @@ export default class EntityManager {
     this.list = new Array<Entity>()
   }
   static add(entity: Entity): void {
-    console.log('add:', entity)
     this.list.push(entity)
+    Renderer.add(entity.sprite)
   }
+  /*
   static remove(entity: Entity): void {
-    console.log('remove:', entity)
   }
+  */
+
   static update(): void {
-    // 全entityのupdate
+    // update all entities
     this.list.forEach(e => e.update())
   }
 }
