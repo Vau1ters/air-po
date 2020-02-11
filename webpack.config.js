@@ -1,21 +1,27 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  mode   : 'development',
-  entry  : './src/index.ts',
-  output : {
-    path    : `${__dirname}/dist`,
+  mode: 'development',
+  entry: './src/index.ts',
+  output: {
+    path: `${__dirname}/dist`,
     filename: 'bundle.js'
   },
   devServer: {
     contentBase: './public',
     port: 3000
   },
-  module : {
+  module: {
     rules: [
       {
+        enforce: 'pre',
         test: /\.ts$/,
-        use : 'ts-loader'
+        exclude: /node_modules/,
+        loader: 'eslint-loader'
+      },
+      {
+        test: /\.ts$/,
+        use: 'ts-loader'
       },
       {
         test: /\.html$/,
@@ -31,5 +37,4 @@ module.exports = {
       template: './public/index.html'
     })
   ]
-};
-
+}
