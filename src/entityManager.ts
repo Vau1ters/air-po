@@ -12,4 +12,8 @@ export default class EntityManager {
   static remove(entity: Entity): void {
     console.log('remove:', entity)
   }
+  static update(): void {
+    // 全entityのupdate
+    this.list.forEach(e => e.update())
+  }
 }
