@@ -5,7 +5,18 @@ export default class Input {
   public static clickedKeyList = new Array(256).fill(false)
   public static frameCount = 0
   public static init(): void {
-    console.log('in')
+    window.addEventListener('keyup', e => {
+      Input.clickedKeyList[e.keyCode] = false
+      Input.inputedKeyList[e.keyCode] = false
+    })
+    window.addEventListener('keydown', e => {
+      Input.clickedKeyList[e.keyCode] = false
+      if (!Input.inputedKeyList[e.keyCode]) {
+        Input.clickedKeyList[e.keyCode] = true
+        Input.frameCount = FrameCounter.getCount()
+      }
+      Input.inputedKeyList[e.keyCode] = true
+    })
   }
   private static getKeyCode(keyName: string): number {
     switch (keyName) {
@@ -56,16 +67,3 @@ export default class Input {
     }
   }
 }
-
-window.addEventListener('keydown', e => {
-  Input.clickedKeyList[e.keyCode] = false
-  if (!Input.inputedKeyList[e.keyCode]) {
-    Input.clickedKeyList[e.keyCode] = true
-    Input.frameCount = FrameCounter.getCount()
-  }
-  Input.inputedKeyList[e.keyCode] = true
-})
-window.addEventListener('keyup', e => {
-  Input.clickedKeyList[e.keyCode] = false
-  Input.inputedKeyList[e.keyCode] = false
-})

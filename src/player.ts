@@ -6,7 +6,7 @@ export default class Player extends Entity {
   constructor(position: Vector2) {
     super(position)
   }
-  input() {
+  input(): void {
     if (Input.isKeyInput('RIGHT')) {
       this.position.x += 5
     }
@@ -32,7 +32,7 @@ export default class Player extends Entity {
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
   }
-  update() {
+  update(): void {
     this.input()
     // this.phys()
     this.sprite.position.x = this.position.x
