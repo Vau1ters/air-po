@@ -7,7 +7,7 @@ const windowOption = {
 export default class Renderer {
   static app: PIXI.Application
 
-  static init(): void {
+  public static init(): void {
     const container = document.getElementById('container')
     if (container) {
       this.app = new PIXI.Application({
@@ -32,7 +32,7 @@ export default class Renderer {
     }
   }
   // note : のちのち画像を使いたくなったらここはPIXI.Spriteにするべきかもしれない
-  static add(sprite: PIXI.Graphics): void {
+  public static add(sprite: PIXI.Graphics): void {
     this.app.stage.addChild(sprite)
   }
 }
