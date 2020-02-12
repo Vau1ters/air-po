@@ -4,10 +4,12 @@ import EntityManager from './entityManager'
 import { Vector2 } from './util'
 import Input from './input'
 import FrameCounter from './frameCounter'
+import Art from './art'
 
 class Main {
   /*.+† EntryPoint †+.*/
-  static init(): void {
+  static async init(): Promise<void> {
+    await Art.init()
     Renderer.init()
     EntityManager.init()
     Input.init()
