@@ -1,4 +1,4 @@
-import Entity from './entity'
+import Entity from './Entity/entity'
 import Renderer from './renderer'
 
 export default class EntityManager {
@@ -14,7 +14,6 @@ export default class EntityManager {
   static remove(entity: Entity): void {
   }
   */
-
   static update(): void {
     // update all entities
     this.list.forEach(e => e.update())

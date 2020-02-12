@@ -1,6 +1,6 @@
-import { Vector2 } from './util'
+import { Vector2 } from '../util'
 import * as PIXI from 'pixi.js'
-import Art from './art'
+import Art from '../art'
 
 export default class Entity {
   protected position: Vector2 = new Vector2(0, 0)

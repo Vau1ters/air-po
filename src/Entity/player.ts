@@ -1,6 +1,6 @@
 import Entity from './entity'
-import { Vector2 } from './util'
-import Input from './input'
+import { Vector2 } from '../util'
+import Input from '../input'
 
 export default class Player extends Entity {
   constructor(position: Vector2) {

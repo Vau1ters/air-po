@@ -1,5 +1,5 @@
 import Renderer from './renderer'
-import Player from './player'
+import Player from './Entity/player'
 import EntityManager from './entityManager'
 import { Vector2 } from './util'
 import Input from './input'
