@@ -1,5 +1,6 @@
-import * as PIXI from 'pixi.js'
 import { Vector2 } from './util'
+import * as PIXI from 'pixi.js'
+import Art from './art'
 
 export default class Entity {
   protected position: Vector2 = new Vector2(0, 0)
@@ -8,10 +9,7 @@ export default class Entity {
   public sprite: PIXI.Graphics
   constructor(position: Vector2) {
     this.position = position
-    this.sprite = new PIXI.Graphics()
-    this.sprite.beginFill(0xf03060)
-    this.sprite.drawRect(0, 0, 32, 32)
-    this.sprite.endFill()
+    this.sprite = Art.createRect(0xf03060)
   }
   update(): void {
     this.sprite.position.x = this.position.x
