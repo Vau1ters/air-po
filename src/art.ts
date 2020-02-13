@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 
+/* Manages resources such as image , shader , or sounds*/
 export default class Art {
   public static load(
     loader: PIXI.Loader,
@@ -13,7 +14,7 @@ export default class Art {
     return new Promise(resolve => {
       const loader = new PIXI.Loader()
       loader
-        .add('testShader', 'src/resource/test.frag')
+        .add('testShader', 'src/resource/test.frag')  // doesn't work well because of wrong configration of webpack
         .load((loader, resources) => Art.load(loader, resources))
         .onComplete.add(resolve)
     })

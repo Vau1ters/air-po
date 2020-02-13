@@ -54,11 +54,11 @@ export default class Input {
         return -1
     }
   }
-  /*押下状態のときtrue*/
+  /*returns true while the key is pressed*/
   public static isKeyInput(keyName: string): boolean {
     return this.inputedKeyList[this.getKeyCode(keyName)]
   }
-  /*押された瞬間のみture*/
+  /*returns true only for the frame at the moment when the key is pressed*/
   public static isKeyClick(keyName: string): boolean {
     if (this.frameCount == FrameCounter.getCount()) {
       return this.clickedKeyList[this.getKeyCode(keyName)]

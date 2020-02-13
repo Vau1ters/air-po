@@ -2,7 +2,7 @@ import Entity from './Entity/entity'
 import Renderer from './renderer'
 
 export default class EntityManager {
-  static list: Array<Entity> // 全Entityのリスト
+  static list: Array<Entity> // list of all entities 
   static init(): void {
     this.list = new Array<Entity>()
   }
