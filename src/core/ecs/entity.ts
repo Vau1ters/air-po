@@ -6,14 +6,12 @@ export class Entity {
 
   private readonly _id: number
   private readonly componentMap: Partial<ComponentFactory>
-  private readonly componentAddedEvent: EventNotifier<ComponentName>
-  private readonly componentRemovedEvent: EventNotifier<ComponentName>
+  public readonly componentChangedEvent: EventNotifier<Entity>
 
   public constructor() {
     this._id = Entity.id++
     this.componentMap = {}
-    this.componentAddedEvent = new EventNotifier()
-    this.componentRemovedEvent = new EventNotifier()
+    this.componentChangedEvent = new EventNotifier()
   }
 
   public get id(): number {
@@ -35,11 +33,11 @@ export class Entity {
     component: ComponentFactory[K]
   ): void {
     this.componentMap[componentName] = component
-    this.componentAddedEvent.notify(componentName)
+    this.componentChangedEvent.notify(this)
   }
 
   public removeComponent<K extends ComponentName>(componentName: K): void {
     delete this.componentMap[componentName]
-    this.componentRemovedEvent.notify(componentName)
+    this.componentChangedEvent.notify(this)
   }
 }

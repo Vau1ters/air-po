@@ -7,8 +7,6 @@ export class Family {
   private readonly includeComponents: Set<ComponentName>
   private readonly excludeComponents: Set<ComponentName>
   private readonly _entities: Set<Entity>
-  private readonly addEntity: (entity: Entity) => void
-  private readonly removeEntity: (entity: Entity) => void
 
   public constructor(
     world: World,
@@ -19,29 +17,44 @@ export class Family {
     this.includeComponents = includeComponents
     this.excludeComponents = excludeComponents
     this._entities = new Set()
-    this.addEntity = (entity: Entity): void => {
-      if (this.includesEntity(entity)) {
-        this._entities.add(entity)
-      }
-    }
-    this.removeEntity = (entity: Entity): void => {
-      this._entities.delete(entity)
-    }
 
     this.addEntitiesBySet(this.world.entities)
-    this.world.onEntityAdded(this.addEntity)
-    this.world.onEntityRemoved(this.removeEntity)
+    this.world.entityAddedEvent.addObserver((entity: Entity): void => {
+      this.onEntityAdded(entity)
+    })
+    this.world.entityRemovedEvent.addObserver((entity: Entity): void => {
+      this.onEntityRemoved(entity)
+    })
   }
 
   public get entities(): Set<Entity> {
     return new Set(this._entities)
   }
 
+  private onEntityAdded(entity: Entity): void {
+    entity.componentChangedEvent.addObserver((entity): void => {
+      this.onEntityChanged(entity)
+    })
+    if (this.includesEntity(entity)) {
+      this._entities.add(entity)
+    }
+  }
+
+  private onEntityRemoved(entity: Entity): void {
+    this.entities.delete(entity)
+  }
+
+  private onEntityChanged(entity: Entity): void {
+    if (this.includesEntity(entity)) {
+      this.entities.add(entity)
+    } else {
+      this.entities.delete(entity)
+    }
+  }
+
   private addEntitiesBySet(entities: Set<Entity>): void {
     entities.forEach((entity): void => {
-      if (this.includesEntity(entity)) {
-        this._entities.add(entity)
-      }
+      this.onEntityChanged(entity)
     })
   }
 

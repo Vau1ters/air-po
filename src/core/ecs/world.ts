@@ -5,8 +5,8 @@ import { EventNotifier } from '../eventNotifier'
 export class World {
   private readonly _entities: Set<Entity>
   private readonly _systems: Set<System>
-  private readonly entityAddedEvent: EventNotifier<Entity>
-  private readonly entityRemovedEvent: EventNotifier<Entity>
+  public readonly entityAddedEvent: EventNotifier<Entity>
+  public readonly entityRemovedEvent: EventNotifier<Entity>
 
   public constructor() {
     this._entities = new Set()
@@ -35,13 +35,5 @@ export class World {
       this._entities.delete(entity)
       this.entityRemovedEvent.notify(entity)
     }
-  }
-
-  public onEntityAdded(callback: (entity: Entity) => void): void {
-    this.entityAddedEvent.addObserver(callback)
-  }
-
-  public onEntityRemoved(callback: (entity: Entity) => void): void {
-    this.entityRemovedEvent.addObserver(callback)
   }
 }
