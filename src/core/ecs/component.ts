@@ -1,14 +1,14 @@
-export interface PoComponent {
-  a: number
+export class PositionComponent {
+  public constructor(public x = 0, public y = 0) {}
 }
 
-export interface MeuComponent {
-  b: string
+export class VelocityComponent {
+  public constructor(public x = 0, public y = 0) {}
 }
 
 export interface ComponentFactory {
-  Po: PoComponent
-  Meu: MeuComponent
+  Position: PositionComponent
+  Velocity: VelocityComponent
 }
 
 export type ComponentName = keyof ComponentFactory
