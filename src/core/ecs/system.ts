@@ -1,1 +1,11 @@
-export abstract class System {}
+import { World } from './world'
+
+export abstract class System {
+  protected readonly world: World
+
+  protected constructor(world: World) {
+    this.world = world
+  }
+
+  public abstract update(delta: number): void
+}
