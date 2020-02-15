@@ -2,7 +2,8 @@ import * as PIXI from 'pixi.js'
 import { System } from './core/ecs/system'
 import { World } from './core/ecs/world'
 import { Family, FamilyBuilder } from './core/ecs/family'
-import { VelocityComponent, PositionComponent } from './core/ecs/component'
+import { PositionComponent } from './core/components/positionComponent'
+import { VelocityComponent } from './core/components/velocityComponent'
 import { Entity } from './core/ecs/entity'
 
 const windowOption = {

@@ -1,11 +1,11 @@
-import { ComponentName, ComponentFactory } from './component'
+import { ComponentName, ComponentMap } from './component'
 import { EventNotifier } from '../eventNotifier'
 
 export class Entity {
   private static id = 0
 
   private readonly _id: number
-  private readonly componentMap: Partial<ComponentFactory>
+  private readonly componentMap: Partial<ComponentMap>
   public readonly componentChangedEvent: EventNotifier<Entity>
 
   public constructor() {
@@ -24,13 +24,13 @@ export class Entity {
 
   public getComponent<K extends ComponentName>(
     componentName: K
-  ): Partial<ComponentFactory>[K] {
+  ): Partial<ComponentMap>[K] {
     return this.componentMap[componentName]
   }
 
   public addComponent<K extends ComponentName>(
     componentName: K,
-    component: ComponentFactory[K]
+    component: ComponentMap[K]
   ): void {
     this.componentMap[componentName] = component
     this.componentChangedEvent.notify(this)

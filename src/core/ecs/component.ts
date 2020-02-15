@@ -1,14 +1,9 @@
-export class PositionComponent {
-  public constructor(public x = 0, public y = 0) {}
-}
+import { PositionComponent } from '../components/positionComponent'
+import { VelocityComponent } from '../components/velocityComponent'
 
-export class VelocityComponent {
-  public constructor(public x = 0, public y = 0) {}
-}
-
-export interface ComponentFactory {
+export interface ComponentMap {
   Position: PositionComponent
   Velocity: VelocityComponent
 }
 
-export type ComponentName = keyof ComponentFactory
+export type ComponentName = keyof ComponentMap
