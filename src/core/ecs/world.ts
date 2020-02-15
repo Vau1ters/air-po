@@ -36,4 +36,22 @@ export class World {
       this.entityRemovedEvent.notify(entity)
     }
   }
+
+  public addSystem(...systems: System[]): void {
+    for (const system of systems) {
+      this._systems.add(system)
+    }
+  }
+
+  public removeSystem(...systems: System[]): void {
+    for (const system of systems) {
+      this._systems.delete(system)
+    }
+  }
+
+  public update(delta: number): void {
+    this._systems.forEach(system => {
+      system.update(delta)
+    })
+  }
 }

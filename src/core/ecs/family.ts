@@ -84,16 +84,18 @@ export class FamilyBuilder {
     this.excludeComponents = new Set()
   }
 
-  include(...componentNames: ComponentName[]): void {
+  include(...componentNames: ComponentName[]): this {
     for (const componentName of componentNames) {
       this.includeComponents.add(componentName)
     }
+    return this
   }
 
-  exclude(...componentNames: ComponentName[]): void {
+  exclude(...componentNames: ComponentName[]): this {
     for (const componentName of componentNames) {
       this.excludeComponents.add(componentName)
     }
+    return this
   }
 
   build(): Family {
