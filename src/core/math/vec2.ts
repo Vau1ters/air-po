@@ -1,12 +1,26 @@
 export class Vec2 {
   public constructor(public x = 0, public y = 0) {}
 
+  public copy(): Vec2 {
+    return new Vec2(this.x, this.y)
+  }
+
   public add(other: Vec2): Vec2 {
     return new Vec2(this.x + other.x, this.y + other.y)
   }
 
+  public addFrom(other: Vec2): void {
+    this.x += other.x
+    this.y += other.y
+  }
+
   public sub(other: Vec2): Vec2 {
     return new Vec2(this.x - other.x, this.y - other.y)
+  }
+
+  public subFrom(other: Vec2): void {
+    this.x -= other.x
+    this.y -= other.y
   }
 
   public mul(scalar: number): Vec2 {
