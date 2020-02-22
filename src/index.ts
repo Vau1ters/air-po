@@ -3,19 +3,24 @@ import { PositionComponent } from './core/components/positionComponent'
 import { VelocityComponent } from './core/components/velocityComponent'
 import { Entity } from './core/ecs/entity'
 import DrawSystem from './core/systems/drawSystem'
-import Graphics from './core/graphics'
-import PhysicsSystem from './core/systems/phisicsSystem'
+import { application, initializeApplication } from './core/application'
+import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
+import { Graphics } from 'pixi.js'
 
 export class Main {
   public static world = new World()
   /*+.† INITIALIZATION †.+*/
   public static init(): void {
-    Graphics.init()
+    initializeApplication()
+
+    const graphics = new Graphics()
+    application.stage.addChild(graphics)
+
     this.world.addSystem(
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
-      new DrawSystem(this.world)
+      new DrawSystem(this.world, graphics)
     )
     const position1 = new PositionComponent(200, 100)
     const velocity1 = new VelocityComponent(30, 0)
@@ -30,6 +35,8 @@ export class Main {
     entity2.addComponent('Position', position2)
     entity2.addComponent('Velocity', velocity2)
     this.world.addEntity(entity2)
+
+    application.ticker.add((delta: number) => this.world.update(delta / 60))
   }
 }
 Main.init()
