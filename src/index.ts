@@ -9,12 +9,16 @@ import GravitySystem from './core/systems/gravitySystem'
 import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
 import { DrawComponent } from './core/components/drawComponent'
+import { PlayerComponent } from './core/components/playerComponent'
+import { KeyController } from './core/controller'
+import { PlayerControlSystem } from './core/systems/playerControlSystem'
 
 export class Main {
   public static world = new World()
   /*+.† INITIALIZATION †.+*/
   public static init(): void {
     initializeApplication()
+    KeyController.init()
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
@@ -23,6 +27,7 @@ export class Main {
     this.world.addSystem(
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
+      new PlayerControlSystem(this.world),
       new DrawSystem(this.world, application.stage),
       new DebugDrawSystem(this.world, debugContainer)
     )
@@ -36,10 +41,12 @@ export class Main {
     const position2 = new PositionComponent(500, 300)
     const velocity2 = new VelocityComponent(-20, -100)
     const draw2 = new DrawComponent()
+    const player2 = new PlayerComponent()
     const entity2 = new Entity()
     entity2.addComponent('Position', position2)
     entity2.addComponent('Velocity', velocity2)
     entity2.addComponent('Draw', draw2)
+    entity2.addComponent('Player', player2)
     this.world.addEntity(entity2)
     const po = new Graphics()
     po.beginFill(0xffff00)
