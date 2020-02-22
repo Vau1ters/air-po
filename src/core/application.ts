@@ -14,6 +14,8 @@ export const initializeApplication = (): void => {
   if (!container) return
   container.appendChild(application.view)
 
+  application.stage.sortableChildren = true
+
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()
     const scale = Math.min(
