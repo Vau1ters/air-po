@@ -1,12 +1,15 @@
 import { Entity } from './entity'
 import { ComponentName } from './component'
 import { World } from './world'
+import { EventNotifier } from '../eventNotifier'
 
 export class Family {
   private readonly world: World
   private readonly includeComponents: Set<ComponentName>
   private readonly excludeComponents: Set<ComponentName>
   private readonly _entities: Set<Entity>
+  public readonly entityAddedEvent: EventNotifier<Entity>
+  public readonly entityRemovedEvent: EventNotifier<Entity>
 
   public constructor(
     world: World,
@@ -25,6 +28,9 @@ export class Family {
     this.world.entityRemovedEvent.addObserver((entity: Entity): void => {
       this.onEntityRemoved(entity)
     })
+
+    this.entityAddedEvent = new EventNotifier()
+    this.entityRemovedEvent = new EventNotifier()
   }
 
   public get entities(): Set<Entity> {
@@ -37,18 +43,22 @@ export class Family {
     })
     if (this.includesEntity(entity)) {
       this._entities.add(entity)
+      this.entityAddedEvent.notify(entity)
     }
   }
 
   private onEntityRemoved(entity: Entity): void {
     this.entities.delete(entity)
+    this.entityRemovedEvent.notify(entity)
   }
 
   private onEntityChanged(entity: Entity): void {
     if (this.includesEntity(entity)) {
       this.entities.add(entity)
+      this.entityAddedEvent.notify(entity)
     } else {
       this.entities.delete(entity)
+      this.entityRemovedEvent.notify(entity)
     }
   }
 
