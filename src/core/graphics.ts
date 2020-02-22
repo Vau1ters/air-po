@@ -11,7 +11,7 @@ export default class Graphics {
   })
   public static graphics = new PIXI.Graphics()
 
-  public static init() {
+  public static init(): void {
     const container = document.getElementById('container')
     if (!container) return
     container.appendChild(Graphics.app.view)
