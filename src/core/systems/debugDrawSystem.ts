@@ -4,7 +4,7 @@ import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { Graphics } from 'pixi.js'
 
-export default class DrawSystem extends System {
+export default class DebugDrawSystem extends System {
   private family: Family
 
   private graphics: Graphics
