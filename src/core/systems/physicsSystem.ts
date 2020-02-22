@@ -98,20 +98,20 @@ export default class PhysicsSystem extends System {
       const ratio =
         (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
 
+      // バネ係数
       const k = 10
       const sumMass = body1.invMass + body2.invMass
-      const e = body1.restitution * body2.restitution
+      // 反発係数
+      const rest = 1 + body1.restitution * body2.restitution
       // 中心座標の位置関係を見てどっちに押し出すか決める
       if (Math.abs(diff.y / diff.x) > ratio) {
         // 縦方向押し出し
-        body1.acceleration.y += diff.y * k * (body1.invMass / sumMass) * (1 + e)
-        body2.acceleration.y +=
-          -diff.y * k * (body2.invMass / sumMass) * (1 + e)
+        body1.acceleration.y += diff.y * k * (body1.invMass / sumMass) * rest
+        body2.acceleration.y += -diff.y * k * (body2.invMass / sumMass) * rest
       } else {
-        // 横方向押し出し+
-        body1.acceleration.x += diff.x * k * (body1.invMass / sumMass) * (1 + e)
-        body2.acceleration.x +=
-          -diff.x * k * (body2.invMass / sumMass) * (1 + e)
+        // 横方向押し出し
+        body1.acceleration.x += diff.x * k * (body1.invMass / sumMass) * rest
+        body2.acceleration.x += -diff.x * k * (body2.invMass / sumMass) * rest
       }
     }
   }
