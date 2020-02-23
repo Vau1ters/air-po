@@ -58,14 +58,10 @@ export default class PhysicsSystem extends System {
         const aabb1 = c1.aabb.add(position1)
         const aabb2 = c2.aabb.add(position2)
         if (aabb1.overlap(aabb2)) {
-          switch (c1.isSensor || c2.isSensor) {
-            case false:
-              this.collidedList.push([c1, c2])
-              break
-            default:
-              // センサー用のcallbackとかに衝突情報渡したい
-              break
+          if (!(c1.isSensor || c2.isSensor)) {
+            this.collidedList.push([c1, c2])
           }
+          // どっちかセンサーだったらセンサー用のcallbackとかに衝突情報渡したい
         }
       }
     }
@@ -110,22 +106,28 @@ export default class PhysicsSystem extends System {
       // 中心座標の位置関係を見て押し出す向きを決める
       if (Math.abs(pDiff.y / pDiff.x) > ratio) {
         // 縦方向
-        if ((vDiff.y > 0 && pDiff.y > 0) || (vDiff.y < 0 && pDiff.y < 0)) {
+        // 離れようとしているときに押し出さないようにする
+        if (vDiff.y * pDiff.y <= 0) {
           body1.velocity.y += -vDiff.y * (body1.invMass / sumMass) * rest
           body2.velocity.y += vDiff.y * (body2.invMass / sumMass) * rest
         }
         // 押し出し
-        position1.y += -clip.y * (body1.invMass / sumMass)
-        position2.y += clip.y * (body1.invMass / sumMass)
+        let sign = 1
+        if (pDiff.y > 0) sign = -1
+        position1.y += sign * -clip.y * (body1.invMass / sumMass)
+        position2.y += sign * clip.y * (body1.invMass / sumMass)
       } else {
         // 横方向
-        if ((vDiff.y > 0 && pDiff.y > 0) || (vDiff.y < 0 && pDiff.y < 0)) {
+        // 離れようとしているときに押し出さないようにする
+        if (vDiff.x * pDiff.x <= 0) {
           body1.velocity.x += -vDiff.x * (body1.invMass / sumMass) * rest
           body2.velocity.x += vDiff.x * (body2.invMass / sumMass) * rest
         }
         // 押し出し
-        position1.x += -clip.x * (body1.invMass / sumMass)
-        position2.x += clip.x * (body1.invMass / sumMass)
+        let sign = 1
+        if (pDiff.x > 0) sign = -1
+        position1.x += sign * -clip.x * (body1.invMass / sumMass)
+        position2.x += sign * clip.x * (body1.invMass / sumMass)
       }
     }
   }
