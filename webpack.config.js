@@ -5,11 +5,11 @@ module.exports = {
   entry: './src/index.ts',
   output: {
     path: `${__dirname}/dist`,
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   devServer: {
     contentBase: './public',
-    port: 3000
+    port: 3000,
   },
   module: {
     rules: [
@@ -17,24 +17,36 @@ module.exports = {
         enforce: 'pre',
         test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader'
+        loader: 'eslint-loader',
       },
       {
         test: /\.ts$/,
-        use: 'ts-loader'
+        exclude: /node_modules/,
+        loader: 'ts-loader',
+      },
+      {
+        test: /\.png$/,
+        exclude: /node_modules/,
+        loader: 'url-loader',
       },
       {
         test: /\.html$/,
-        use: 'html-loader'
-      }
-    ]
+        exclude: /node_modules/,
+        loader: 'html-loader',
+      },
+      {
+        test: /\.(vert|frag)$/,
+        exclude: /node_modules/,
+        loader: 'raw-loader',
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html'
-    })
-  ]
+      template: './public/index.html',
+    }),
+  ],
 }
