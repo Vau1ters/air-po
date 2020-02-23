@@ -7,6 +7,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { ColliderComponent, Collider } from '../components/colliderComponent'
 
 export default class PhysicsSystem extends System {
+  private readonly maxClipTolerance = 5
   private family: Family
 
   private collidedList: Array<[Collider, Collider]> = []
@@ -58,6 +59,18 @@ export default class PhysicsSystem extends System {
         const aabb1 = c1.aabb.add(position1)
         const aabb2 = c2.aabb.add(position2)
         if (aabb1.overlap(aabb2)) {
+          const center1 = aabb1.center
+          const center2 = aabb2.center
+
+          const clip = aabb1.size
+            .add(aabb2.size)
+            .div(2)
+            .sub(center1.sub(center2).abs())
+
+          // 四隅の浅い衝突も衝突していないことにする
+          if (clip.x < this.maxClipTolerance && clip.y < this.maxClipTolerance)
+            break
+
           if (!(c1.isSensor || c2.isSensor)) {
             this.collidedList.push([c1, c2])
           }
