@@ -45,7 +45,8 @@ export class Main {
     draw1.addChild(po1)
 
     const position2 = new PositionComponent(400, 300)
-    const body2 = new RigidBodyComponent(0, new Vec2(-20, -100), new Vec2(), 0)
+    const body2 = new RigidBodyComponent(0, new Vec2(-20, -100), new Vec2(), 1)
+    // 質量無限大
     body2.invMass = 0
     const draw2 = new DrawComponent()
     const entity2 = new Entity()

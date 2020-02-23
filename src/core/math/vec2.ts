@@ -14,6 +14,10 @@ export class Vec2 {
     this.y += other.y
   }
 
+  public abs(): Vec2 {
+    return new Vec2(Math.abs(this.x), Math.abs(this.y))
+  }
+
   public sub(other: Vec2): Vec2 {
     return new Vec2(this.x - other.x, this.y - other.y)
   }

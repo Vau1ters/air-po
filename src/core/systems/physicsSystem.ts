@@ -93,25 +93,39 @@ export default class PhysicsSystem extends System {
       const center1 = aabb1.center
       const center2 = aabb2.center
 
-      const diff = center1.sub(center2)
+      const pDiff = center1.sub(center2)
+      const vDiff = body1.velocity.sub(body2.velocity)
+
+      const clip = aabb1.size
+        .add(aabb2.size)
+        .div(2)
+        .sub(pDiff.abs())
 
       const ratio =
         (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
 
-      // バネ係数
-      const k = 10
       const sumMass = body1.invMass + body2.invMass
       // 反発係数
       const rest = 1 + body1.restitution * body2.restitution
-      // 中心座標の位置関係を見てどっちに押し出すか決める
-      if (Math.abs(diff.y / diff.x) > ratio) {
-        // 縦方向押し出し
-        body1.acceleration.y += diff.y * k * (body1.invMass / sumMass) * rest
-        body2.acceleration.y += -diff.y * k * (body2.invMass / sumMass) * rest
+      // 中心座標の位置関係を見て押し出す向きを決める
+      if (Math.abs(pDiff.y / pDiff.x) > ratio) {
+        // 縦方向
+        if ((vDiff.y > 0 && pDiff.y > 0) || (vDiff.y < 0 && pDiff.y < 0)) {
+          body1.velocity.y += -vDiff.y * (body1.invMass / sumMass) * rest
+          body2.velocity.y += vDiff.y * (body2.invMass / sumMass) * rest
+        }
+        // 押し出し
+        position1.y += -clip.y * (body1.invMass / sumMass)
+        position2.y += clip.y * (body1.invMass / sumMass)
       } else {
-        // 横方向押し出し
-        body1.acceleration.x += diff.x * k * (body1.invMass / sumMass) * rest
-        body2.acceleration.x += -diff.x * k * (body2.invMass / sumMass) * rest
+        // 横方向
+        if ((vDiff.y > 0 && pDiff.y > 0) || (vDiff.y < 0 && pDiff.y < 0)) {
+          body1.velocity.x += -vDiff.x * (body1.invMass / sumMass) * rest
+          body2.velocity.x += vDiff.x * (body2.invMass / sumMass) * rest
+        }
+        // 押し出し
+        position1.x += -clip.x * (body1.invMass / sumMass)
+        position2.x += clip.x * (body1.invMass / sumMass)
       }
     }
   }
