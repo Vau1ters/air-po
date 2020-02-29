@@ -1,3 +1,3 @@
-export class PositionComponent {
-  public constructor(public x = 0, public y = 0) {}
-}
+import { Vec2 } from '../math/vec2'
+
+export class PositionComponent extends Vec2 {}

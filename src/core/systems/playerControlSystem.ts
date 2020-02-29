@@ -3,6 +3,7 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { KeyController } from '../controller'
 import { PlayerComponent } from '../components/playerComponent'
+import { RigidBodyComponent } from '../components/rigidBodyComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -28,7 +29,8 @@ export class PlayerControlSystem extends System {
         }
       }
 
-      const velocity = entity.getComponent('Velocity')
+      const velocity = (entity.getComponent('RigidBody') as RigidBodyComponent)
+        .velocity
       if (velocity) {
         if (KeyController.isKeyPressing('Right')) {
           if (velocity.x < 200) velocity.x += 20
@@ -42,6 +44,9 @@ export class PlayerControlSystem extends System {
         ) {
           velocity.y = -600
           player.jumpState = 'Jumping'
+        }
+        if (player.jumpState === 'Standing') {
+          velocity.y = 0
         }
       }
     }
