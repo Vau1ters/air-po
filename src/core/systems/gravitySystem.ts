@@ -16,7 +16,7 @@ export default class GravitySystem extends System {
   public update(delta: number): void {
     for (const entity of this.family.entities) {
       const body = entity.getComponent('RigidBody') as RigidBodyComponent
-      body.velocity.y += this.acceleration * delta
+      body.velocity.y += this.acceleration * body.gravityScale * delta
     }
   }
 }

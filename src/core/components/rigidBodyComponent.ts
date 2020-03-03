@@ -8,7 +8,8 @@ export class RigidBodyComponent {
     mass = 0,
     public velocity = new Vec2(),
     public acceleration = new Vec2(),
-    public restitution = 0
+    public restitution = 0,
+    public gravityScale = 1
   ) {
     this._mass = mass
     if (mass != 0) {

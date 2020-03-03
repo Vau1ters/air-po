@@ -56,6 +56,12 @@ export default class PhysicsSystem extends System {
 
     for (const c1 of colliders1.colliders) {
       for (const c2 of colliders2.colliders) {
+        const mask1 = c1.mask
+        const category1 = c1.category
+        const mask2 = c2.mask
+        const category2 = c2.category
+        if ((mask1 & category2) == 0 || (mask2 & category1) == 0) continue
+
         const aabb1 = c1.aabb.add(position1)
         const aabb2 = c2.aabb.add(position2)
         if (aabb1.overlap(aabb2)) {
@@ -74,7 +80,12 @@ export default class PhysicsSystem extends System {
           if (!(c1.isSensor || c2.isSensor)) {
             this.collidedList.push([c1, c2])
           }
-          // どっちかセンサーだったらセンサー用のcallbackとかに衝突情報渡したい
+          if (c1.callback) {
+            c1.callback(c1, c2)
+          }
+          if (c2.callback) {
+            c2.callback(c2, c1)
+          }
         }
       }
     }
@@ -128,7 +139,7 @@ export default class PhysicsSystem extends System {
         let sign = 1
         if (pDiff.y > 0) sign = -1
         position1.y += sign * -clip.y * (body1.invMass / sumMass)
-        position2.y += sign * clip.y * (body1.invMass / sumMass)
+        position2.y += sign * clip.y * (body2.invMass / sumMass)
       } else {
         // 横方向
         // 離れようとしているときに押し出さないようにする
@@ -140,8 +151,9 @@ export default class PhysicsSystem extends System {
         let sign = 1
         if (pDiff.x > 0) sign = -1
         position1.x += sign * -clip.x * (body1.invMass / sumMass)
-        position2.x += sign * clip.x * (body1.invMass / sumMass)
+        position2.x += sign * clip.x * (body2.invMass / sumMass)
       }
+      console.log('dummy')
     }
   }
 }
