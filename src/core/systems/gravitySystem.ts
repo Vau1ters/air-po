@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 
 export default class GravitySystem extends System {
   private family: Family
-  private acceleration = 800
+  private acceleration = 1200
 
   public constructor(world: World) {
     super(world)
