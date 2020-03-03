@@ -38,8 +38,8 @@ export class Main {
     for (let x = 0; x < 50; x++) {
       const wall = new WallFactory().create()
       const p = wall.getComponent('Position') as PositionComponent
-      p.x = 32 * x
-      p.y = 500
+      p.x = 64 * x
+      p.y = 100 + 64 * x
       this.world.addEntity(wall)
     }
     application.ticker.add((delta: number) => this.world.update(delta / 60))

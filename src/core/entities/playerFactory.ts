@@ -12,12 +12,12 @@ import { Graphics } from 'pixi.js'
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
   readonly RESTITUTION = 0
-  readonly WIDTH = 32
-  readonly HEIGHT = 30
-  readonly FOOT_WIDTH = 30
+  readonly WIDTH = 64
+  readonly HEIGHT = 60
+  readonly FOOT_WIDTH = 60
   readonly FOOT_HEIGHT = 2
-  readonly FOOT_OFFSET_X = 1
-  readonly FOOT_OFFSET_Y = 30
+  readonly FOOT_OFFSET_X = 2
+  readonly FOOT_OFFSET_Y = 60
 
   public create(): Entity {
     const entity = new Entity()

@@ -121,6 +121,11 @@ export default class PhysicsSystem extends System {
         .div(2)
         .sub(pDiff.abs())
 
+      if (clip.x < 0 || clip.y < 0) {
+        // すでに衝突は解消されている
+        continue
+      }
+
       const ratio =
         (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
 

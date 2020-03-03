@@ -11,8 +11,8 @@ import { Graphics } from 'pixi.js'
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
   readonly RESTITUTION = 0
-  readonly WIDTH = 32
-  readonly HEIGHT = 32
+  readonly WIDTH = 64
+  readonly HEIGHT = 64
 
   public create(): Entity {
     const entity = new Entity()
