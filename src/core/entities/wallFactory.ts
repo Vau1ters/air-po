@@ -3,7 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent } from '../components/colliderComponent'
+import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 import { Category } from './category'
 import { Graphics } from 'pixi.js'
@@ -26,16 +26,14 @@ export class WallFactory extends EntityFactory {
     )
     body.invMass = this.INV_MASS
     const draw = new DrawComponent()
+
+    const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    aabb.category = Category.WALL
+    aabb.mask = Category.PLAYER
+
     const collider = new ColliderComponent(entity)
-    collider.createAABB(
-      new Vec2(this.WIDTH, this.HEIGHT),
-      new Vec2(),
-      false,
-      null,
-      '',
-      Category.WALL,
-      Category.PLAYER
-    )
+    collider.createCollider(aabb)
+
     entity.addComponent('Position', position)
     entity.addComponent('RigidBody', body)
     entity.addComponent('Draw', draw)

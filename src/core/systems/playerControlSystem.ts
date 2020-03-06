@@ -39,9 +39,11 @@ export class PlayerControlSystem extends System {
       if (velocity) {
         if (KeyController.isKeyPressing('Right')) {
           if (velocity.x < 200) velocity.x += 20
-        }
-        if (KeyController.isKeyPressing('Left')) {
+        } else if (KeyController.isKeyPressing('Left')) {
           if (velocity.x > -200) velocity.x -= 20
+        } else {
+          if (velocity.x > 0) velocity.x -= Math.min(20, velocity.x)
+          if (velocity.x < 0) velocity.x -= Math.max(-20, velocity.x)
         }
         if (
           KeyController.isKeyPressing('Space') &&

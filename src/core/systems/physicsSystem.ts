@@ -4,10 +4,14 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { ColliderComponent, Collider } from '../components/colliderComponent'
+import {
+  ColliderComponent,
+  Collider,
+  AABBCollider,
+} from '../components/colliderComponent'
+import { Collision } from '../physics/collision'
 
 export default class PhysicsSystem extends System {
-  private readonly maxClipTolerance = 5
   private family: Family
 
   private collidedList: Array<[Collider, Collider]> = []
@@ -62,21 +66,7 @@ export default class PhysicsSystem extends System {
         const category2 = c2.category
         if ((mask1 & category2) == 0 || (mask2 & category1) == 0) continue
 
-        const aabb1 = c1.aabb.add(position1)
-        const aabb2 = c2.aabb.add(position2)
-        if (aabb1.overlap(aabb2)) {
-          const center1 = aabb1.center
-          const center2 = aabb2.center
-
-          const clip = aabb1.size
-            .add(aabb2.size)
-            .div(2)
-            .sub(center1.sub(center2).abs())
-
-          // 四隅の浅い衝突も衝突していないことにする
-          if (clip.x < this.maxClipTolerance && clip.y < this.maxClipTolerance)
-            break
-
+        if (Collision.collide(c1, c2, position1, position2)) {
           if (!(c1.isSensor || c2.isSensor)) {
             this.collidedList.push([c1, c2])
           }
@@ -107,56 +97,59 @@ export default class PhysicsSystem extends System {
       const position2 = c2.component.entity.getComponent(
         'Position'
       ) as PositionComponent
-      const aabb1 = c1.aabb.add(position1)
-      const aabb2 = c2.aabb.add(position2)
+      // TODO:別クラスに分ける
+      if (c1 instanceof AABBCollider && c2 instanceof AABBCollider) {
+        const aabb1 = c1.aabb.add(position1)
+        const aabb2 = c2.aabb.add(position2)
 
-      const center1 = aabb1.center
-      const center2 = aabb2.center
+        const center1 = aabb1.center
+        const center2 = aabb2.center
 
-      const pDiff = center1.sub(center2)
-      const vDiff = body1.velocity.sub(body2.velocity)
+        const pDiff = center1.sub(center2)
+        const vDiff = body1.velocity.sub(body2.velocity)
 
-      const clip = aabb1.size
-        .add(aabb2.size)
-        .div(2)
-        .sub(pDiff.abs())
+        const clip = aabb1.size
+          .add(aabb2.size)
+          .div(2)
+          .sub(pDiff.abs())
 
-      if (clip.x < 0 || clip.y < 0) {
-        // すでに衝突は解消されている
-        continue
-      }
-
-      const ratio =
-        (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
-
-      const sumMass = body1.invMass + body2.invMass
-      // 反発係数
-      const rest = 1 + body1.restitution * body2.restitution
-      // 中心座標の位置関係を見て押し出す向きを決める
-      if (Math.abs(pDiff.y / pDiff.x) > ratio) {
-        // 縦方向
-        // 離れようとしているときに押し出さないようにする
-        if (vDiff.y * pDiff.y <= 0) {
-          body1.velocity.y += -vDiff.y * (body1.invMass / sumMass) * rest
-          body2.velocity.y += vDiff.y * (body2.invMass / sumMass) * rest
+        if (clip.x < 0 || clip.y < 0) {
+          // すでに衝突は解消されている
+          continue
         }
-        // 押し出し
-        let sign = 1
-        if (pDiff.y > 0) sign = -1
-        position1.y += sign * -clip.y * (body1.invMass / sumMass)
-        position2.y += sign * clip.y * (body2.invMass / sumMass)
-      } else {
-        // 横方向
-        // 離れようとしているときに押し出さないようにする
-        if (vDiff.x * pDiff.x <= 0) {
-          body1.velocity.x += -vDiff.x * (body1.invMass / sumMass) * rest
-          body2.velocity.x += vDiff.x * (body2.invMass / sumMass) * rest
+
+        const ratio =
+          (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
+
+        const sumMass = body1.invMass + body2.invMass
+        // 反発係数
+        const rest = 1 + body1.restitution * body2.restitution
+        // 中心座標の位置関係を見て押し出す向きを決める
+        if (Math.abs(pDiff.y / pDiff.x) > ratio) {
+          // 縦方向
+          // 離れようとしているときに押し出さないようにする
+          if (vDiff.y * pDiff.y <= 0) {
+            body1.velocity.y += -vDiff.y * (body1.invMass / sumMass) * rest
+            body2.velocity.y += vDiff.y * (body2.invMass / sumMass) * rest
+          }
+          // 押し出し
+          let sign = 1
+          if (pDiff.y > 0) sign = -1
+          position1.y += sign * -clip.y * (body1.invMass / sumMass)
+          position2.y += sign * clip.y * (body2.invMass / sumMass)
+        } else {
+          // 横方向
+          // 離れようとしているときに押し出さないようにする
+          if (vDiff.x * pDiff.x <= 0) {
+            body1.velocity.x += -vDiff.x * (body1.invMass / sumMass) * rest
+            body2.velocity.x += vDiff.x * (body2.invMass / sumMass) * rest
+          }
+          // 押し出し
+          let sign = 1
+          if (pDiff.x > 0) sign = -1
+          position1.x += sign * -clip.x * (body1.invMass / sumMass)
+          position2.x += sign * clip.x * (body2.invMass / sumMass)
         }
-        // 押し出し
-        let sign = 1
-        if (pDiff.x > 0) sign = -1
-        position1.x += sign * -clip.x * (body1.invMass / sumMass)
-        position2.x += sign * clip.x * (body2.invMass / sumMass)
       }
       console.log('dummy')
     }

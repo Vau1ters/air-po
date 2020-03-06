@@ -3,7 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent } from '../components/colliderComponent'
+import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { Vec2 } from '../math/vec2'
 import { Category } from './category'
@@ -31,24 +31,19 @@ export class PlayerFactory extends EntityFactory {
     const draw = new DrawComponent()
     const player = new PlayerComponent()
     const collider = new ColliderComponent(entity)
-    collider.createAABB(
-      new Vec2(this.WIDTH, this.HEIGHT),
-      new Vec2(),
-      false,
-      null,
-      '',
-      Category.PLAYER,
-      Category.WALL
-    )
-    collider.createAABB(
-      new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT),
-      new Vec2(this.FOOT_OFFSET_X, this.FOOT_OFFSET_Y),
-      false,
-      null,
-      'foot',
-      Category.PLAYER,
-      Category.WALL
-    )
+
+    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    aabbBody.category = Category.PLAYER
+    aabbBody.mask = Category.WALL
+    collider.createCollider(aabbBody)
+
+    const aabbFoot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
+    aabbFoot.offset = new Vec2(this.FOOT_OFFSET_X, this.FOOT_OFFSET_Y)
+    aabbFoot.tag = 'foot'
+    aabbFoot.category = Category.PLAYER
+    aabbFoot.mask = Category.WALL
+    collider.createCollider(aabbFoot)
+
     const graphics = new Graphics()
     graphics.beginFill(0xffff00)
     graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
