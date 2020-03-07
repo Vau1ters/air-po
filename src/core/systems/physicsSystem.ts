@@ -151,7 +151,6 @@ export default class PhysicsSystem extends System {
           position2.x += sign * clip.x * (body2.invMass / sumMass)
         }
       }
-      console.log('dummy')
     }
   }
 }

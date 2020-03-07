@@ -6,13 +6,14 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 import { Category } from './category'
-import { Graphics } from 'pixi.js'
+import { Sprite } from 'pixi.js'
+import { Art } from '../graphics/art'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
   readonly RESTITUTION = 0
-  readonly WIDTH = 64
-  readonly HEIGHT = 64
+  readonly WIDTH = 8
+  readonly HEIGHT = 8
 
   public create(): Entity {
     const entity = new Entity()
@@ -38,10 +39,11 @@ export class WallFactory extends EntityFactory {
     entity.addComponent('RigidBody', body)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    const graphics = new Graphics()
-    graphics.beginFill(0xff00ff)
-    graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
-    draw.addChild(graphics)
+    // const graphics = new Graphics()
+    // graphics.beginFill(0xff00ff)
+    // graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
+    const sprite = new Sprite(Art.wall[0])
+    draw.addChild(sprite)
     return entity
   }
 }

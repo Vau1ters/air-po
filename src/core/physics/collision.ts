@@ -2,7 +2,7 @@ import { AABBCollider, Collider } from '../components/colliderComponent'
 import { PositionComponent } from '../components/positionComponent'
 
 export class Collision {
-  private static readonly maxClipTolerance = 5
+  private static readonly maxClipTolerance = 2
   public static collide(
     c1: Collider,
     c2: Collider,

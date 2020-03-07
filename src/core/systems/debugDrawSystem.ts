@@ -22,7 +22,7 @@ export default class DebugDrawSystem extends System {
     for (const entity of this.family.entities) {
       const position = entity.getComponent('Position') as PositionComponent
       this.graphics.beginFill(0xff0000)
-      this.graphics.drawRect(position.x - 5, position.y - 5, 10, 10)
+      this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
     }
     this.graphics.endFill()
   }

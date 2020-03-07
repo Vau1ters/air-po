@@ -3,6 +3,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { ColliderComponent } from '../components/colliderComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { PlayerComponent } from '../components/playerComponent'
+import { HorizontalDirectionComponent } from '../components/directionComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -10,6 +11,7 @@ export interface ComponentMap {
   Collider: ColliderComponent
   Draw: DrawComponent
   Player: PlayerComponent
+  HorizontalDirection: HorizontalDirectionComponent
 }
 
 export type ComponentName = keyof ComponentMap

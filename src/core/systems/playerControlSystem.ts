@@ -6,6 +6,7 @@ import { KeyController } from '../controller'
 import { PlayerComponent } from '../components/playerComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider } from '../components/colliderComponent'
+import { HorizontalDirectionComponent } from '../components/directionComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -13,7 +14,9 @@ export class PlayerControlSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world).include('Player').build()
+    this.family = new FamilyBuilder(world)
+      .include('Player', 'RigidBody')
+      .build()
     this.family.entityAddedEvent.addObserver(this.entityAdded)
   }
 
@@ -31,32 +34,36 @@ export class PlayerControlSystem extends System {
   public update(): void {
     for (const entity of this.family.entities) {
       const player = entity.getComponent('Player') as PlayerComponent
-      console.log(player.jumpState)
+      const direction = entity.getComponent(
+        'HorizontalDirection'
+      ) as HorizontalDirectionComponent
+      console.log(player.state)
 
       const body = entity.getComponent('RigidBody') as RigidBodyComponent
 
       const velocity = body.velocity
-      if (velocity) {
-        if (KeyController.isKeyPressing('Right')) {
-          if (velocity.x < 200) velocity.x += 20
-        } else if (KeyController.isKeyPressing('Left')) {
-          if (velocity.x > -200) velocity.x -= 20
-        } else {
-          if (velocity.x > 0) velocity.x -= Math.min(20, velocity.x)
-          if (velocity.x < 0) velocity.x -= Math.max(-20, velocity.x)
-        }
-        if (
-          KeyController.isKeyPressing('Space') &&
-          player.jumpState === 'Standing'
-        ) {
-          velocity.y = -600
-          player.jumpState = 'Jumping'
-        }
-        if (player.jumpState === 'Standing') {
-          velocity.y = 0
-        }
+
+      if (KeyController.isKeyPressing('Right')) {
+        if (velocity.x < 100) velocity.x += 10
+        if (player.landing) player.state = 'Walking'
+        direction.looking = 'Right'
+      } else if (KeyController.isKeyPressing('Left')) {
+        if (velocity.x > -100) velocity.x -= 10
+        if (player.landing) player.state = 'Walking'
+        direction.looking = 'Left'
+      } else {
+        if (velocity.x > 0) velocity.x -= Math.min(20, velocity.x)
+        if (velocity.x < 0) velocity.x -= Math.max(-20, velocity.x)
+        if (player.landing) player.state = 'Standing'
       }
-      player.jumpState = 'Jumping'
+      if (player.landing) {
+        velocity.y = 0
+      }
+      if (KeyController.isKeyPressing('Space') && player.landing) {
+        velocity.y = -250
+        player.state = 'Jumping'
+      }
+      player.landing = false
     }
 
     KeyController.onUpdateFinished()
@@ -65,7 +72,7 @@ export class PlayerControlSystem extends System {
   private static footSensor(player: Collider, other: Collider): void {
     if (!other.isSensor) {
       const pc = player.component.entity.getComponent('Player')
-      if (pc) pc.jumpState = 'Standing'
+      if (pc) pc.landing = true
     }
   }
 }
