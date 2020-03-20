@@ -44,7 +44,7 @@ export class AABBDef implements ColliderDef {
 }
 
 export class ColliderComponent {
-  public colliders = new Array<Collider>()
+  public readonly colliders = new Array<Collider>()
   public constructor(public entity: Entity) {}
 
   public createCollider(def: ColliderDef): void {
