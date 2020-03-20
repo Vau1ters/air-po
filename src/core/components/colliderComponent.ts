@@ -15,6 +15,7 @@ export class AABBCollider implements Collider {
   public constructor(
     public component: ColliderComponent,
     public aabb: AABB,
+    public maxClipTolerance: Vec2,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
@@ -33,6 +34,7 @@ export interface ColliderDef {
 
 export class AABBDef implements ColliderDef {
   public offset = new Vec2()
+  public maxClipTolerance = new Vec2()
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
@@ -50,6 +52,7 @@ export class ColliderComponent {
       const collider = new AABBCollider(
         this,
         new AABB(def.offset, def.size),
+        def.maxClipTolerance,
         def.isSensor,
         def.callback,
         def.tag,

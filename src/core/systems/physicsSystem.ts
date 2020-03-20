@@ -9,7 +9,7 @@ import {
   Collider,
   AABBCollider,
 } from '../components/colliderComponent'
-import { Collision } from '../physics/collision'
+import { collide } from '../physics/collision'
 
 export default class PhysicsSystem extends System {
   private family: Family
@@ -66,7 +66,7 @@ export default class PhysicsSystem extends System {
         const category2 = c2.category
         if ((mask1 & category2) == 0 || (mask2 & category1) == 0) continue
 
-        if (Collision.collide(c1, c2, position1, position2)) {
+        if (collide(c1, c2, position1, position2)) {
           if (!(c1.isSensor || c2.isSensor)) {
             this.collidedList.push([c1, c2])
           }

@@ -7,7 +7,7 @@ import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 import { Category } from './category'
 import { Sprite } from 'pixi.js'
-import { Art } from '../graphics/art'
+import { wallBaseTextures } from '../graphics/art'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -42,7 +42,7 @@ export class WallFactory extends EntityFactory {
     // const graphics = new Graphics()
     // graphics.beginFill(0xff00ff)
     // graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
-    const sprite = new Sprite(Art.wall[0])
+    const sprite = new Sprite(wallBaseTextures[0])
     draw.addChild(sprite)
     return entity
   }

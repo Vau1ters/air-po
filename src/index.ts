@@ -10,7 +10,7 @@ import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
-import { Art } from './core/graphics/art'
+import * as Art from './core/graphics/art'
 
 export class Main {
   public static world = new World()
