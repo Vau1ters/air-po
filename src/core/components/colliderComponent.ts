@@ -1,6 +1,7 @@
 import { Entity } from '../ecs/entity'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
+import { Category } from '../entities/category'
 
 export interface Collider {
   component: ColliderComponent
@@ -38,8 +39,8 @@ export class AABBDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = 0x0001
-  public mask = 0xffff
+  public category = Category.DUMMY
+  public mask = Category.ALL
   public constructor(public size: Vec2) {}
 }
 
