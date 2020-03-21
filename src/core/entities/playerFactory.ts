@@ -61,7 +61,7 @@ export class PlayerFactory extends EntityFactory {
     aabbFoot.tag = 'foot'
     aabbFoot.category = Category.PLAYER
     aabbFoot.mask = Category.WALL
-    aabbBody.maxClipTolerance = new Vec2(
+    aabbFoot.maxClipTolerance = new Vec2(
       this.FOOT_CLIP_TOLERANCE_X,
       this.FOOT_CLIP_TOLERANCE_Y
     )
