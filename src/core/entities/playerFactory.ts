@@ -27,7 +27,7 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_CLIP_TOLERANCE_Y = 2
   readonly CLIP_TOLERANCE_X =
     (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
-  readonly CLIP_TOLERANCE_Y = 4
+  readonly CLIP_TOLERANCE_Y = 2
 
   public create(): Entity {
     const entity = new Entity()
@@ -44,10 +44,9 @@ export class PlayerFactory extends EntityFactory {
     const collider = new ColliderComponent(entity)
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag = 'playerBody'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = Category.PLAYER
-    aabbBody.mask = Category.ALL & ~Category.MOVERS
+    aabbBody.mask = Category.WALL
     aabbBody.maxClipTolerance = new Vec2(
       this.CLIP_TOLERANCE_X,
       this.CLIP_TOLERANCE_Y
@@ -59,10 +58,10 @@ export class PlayerFactory extends EntityFactory {
       this.OFFSET_X + this.FOOT_OFFSET_X,
       this.OFFSET_Y + this.FOOT_OFFSET_Y
     )
-    aabbFoot.tag = 'playerFoot'
+    aabbFoot.tag = 'foot'
     aabbFoot.category = Category.PLAYER
-    aabbFoot.mask = Category.ALL & ~Category.MOVERS
-    aabbFoot.maxClipTolerance = new Vec2(
+    aabbFoot.mask = Category.WALL
+    aabbBody.maxClipTolerance = new Vec2(
       this.FOOT_CLIP_TOLERANCE_X,
       this.FOOT_CLIP_TOLERANCE_Y
     )

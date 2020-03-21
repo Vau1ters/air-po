@@ -29,9 +29,8 @@ export class WallFactory extends EntityFactory {
     const draw = new DrawComponent()
 
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabb.tag = 'wall'
     aabb.category = Category.WALL
-    aabb.mask = Category.ALL & ~Category.WALL
+    aabb.mask = Category.PLAYER
 
     const collider = new ColliderComponent(entity)
     collider.createCollider(aabb)

@@ -11,7 +11,6 @@ import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
 import * as Art from './core/graphics/art'
-import { Enemy1Factory } from './core/entities/enemy1Factory'
 
 export class Main {
   public static world = new World()
@@ -32,22 +31,12 @@ export class Main {
       new DrawSystem(this.world, application.stage),
       new DebugDrawSystem(this.world, debugContainer)
     )
-
-    // 主人公
     const player = new PlayerFactory().create()
     const position = player.getComponent('Position') as PositionComponent
     position.x = 100
     position.y = 50
     this.world.addEntity(player)
 
-    // 敵
-    const enemy1 = new Enemy1Factory().create()
-    const enemyPosition = enemy1.getComponent('Position') as PositionComponent
-    enemyPosition.x = 160
-    enemyPosition.y = 140
-    this.world.addEntity(enemy1)
-
-    // 壁
     for (let x = 0; x < 50; x++) {
       const wall = new WallFactory().create()
       const p = wall.getComponent('Position') as PositionComponent
