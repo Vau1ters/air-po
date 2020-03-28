@@ -22,7 +22,7 @@ void main() {
     }
   }
   if (metaball < 1.1 + 0.02 * sin(time)) {
-    color.rgb += max(metaball * 0.6, 0.1); 
+    color.rgb += metaball * 0.6 + 0.2;
   }
 
   gl_FragColor = color;
