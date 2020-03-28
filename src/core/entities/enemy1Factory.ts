@@ -8,7 +8,7 @@ import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { enemy1Textures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
-import { Category } from './category'
+import { Category, CategorySet } from './category'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -37,7 +37,11 @@ export class Enemy1Factory extends EntityFactory {
     aabbBody.tag = 'enemy1Body'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = Category.ENEMY
-    aabbBody.mask = Category.ALL & ~Category.MOVERS
+
+    const mask = new Set(CategorySet.ALL)
+    CategorySet.MOVERS.forEach(x => mask.delete(x))
+    aabbBody.mask = mask
+
     aabbBody.maxClipTolerance = new Vec2(
       this.CLIP_TOLERANCE_X,
       this.CLIP_TOLERANCE_Y

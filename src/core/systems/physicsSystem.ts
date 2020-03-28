@@ -64,7 +64,7 @@ export default class PhysicsSystem extends System {
         const category1 = c1.category
         const mask2 = c2.mask
         const category2 = c2.category
-        if ((mask1 & category2) == 0 || (mask2 & category1) == 0) continue
+        if (!mask1.has(category2) || !mask2.has(category1)) continue
 
         if (collide(c1, c2, position1, position2)) {
           if (!(c1.isSensor || c2.isSensor)) {

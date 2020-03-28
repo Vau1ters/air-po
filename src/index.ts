@@ -12,6 +12,12 @@ import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
 import * as Art from './core/graphics/art'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
+import { BehaviourTree } from './core/ai/behaviourTree'
+import { Sequence } from './core/ai/sequence/sequence'
+import { GoRight } from './core/ai/action/goRight'
+import { GoLeft } from './core/ai/action/goLeft'
+import { AIComponent } from './core/components/aiComponent'
+import AISystem from './core/systems/aiSystem'
 
 export class Main {
   public static world = new World()
@@ -26,6 +32,7 @@ export class Main {
     application.stage.addChild(debugContainer)
 
     this.world.addSystem(
+      new AISystem(this.world),
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
@@ -59,6 +66,13 @@ export class Main {
       }
       this.world.addEntity(wall)
     }
+
+    const seq = new Sequence()
+    seq.addChild(new GoRight())
+    seq.addChild(new GoLeft())
+    const tree = new BehaviourTree(seq)
+    enemy1.addComponent('AI', new AIComponent(tree))
+
     application.ticker.add((delta: number) => this.world.update(delta / 60))
   }
 }

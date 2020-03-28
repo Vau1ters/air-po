@@ -1,8 +1,16 @@
 export enum Category {
-  DUMMY = 0x0001,
-  WALL = 0x0002,
-  PLAYER = 0x0004,
-  ENEMY = 0x0008,
-  MOVERS = PLAYER | ENEMY,
-  ALL = 0xffff,
+  DUMMY,
+  WALL,
+  PLAYER,
+  ENEMY,
+}
+
+export class CategorySet {
+  public static readonly MOVERS = new Set([Category.PLAYER, Category.ENEMY])
+  public static readonly ALL = new Set([
+    Category.DUMMY,
+    Category.WALL,
+    Category.PLAYER,
+    Category.ENEMY,
+  ])
 }
