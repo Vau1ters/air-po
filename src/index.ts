@@ -6,12 +6,14 @@ import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
 import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
+import { AirSystem } from './core/systems/airSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
-import { AirFilter } from './filters/airFilter'
 import * as Art from './core/graphics/art'
+import { AirFactory } from './core/entities/airFactory'
+import { AirComponent } from './core/components/airComponent'
 
 export class Main {
   public static world = new World()
@@ -21,25 +23,7 @@ export class Main {
     KeyController.init()
     Art.init()
 
-    // air
-    const airFilter = new AirFilter({ x: 800, y: 600 })
-    airFilter.airs = [
-      {
-        center: {
-          x: 600,
-          y: 250,
-        },
-        radius: 80,
-      },
-      {
-        center: {
-          x: 400,
-          y: 300,
-        },
-        radius: 100,
-      },
-    ]
-    application.stage.filters = [airFilter]
+    // for air filter
     const bg = new Graphics()
     bg.beginFill(0x000000, 0)
     bg.drawRect(0, 0, 800, 600)
@@ -55,13 +39,35 @@ export class Main {
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
       new DrawSystem(this.world, application.stage),
+      new AirSystem(this.world, application.stage),
       new DebugDrawSystem(this.world, debugContainer)
     )
     const player = new PlayerFactory().create()
-    const position = player.getComponent('Position') as PositionComponent
-    position.x = 100
-    position.y = 50
+    {
+      const position = player.getComponent('Position') as PositionComponent
+      position.x = 100
+      position.y = 50
+    }
     this.world.addEntity(player)
+
+    const air1 = new AirFactory().create()
+    {
+      const position = air1.getComponent('Position') as PositionComponent
+      position.x = 430
+      position.y = 280
+      const air = air1.getComponent('Air') as AirComponent
+      air.quantity = 80
+    }
+    this.world.addEntity(air1)
+    const air2 = new AirFactory().create()
+    {
+      const position = air2.getComponent('Position') as PositionComponent
+      position.x = 240
+      position.y = 340
+      const air = air2.getComponent('Air') as AirComponent
+      air.quantity = 100
+    }
+    this.world.addEntity(air2)
 
     for (let x = 0; x < 50; x++) {
       const wall = new WallFactory().create()
