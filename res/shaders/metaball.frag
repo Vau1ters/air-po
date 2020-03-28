@@ -16,8 +16,9 @@ void main() {
     if (points[i].z != 0.0) {
       float x = coord.x - points[i].x;
       float y = coord.y - points[i].y;
+      float dist = max(0.001, (x * x + y * y));
       float r = points[i].z;
-      float score = (r * r) / (x * x + y * y);
+      float score = (r * r) / dist;
       metaball += score;
     }
   }
