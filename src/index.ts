@@ -4,12 +4,13 @@ import DebugDrawSystem from './core/systems/debugDrawSystem'
 import { application, initializeApplication } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
-import { Container } from 'pixi.js'
+import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
+import { AirFilter } from './filters/airFilter'
 import * as Art from './core/graphics/art'
 
 export class Main {
@@ -19,6 +20,31 @@ export class Main {
     initializeApplication()
     KeyController.init()
     Art.init()
+
+    // air
+    const airFilter = new AirFilter({ x: 800, y: 600 })
+    airFilter.airs = [
+      {
+        center: {
+          x: 600,
+          y: 250,
+        },
+        radius: 80,
+      },
+      {
+        center: {
+          x: 400,
+          y: 300,
+        },
+        radius: 100,
+      },
+    ]
+    application.stage.filters = [airFilter]
+    const bg = new Graphics()
+    bg.beginFill(0x000000, 0)
+    bg.drawRect(0, 0, 800, 600)
+    bg.endFill()
+    application.stage.addChild(bg)
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
