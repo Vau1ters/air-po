@@ -12,23 +12,27 @@ import {
 import { collide } from '../physics/collision'
 
 export default class PhysicsSystem extends System {
-  private family: Family
+  private colliderFamily: Family
+  private rigidBodyFamily: Family
 
   private collidedList: Array<[Collider, Collider]> = []
 
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world)
-      .include('Position', 'RigidBody', 'Collider')
+    this.colliderFamily = new FamilyBuilder(world)
+      .include('Position', 'Collider')
+      .build()
+    this.rigidBodyFamily = new FamilyBuilder(world)
+      .include('Position', 'RigidBody')
       .build()
   }
 
   public update(delta: number): void {
     this.collidedList.length = 0
-    this.broadPhase([...this.family.entities])
+    this.broadPhase([...this.colliderFamily.entities])
     this.solve(this.collidedList)
-    for (const entity of this.family.entities) {
+    for (const entity of this.rigidBodyFamily.entities) {
       const position = entity.getComponent('Position') as PositionComponent
       const body = entity.getComponent('RigidBody') as RigidBodyComponent
       body.velocity.x += body.acceleration.x * delta
@@ -67,7 +71,11 @@ export default class PhysicsSystem extends System {
         if ((mask1 & category2) == 0 || (mask2 & category1) == 0) continue
 
         if (collide(c1, c2, position1, position2)) {
-          if (!(c1.isSensor || c2.isSensor)) {
+          if (
+            !(c1.isSensor || c2.isSensor) &&
+            entity1.hasComponent('RigidBody') &&
+            entity2.hasComponent('RigidBody')
+          ) {
             this.collidedList.push([c1, c2])
           }
           if (c1.callback) {
