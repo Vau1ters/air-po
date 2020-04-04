@@ -26,9 +26,12 @@ export class AirSystem extends System {
     for (const entity of this.family.entities) {
       const air = entity.getComponent('Air') as AirComponent
       const position = entity.getComponent('Position') as PositionComponent
+
+      const radius = Math.sqrt(air.quantity)
+
       airs.push({
         center: position,
-        radius: air.quantity,
+        radius,
       })
     }
     this.filter.airs = airs

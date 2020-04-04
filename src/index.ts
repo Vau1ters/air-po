@@ -13,7 +13,6 @@ import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
 import * as Art from './core/graphics/art'
 import { AirFactory } from './core/entities/airFactory'
-import { AirComponent } from './core/components/airComponent'
 
 export class Main {
   public static world = new World()
@@ -50,24 +49,18 @@ export class Main {
     }
     this.world.addEntity(player)
 
-    const air1 = new AirFactory().create()
-    {
-      const position = air1.getComponent('Position') as PositionComponent
-      position.x = 430
-      position.y = 280
-      const air = air1.getComponent('Air') as AirComponent
-      air.quantity = 80
-    }
+    const air1 = new AirFactory()
+      .setPosition(430, 280)
+      .setQuantity(6400)
+      .create()
     this.world.addEntity(air1)
-    const air2 = new AirFactory().create()
-    {
-      const position = air2.getComponent('Position') as PositionComponent
-      position.x = 240
-      position.y = 340
-      const air = air2.getComponent('Air') as AirComponent
-      air.quantity = 100
-    }
+    const air2 = new AirFactory()
+      .setPosition(240, 340)
+      .setQuantity(10000)
+      .create()
     this.world.addEntity(air2)
+
+    console.log(this.world.entities)
 
     for (let x = 0; x < 50; x++) {
       const wall = new WallFactory().create()
