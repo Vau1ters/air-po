@@ -1,6 +1,7 @@
 import { Entity } from '../ecs/entity'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
+import { Circle } from '../math/circle'
 
 export interface Collider {
   component: ColliderComponent
@@ -16,6 +17,18 @@ export class AABBCollider implements Collider {
     public component: ColliderComponent,
     public aabb: AABB,
     public maxClipTolerance: Vec2,
+    public isSensor: boolean,
+    public callback: ((me: Collider, other: Collider) => void) | null,
+    public tag: string,
+    public category: number,
+    public mask: number
+  ) {}
+}
+
+export class CircleCollider implements Collider {
+  public constructor(
+    public component: ColliderComponent,
+    public circle: Circle,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
@@ -43,6 +56,16 @@ export class AABBDef implements ColliderDef {
   public constructor(public size: Vec2) {}
 }
 
+export class CircleDef implements ColliderDef {
+  public offset = new Vec2()
+  public isSensor = false
+  public callback: ((me: Collider, other: Collider) => void) | null = null
+  public tag = ''
+  public category = 0x0001
+  public mask = 0xffff
+  public constructor(public radius: number) {}
+}
+
 export class ColliderComponent {
   public readonly colliders = new Array<Collider>()
   public constructor(public entity: Entity) {}
@@ -53,6 +76,17 @@ export class ColliderComponent {
         this,
         new AABB(def.offset, def.size),
         def.maxClipTolerance,
+        def.isSensor,
+        def.callback,
+        def.tag,
+        def.category,
+        def.mask
+      )
+      this.colliders.push(collider)
+    } else if (def instanceof CircleDef) {
+      const collider = new CircleCollider(
+        this,
+        new Circle(def.offset, def.radius),
         def.isSensor,
         def.callback,
         def.tag,

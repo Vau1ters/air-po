@@ -1,4 +1,8 @@
-import { AABBCollider, Collider } from '../components/colliderComponent'
+import {
+  AABBCollider,
+  Collider,
+  CircleCollider,
+} from '../components/colliderComponent'
 import { PositionComponent } from '../components/positionComponent'
 
 export const collide = (
@@ -25,6 +29,10 @@ export const collide = (
       if (clip.x < tolerance.x && clip.y < tolerance.y) return false
       return true
     }
+  } else if (c1 instanceof CircleCollider && c2 instanceof CircleCollider) {
+    const aabb1 = c1.circle.add(position1)
+    const aabb2 = c2.circle.add(position2)
+    return aabb1.overlap(aabb2)
   }
   return false
 }
