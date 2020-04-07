@@ -6,6 +6,7 @@ import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
 import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
+import CameraSystem from './core/systems/cameraSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
@@ -51,18 +52,23 @@ export class Main {
     debugContainer.zIndex = Infinity
     application.stage.addChild(debugContainer)
 
+    const cameraSystem = new CameraSystem(this.world)
+
     this.world.addSystem(
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
       new DrawSystem(this.world, application.stage),
-      new DebugDrawSystem(this.world, debugContainer)
+      new DebugDrawSystem(this.world, debugContainer),
+      cameraSystem
     )
     const player = new PlayerFactory().create()
     const position = player.getComponent('Position') as PositionComponent
     position.x = 100
     position.y = 50
     this.world.addEntity(player)
+
+    cameraSystem.chaseTarget = position
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
