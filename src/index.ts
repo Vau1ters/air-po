@@ -9,9 +9,10 @@ import DrawSystem from './core/systems/drawSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
-import { WallFactory } from './core/entities/wallFactory'
 import { AirFilter } from './filters/airFilter'
+import { MapBuilder } from './map/mapBuilder'
 import * as Art from './core/graphics/art'
+import map from '../res/teststage.json'
 
 export class Main {
   public static world = new World()
@@ -63,17 +64,9 @@ export class Main {
     position.y = 50
     this.world.addEntity(player)
 
-    for (let x = 0; x < 50; x++) {
-      const wall = new WallFactory().create()
-      const p = wall.getComponent('Position') as PositionComponent
-      p.x = 8 * x
-      if (x < 16) {
-        p.y = 50 + 8 * x
-      } else {
-        p.y = 178
-      }
-      this.world.addEntity(wall)
-    }
+    const mapBuilder = new MapBuilder(this.world)
+    mapBuilder.build(map)
+
     application.ticker.add((delta: number) => this.world.update(delta / 60))
   }
 }
