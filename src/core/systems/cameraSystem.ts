@@ -12,7 +12,6 @@ export default class CameraSystem extends System {
   }
 
   public update(): void {
-    if (!this.chaseTarget) return
     const s = application.stage.scale
     application.stage.position.set(
       s.x * (windowSize.width / 2 - this.chaseTarget.x),
