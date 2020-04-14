@@ -33,7 +33,7 @@ export class MapBuilder {
             }
           }
         }
-        factory.id = this.calcId(cells) - wallTileSet.firstgid
+        factory.tileId = this.calcId(cells) - wallTileSet.firstgid
         const wall = factory.create()
         const p = wall.getComponent('Position') as PositionComponent
         p.x = 8 * x
