@@ -16,7 +16,7 @@ export class AirSystem extends System {
 
     this.family = new FamilyBuilder(world).include('Air', 'Position').build()
 
-    this.filter = new AirFilter({ x: 800, y: 600 })
+    this.filter = new AirFilter({ x: 320, y: 240 })
 
     container.filters = [this.filter]
   }

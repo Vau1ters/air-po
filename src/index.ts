@@ -50,13 +50,13 @@ export class Main {
     this.world.addEntity(player)
 
     const air1 = new AirFactory()
-      .setPosition(430, 280)
-      .setQuantity(6400)
+      .setPosition(200, 120)
+      .setQuantity(1600)
       .create()
     this.world.addEntity(air1)
     const air2 = new AirFactory()
-      .setPosition(240, 340)
-      .setQuantity(10000)
+      .setPosition(120, 130)
+      .setQuantity(900)
       .create()
     this.world.addEntity(air2)
 

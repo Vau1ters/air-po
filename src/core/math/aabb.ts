@@ -36,20 +36,36 @@ export class AABB {
     return new AABB(p1, size)
   }
 
+  get top(): number {
+    return this.position.y
+  }
+
+  get bottom(): number {
+    return this.position.y + this.size.y
+  }
+
+  get left(): number {
+    return this.position.x
+  }
+
+  get right(): number {
+    return this.position.x + this.size.x
+  }
+
   get topLeft(): Vec2 {
-    return this.position.copy()
+    return new Vec2(this.left, this.top)
   }
 
   get topRight(): Vec2 {
-    return new Vec2(this.position.x + this.size.x, this.position.y)
+    return new Vec2(this.right, this.top)
   }
 
   get bottomLeft(): Vec2 {
-    return new Vec2(this.position.x, this.position.y + this.size.y)
+    return new Vec2(this.left, this.bottom)
   }
 
   get bottomRight(): Vec2 {
-    return this.position.add(this.size)
+    return new Vec2(this.right, this.top)
   }
 
   get center(): Vec2 {
