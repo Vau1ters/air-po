@@ -34,7 +34,7 @@ export class BulletSystem extends System {
       pos.x += bullet.speed.x
       pos.y += bullet.speed.y
 
-      if (pos.x < 0 || pos.x > 320) {
+      if (bullet.life-- < 0) {
         this.world.removeEntity(entity)
       }
     }
