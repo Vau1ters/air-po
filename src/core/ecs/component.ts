@@ -3,7 +3,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { ColliderComponent } from '../components/colliderComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { PlayerComponent } from '../components/playerComponent'
-import { TamaComponent } from '../components/tamaComponent'
+import { BulletComponent } from '../components/bulletComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 
 export interface ComponentMap {
@@ -12,7 +12,7 @@ export interface ComponentMap {
   Collider: ColliderComponent
   Draw: DrawComponent
   Player: PlayerComponent
-  Tama: TamaComponent
+  Bullet: BulletComponent
   HorizontalDirection: HorizontalDirectionComponent
 }
 

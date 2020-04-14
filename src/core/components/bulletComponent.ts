@@ -1,6 +1,6 @@
 import { Vec2 } from '../math/vec2'
 
-export class TamaComponent {
+export class BulletComponent {
   public speed: Vec2
 
   constructor(speed: Vec2) {

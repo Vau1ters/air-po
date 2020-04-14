@@ -7,11 +7,11 @@ import { PlayerComponent } from '../components/playerComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider } from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
-import { TamaFactory } from '../entities/tamaFactory'
+import { BulletFactory } from '../entities/bulletFactory'
 
 export class PlayerControlSystem extends System {
   private family: Family
-  private tamaFactory: TamaFactory
+  private bulletFactory: BulletFactory
 
   public constructor(world: World) {
     super(world)
@@ -21,7 +21,7 @@ export class PlayerControlSystem extends System {
       .build()
     this.family.entityAddedEvent.addObserver(this.entityAdded)
 
-    this.tamaFactory = new TamaFactory()
+    this.bulletFactory = new BulletFactory()
   }
 
   private entityAdded(entity: Entity): void {
@@ -68,9 +68,9 @@ export class PlayerControlSystem extends System {
         player.state = 'Jumping'
       }
       if (KeyController.isKeyPressing('Z')) {
-        this.tamaFactory.player = entity
-        player.tamaAngle = this.calcAngle()
-        this.world.addEntity(this.tamaFactory.create())
+        this.bulletFactory.player = entity
+        player.bulletAngle = this.calcAngle()
+        this.world.addEntity(this.bulletFactory.create())
       }
       player.landing = false
     }
