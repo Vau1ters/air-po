@@ -5,6 +5,7 @@ import { DrawComponent } from '../components/drawComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirComponent } from '../components/airComponent'
+import { AirHolderComponent } from '../components/airHolderComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -14,6 +15,7 @@ export interface ComponentMap {
   Player: PlayerComponent
   HorizontalDirection: HorizontalDirectionComponent
   Air: AirComponent
+  AirHolder: AirHolderComponent
 }
 
 export type ComponentName = keyof ComponentMap

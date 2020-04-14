@@ -11,6 +11,7 @@ import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { Graphics } from 'pixi.js'
+import { AirHolderComponent } from '../components/airHolderComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -42,6 +43,10 @@ export class PlayerFactory extends EntityFactory {
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
+    const airHolder = new AirHolderComponent({
+      initialQuantity: 5000,
+      maxQuantity: 10000,
+    })
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
@@ -100,6 +105,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
+    entity.addComponent('AirHolder', airHolder)
     return entity
   }
 }
