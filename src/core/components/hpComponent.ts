@@ -1,0 +1,1 @@
+class HPComponent extends Number {}

@@ -14,6 +14,7 @@ export interface ComponentMap {
   Player: PlayerComponent
   HorizontalDirection: HorizontalDirectionComponent
   AI: AIComponent
+  HP: HPComponent
 }
 
 export type ComponentName = keyof ComponentMap
