@@ -3,6 +3,7 @@ import { EventNotifier } from '../eventNotifier'
 export class PlayerComponent {
   private _state: PlayerState = 'Standing'
   public landing = false
+  public tamaAngle = 0
 
   public readonly changeState = new EventNotifier<PlayerState>()
 

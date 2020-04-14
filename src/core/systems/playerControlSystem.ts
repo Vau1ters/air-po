@@ -7,9 +7,11 @@ import { PlayerComponent } from '../components/playerComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider } from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
+import { TamaFactory } from '../entities/tamaFactory'
 
 export class PlayerControlSystem extends System {
   private family: Family
+  private tamaFactory: TamaFactory
 
   public constructor(world: World) {
     super(world)
@@ -18,6 +20,8 @@ export class PlayerControlSystem extends System {
       .include('Player', 'RigidBody')
       .build()
     this.family.entityAddedEvent.addObserver(this.entityAdded)
+
+    this.tamaFactory = new TamaFactory()
   }
 
   private entityAdded(entity: Entity): void {
@@ -63,10 +67,39 @@ export class PlayerControlSystem extends System {
         velocity.y = -250
         player.state = 'Jumping'
       }
+      if (KeyController.isKeyPressing('Z')) {
+        this.tamaFactory.player = entity
+        player.tamaAngle = this.calcAngle()
+        this.world.addEntity(this.tamaFactory.create())
+      }
       player.landing = false
     }
 
     KeyController.onUpdateFinished()
+  }
+
+  private calcAngle(): number {
+    if (KeyController.isKeyPressing('Down')) {
+      if (
+        KeyController.isKeyPressing('Left') ||
+        KeyController.isKeyPressing('Right')
+      ) {
+        return +45
+      } else {
+        return +90
+      }
+    }
+    if (KeyController.isKeyPressing('Up')) {
+      if (
+        KeyController.isKeyPressing('Left') ||
+        KeyController.isKeyPressing('Right')
+      ) {
+        return -45
+      } else {
+        return -90
+      }
+    }
+    return 0
   }
 
   private static footSensor(player: Collider, other: Collider): void {
