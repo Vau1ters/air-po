@@ -30,7 +30,6 @@ export class BulletSystem extends System {
   public update(): void {
     for (const entity of this.family.entities) {
       const bullet = entity.getComponent('Bullet') as BulletComponent
-      if (!bullet) continue
       const pos = entity.getComponent('Position') as PositionComponent
       pos.x += bullet.speed.x
       pos.y += bullet.speed.y

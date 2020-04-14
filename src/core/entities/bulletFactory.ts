@@ -22,22 +22,25 @@ export class BulletFactory extends EntityFactory {
       console.log('player is not defined')
       return new Entity()
     }
-    const pl = this.player.getComponent('Player') as PlayerComponent
-    const pp = this.player.getComponent('Position') as PositionComponent
-    const pd = this.player.getComponent(
+    const player = this.player.getComponent('Player') as PlayerComponent
+    const playerPosition = this.player.getComponent(
+      'Position'
+    ) as PositionComponent
+    const playerDirection = this.player.getComponent(
       'HorizontalDirection'
     ) as HorizontalDirectionComponent
 
-    const sx =
-      (pd.looking == 'Left' ? -1 : +1) *
-      Math.cos((pl.bulletAngle * Math.PI) / 180)
-    const sy = Math.sin((pl.bulletAngle * Math.PI) / 180)
+    const direction = new Vec2(
+      (playerDirection.looking == 'Left' ? -1 : +1) *
+        Math.cos((player.bulletAngle * Math.PI) / 180),
+      Math.sin((player.bulletAngle * Math.PI) / 180)
+    )
 
     const entity = new Entity()
-    const position = new PositionComponent(pp.x, pp.y)
+    const position = new PositionComponent(playerPosition.x, playerPosition.y)
     const draw = new DrawComponent()
     const bullet = new BulletComponent(
-      new Vec2(sx * this.SPEED, sy * this.SPEED)
+      new Vec2(direction.x * this.SPEED, direction.y * this.SPEED)
     )
     const collider = new ColliderComponent(entity)
 
