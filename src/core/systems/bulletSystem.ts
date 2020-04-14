@@ -22,7 +22,7 @@ export class BulletSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        c.callback = (bullet): void => this.bulletSensor(bullet)
+        c.callback = (bullet): void => this.bulletCollisionCallback(bullet)
       }
     }
   }
@@ -41,7 +41,7 @@ export class BulletSystem extends System {
     }
   }
 
-  private bulletSensor(bullet: Collider): void {
+  private bulletCollisionCallback(bullet: Collider): void {
     const tc = bullet.component.entity.getComponent('Bullet')
     if (tc) {
       this.world.removeEntity(bullet.component.entity)

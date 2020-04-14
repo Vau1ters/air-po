@@ -29,7 +29,7 @@ export class PlayerControlSystem extends System {
     if (collider) {
       for (const c of collider.colliders) {
         if (c.tag == 'foot') {
-          c.callback = PlayerControlSystem.footSensor
+          c.callback = PlayerControlSystem.footCollisionCallback
         }
       }
     }
@@ -102,7 +102,7 @@ export class PlayerControlSystem extends System {
     return 0
   }
 
-  private static footSensor(player: Collider, other: Collider): void {
+  private static footCollisionCallback(player: Collider, other: Collider): void {
     if (!other.isSensor) {
       const pc = player.component.entity.getComponent('Player')
       if (pc) pc.landing = true
