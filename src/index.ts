@@ -13,11 +13,12 @@ import { WallFactory } from './core/entities/wallFactory'
 import * as Art from './core/graphics/art'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
 import { BehaviourTree } from './core/ai/behaviourTree'
-import { Sequence } from './core/ai/sequence/sequence'
-import { GoRight } from './core/ai/action/goRight'
-import { GoLeft } from './core/ai/action/goLeft'
+import { Sequence } from './core/ai/composite/sequence'
+import { MoveTo, Direction } from './core/ai/action/moveTo'
 import { AIComponent } from './core/components/aiComponent'
 import AISystem from './core/systems/aiSystem'
+import { While } from './core/ai/decorator/while'
+import { True } from './core/ai/condition/true'
 
 export class Main {
   public static world = new World()
@@ -67,10 +68,14 @@ export class Main {
       this.world.addEntity(wall)
     }
 
-    const seq = new Sequence()
-    seq.addChild(new GoRight())
-    seq.addChild(new GoLeft())
-    const tree = new BehaviourTree(seq)
+    const enemyAI = new While(
+      new True(),
+      new Sequence([
+        new MoveTo(Direction.Right, 2, 60),
+        new MoveTo(Direction.Left, 2, 60),
+      ])
+    )
+    const tree = new BehaviourTree(enemyAI)
     enemy1.addComponent('AI', new AIComponent(tree))
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
