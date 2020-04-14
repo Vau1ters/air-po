@@ -8,6 +8,7 @@ import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
+import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
 import { AirFilter } from './filters/airFilter'
@@ -54,6 +55,7 @@ export class Main {
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
+      new BulletSystem(this.world),
       new DrawSystem(this.world, application.stage),
       new DebugDrawSystem(this.world, debugContainer)
     )

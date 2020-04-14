@@ -24,11 +24,21 @@ export default class DrawSystem extends System {
     this.family.entityAddedEvent.addObserver(entity =>
       this.onContainerAdded(entity)
     )
+    this.family.entityRemovedEvent.addObserver(entity =>
+      this.onContainerRemoved(entity)
+    )
   }
 
   public onContainerAdded(entity: Entity): void {
     const container = entity.getComponent('Draw') as DrawComponent
     this.container.addChild(container)
+  }
+
+  public onContainerRemoved(entity: Entity): void {
+    const container = entity.getComponent('Draw') as DrawComponent
+    if (container) {
+      this.container.removeChild(container)
+    }
   }
 
   public update(): void {
