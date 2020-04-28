@@ -50,6 +50,7 @@ export class World {
   }
 
   public update(delta: number): void {
+    delta = 1 / 60
     this._systems.forEach(system => {
       system.update(delta)
     })

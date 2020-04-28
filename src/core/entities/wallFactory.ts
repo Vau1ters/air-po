@@ -14,6 +14,7 @@ export class WallFactory extends EntityFactory {
   readonly RESTITUTION = 0
   readonly WIDTH = 8
   readonly HEIGHT = 8
+  public tileId = 0
 
   public create(): Entity {
     const entity = new Entity()
@@ -42,7 +43,7 @@ export class WallFactory extends EntityFactory {
     // const graphics = new Graphics()
     // graphics.beginFill(0xff00ff)
     // graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
-    const sprite = new Sprite(wallBaseTextures[0])
+    const sprite = new Sprite(wallBaseTextures[this.tileId])
     draw.addChild(sprite)
     return entity
   }

@@ -4,6 +4,7 @@ export class PlayerComponent {
   private _state: PlayerState = 'Standing'
   public landing = false
   private _status: PlayerStatus
+  public bulletAngle = 0
 
   public constructor(initialStatus: PlayerStatus) {
     this._status = initialStatus
