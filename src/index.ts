@@ -6,14 +6,17 @@ import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
 import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
+import CameraSystem from './core/systems/cameraSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
+import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
-import { WallFactory } from './core/entities/wallFactory'
 import { AirFilter } from './filters/airFilter'
 import { Entity } from './core/ecs/entity'
 import { BVHComponent } from './core/components/bvhComponent'
+import { MapBuilder } from './map/mapBuilder'
 import * as Art from './core/graphics/art'
+import map from '../res/teststage.json'
 
 export class Main {
   public static world = new World()
@@ -53,12 +56,16 @@ export class Main {
     application.stage.addChild(debugContainer)
 
     const physicsSystem = new PhysicsSystem(this.world)
+    const cameraSystem = new CameraSystem(this.world)
+
     this.world.addSystem(
       physicsSystem,
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
+      new BulletSystem(this.world),
       new DrawSystem(this.world, application.stage),
-      new DebugDrawSystem(this.world, debugContainer)
+      new DebugDrawSystem(this.world, debugContainer),
+      cameraSystem
     )
     const player = new PlayerFactory().create()
     const position = player.getComponent('Position') as PositionComponent
@@ -66,21 +73,14 @@ export class Main {
     position.y = 50
     this.world.addEntity(player)
 
-    for (let x = 0; x < 50; x++) {
-      const wall = new WallFactory().create()
-      const p = wall.getComponent('Position') as PositionComponent
-      p.x = 8 * x
-      if (x < 16) {
-        p.y = 50 + 8 * x
-      } else {
-        p.y = 178
-      }
-      this.world.addEntity(wall)
-    }
+    cameraSystem.chaseTarget = position
 
+    const mapBuilder = new MapBuilder(this.world)
+    mapBuilder.build(map)
     const bvhEntity = new Entity()
     bvhEntity.addComponent('BVH', new BVHComponent())
     this.world.addEntity(bvhEntity)
+
     application.ticker.add((delta: number) => this.world.update(delta / 60))
   }
 }
