@@ -27,6 +27,9 @@ export class PlayerControlSystem extends System {
         if (c.tag == 'foot') {
           c.callback = PlayerControlSystem.footSensor
         }
+        if (c.tag == 'body') {
+          c.callback = PlayerControlSystem.bodySensor
+        }
       }
     }
   }
@@ -64,6 +67,12 @@ export class PlayerControlSystem extends System {
         player.state = 'Jumping'
       }
       player.landing = false
+
+      // air consume
+      const airHolder = entity.getComponent('AirHolder')
+      if (airHolder) {
+        airHolder.consume(player.status.air.consumeSpeed)
+      }
     }
 
     KeyController.onUpdateFinished()
@@ -73,6 +82,29 @@ export class PlayerControlSystem extends System {
     if (!other.isSensor) {
       const pc = player.component.entity.getComponent('Player')
       if (pc) pc.landing = true
+    }
+  }
+
+  private static bodySensor(
+    playerCollider: Collider,
+    otherCollider: Collider
+  ): void {
+    // collect air
+    if (otherCollider.tag == 'air') {
+      const player = playerCollider.component.entity.getComponent('Player')
+      const airHolder = playerCollider.component.entity.getComponent(
+        'AirHolder'
+      )
+      const air = otherCollider.component.entity.getComponent('Air')
+      if (player && airHolder && air) {
+        const collectSpeed = Math.min(
+          player.status.air.collectSpeed,
+          airHolder.maxQuantity - airHolder.currentQuantity,
+          air.quantity
+        )
+        airHolder.collect(collectSpeed)
+        air.decrease(collectSpeed)
+      }
     }
   }
 }

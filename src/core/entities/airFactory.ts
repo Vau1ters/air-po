@@ -23,12 +23,11 @@ export class AirFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(this.position.x, this.position.y)
-    const air: AirComponent = {
-      quantity: this.quantity,
-    }
+    const air = new AirComponent(this.quantity)
     const collider = new ColliderComponent(entity)
 
     const circleBody = new CircleDef(air.quantity)
+    circleBody.tag = 'air'
     circleBody.radius = Math.sqrt(this.quantity)
     circleBody.offset = new Vec2(0, 0)
     circleBody.isSensor = true

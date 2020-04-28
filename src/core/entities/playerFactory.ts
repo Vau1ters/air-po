@@ -29,6 +29,10 @@ export class PlayerFactory extends EntityFactory {
   readonly CLIP_TOLERANCE_X =
     (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 2
+  readonly INITIAL_AIR_QUANTITY = 1600
+  readonly MAX_AIR_QUANTITY = 2000
+  readonly AIR_COLLECT_SPEED = 2
+  readonly AIR_CONSUME_SPEED = 1
 
   public create(): Entity {
     const entity = new Entity()
@@ -40,16 +44,22 @@ export class PlayerFactory extends EntityFactory {
       this.RESTITUTION
     )
     const draw = new DrawComponent()
-    const player = new PlayerComponent()
+    const player = new PlayerComponent({
+      air: {
+        collectSpeed: this.AIR_COLLECT_SPEED,
+        consumeSpeed: this.AIR_CONSUME_SPEED,
+      },
+    })
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const airHolder = new AirHolderComponent({
-      initialQuantity: 5000,
-      maxQuantity: 10000,
+      initialQuantity: this.INITIAL_AIR_QUANTITY,
+      maxQuantity: this.MAX_AIR_QUANTITY,
     })
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    aabbBody.tag = 'body'
     aabbBody.category = Category.PLAYER
     aabbBody.mask = Category.WALL
     aabbBody.maxClipTolerance = new Vec2(

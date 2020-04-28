@@ -60,12 +60,12 @@ export class Main {
 
     const air1 = new AirFactory()
       .setPosition(200, 120)
-      .setQuantity(1600)
+      .setQuantity(2000)
       .create()
     this.world.addEntity(air1)
     const air2 = new AirFactory()
       .setPosition(120, 130)
-      .setQuantity(900)
+      .setQuantity(1200)
       .create()
     this.world.addEntity(air2)
 
