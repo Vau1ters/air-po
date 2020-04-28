@@ -13,6 +13,7 @@ import { PlayerFactory } from './core/entities/playerFactory'
 import { WallFactory } from './core/entities/wallFactory'
 import * as Art from './core/graphics/art'
 import { AirFactory } from './core/entities/airFactory'
+import UiSystem from './core/systems/uiSystem'
 
 export class Main {
   public static world = new World()
@@ -22,12 +23,19 @@ export class Main {
     KeyController.init()
     Art.init()
 
+    const drawContainer = new Container()
+    application.stage.addChild(drawContainer)
+
     // for air filter
     const bg = new Graphics()
     bg.beginFill(0x000000, 0)
-    bg.drawRect(0, 0, 800, 600)
+    bg.drawRect(0, 0, 320, 240)
     bg.endFill()
-    application.stage.addChild(bg)
+    drawContainer.addChild(bg)
+
+    const uiContainer = new Container()
+    uiContainer.zIndex = 1
+    application.stage.addChild(uiContainer)
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
@@ -37,8 +45,9 @@ export class Main {
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
-      new DrawSystem(this.world, application.stage),
-      new AirSystem(this.world, application.stage),
+      new DrawSystem(this.world, drawContainer),
+      new AirSystem(this.world, drawContainer),
+      new UiSystem(this.world, uiContainer),
       new DebugDrawSystem(this.world, debugContainer)
     )
     const player = new PlayerFactory().create()
