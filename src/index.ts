@@ -4,7 +4,7 @@ import DebugDrawSystem from './core/systems/debugDrawSystem'
 import { application, initializeApplication } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
-import { Container, Graphics } from 'pixi.js'
+import { Container, Rectangle } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
 import { AirSystem } from './core/systems/airSystem'
 import CameraSystem from './core/systems/cameraSystem'
@@ -26,25 +26,27 @@ export class Main {
     KeyController.init()
     Art.init()
 
+    const gameWorldContainer = new Container()
+    application.stage.addChild(gameWorldContainer)
+
     const drawContainer = new Container()
-    application.stage.addChild(drawContainer)
-
-    // for air filter
-    const bg = new Graphics()
-    bg.beginFill(0x000000, 0)
-    bg.drawRect(0, 0, 320, 240)
-    bg.endFill()
-    drawContainer.addChild(bg)
-
-    const uiContainer = new Container()
-    uiContainer.zIndex = 1
-    application.stage.addChild(uiContainer)
+    gameWorldContainer.addChild(drawContainer)
+    drawContainer.filterArea = new Rectangle(0, 0, 800, 600)
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
-    application.stage.addChild(debugContainer)
+    gameWorldContainer.addChild(debugContainer)
 
-    const cameraSystem = new CameraSystem(this.world)
+    const uiContainer = new Container()
+    uiContainer.zIndex = Infinity
+    application.stage.addChild(uiContainer)
+
+    const airSystem = new AirSystem(this.world, drawContainer)
+    const cameraSystem = new CameraSystem(
+      this.world,
+      gameWorldContainer,
+      drawContainer
+    )
 
     this.world.addSystem(
       new PhysicsSystem(this.world),
@@ -52,22 +54,32 @@ export class Main {
       new PlayerControlSystem(this.world),
       new BulletSystem(this.world),
       new DrawSystem(this.world, drawContainer),
-      new AirSystem(this.world, drawContainer),
+      airSystem,
       new UiSystem(this.world, uiContainer),
       new DebugDrawSystem(this.world, debugContainer),
       cameraSystem
     )
 
     const air1 = new AirFactory()
-      .setPosition(200, 120)
+      .setPosition(250, 80)
       .setQuantity(2000)
       .create()
     this.world.addEntity(air1)
     const air2 = new AirFactory()
-      .setPosition(120, 130)
+      .setPosition(180, 100)
       .setQuantity(1200)
       .create()
     this.world.addEntity(air2)
+    const air3 = new AirFactory()
+      .setPosition(240, 200)
+      .setQuantity(3000)
+      .create()
+    this.world.addEntity(air3)
+    const air4 = new AirFactory()
+      .setPosition(160, 260)
+      .setQuantity(1000)
+      .create()
+    this.world.addEntity(air4)
 
     const player = new PlayerFactory().create()
     const position = player.getComponent('Position') as PositionComponent
@@ -76,6 +88,7 @@ export class Main {
     this.world.addEntity(player)
 
     cameraSystem.chaseTarget = position
+    airSystem.offset = position
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)

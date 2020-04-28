@@ -13,6 +13,8 @@ export class AirSystem extends System {
 
   private filter: AirFilter
 
+  public offset: PositionComponent = new PositionComponent()
+
   public constructor(world: World, container: Container) {
     super(world)
 
@@ -32,7 +34,10 @@ export class AirSystem extends System {
       const radius = Math.sqrt(air.quantity)
 
       airs.push({
-        center: position,
+        center: new PositionComponent(
+          position.x - this.offset.x + windowSize.width / 2,
+          position.y - this.offset.y + windowSize.height / 2
+        ),
         radius,
       })
 

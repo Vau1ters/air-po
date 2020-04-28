@@ -1,21 +1,26 @@
 import { System } from '../ecs/system'
 import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
-import { application, windowSize } from '../../core/application'
+import { windowSize, application } from '../../core/application'
+import { Container } from 'pixi.js'
 
 export default class CameraSystem extends System {
-  public chaseTarget: PositionComponent
+  private stage: Container
+  private drawContainer: Container
+  public chaseTarget: PositionComponent = new PositionComponent()
 
-  public constructor(world: World) {
+  public constructor(world: World, stage: Container, drawContainer: Container) {
     super(world)
-    this.chaseTarget = new PositionComponent()
+    this.stage = stage
+    this.drawContainer = drawContainer
   }
 
   public update(): void {
-    const s = application.stage.scale
-    application.stage.position.set(
-      s.x * (windowSize.width / 2 - this.chaseTarget.x),
-      s.y * (windowSize.height / 2 - this.chaseTarget.y)
+    this.stage.position.set(
+      windowSize.width / 2 - this.chaseTarget.x,
+      windowSize.height / 2 - this.chaseTarget.y
     )
+    this.drawContainer.filterArea.width = application.stage.width
+    this.drawContainer.filterArea.height = application.stage.height
   }
 }
