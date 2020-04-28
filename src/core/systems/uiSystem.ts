@@ -3,6 +3,7 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Container, Graphics } from 'pixi.js'
 import { AirHolderComponent } from '../components/airHolderComponent'
+import { windowSize } from '../application'
 
 export default class UiSystem extends System {
   private playerFamily: Family
@@ -30,7 +31,7 @@ export default class UiSystem extends System {
       this.airGauge.drawRect(
         0,
         0,
-        (holder.currentQuantity / holder.maxQuantity) * 320,
+        (holder.currentQuantity / holder.maxQuantity) * windowSize.width,
         16
       )
       this.airGauge.endFill()

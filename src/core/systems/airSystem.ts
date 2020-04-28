@@ -6,6 +6,7 @@ import { Container } from 'pixi.js'
 import { AirFilter } from '../../filters/airFilter'
 import { AirComponent } from '../components/airComponent'
 import { CircleCollider } from '../components/colliderComponent'
+import { windowSize } from '../application'
 
 export class AirSystem extends System {
   private family: Family
@@ -17,7 +18,7 @@ export class AirSystem extends System {
 
     this.family = new FamilyBuilder(world).include('Air', 'Position').build()
 
-    this.filter = new AirFilter({ x: 320, y: 240 })
+    this.filter = new AirFilter({ x: windowSize.width, y: windowSize.height })
 
     container.filters = [this.filter]
   }
