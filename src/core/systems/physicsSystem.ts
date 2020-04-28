@@ -10,10 +10,12 @@ import {
   AABBCollider,
 } from '../components/colliderComponent'
 import { collide } from '../physics/collision'
+import { BVHComponent } from '../components/bvhComponent'
 
 export default class PhysicsSystem extends System {
   private colliderFamily: Family
   private rigidBodyFamily: Family
+  private bvhFamily: Family
 
   private collidedList: Array<[Collider, Collider]> = []
 
@@ -26,9 +28,22 @@ export default class PhysicsSystem extends System {
     this.rigidBodyFamily = new FamilyBuilder(world)
       .include('Position', 'RigidBody')
       .build()
+    this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
+  }
+
+  public buildBVH(): void {
+    const entities = [...this.colliderFamily.entities]
+    const colliders = entities
+      .map(e => (e.getComponent('Collider') as ColliderComponent).colliders)
+      .reduce((a, b) => a.concat(b))
+    for (const entity of this.bvhFamily.entities) {
+      const bvh = entity.getComponent('BVH') as BVHComponent
+      bvh.build(colliders)
+    }
   }
 
   public update(delta: number): void {
+    this.buildBVH()
     this.collidedList.length = 0
     this.broadPhase([...this.colliderFamily.entities])
     this.solve(this.collidedList)
@@ -45,12 +60,37 @@ export default class PhysicsSystem extends System {
 
   // BroadPhase
   // 衝突したものをlistに打ち込む
+  /*
   private broadPhase(entities: Array<Entity>): void {
     for (let i = 0; i < entities.length; i++) {
       for (let j = i + 1; j < entities.length; j++) {
         const entity1 = entities[i]
         const entity2 = entities[j]
         this.collide(entity1, entity2)
+      }
+    }
+  }
+  */
+
+  private broadPhase(entities: Array<Entity>): void {
+    for (const entity of this.bvhFamily.entities) {
+      const bvh = entity.getComponent('BVH') as BVHComponent
+      for (const entity1 of entities) {
+        const collider1 = entity1.getComponent('Collider') as ColliderComponent
+        const position1 = entity1.getComponent('Position') as PositionComponent
+        const candidates = collider1.colliders
+          .map(c => bvh.query(c.bound.add(position1)))
+          .reduce((a, b) => a.concat(b))
+          .filter(
+            (elem, index, self) =>
+              self.findIndex(
+                elem2 => elem2.component.entity.id === elem.component.entity.id
+              ) === index
+          )
+          .filter(elem => elem.component.entity !== entity1)
+        for (const collider2 of candidates) {
+          this.collide(entity1, collider2.component.entity)
+        }
       }
     }
   }
