@@ -58,20 +58,6 @@ export default class PhysicsSystem extends System {
     }
   }
 
-  // BroadPhase
-  // 衝突したものをlistに打ち込む
-  /*
-  private broadPhase(entities: Array<Entity>): void {
-    for (let i = 0; i < entities.length; i++) {
-      for (let j = i + 1; j < entities.length; j++) {
-        const entity1 = entities[i]
-        const entity2 = entities[j]
-        this.collide(entity1, entity2)
-      }
-    }
-  }
-  */
-
   private broadPhase(entities: Array<Entity>): void {
     for (const entity of this.bvhFamily.entities) {
       const bvh = entity.getComponent('BVH') as BVHComponent
