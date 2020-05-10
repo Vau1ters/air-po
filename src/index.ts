@@ -12,6 +12,8 @@ import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
 import { AirFilter } from './filters/airFilter'
+import { Entity } from './core/ecs/entity'
+import { BVHComponent } from './core/components/bvhComponent'
 import { MapBuilder } from './map/mapBuilder'
 import * as Art from './core/graphics/art'
 import map from '../res/teststage.json'
@@ -53,10 +55,11 @@ export class Main {
     debugContainer.zIndex = Infinity
     application.stage.addChild(debugContainer)
 
+    const physicsSystem = new PhysicsSystem(this.world)
     const cameraSystem = new CameraSystem(this.world)
 
     this.world.addSystem(
-      new PhysicsSystem(this.world),
+      physicsSystem,
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
       new BulletSystem(this.world),
@@ -74,6 +77,9 @@ export class Main {
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
+    const bvhEntity = new Entity()
+    bvhEntity.addComponent('BVH', new BVHComponent())
+    this.world.addEntity(bvhEntity)
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
   }

@@ -5,6 +5,7 @@ import { DrawComponent } from '../components/drawComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
+import { BVHComponent } from '../components/bvhComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -14,6 +15,7 @@ export interface ComponentMap {
   Player: PlayerComponent
   Bullet: BulletComponent
   HorizontalDirection: HorizontalDirectionComponent
+  BVH: BVHComponent
 }
 
 export type ComponentName = keyof ComponentMap

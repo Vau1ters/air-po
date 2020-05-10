@@ -9,9 +9,12 @@ export interface Collider {
   tag: string
   category: number
   mask: number
+  bound: AABB
 }
 
 export class AABBCollider implements Collider {
+  public bound: AABB
+
   public constructor(
     public component: ColliderComponent,
     public aabb: AABB,
@@ -21,7 +24,9 @@ export class AABBCollider implements Collider {
     public tag: string,
     public category: number,
     public mask: number
-  ) {}
+  ) {
+    this.bound = aabb
+  }
 }
 
 export interface ColliderDef {
