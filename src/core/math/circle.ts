@@ -8,17 +8,12 @@ export class Circle {
   }
 
   public overlap(other: Circle): boolean {
-    const distX = this.position.x - other.position.x
-    const distY = this.position.y - other.position.y
-    const dist = Math.sqrt(distX * distX + distY * distY)
-    return dist < this.radius + other.radius
+    const distSq = this.radius + other.radius
+    return this.position.sub(other.position).lengthSq() < distSq * distSq
   }
 
   public contains(point: Vec2): boolean {
-    const distX = this.position.x - point.x
-    const distY = this.position.y - point.y
-    const dist = Math.sqrt(distX * distX + distY * distY)
-    return dist < this.radius
+    return this.position.sub(point).lengthSq() < this.radius * this.radius
   }
 
   get center(): Vec2 {

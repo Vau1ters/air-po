@@ -8,18 +8,16 @@ import { Circle } from '../math/circle'
 import { AABB } from '../math/aabb'
 
 const collideCircleAndAABB = (circle: Circle, aabb: AABB): boolean => {
-  const distX =
-    circle.center.x < aabb.left
-      ? aabb.left - circle.center.x
-      : aabb.right < circle.center.x
-      ? circle.center.x - aabb.right
-      : 0
-  const distY =
-    circle.center.y < aabb.top
-      ? aabb.top - circle.center.y
-      : aabb.bottom < circle.center.y
-      ? circle.center.y - aabb.bottom
-      : 0
+  const distX = Math.max(
+    0,
+    aabb.left - circle.center.x,
+    circle.center.x - aabb.right
+  )
+  const distY = Math.max(
+    0,
+    aabb.top - circle.center.y,
+    circle.center.y - aabb.bottom
+  )
 
   return distX * distX + distY * distY < circle.radius * circle.radius
 }
@@ -57,9 +55,9 @@ export const collide = (
     const aabb = c2.aabb.add(position2)
     return collideCircleAndAABB(circle, aabb)
   } else if (c1 instanceof CircleCollider && c2 instanceof CircleCollider) {
-    const aabb1 = c1.circle.add(position1)
-    const aabb2 = c2.circle.add(position2)
-    return aabb1.overlap(aabb2)
+    const circle1 = c1.circle.add(position1)
+    const circle2 = c2.circle.add(position2)
+    return circle1.overlap(circle2)
   }
   return false
 }
