@@ -8,6 +8,9 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider } from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { BulletFactory } from '../entities/bulletFactory'
+import { assert } from '../../utils/assertion'
+import { AirHolderComponent } from '../components/airHolderComponent'
+import { AirComponent } from '../components/airComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -79,9 +82,8 @@ export class PlayerControlSystem extends System {
 
       // air consume
       const airHolder = entity.getComponent('AirHolder')
-      if (airHolder) {
-        airHolder.consume(player.status.air.consumeSpeed)
-      }
+      assert(airHolder instanceof AirHolderComponent)
+      airHolder.consume(player.status.air.consumeSpeed)
     }
 
     KeyController.onUpdateFinished()
@@ -127,20 +129,21 @@ export class PlayerControlSystem extends System {
   ): void {
     // collect air
     if (otherCollider.tag == 'air') {
-      const player = playerCollider.component.entity.getComponent('Player')
+      const player = playerCollider.component.entity.getComponent(
+        'Player'
+      ) as PlayerComponent
       const airHolder = playerCollider.component.entity.getComponent(
         'AirHolder'
-      )
+      ) as AirHolderComponent
       const air = otherCollider.component.entity.getComponent('Air')
-      if (player && airHolder && air) {
-        const collectSpeed = Math.min(
-          player.status.air.collectSpeed,
-          airHolder.maxQuantity - airHolder.currentQuantity,
-          air.quantity
-        )
-        airHolder.collect(collectSpeed)
-        air.decrease(collectSpeed)
-      }
+      assert(air instanceof AirComponent)
+      const collectSpeed = Math.min(
+        player.status.air.collectSpeed,
+        airHolder.maxQuantity - airHolder.currentQuantity,
+        air.quantity
+      )
+      airHolder.collect(collectSpeed)
+      air.decrease(collectSpeed)
     }
   }
 }

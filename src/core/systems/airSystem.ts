@@ -5,8 +5,12 @@ import { PositionComponent } from '../components/positionComponent'
 import { Container } from 'pixi.js'
 import { AirFilter } from '../../filters/airFilter'
 import { AirComponent } from '../components/airComponent'
-import { CircleCollider } from '../components/colliderComponent'
+import {
+  CircleCollider,
+  ColliderComponent,
+} from '../components/colliderComponent'
 import { windowSize } from '../application'
+import { assert } from '../../utils/assertion'
 
 export class AirSystem extends System {
   private family: Family
@@ -42,12 +46,10 @@ export class AirSystem extends System {
       })
 
       const airCollider = entity.getComponent('Collider')
-      if (airCollider) {
-        for (const collider of airCollider.colliders) {
-          if (collider instanceof CircleCollider) {
-            collider.circle.radius = Math.sqrt(air.quantity)
-          }
-        }
+      assert(airCollider instanceof ColliderComponent)
+      for (const collider of airCollider.colliders) {
+        assert(collider instanceof CircleCollider)
+        collider.circle.radius = Math.sqrt(air.quantity)
       }
     }
     this.filter.airs = airs
