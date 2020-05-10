@@ -2,29 +2,25 @@ import { AABB } from '../math/aabb'
 import { Collider } from './colliderComponent'
 import { PositionComponent } from './positionComponent'
 
-const enum Axis {
-  X = 'x',
-  Y = 'y',
-}
+type Axis = 'x' | 'y'
 
-function other(axis: Axis): Axis {
-  if (axis === Axis.X) return Axis.Y
-  else return Axis.X
+const other = (axis: Axis): Axis => {
+  return axis === 'x' ? 'y' : 'x'
 }
 
 export class BVHLeaf {
   private collider: Collider
 
-  constructor(collider: Collider) {
+  public constructor(collider: Collider) {
     this.collider = collider
   }
 
-  query(bound: AABB): Collider[] {
+  public query(bound: AABB): Collider[] {
     if (this.bound.overlap(bound)) return [this.collider]
     return []
   }
 
-  get bound(): AABB {
+  public get bound(): AABB {
     const position = this.collider.component.entity.getComponent(
       'Position'
     ) as PositionComponent
@@ -33,39 +29,39 @@ export class BVHLeaf {
 }
 
 export class BVHNode {
-  readonly child: (BVHNode | BVHLeaf)[]
-  readonly bound: AABB
+  public readonly child: (BVHNode | BVHLeaf)[]
+  public readonly bound: AABB
 
-  constructor(child: (BVHNode | BVHLeaf)[]) {
+  public constructor(child: (BVHNode | BVHLeaf)[]) {
     this.child = child
     this.bound = child.map(c => c.bound).reduce((a, b) => a.merge(b))
   }
 
-  query(bound: AABB): Collider[] {
+  public query(bound: AABB): Collider[] {
     if (!this.bound.overlap(bound)) return []
-    return this.child.map(c => c.query(bound)).reduce((a, b) => a.concat(b))
+    return this.child.map(c => c.query(bound)).flat()
   }
 }
 
 export class BVHComponent {
-  root?: BVHNode | BVHLeaf
+  public root?: BVHNode | BVHLeaf
 
-  query(bound: AABB): Collider[] {
+  public query(bound: AABB): Collider[] {
     if (!this.root) return []
     return this.root.query(bound)
   }
 
-  build(colliders: Collider[]): void {
+  public build(colliders: Collider[]): void {
     const leafList = colliders.map(c => new BVHLeaf(c))
-    const root = BVHComponent.fromBoundsImpl(leafList, Axis.X)
+    const root = BVHComponent.fromBoundsImpl(leafList, 'x')
     if (root) this.root = root
   }
 
   private static fromBoundsImpl(
     leafList: BVHLeaf[],
     axis: Axis
-  ): BVHNode | BVHLeaf | null {
-    if (leafList.length === 0) return null
+  ): BVHNode | BVHLeaf | undefined {
+    if (leafList.length === 0) return undefined
     if (leafList.length === 1) return leafList[0]
     leafList = leafList.sort((a, b) =>
       Math.sign(a.bound.center[axis] - b.bound.center[axis])

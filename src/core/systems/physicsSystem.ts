@@ -35,7 +35,7 @@ export default class PhysicsSystem extends System {
     const entities = [...this.colliderFamily.entities]
     const colliders = entities
       .map(e => (e.getComponent('Collider') as ColliderComponent).colliders)
-      .reduce((a, b) => a.concat(b))
+      .flat()
     for (const entity of this.bvhFamily.entities) {
       const bvh = entity.getComponent('BVH') as BVHComponent
       bvh.build(colliders)
@@ -65,15 +65,16 @@ export default class PhysicsSystem extends System {
         const collider1 = entity1.getComponent('Collider') as ColliderComponent
         const position1 = entity1.getComponent('Position') as PositionComponent
         const candidates = collider1.colliders
-          .map(c => bvh.query(c.bound.add(position1)))
-          .reduce((a, b) => a.concat(b))
+          .map(c => bvh.query(c.bound.add(position1))) // query all parts of entity1
+          .flat() // concat
           .filter(
+            // remove duplicated candidates
             (elem, index, self) =>
               self.findIndex(
                 elem2 => elem2.component.entity.id === elem.component.entity.id
               ) === index
           )
-          .filter(elem => elem.component.entity !== entity1)
+          .filter(elem => elem.component.entity !== entity1) // remove itself
         for (const collider2 of candidates) {
           this.collide(entity1, collider2.component.entity)
         }
