@@ -2,7 +2,7 @@ import { Node, NodeState } from '../node'
 import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
 
-export class While implements Node {
+export class WhileNode implements Node {
   public constructor(private arg: { cond: Node; exec: Node }) {}
   public initState(): void {
     this.arg.cond.initState()

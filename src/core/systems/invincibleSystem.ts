@@ -17,7 +17,7 @@ export default class InvincibleSystem extends System {
       const invincible = entity.getComponent(
         'Invincible'
       ) as InvincibleComponent
-      invincible.invincibleTime -= delta
+      invincible.decreaseTime(delta)
     }
   }
 }

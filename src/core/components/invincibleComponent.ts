@@ -1,8 +1,15 @@
 export class InvincibleComponent {
-  // 一律1秒無敵
-  public static INVINCIBLE_TIME = 1
+  private static INVINCIBLE_TIME = 1
 
-  public invincibleTime = 0
+  private invincibleTime = 0
+
+  public setInvincible(): void {
+    this.invincibleTime = InvincibleComponent.INVINCIBLE_TIME
+  }
+
+  public decreaseTime(delta: number): void {
+    this.invincibleTime -= delta
+  }
 
   public isInvincible(): boolean {
     return this.invincibleTime > 0

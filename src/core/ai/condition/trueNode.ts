@@ -1,6 +1,6 @@
 import { Node, NodeState } from '../node'
 
-export class True implements Node {
+export class TrueNode implements Node {
   public initState(): void {
     // 何もしない
   }

@@ -1,7 +1,6 @@
 import { System } from '../ecs/system'
 import { Entity } from '../ecs/entity'
 import { ColliderComponent, Collider } from '../components/colliderComponent'
-import { InvincibleComponent } from '../components/invincibleComponent'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 
@@ -64,7 +63,7 @@ export class DamageSystem extends System {
       attack.entity !== entity
     ) {
       hp.hp -= attack.damage
-      invincible.invincibleTime = InvincibleComponent.INVINCIBLE_TIME
+      invincible.setInvincible()
       // 死亡
       if (hp.hp <= 0) {
         this.world.removeEntity(entity)

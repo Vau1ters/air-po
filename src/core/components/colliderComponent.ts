@@ -39,7 +39,7 @@ export class AABBDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = Category.DUMMY
+  public category = Category.DEFAULT
   public mask = CategorySet.ALL
   public constructor(public size: Vec2) {}
 }

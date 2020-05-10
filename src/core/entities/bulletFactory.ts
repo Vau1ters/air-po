@@ -63,7 +63,7 @@ export class BulletFactory extends EntityFactory {
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
     attackHitBox.tag = 'AttackHitBox'
-    attackHitBox.category = Category.DUMMY
+    attackHitBox.category = Category.DEFAULT
     attackHitBox.mask = CategorySet.ALL
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)

@@ -1,14 +1,17 @@
 import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
 import { Node, NodeState } from '../node'
-import { Composite } from './composite'
 
-export class Parallel extends Composite {
-  private executing: Array<Node>
+export class ParallelNode extends Node {
+  private executing: Array<Node> = []
+
+  public addChild(node: Node): void {
+    this.children.push(node)
+  }
 
   public constructor(protected children: Array<Node> = []) {
-    super(children)
-    this.executing = this.children.concat()
+    super()
+    this.initState()
   }
 
   public initState(): void {
@@ -17,21 +20,19 @@ export class Parallel extends Composite {
   }
   // 全部Successになるかどれか一つがFailureになったら終了
   public execute(entity: Entity, world: World): NodeState {
-    const eliminateNode = new Array<Node>()
+    const nextExecuting = new Array<Node>()
     for (const child of this.children) {
       switch (child.execute(entity, world)) {
         case NodeState.Success:
-          eliminateNode.push(child)
           break
         case NodeState.Failure:
           return NodeState.Failure
         case NodeState.Running:
+          nextExecuting.push(child)
           break
       }
     }
-    this.executing = this.executing.filter(
-      node => ~eliminateNode.includes(node)
-    )
+    this.executing = nextExecuting
     if (this.executing.length === 0) return NodeState.Success
     return NodeState.Running
   }

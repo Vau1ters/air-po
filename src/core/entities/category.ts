@@ -1,5 +1,5 @@
 export enum Category {
-  DUMMY,
+  DEFAULT,
   WALL,
   PLAYER,
   ENEMY,
@@ -8,7 +8,7 @@ export enum Category {
 export class CategorySet {
   public static readonly MOVERS = new Set([Category.PLAYER, Category.ENEMY])
   public static readonly ALL = new Set([
-    Category.DUMMY,
+    Category.DEFAULT,
     Category.WALL,
     Category.PLAYER,
     Category.ENEMY,

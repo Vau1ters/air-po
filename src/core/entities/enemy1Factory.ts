@@ -70,7 +70,7 @@ export class Enemy1Factory extends EntityFactory {
       this.ATTACK_HIT_BOX_OFFSET_X,
       this.ATTACK_HIT_BOX_OFFSET_Y
     )
-    attackHitBox.category = Category.DUMMY
+    attackHitBox.category = Category.DEFAULT
     attackHitBox.mask = CategorySet.ALL
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)

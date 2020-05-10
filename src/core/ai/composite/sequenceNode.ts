@@ -1,10 +1,17 @@
 import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
-import { NodeState } from '../node'
-import { Composite } from './composite'
+import { Node, NodeState } from '../node'
 
-export class Sequence extends Composite {
+export class SequenceNode extends Node {
   private current = 0
+
+  public constructor(protected children: Array<Node> = []) {
+    super()
+  }
+
+  public addChild(node: Node): void {
+    this.children.push(node)
+  }
 
   public initState(): void {
     this.current = 0

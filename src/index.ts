@@ -15,13 +15,13 @@ import { AirFilter } from './filters/airFilter'
 import * as Art from './core/graphics/art'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
 import { BehaviourTree } from './core/ai/behaviourTree'
-import { Sequence } from './core/ai/composite/sequence'
+import { SequenceNode } from './core/ai/composite/sequenceNode'
 import { MoveTo, Direction } from './core/ai/action/moveTo'
 import { AIComponent } from './core/components/aiComponent'
 import AISystem from './core/systems/aiSystem'
-import { While } from './core/ai/decorator/while'
-import { True } from './core/ai/condition/true'
-import { Parallel } from './core/ai/composite/parallel'
+import { WhileNode } from './core/ai/decorator/whileNode'
+import { TrueNode } from './core/ai/condition/trueNode'
+import { ParallelNode } from './core/ai/composite/parallelNode'
 import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
 
@@ -101,10 +101,10 @@ export class Main {
       this.world.addEntity(wall)
     }
 
-    const enemyAI = new Parallel([
-      new While({
-        cond: new True(),
-        exec: new Sequence([
+    const enemyAI = new ParallelNode([
+      new WhileNode({
+        cond: new TrueNode(),
+        exec: new SequenceNode([
           new MoveTo(Direction.Right, 2, 60),
           new MoveTo(Direction.Left, 2, 60),
         ]),
