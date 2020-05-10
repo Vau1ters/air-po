@@ -10,6 +10,8 @@ import { enemy1Textures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { Category, CategorySet } from './category'
 import { AttackComponent } from '../components/attackComponent'
+import { HPComponent } from '../components/hpComponent'
+import { InvincibleComponent } from '../components/invincibleComponent'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -39,6 +41,8 @@ export class Enemy1Factory extends EntityFactory {
     const draw = new DrawComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
+    const hp = new HPComponent(2)
+    const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag = 'enemy1Body'
@@ -56,7 +60,7 @@ export class Enemy1Factory extends EntityFactory {
     collider.createCollider(aabbBody)
 
     // 攻撃判定
-    const attack = new AttackComponent(1)
+    const attack = new AttackComponent(1, entity)
 
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
@@ -90,6 +94,8 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Attack', attack)
+    entity.addComponent('Invincible', invincible)
+    entity.addComponent('HP', hp)
     return entity
   }
 }

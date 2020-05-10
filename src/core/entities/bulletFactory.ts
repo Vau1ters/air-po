@@ -9,11 +9,15 @@ import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
 import { Category, CategorySet } from './category'
 import { Graphics } from 'pixi.js'
+import { AttackComponent } from '../components/attackComponent'
 
 export class BulletFactory extends EntityFactory {
   readonly WIDTH = 10
   readonly HEIGHT = 3
   readonly SPEED = 10
+
+  readonly ATTACK_HIT_BOX_WIDTH = 10
+  readonly ATTACK_HIT_BOX_HEIGHT = 3
 
   public player?: Entity
 
@@ -51,7 +55,20 @@ export class BulletFactory extends EntityFactory {
     mask.delete(Category.PLAYER)
     aabbBody.mask = mask
     aabbBody.maxClipTolerance = new Vec2(0, 0)
+    aabbBody.tag = 'bulletBody'
     collider.createCollider(aabbBody)
+
+    // 攻撃判定
+    const attack = new AttackComponent(1, this.player)
+
+    const attackHitBox = new AABBDef(
+      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
+    )
+    attackHitBox.tag = 'AttackHitBox'
+    attackHitBox.category = Category.DUMMY
+    attackHitBox.mask = CategorySet.ALL
+    attackHitBox.isSensor = true
+    collider.createCollider(attackHitBox)
 
     const graphics = new Graphics()
     graphics.beginFill(0x00ff00)
@@ -62,6 +79,7 @@ export class BulletFactory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Bullet', bullet)
+    entity.addComponent('Attack', attack)
     return entity
   }
 }
