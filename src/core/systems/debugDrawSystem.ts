@@ -22,11 +22,13 @@ export default class DebugDrawSystem extends System {
 
   public update(): void {
     this.graphics.clear()
+    this.graphics.beginFill(0xff0000)
     for (const entity of this.positionFamily.entities) {
       const position = entity.getComponent('Position') as PositionComponent
-      this.graphics.beginFill(0xff0000)
       this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
     }
+    this.graphics.lineStyle(1, 0xff0000)
+    this.graphics.beginFill(0xffffff, 0)
     for (const entity of this.bvhFamily.entities) {
       const bvh = entity.getComponent('BVH') as BVHComponent
 
@@ -38,8 +40,6 @@ export default class DebugDrawSystem extends System {
         }
       }
 
-      this.graphics.lineStyle(1, 0xff0000)
-      this.graphics.beginFill(0xffffff, 0)
       if (bvh.root) draw(bvh.root)
     }
     this.graphics.endFill()

@@ -4,10 +4,6 @@ import { PositionComponent } from './positionComponent'
 
 type Axis = 'x' | 'y'
 
-const other = (axis: Axis): Axis => {
-  return axis === 'x' ? 'y' : 'x'
-}
-
 export class BVHLeaf {
   private collider: Collider
 
@@ -63,9 +59,11 @@ export class BVHComponent {
   ): BVHNode | BVHLeaf | undefined {
     if (leafList.length === 0) return undefined
     if (leafList.length === 1) return leafList[0]
-    leafList = leafList.sort((a, b) =>
-      Math.sign(a.bound.center[axis] - b.bound.center[axis])
+    leafList = leafList.sort(
+      (a, b) => a.bound.center[axis] - b.bound.center[axis]
     )
+
+    const other = (axis: Axis): Axis => (axis === 'x' ? 'y' : 'x')
     const left = BVHComponent.fromBoundsImpl(
       leafList.slice(0, leafList.length >> 1),
       other(axis)
