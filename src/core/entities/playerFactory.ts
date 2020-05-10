@@ -11,6 +11,8 @@ import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { Graphics } from 'pixi.js'
+import { HPComponent } from '../components/hpComponent'
+import { InvincibleComponent } from '../components/invincibleComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -42,6 +44,8 @@ export class PlayerFactory extends EntityFactory {
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
+    const hp = new HPComponent(10)
+    const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag = 'playerBody'
@@ -100,6 +104,8 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Position', position)
     entity.addComponent('RigidBody', body)
     entity.addComponent('HorizontalDirection', direction)
+    entity.addComponent('HP', hp)
+    entity.addComponent('Invincible', invincible)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)

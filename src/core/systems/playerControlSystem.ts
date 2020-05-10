@@ -8,6 +8,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider } from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { BulletFactory } from '../entities/bulletFactory'
+import { Category } from '../entities/category'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -28,6 +29,9 @@ export class PlayerControlSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
+        if (c.tag === 'playerBody') {
+          c.callback = PlayerControlSystem.playerCollisionCallback
+        }
         if (c.tag === 'playerFoot') {
           c.callback = PlayerControlSystem.footCollisionCallback
         }
@@ -100,6 +104,16 @@ export class PlayerControlSystem extends System {
       }
     }
     return 0
+  }
+
+  private static playerCollisionCallback(
+    player: Collider,
+    other: Collider
+  ): void {
+    if (other.category === Category.ENEMY) {
+      const hp = player.component.entity.getComponent('HP')
+      if (hp) hp.hp -= 1
+    }
   }
 
   private static footCollisionCallback(

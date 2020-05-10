@@ -7,7 +7,7 @@ import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
-import { Category } from './category'
+import { Category, CategorySet } from './category'
 import { Graphics } from 'pixi.js'
 
 export class BulletFactory extends EntityFactory {
@@ -47,7 +47,9 @@ export class BulletFactory extends EntityFactory {
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.offset = new Vec2(0, 0)
     aabbBody.category = Category.PLAYER
-    aabbBody.mask = Category.WALL
+    const mask = new Set(CategorySet.ALL)
+    mask.delete(Category.PLAYER)
+    aabbBody.mask = mask
     aabbBody.maxClipTolerance = new Vec2(0, 0)
     collider.createCollider(aabbBody)
 

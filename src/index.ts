@@ -21,6 +21,9 @@ import { AIComponent } from './core/components/aiComponent'
 import AISystem from './core/systems/aiSystem'
 import { While } from './core/ai/decorator/while'
 import { True } from './core/ai/condition/true'
+import { Parallel } from './core/ai/composite/parallel'
+import InvincibleSystem from './core/systems/invincibleSystem'
+import { DamageSystem } from './core/systems/damageSystem'
 
 export class Main {
   public static world = new World()
@@ -65,6 +68,8 @@ export class Main {
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
       new BulletSystem(this.world),
+      new InvincibleSystem(this.world),
+      new DamageSystem(this.world),
       new DrawSystem(this.world, application.stage),
       new DebugDrawSystem(this.world, debugContainer)
     )
@@ -96,13 +101,15 @@ export class Main {
       this.world.addEntity(wall)
     }
 
-    const enemyAI = new While(
-      new True(),
-      new Sequence([
-        new MoveTo(Direction.Right, 2, 60),
-        new MoveTo(Direction.Left, 2, 60),
-      ])
-    )
+    const enemyAI = new Parallel([
+      new While({
+        cond: new True(),
+        exec: new Sequence([
+          new MoveTo(Direction.Right, 2, 60),
+          new MoveTo(Direction.Left, 2, 60),
+        ]),
+      }),
+    ])
     const tree = new BehaviourTree(enemyAI)
     enemy1.addComponent('AI', new AIComponent(tree))
 

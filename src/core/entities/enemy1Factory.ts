@@ -9,6 +9,7 @@ import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { enemy1Textures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { Category, CategorySet } from './category'
+import { AttackComponent } from '../components/attackComponent'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -19,6 +20,12 @@ export class Enemy1Factory extends EntityFactory {
   readonly OFFSET_Y = -6
   readonly CLIP_TOLERANCE_X = 2
   readonly CLIP_TOLERANCE_Y = 2
+
+  readonly ATTACK_HIT_BOX_WIDTH = 10
+  readonly ATTACK_HIT_BOX_HEIGHT = 13
+  readonly ATTACK_HIT_BOX_OFFSET_X = -5
+  readonly ATTACK_HIT_BOX_OFFSET_Y = -6
+
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
@@ -48,6 +55,22 @@ export class Enemy1Factory extends EntityFactory {
     )
     collider.createCollider(aabbBody)
 
+    // 攻撃判定
+    const attack = new AttackComponent(1)
+
+    const attackHitBox = new AABBDef(
+      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
+    )
+    attackHitBox.tag = 'AttackHitBox'
+    attackHitBox.offset = new Vec2(
+      this.ATTACK_HIT_BOX_OFFSET_X,
+      this.ATTACK_HIT_BOX_OFFSET_Y
+    )
+    attackHitBox.category = Category.DUMMY
+    attackHitBox.mask = CategorySet.ALL
+    attackHitBox.isSensor = true
+    collider.createCollider(attackHitBox)
+
     const animatedTexture = {
       Floating: [enemy1Textures[0], enemy1Textures[1]],
     }
@@ -66,6 +89,7 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('HorizontalDirection', direction)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
+    entity.addComponent('Attack', attack)
     return entity
   }
 }

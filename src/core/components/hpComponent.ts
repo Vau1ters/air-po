@@ -1,1 +1,3 @@
-class HPComponent extends Number {}
+export class HPComponent {
+  public constructor(public hp: number) {}
+}
