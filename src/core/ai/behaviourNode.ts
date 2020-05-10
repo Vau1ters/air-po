@@ -1,7 +1,7 @@
 import { World } from '../ecs/world'
 import { Entity } from '../ecs/entity'
 
-export interface Node {
+export interface BehaviourNode {
   initState(): void
   execute(entity: Entity, world: World): NodeState
 }

@@ -1,6 +1,6 @@
 import { PositionComponent } from '../../components/positionComponent'
 import { Entity } from '../../ecs/entity'
-import { Node, NodeState } from '../node'
+import { BehaviourNode, NodeState } from '../behaviourNode'
 
 export enum Direction {
   Left,
@@ -9,7 +9,7 @@ export enum Direction {
   Down,
 }
 
-export class MoveTo implements Node {
+export class Move implements BehaviourNode {
   private timer = 0
 
   public constructor(

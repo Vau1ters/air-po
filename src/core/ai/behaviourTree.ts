@@ -1,12 +1,12 @@
 import { Entity } from '../ecs/entity'
 import { World } from '../ecs/world'
-import { Node, NodeState } from './node'
+import { BehaviourNode, NodeState } from './behaviourNode'
 
 export class BehaviourTree {
-  private root: Node
+  private root: BehaviourNode
   private currentState: NodeState
 
-  public constructor(root: Node) {
+  public constructor(root: BehaviourNode) {
     this.currentState = NodeState.Running
     this.root = root
   }

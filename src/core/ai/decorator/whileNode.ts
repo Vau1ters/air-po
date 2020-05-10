@@ -1,9 +1,11 @@
-import { Node, NodeState } from '../node'
+import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
 
-export class WhileNode implements Node {
-  public constructor(private arg: { cond: Node; exec: Node }) {}
+export class WhileNode implements BehaviourNode {
+  public constructor(
+    private arg: { cond: BehaviourNode; exec: BehaviourNode }
+  ) {}
   public initState(): void {
     this.arg.cond.initState()
     this.arg.exec.initState()

@@ -1,26 +1,25 @@
 import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
-import { Node, NodeState } from '../node'
+import { BehaviourNode, NodeState } from '../behaviourNode'
 
-export class ParallelNode extends Node {
-  private executing: Array<Node> = []
+export class ParallelNode implements BehaviourNode {
+  private executingNodes: Array<BehaviourNode> = []
 
-  public addChild(node: Node): void {
+  public addChild(node: BehaviourNode): void {
     this.children.push(node)
   }
 
-  public constructor(protected children: Array<Node> = []) {
-    super()
+  public constructor(protected children: Array<BehaviourNode> = []) {
     this.initState()
   }
 
   public initState(): void {
-    this.executing = this.children.concat()
+    this.executingNodes = this.children.concat()
     this.children.forEach(node => node.initState())
   }
   // 全部Successになるかどれか一つがFailureになったら終了
   public execute(entity: Entity, world: World): NodeState {
-    const nextExecuting = new Array<Node>()
+    const nextExecutingNodes = new Array<BehaviourNode>()
     for (const child of this.children) {
       switch (child.execute(entity, world)) {
         case NodeState.Success:
@@ -28,12 +27,12 @@ export class ParallelNode extends Node {
         case NodeState.Failure:
           return NodeState.Failure
         case NodeState.Running:
-          nextExecuting.push(child)
+          nextExecutingNodes.push(child)
           break
       }
     }
-    this.executing = nextExecuting
-    if (this.executing.length === 0) return NodeState.Success
+    this.executingNodes = nextExecutingNodes
+    if (this.executingNodes.length === 0) return NodeState.Success
     return NodeState.Running
   }
 }
