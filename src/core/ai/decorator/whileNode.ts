@@ -14,6 +14,7 @@ export class WhileNode implements BehaviourNode {
   public execute(entity: Entity, world: World): NodeState {
     switch (this.arg.cond.execute(entity, world)) {
       case NodeState.Success:
+        this.arg.cond.initState()
         if (this.arg.exec.execute(entity, world) !== NodeState.Running) {
           this.arg.exec.initState()
         }

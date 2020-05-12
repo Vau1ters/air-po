@@ -18,4 +18,8 @@ export class BehaviourTree {
       this.currentState = this.root.execute(entity, world)
     }
   }
+
+  public getState(): NodeState {
+    return this.currentState
+  }
 }
