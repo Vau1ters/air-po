@@ -51,8 +51,7 @@ export class PlayerFactory extends EntityFactory {
     aabbBody.tag = 'playerBody'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = Category.PLAYER
-    const mask = new Set(CategorySet.ALL)
-    CategorySet.MOVERS.forEach(x => mask.delete(x))
+    const mask = CategorySet.ALL.negateSet(CategorySet.MOVERS)
     aabbBody.mask = mask
     aabbBody.maxClipTolerance = new Vec2(
       this.CLIP_TOLERANCE_X,

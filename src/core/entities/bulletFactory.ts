@@ -51,7 +51,7 @@ export class BulletFactory extends EntityFactory {
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.offset = new Vec2(0, 0)
     aabbBody.category = Category.PLAYER
-    aabbBody.mask = new Set([Category.WALL])
+    aabbBody.mask = new CategorySet(Category.WALL)
     aabbBody.maxClipTolerance = new Vec2(0, 0)
     aabbBody.tag = 'bulletBody'
     collider.createCollider(aabbBody)

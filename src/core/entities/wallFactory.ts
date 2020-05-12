@@ -31,9 +31,7 @@ export class WallFactory extends EntityFactory {
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabb.tag = 'wall'
     aabb.category = Category.WALL
-    const mask = new Set(CategorySet.ALL)
-    mask.delete(Category.WALL)
-    aabb.mask = mask
+    aabb.mask = CategorySet.ALL.negate(Category.WALL)
 
     const collider = new ColliderComponent(entity)
     collider.createCollider(aabb)
