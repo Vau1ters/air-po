@@ -6,37 +6,37 @@ export enum Category {
 }
 
 export class CategorySet extends Set<Category> {
-  public static readonly MOVERS = new CategorySet([
+  public static readonly MOVERS = new CategorySet(
     Category.PLAYER,
-    Category.ENEMY,
-  ])
-  public static readonly ALL = new CategorySet([
+    Category.ENEMY
+  )
+  public static readonly ALL = new CategorySet(
     Category.DEFAULT,
     Category.WALL,
     Category.PLAYER,
-    Category.ENEMY,
-  ])
+    Category.ENEMY
+  )
 
-  public constructor(itr: Iterable<Category>)
-  public constructor(category: Category)
+  public constructor(...categories: Category[]) {
+    super(categories)
+  }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public constructor(a: any) {
-    if (Symbol.iterator in Object(a)) {
-      super(a as Iterable<Category>)
-    } else {
-      super([a as Category])
+  public clone(): CategorySet {
+    const hoge = new CategorySet()
+    for (const category of this) {
+      hoge.add(category)
     }
+    return hoge
   }
 
   public negate(category: Category): CategorySet {
-    const categorySet = new CategorySet(this)
+    const categorySet = this.clone()
     categorySet.delete(category)
     return categorySet
   }
 
   public negateSet(categories: CategorySet): CategorySet {
-    const categorySet = new CategorySet(this)
+    const categorySet = this.clone()
     categories.forEach(x => categorySet.delete(x))
     return categorySet
   }
