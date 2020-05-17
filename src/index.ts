@@ -6,12 +6,15 @@ import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
 import { Container, Graphics } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
+import CameraSystem from './core/systems/cameraSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
-import { WallFactory } from './core/entities/wallFactory'
 import { AirFilter } from './filters/airFilter'
+import { Entity } from './core/ecs/entity'
+import { BVHComponent } from './core/components/bvhComponent'
+import { MapBuilder } from './map/mapBuilder'
 import * as Art from './core/graphics/art'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
 import { BehaviourTree } from './core/ai/behaviourTree'
@@ -24,6 +27,7 @@ import { TrueNode } from './core/ai/condition/boolNode'
 import { ParallelNode } from './core/ai/composite/parallelNode'
 import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
+import map from '../res/teststage.json'
 
 export class Main {
   public static world = new World()
@@ -62,6 +66,8 @@ export class Main {
     debugContainer.zIndex = Infinity
     application.stage.addChild(debugContainer)
 
+    const cameraSystem = new CameraSystem(this.world)
+
     this.world.addSystem(
       new AISystem(this.world),
       new PhysicsSystem(this.world),
@@ -71,7 +77,8 @@ export class Main {
       new InvincibleSystem(this.world),
       new DamageSystem(this.world),
       new DrawSystem(this.world, application.stage),
-      new DebugDrawSystem(this.world, debugContainer)
+      new DebugDrawSystem(this.world, debugContainer),
+      cameraSystem
     )
 
     // 主人公
@@ -88,19 +95,6 @@ export class Main {
     enemyPosition.y = 140
     this.world.addEntity(enemy1)
 
-    // 壁
-    for (let x = 0; x < 50; x++) {
-      const wall = new WallFactory().create()
-      const p = wall.getComponent('Position') as PositionComponent
-      p.x = 8 * x
-      if (x < 16) {
-        p.y = 50 + 8 * x
-      } else {
-        p.y = 178
-      }
-      this.world.addEntity(wall)
-    }
-
     const enemyAI = new ParallelNode([
       new WhileNode({
         cond: new TrueNode(),
@@ -112,6 +106,14 @@ export class Main {
     ])
     const tree = new BehaviourTree(enemyAI)
     enemy1.addComponent('AI', new AIComponent(tree))
+
+    cameraSystem.chaseTarget = position
+
+    const mapBuilder = new MapBuilder(this.world)
+    mapBuilder.build(map)
+    const bvhEntity = new Entity()
+    bvhEntity.addComponent('BVH', new BVHComponent())
+    this.world.addEntity(bvhEntity)
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
   }
