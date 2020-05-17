@@ -5,12 +5,17 @@ import { World } from '../ecs/world'
 import { KeyController } from '../controller'
 import { PlayerComponent } from '../components/playerComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { Collider } from '../components/colliderComponent'
+import {
+  Collider,
+  AirCollider,
+  ColliderComponent,
+} from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { BulletFactory } from '../entities/bulletFactory'
 import { assert } from '../../utils/assertion'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { AirComponent } from '../components/airComponent'
+import { PositionComponent } from '../components/positionComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -132,11 +137,29 @@ export class PlayerControlSystem extends System {
       const player = playerCollider.component.entity.getComponent(
         'Player'
       ) as PlayerComponent
+      const pp = playerCollider.component.entity.getComponent(
+        'Position'
+      ) as PositionComponent
       const airHolder = playerCollider.component.entity.getComponent(
         'AirHolder'
       ) as AirHolderComponent
-      const air = otherCollider.component.entity.getComponent('Air')
-      assert(air instanceof AirComponent)
+      const airs = Array.from(
+        ((otherCollider.component.entity.getComponent(
+          'Collider'
+        ) as ColliderComponent).colliders[0] as AirCollider).airFamily.entities
+      )
+        .filter((a: Entity) => (a.getComponent('Air') as AirComponent).hit)
+        .sort((a, b) => {
+          const aa = a.getComponent('Air') as AirComponent
+          const pa = a.getComponent('Position') as PositionComponent
+          const ab = b.getComponent('Air') as AirComponent
+          const pb = b.getComponent('Position') as PositionComponent
+          return (
+            ab.quantity / pb.sub(pp).lengthSq() -
+            aa.quantity / pa.sub(pp).lengthSq()
+          )
+        })
+      const air = airs[0].getComponent('Air') as AirComponent
       const collectSpeed = Math.min(
         player.status.air.collectSpeed,
         airHolder.maxQuantity - airHolder.currentQuantity,

@@ -2,7 +2,7 @@ import { Entity } from '../ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { AirComponent } from '../components/airComponent'
-import { CircleDef, ColliderComponent } from '../components/colliderComponent'
+import { ColliderComponent } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 
 export class AirFactory extends EntityFactory {
@@ -25,13 +25,6 @@ export class AirFactory extends EntityFactory {
     const position = new PositionComponent(this.position.x, this.position.y)
     const air = new AirComponent(this.quantity)
     const collider = new ColliderComponent(entity)
-
-    const circleBody = new CircleDef(air.quantity)
-    circleBody.tag = 'air'
-    circleBody.radius = Math.sqrt(this.quantity)
-    circleBody.offset = new Vec2(0, 0)
-    circleBody.isSensor = true
-    collider.createCollider(circleBody)
 
     entity.addComponent('Position', position)
     entity.addComponent('Air', air)
