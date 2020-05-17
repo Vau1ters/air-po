@@ -5,6 +5,10 @@ import { DrawComponent } from '../components/drawComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
+import { AIComponent } from '../components/aiComponent'
+import { HPComponent } from '../components/hpComponent'
+import { AttackComponent } from '../components/attackComponent'
+import { InvincibleComponent } from '../components/invincibleComponent'
 import { BVHComponent } from '../components/bvhComponent'
 
 export interface ComponentMap {
@@ -15,6 +19,10 @@ export interface ComponentMap {
   Player: PlayerComponent
   Bullet: BulletComponent
   HorizontalDirection: HorizontalDirectionComponent
+  AI: AIComponent
+  HP: HPComponent
+  Invincible: InvincibleComponent
+  Attack: AttackComponent
   BVH: BVHComponent
 }
 

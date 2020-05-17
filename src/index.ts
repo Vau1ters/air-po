@@ -16,6 +16,17 @@ import { Entity } from './core/ecs/entity'
 import { BVHComponent } from './core/components/bvhComponent'
 import { MapBuilder } from './map/mapBuilder'
 import * as Art from './core/graphics/art'
+import { Enemy1Factory } from './core/entities/enemy1Factory'
+import { BehaviourTree } from './core/ai/behaviourTree'
+import { SequenceNode } from './core/ai/composite/sequenceNode'
+import { MoveNode, Direction } from './core/ai/action/moveNode'
+import { AIComponent } from './core/components/aiComponent'
+import AISystem from './core/systems/aiSystem'
+import { WhileNode } from './core/ai/decorator/whileNode'
+import { TrueNode } from './core/ai/condition/boolNode'
+import { ParallelNode } from './core/ai/composite/parallelNode'
+import InvincibleSystem from './core/systems/invincibleSystem'
+import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 
 export class Main {
@@ -55,23 +66,46 @@ export class Main {
     debugContainer.zIndex = Infinity
     application.stage.addChild(debugContainer)
 
-    const physicsSystem = new PhysicsSystem(this.world)
     const cameraSystem = new CameraSystem(this.world)
 
     this.world.addSystem(
-      physicsSystem,
+      new AISystem(this.world),
+      new PhysicsSystem(this.world),
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
       new BulletSystem(this.world),
+      new InvincibleSystem(this.world),
+      new DamageSystem(this.world),
       new DrawSystem(this.world, application.stage),
       new DebugDrawSystem(this.world, debugContainer),
       cameraSystem
     )
+
+    // 主人公
     const player = new PlayerFactory().create()
     const position = player.getComponent('Position') as PositionComponent
     position.x = 100
     position.y = 50
     this.world.addEntity(player)
+
+    // 敵
+    const enemy1 = new Enemy1Factory().create()
+    const enemyPosition = enemy1.getComponent('Position') as PositionComponent
+    enemyPosition.x = 160
+    enemyPosition.y = 140
+    this.world.addEntity(enemy1)
+
+    const enemyAI = new ParallelNode([
+      new WhileNode({
+        cond: new TrueNode(),
+        exec: new SequenceNode([
+          new MoveNode(Direction.Right, 2, 60),
+          new MoveNode(Direction.Left, 2, 60),
+        ]),
+      }),
+    ])
+    const tree = new BehaviourTree(enemyAI)
+    enemy1.addComponent('AI', new AIComponent(tree))
 
     cameraSystem.chaseTarget = position
 
