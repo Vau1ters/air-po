@@ -22,11 +22,11 @@ export class CategorySet extends Set<Category> {
   }
 
   public clone(): CategorySet {
-    const hoge = new CategorySet()
+    const set = new CategorySet()
     for (const category of this) {
-      hoge.add(category)
+      set.add(category)
     }
-    return hoge
+    return set
   }
 
   public negate(category: Category): CategorySet {

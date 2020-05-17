@@ -4,11 +4,3 @@ export const assert: (condition: unknown) => asserts condition = condition => {
     throw new Error(`Assertion failed. Condition: ${condition}`)
   }
 }
-// export const assert = (
-//   condition: unknown,
-//   msg = 'Assertion failed'
-// ): asserts condition => {
-//   if (!condition) {
-//     throw new Error(`AssertionError. ${msg}`)
-//   }
-// }
