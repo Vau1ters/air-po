@@ -9,6 +9,7 @@ export class WhileNode implements BehaviourNode {
       exec: BehaviourNode
     }
   ) {}
+
   public initState(): void {
     this.arg.cond.initState()
     this.arg.exec.initState()
