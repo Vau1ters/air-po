@@ -64,7 +64,6 @@ export class PlayerFactory extends EntityFactory {
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag = 'playerBody'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.tag = 'body'
     aabbBody.category = Category.PLAYER
     const mask = CategorySet.ALL.negateSet(CategorySet.MOVERS)
     aabbBody.mask = mask

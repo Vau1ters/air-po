@@ -34,7 +34,7 @@ export class PlayerControlSystem extends System {
         if (c.tag === 'playerFoot') {
           c.callback = PlayerControlSystem.footCollisionCallback
         }
-        if (c.tag == 'body') {
+        if (c.tag == 'playerBody') {
           c.callback = PlayerControlSystem.bodySensor
         }
       }
