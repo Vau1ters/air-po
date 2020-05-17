@@ -21,6 +21,9 @@ export class Family {
     this.excludeComponents = excludeComponents
     this._entities = new Set()
 
+    this.entityAddedEvent = new EventNotifier()
+    this.entityRemovedEvent = new EventNotifier()
+
     this.addEntitiesBySet(this.world.entities)
     this.world.entityAddedEvent.addObserver((entity: Entity): void => {
       this.onEntityAdded(entity)
@@ -28,9 +31,6 @@ export class Family {
     this.world.entityRemovedEvent.addObserver((entity: Entity): void => {
       this.onEntityRemoved(entity)
     })
-
-    this.entityAddedEvent = new EventNotifier()
-    this.entityRemovedEvent = new EventNotifier()
   }
 
   public get entities(): Set<Entity> {
