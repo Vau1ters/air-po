@@ -7,7 +7,7 @@ import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
-import { Category, CategorySet } from './category'
+import { CategoryList } from './category'
 import { Graphics } from 'pixi.js'
 import { AttackComponent } from '../components/attackComponent'
 
@@ -50,8 +50,8 @@ export class BulletFactory extends EntityFactory {
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.offset = new Vec2(0, 0)
-    aabbBody.category = Category.PLAYER
-    aabbBody.mask = new CategorySet(Category.WALL)
+    aabbBody.category = CategoryList.bulletBody.category
+    aabbBody.mask = CategoryList.bulletBody.mask
     aabbBody.maxClipTolerance = new Vec2(0, 0)
     aabbBody.tag = 'bulletBody'
     collider.createCollider(aabbBody)
@@ -63,8 +63,8 @@ export class BulletFactory extends EntityFactory {
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
     attackHitBox.tag = 'AttackHitBox'
-    attackHitBox.category = Category.DEFAULT
-    attackHitBox.mask = CategorySet.ALL
+    attackHitBox.category = CategoryList.bulletAttack.category
+    attackHitBox.mask = CategoryList.bulletAttack.mask
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 

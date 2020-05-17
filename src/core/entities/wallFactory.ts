@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
-import { Category, CategorySet } from './category'
+import { CategoryList } from './category'
 import { Sprite } from 'pixi.js'
 import { wallBaseTextures } from '../graphics/art'
 
@@ -31,8 +31,8 @@ export class WallFactory extends EntityFactory {
 
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabb.tag = 'wall'
-    aabb.category = Category.WALL
-    aabb.mask = CategorySet.ALL.negate(Category.WALL)
+    aabb.category = CategoryList.wall.category
+    aabb.mask = CategoryList.wall.mask
 
     const collider = new ColliderComponent(entity)
     collider.createCollider(aabb)
