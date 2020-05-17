@@ -1,6 +1,6 @@
 export class AirComponent {
   private _quantity: number
-  hit = false
+  public hit = false
 
   public constructor(initialQuantity: number) {
     this._quantity = initialQuantity
