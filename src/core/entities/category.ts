@@ -41,3 +41,34 @@ export class CategorySet extends Set<Category> {
     return categorySet
   }
 }
+
+export const CategoryList = {
+  bulletBody: {
+    category: Category.PLAYER,
+    mask: new CategorySet(Category.WALL),
+  },
+  bulletAttack: {
+    category: Category.DEFAULT,
+    mask: CategorySet.ALL,
+  },
+  enemy1Body: {
+    category: Category.ENEMY,
+    mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
+  },
+  enemy1Attack: {
+    category: Category.DEFAULT,
+    mask: CategorySet.ALL,
+  },
+  playerBody: {
+    category: Category.PLAYER,
+    mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
+  },
+  playerFoot: {
+    category: Category.PLAYER,
+    mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
+  },
+  wall: {
+    category: Category.WALL,
+    mask: CategorySet.ALL.negate(Category.WALL),
+  },
+}

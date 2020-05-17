@@ -6,7 +6,7 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { Vec2 } from '../math/vec2'
-import { Category, CategorySet } from './category'
+import { CategoryList } from './category'
 import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
@@ -50,9 +50,8 @@ export class PlayerFactory extends EntityFactory {
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag = 'playerBody'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.category = Category.PLAYER
-    const mask = CategorySet.ALL.negateSet(CategorySet.MOVERS)
-    aabbBody.mask = mask
+    aabbBody.category = CategoryList.playerBody.category
+    aabbBody.mask = CategoryList.playerBody.mask
     aabbBody.maxClipTolerance = new Vec2(
       this.CLIP_TOLERANCE_X,
       this.CLIP_TOLERANCE_Y
@@ -65,8 +64,8 @@ export class PlayerFactory extends EntityFactory {
       this.OFFSET_Y + this.FOOT_OFFSET_Y
     )
     aabbFoot.tag = 'playerFoot'
-    aabbFoot.category = Category.PLAYER
-    aabbFoot.mask = mask
+    aabbFoot.category = CategoryList.playerFoot.category
+    aabbFoot.mask = CategoryList.playerFoot.mask
     aabbFoot.maxClipTolerance = new Vec2(
       this.FOOT_CLIP_TOLERANCE_X,
       this.FOOT_CLIP_TOLERANCE_Y

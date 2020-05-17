@@ -8,7 +8,7 @@ import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { enemy1Textures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
-import { Category, CategorySet } from './category'
+import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
@@ -47,9 +47,8 @@ export class Enemy1Factory extends EntityFactory {
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag = 'enemy1Body'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.category = Category.ENEMY
-
-    aabbBody.mask = CategorySet.ALL.negateSet(CategorySet.MOVERS)
+    aabbBody.category = CategoryList.enemy1Body.category
+    aabbBody.mask = CategoryList.enemy1Body.mask
 
     aabbBody.maxClipTolerance = new Vec2(
       this.CLIP_TOLERANCE_X,
@@ -68,8 +67,8 @@ export class Enemy1Factory extends EntityFactory {
       this.ATTACK_HIT_BOX_OFFSET_X,
       this.ATTACK_HIT_BOX_OFFSET_Y
     )
-    attackHitBox.category = Category.DEFAULT
-    attackHitBox.mask = CategorySet.ALL
+    attackHitBox.category = CategoryList.enemy1Attack.category
+    attackHitBox.mask = CategoryList.enemy1Attack.mask
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
