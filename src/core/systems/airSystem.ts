@@ -22,7 +22,7 @@ export class AirSystem extends System {
 
   public offset: PositionComponent = new PositionComponent()
 
-  private entity?: Entity
+  private entity: Entity
 
   public constructor(world: World, container: Container) {
     super(world)
@@ -32,21 +32,19 @@ export class AirSystem extends System {
     this.filter = new AirFilter({ x: windowSize.width, y: windowSize.height })
 
     container.filters = [this.filter]
+
+    this.entity = new Entity()
+    const collider = new ColliderComponent(this.entity)
+    const air = new AirDef(this.family)
+    air.tag = 'air'
+    air.isSensor = true
+    collider.createCollider(air)
+    this.entity.addComponent('Collider', collider)
+    this.entity.addComponent('Position', new PositionComponent())
+    this.world.addEntity(this.entity)
   }
 
   public update(): void {
-    if (!this.entity) {
-      this.entity = new Entity()
-      const collider = new ColliderComponent(this.entity)
-      const air = new AirDef(this.family)
-      air.tag = 'air'
-      air.isSensor = true
-      collider.createCollider(air)
-      this.entity.addComponent('Collider', collider)
-      this.entity.addComponent('Position', new PositionComponent())
-      this.world.addEntity(this.entity)
-    }
-
     const airs = []
     for (const entity of this.family.entities) {
       const air = entity.getComponent('Air') as AirComponent
