@@ -16,7 +16,7 @@ import * as Art from './core/graphics/art'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
 import { BehaviourTree } from './core/ai/behaviourTree'
 import { SequenceNode } from './core/ai/composite/sequenceNode'
-import { Move, Direction } from './core/ai/action/move'
+import { MoveNode, Direction } from './core/ai/action/moveNode'
 import { AIComponent } from './core/components/aiComponent'
 import AISystem from './core/systems/aiSystem'
 import { WhileNode } from './core/ai/decorator/whileNode'
@@ -105,8 +105,8 @@ export class Main {
       new WhileNode({
         cond: new TrueNode(),
         exec: new SequenceNode([
-          new Move(Direction.Right, 2, 60),
-          new Move(Direction.Left, 2, 60),
+          new MoveNode(Direction.Right, 2, 60),
+          new MoveNode(Direction.Left, 2, 60),
         ]),
       }),
     ])

@@ -9,7 +9,7 @@ export enum Direction {
   Down,
 }
 
-export class Move implements BehaviourNode {
+export class MoveNode implements BehaviourNode {
   private timer = 0
 
   public constructor(

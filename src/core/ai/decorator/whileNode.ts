@@ -4,7 +4,10 @@ import { World } from '../../ecs/world'
 
 export class WhileNode implements BehaviourNode {
   public constructor(
-    private arg: { cond: BehaviourNode; exec: BehaviourNode }
+    private arg: {
+      cond: BehaviourNode
+      exec: BehaviourNode
+    }
   ) {}
   public initState(): void {
     this.arg.cond.initState()
