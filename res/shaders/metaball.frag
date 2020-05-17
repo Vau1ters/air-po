@@ -3,9 +3,9 @@ uniform sampler2D uSampler;
 varying vec2 vTextureCoord;
 varying vec4 vColor;
 
-uniform float time;
 uniform vec3 points[200];
 uniform vec2 displaySize;
+uniform float effectiveRadius;
 
 void main() {
   vec4 color = texture2D(uSampler, vTextureCoord);
@@ -14,15 +14,14 @@ void main() {
   float metaball = 0.0;
   for(int i = 0; i < 200; i++) {
     if (points[i].z != 0.0) {
-      float x = coord.x - points[i].x;
-      float y = coord.y - points[i].y;
-      float dist = max(0.001, (x * x + y * y));
+      vec2 d = coord - points[i].xy;
+      float dist = dot(d, d);
       float r = points[i].z;
-      float score = (r * r) / dist;
+      float score = max(0.0, (r * r) * (1.0 / dist - 1.0 / (effectiveRadius * effectiveRadius)));
       metaball += score;
     }
   }
-  if (metaball < 1.1 + 0.02 * sin(time)) {
+  if (metaball < 1.0) {
     color.rgb += metaball * 0.6 + 0.2;
   }
 

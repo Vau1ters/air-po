@@ -10,11 +10,13 @@ export interface AirDefinition {
 }
 
 export class AirFilter extends Filter {
+  public static readonly EFFECTIVE_RADIUS = 200
+
   public constructor(displaySize: { x: number; y: number }) {
     super(undefined, shader, {
-      time: 0.0,
       displaySize: [displaySize.x, displaySize.y],
       points: [],
+      effectiveRadius: AirFilter.EFFECTIVE_RADIUS,
     })
   }
 
