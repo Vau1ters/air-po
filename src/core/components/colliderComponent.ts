@@ -10,9 +10,12 @@ export interface Collider {
   tag: string
   category: number
   mask: number
+  bound: AABB
 }
 
 export class AABBCollider implements Collider {
+  public bound: AABB
+
   public constructor(
     public component: ColliderComponent,
     public aabb: AABB,
@@ -22,10 +25,14 @@ export class AABBCollider implements Collider {
     public tag: string,
     public category: number,
     public mask: number
-  ) {}
+  ) {
+    this.bound = aabb
+  }
 }
 
 export class CircleCollider implements Collider {
+  public bound: AABB
+
   public constructor(
     public component: ColliderComponent,
     public circle: Circle,
@@ -34,7 +41,23 @@ export class CircleCollider implements Collider {
     public tag: string,
     public category: number,
     public mask: number
-  ) {}
+  ) {
+    this.bound = this.buildAABBBound()
+  }
+
+  public set radius(radius: number) {
+    this.circle.radius = radius
+    this.bound = this.buildAABBBound()
+  }
+
+  private buildAABBBound(): AABB {
+    return new AABB(
+      this.circle.position.sub(
+        new Vec2(this.circle.radius, this.circle.radius)
+      ),
+      new Vec2(this.circle.radius, this.circle.radius).mul(2)
+    )
+  }
 }
 
 export interface ColliderDef {

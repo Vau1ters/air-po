@@ -7,6 +7,7 @@ import { BulletComponent } from '../components/bulletComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirComponent } from '../components/airComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
+import { BVHComponent } from '../components/bvhComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -18,6 +19,7 @@ export interface ComponentMap {
   HorizontalDirection: HorizontalDirectionComponent
   Air: AirComponent
   AirHolder: AirHolderComponent
+  BVH: BVHComponent
 }
 
 export type ComponentName = keyof ComponentMap

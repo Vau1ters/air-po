@@ -49,7 +49,7 @@ export class AirSystem extends System {
       assert(airCollider instanceof ColliderComponent)
       for (const collider of airCollider.colliders) {
         assert(collider instanceof CircleCollider)
-        collider.circle.radius = Math.sqrt(air.quantity)
+        collider.radius = Math.sqrt(air.quantity)
       }
     }
     this.filter.airs = airs
