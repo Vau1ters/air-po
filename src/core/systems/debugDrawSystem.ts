@@ -4,9 +4,15 @@ import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { BVHLeaf, BVHNode, BVHComponent } from '../components/bvhComponent'
 import { Graphics, Container } from 'pixi.js'
+import {
+  ColliderComponent,
+  AABBCollider,
+  CircleCollider,
+} from '../components/colliderComponent'
 
 export default class DebugDrawSystem extends System {
   private positionFamily: Family
+  private colliderFamily: Family
   private bvhFamily: Family
 
   private graphics: Graphics = new Graphics()
@@ -15,6 +21,9 @@ export default class DebugDrawSystem extends System {
     super(world)
 
     this.positionFamily = new FamilyBuilder(world).include('Position').build()
+    this.colliderFamily = new FamilyBuilder(world)
+      .include('Position', 'Collider')
+      .build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
 
     container.addChild(this.graphics)
@@ -22,12 +31,32 @@ export default class DebugDrawSystem extends System {
 
   public update(): void {
     this.graphics.clear()
+
     this.graphics.beginFill(0xff0000)
     for (const entity of this.positionFamily.entities) {
       const position = entity.getComponent('Position') as PositionComponent
       this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
     }
-    this.graphics.lineStyle(1, 0xff0000)
+    this.graphics.endFill()
+
+    this.graphics.beginFill(0x00ffff, 0.5)
+    for (const entity of this.colliderFamily.entities) {
+      const position = entity.getComponent('Position') as PositionComponent
+      const collider = entity.getComponent('Collider') as ColliderComponent
+
+      for (const c of collider.colliders) {
+        if (c instanceof AABBCollider) {
+          const pos = position.add(c.aabb.position)
+          this.graphics.drawRect(pos.x, pos.y, c.aabb.size.x, c.aabb.size.y)
+        } else if (c instanceof CircleCollider) {
+          const pos = position.add(c.circle.position)
+          this.graphics.drawCircle(pos.x, pos.y, c.circle.radius)
+        }
+      }
+    }
+    this.graphics.endFill()
+
+    this.graphics.lineStyle(0.5, 0xff0000)
     this.graphics.beginFill(0xffffff, 0)
     for (const entity of this.bvhFamily.entities) {
       const bvh = entity.getComponent('BVH') as BVHComponent
