@@ -2,6 +2,7 @@ import { World } from '../core/ecs/world'
 import { WallFactory } from '../core/entities/wallFactory'
 import { PositionComponent } from '../core/components/positionComponent'
 import { Random } from '../utils/random'
+import { AirFactory } from '../core/entities/airFactory'
 
 export class MapBuilder {
   private world: World
@@ -14,12 +15,41 @@ export class MapBuilder {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public build(map: any): void {
-    const factory = new WallFactory()
-    const wallTileSet = map.tilesets[0]
+    // layerごとに分ける
+    for (const layer of map.layers) {
+      switch (layer.name) {
+        case 'air':
+          this.buildAir(layer)
+          break
+        case 'map':
+          this.buildMap(layer, map.tilesets)
+          break
+      }
+    }
+  }
 
-    for (let x = 0; x < map.width; x++) {
-      for (let y = 0; y < map.height; y++) {
-        const tileId = map.layers[0].data[x + y * map.width]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildAir(airLayer: any): void {
+    for (const airData of airLayer.objects) {
+      const radius = airData.width / 2
+      const x = airData.x + radius
+      const y = airData.y + radius
+      const air = new AirFactory()
+        .setPosition(x, y)
+        .setQuantity(radius * radius)
+        .create()
+      this.world.addEntity(air)
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildMap(mapLayer: any, tileSets: any): void {
+    const factory = new WallFactory()
+    const wallTileSet = tileSets[0]
+
+    for (let x = 0; x < mapLayer.width; x++) {
+      for (let y = 0; y < mapLayer.height; y++) {
+        const tileId = mapLayer.data[x + y * mapLayer.width]
         if (tileId === 0) continue
 
         const cells = []
@@ -27,8 +57,13 @@ export class MapBuilder {
           for (let i = 0; i < 3; i++) {
             const xi = x + i - 1
             const yj = y + j - 1
-            if (0 <= xi && xi < map.width && 0 <= yj && yj < map.height) {
-              cells.push(map.layers[0].data[xi + yj * map.width])
+            if (
+              0 <= xi &&
+              xi < mapLayer.width &&
+              0 <= yj &&
+              yj < mapLayer.height
+            ) {
+              cells.push(mapLayer.data[xi + yj * mapLayer.width])
             } else {
               cells.push(0)
             }
