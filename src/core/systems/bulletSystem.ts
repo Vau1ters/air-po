@@ -22,7 +22,9 @@ export class BulletSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        c.callback = (bullet): void => this.bulletCollisionCallback(bullet)
+        if (c.tag === 'bulletBody') {
+          c.callback = (bullet): void => this.bulletCollisionCallback(bullet)
+        }
       }
     }
   }

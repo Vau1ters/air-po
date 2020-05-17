@@ -1,4 +1,6 @@
 # air-po
+![CI](https://github.com/Skroig0010/air-po/workflows/CI/badge.svg)
+
 ## Development
 ### 起動&自動コンパイル
 ```

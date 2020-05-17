@@ -12,6 +12,7 @@ export class MapBuilder {
     this.rand = new Random()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public build(map: any): void {
     const factory = new WallFactory()
     const wallTileSet = map.tilesets[0]

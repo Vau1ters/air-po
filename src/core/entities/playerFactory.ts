@@ -6,12 +6,14 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { Vec2 } from '../math/vec2'
-import { Category } from './category'
+import { Category, CategorySet } from './category'
 import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { Graphics } from 'pixi.js'
 import { AirHolderComponent } from '../components/airHolderComponent'
+import { HPComponent } from '../components/hpComponent'
+import { InvincibleComponent } from '../components/invincibleComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -28,7 +30,7 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_CLIP_TOLERANCE_Y = 2
   readonly CLIP_TOLERANCE_X =
     (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
-  readonly CLIP_TOLERANCE_Y = 2
+  readonly CLIP_TOLERANCE_Y = 4
   readonly INITIAL_AIR_QUANTITY = 1600
   readonly MAX_AIR_QUANTITY = 2000
   readonly AIR_COLLECT_SPEED = 2
@@ -56,12 +58,15 @@ export class PlayerFactory extends EntityFactory {
       initialQuantity: this.INITIAL_AIR_QUANTITY,
       maxQuantity: this.MAX_AIR_QUANTITY,
     })
+    const hp = new HPComponent(10)
+    const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    aabbBody.tag = 'playerBody'
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.tag = 'body'
     aabbBody.category = Category.PLAYER
-    aabbBody.mask = Category.WALL
+    const mask = CategorySet.ALL.negateSet(CategorySet.MOVERS)
+    aabbBody.mask = mask
     aabbBody.maxClipTolerance = new Vec2(
       this.CLIP_TOLERANCE_X,
       this.CLIP_TOLERANCE_Y
@@ -73,9 +78,9 @@ export class PlayerFactory extends EntityFactory {
       this.OFFSET_X + this.FOOT_OFFSET_X,
       this.OFFSET_Y + this.FOOT_OFFSET_Y
     )
-    aabbFoot.tag = 'foot'
+    aabbFoot.tag = 'playerFoot'
     aabbFoot.category = Category.PLAYER
-    aabbFoot.mask = Category.WALL
+    aabbFoot.mask = mask
     aabbFoot.maxClipTolerance = new Vec2(
       this.FOOT_CLIP_TOLERANCE_X,
       this.FOOT_CLIP_TOLERANCE_Y
@@ -112,6 +117,8 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Position', position)
     entity.addComponent('RigidBody', body)
     entity.addComponent('HorizontalDirection', direction)
+    entity.addComponent('HP', hp)
+    entity.addComponent('Invincible', invincible)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)

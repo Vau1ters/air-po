@@ -12,10 +12,23 @@ import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
+import { Entity } from './core/ecs/entity'
+import { BVHComponent } from './core/components/bvhComponent'
 import * as Art from './core/graphics/art'
 import { AirFactory } from './core/entities/airFactory'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
+import { Enemy1Factory } from './core/entities/enemy1Factory'
+import { BehaviourTree } from './core/ai/behaviourTree'
+import { SequenceNode } from './core/ai/composite/sequenceNode'
+import { MoveNode, Direction } from './core/ai/action/moveNode'
+import { AIComponent } from './core/components/aiComponent'
+import AISystem from './core/systems/aiSystem'
+import { WhileNode } from './core/ai/decorator/whileNode'
+import { TrueNode } from './core/ai/condition/boolNode'
+import { ParallelNode } from './core/ai/composite/parallelNode'
+import InvincibleSystem from './core/systems/invincibleSystem'
+import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 
 export class Main {
@@ -49,12 +62,15 @@ export class Main {
     )
 
     this.world.addSystem(
+      new AISystem(this.world),
       new PhysicsSystem(this.world),
       new GravitySystem(this.world),
       new PlayerControlSystem(this.world),
       new BulletSystem(this.world),
-      new DrawSystem(this.world, drawContainer),
+      new InvincibleSystem(this.world),
+      new DamageSystem(this.world),
       airSystem,
+      new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer),
       new DebugDrawSystem(this.world, debugContainer),
       cameraSystem
@@ -81,17 +97,40 @@ export class Main {
       .create()
     this.world.addEntity(air4)
 
+    // 主人公
     const player = new PlayerFactory().create()
     const position = player.getComponent('Position') as PositionComponent
     position.x = 100
     position.y = 50
     this.world.addEntity(player)
 
+    // 敵
+    const enemy1 = new Enemy1Factory().create()
+    const enemyPosition = enemy1.getComponent('Position') as PositionComponent
+    enemyPosition.x = 160
+    enemyPosition.y = 140
+    this.world.addEntity(enemy1)
+
+    const enemyAI = new ParallelNode([
+      new WhileNode({
+        cond: new TrueNode(),
+        exec: new SequenceNode([
+          new MoveNode(Direction.Right, 2, 60),
+          new MoveNode(Direction.Left, 2, 60),
+        ]),
+      }),
+    ])
+    const tree = new BehaviourTree(enemyAI)
+    enemy1.addComponent('AI', new AIComponent(tree))
+
     cameraSystem.chaseTarget = position
     airSystem.offset = position
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
+    const bvhEntity = new Entity()
+    bvhEntity.addComponent('BVH', new BVHComponent())
+    this.world.addEntity(bvhEntity)
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
   }

@@ -4,17 +4,21 @@ import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
 import { Circle } from '../math/circle'
 import { assert } from '../../utils/assertion'
+import { Category, CategorySet } from '../entities/category'
 
 export interface Collider {
   component: ColliderComponent
   isSensor: boolean
   callback: ((me: Collider, other: Collider) => void) | null
   tag: string
-  category: number
-  mask: number
+  category: Category
+  mask: CategorySet
+  bound: AABB
 }
 
 export class AABBCollider implements Collider {
+  public bound: AABB
+
   public constructor(
     public component: ColliderComponent,
     public aabb: AABB,
@@ -22,41 +26,65 @@ export class AABBCollider implements Collider {
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
-    public category: number,
-    public mask: number
-  ) {}
+    public category: Category,
+    public mask: CategorySet
+  ) {
+    this.bound = aabb
+  }
 }
 
 export class CircleCollider implements Collider {
+  public bound: AABB
+
   public constructor(
     public component: ColliderComponent,
     public circle: Circle,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
-    public category: number,
-    public mask: number
-  ) {}
+    public category: Category,
+    public mask: CategorySet
+  ) {
+    this.bound = this.buildAABBBound()
+  }
+
+  public set radius(radius: number) {
+    this.circle.radius = radius
+    this.bound = this.buildAABBBound()
+  }
+
+  private buildAABBBound(): AABB {
+    return new AABB(
+      this.circle.position.sub(
+        new Vec2(this.circle.radius, this.circle.radius)
+      ),
+      new Vec2(this.circle.radius, this.circle.radius).mul(2)
+    )
+  }
 }
 
 export class AirCollider implements Collider {
+  public bound: AABB
+
   public constructor(
     public component: ColliderComponent,
     public airFamily: Family,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
-    public category: number,
-    public mask: number
-  ) {}
+    public category: Category,
+    public mask: CategorySet
+  ) {
+    this.bound = new AABB()
+  }
 }
 
 export interface ColliderDef {
   isSensor: boolean
   callback: ((me: Collider, other: Collider) => void) | null
   tag: string
-  category: number
-  mask: number
+  category: Category
+  mask: Set<Category>
 }
 
 export class AABBDef implements ColliderDef {
@@ -65,8 +93,8 @@ export class AABBDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = 0x0001
-  public mask = 0xffff
+  public category = Category.DEFAULT
+  public mask = CategorySet.ALL
   public constructor(public size: Vec2) {}
 }
 
@@ -75,8 +103,8 @@ export class CircleDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = 0x0001
-  public mask = 0xffff
+  public category = Category.DEFAULT
+  public mask = CategorySet.ALL
   public constructor(public radius: number) {}
 }
 
@@ -84,8 +112,8 @@ export class AirDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = 0x0001
-  public mask = 0xffff
+  public category = Category.DEFAULT
+  public mask = CategorySet.ALL
   public constructor(public airFamily: Family) {}
 }
 

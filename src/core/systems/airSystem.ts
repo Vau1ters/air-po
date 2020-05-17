@@ -6,8 +6,14 @@ import { PositionComponent } from '../components/positionComponent'
 import { Container } from 'pixi.js'
 import { AirFilter } from '../../filters/airFilter'
 import { AirComponent } from '../components/airComponent'
-import { AirDef, ColliderComponent } from '../components/colliderComponent'
+import {
+  AirDef,
+  ColliderComponent,
+  AirCollider,
+} from '../components/colliderComponent'
 import { windowSize } from '../application'
+import { AABB } from '../math/aabb'
+import { Vec2 } from '../math/vec2'
 
 export class AirSystem extends System {
   private family: Family
@@ -57,5 +63,23 @@ export class AirSystem extends System {
       })
     }
     this.filter.airs = airs
+
+    const collider = this.entity.getComponent('Collider') as ColliderComponent
+    const airCollider = collider.colliders[0] as AirCollider
+    airCollider.bound = Array.from(airCollider.airFamily.entities)
+      .map((e: Entity) => e.getComponent('Position') as PositionComponent)
+      .map(
+        (p: PositionComponent) =>
+          new AABB(
+            p.sub(
+              new Vec2(AirFilter.EFFECTIVE_RADIUS, AirFilter.EFFECTIVE_RADIUS)
+            ),
+            new Vec2(
+              AirFilter.EFFECTIVE_RADIUS * 2,
+              AirFilter.EFFECTIVE_RADIUS * 2
+            )
+          )
+      )
+      .reduce((a, b) => a.merge(b))
   }
 }
