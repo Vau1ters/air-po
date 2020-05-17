@@ -2,14 +2,15 @@ import { Entity } from '../ecs/entity'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
 import { Circle } from '../math/circle'
+import { Category, CategorySet } from '../entities/category'
 
 export interface Collider {
   component: ColliderComponent
   isSensor: boolean
   callback: ((me: Collider, other: Collider) => void) | null
   tag: string
-  category: number
-  mask: number
+  category: Category
+  mask: Set<Category>
   bound: AABB
 }
 
@@ -23,8 +24,8 @@ export class AABBCollider implements Collider {
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
-    public category: number,
-    public mask: number
+    public category: Category,
+    public mask: Set<Category>
   ) {
     this.bound = aabb
   }
@@ -39,8 +40,8 @@ export class CircleCollider implements Collider {
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
     public tag: string,
-    public category: number,
-    public mask: number
+    public category: Category,
+    public mask: Set<Category>
   ) {
     this.bound = this.buildAABBBound()
   }
@@ -64,8 +65,8 @@ export interface ColliderDef {
   isSensor: boolean
   callback: ((me: Collider, other: Collider) => void) | null
   tag: string
-  category: number
-  mask: number
+  category: Category
+  mask: Set<Category>
 }
 
 export class AABBDef implements ColliderDef {
@@ -74,8 +75,8 @@ export class AABBDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = 0x0001
-  public mask = 0xffff
+  public category = Category.DEFAULT
+  public mask = CategorySet.ALL
   public constructor(public size: Vec2) {}
 }
 
@@ -84,8 +85,8 @@ export class CircleDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
   public tag = ''
-  public category = 0x0001
-  public mask = 0xffff
+  public category = Category.DEFAULT
+  public mask = CategorySet.ALL
   public constructor(public radius: number) {}
 }
 
