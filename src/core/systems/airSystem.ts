@@ -50,6 +50,11 @@ export class AirSystem extends System {
       const air = entity.getComponent('Air') as AirComponent
       const position = entity.getComponent('Position') as PositionComponent
 
+      if (air.quantity <= 0) {
+        this.world.removeEntity(entity)
+        continue
+      }
+
       const radius = Math.sqrt(air.quantity)
 
       airs.push({
