@@ -15,7 +15,6 @@ import { PlayerFactory } from './core/entities/playerFactory'
 import { Entity } from './core/ecs/entity'
 import { BVHComponent } from './core/components/bvhComponent'
 import * as Art from './core/graphics/art'
-import { AirFactory } from './core/entities/airFactory'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
@@ -75,27 +74,6 @@ export class Main {
       new DebugDrawSystem(this.world, debugContainer),
       cameraSystem
     )
-
-    const air1 = new AirFactory()
-      .setPosition(250, 80)
-      .setQuantity(2000)
-      .create()
-    this.world.addEntity(air1)
-    const air2 = new AirFactory()
-      .setPosition(180, 100)
-      .setQuantity(1200)
-      .create()
-    this.world.addEntity(air2)
-    const air3 = new AirFactory()
-      .setPosition(240, 200)
-      .setQuantity(3000)
-      .create()
-    this.world.addEntity(air3)
-    const air4 = new AirFactory()
-      .setPosition(160, 260)
-      .setQuantity(1000)
-      .create()
-    this.world.addEntity(air4)
 
     // 主人公
     const player = new PlayerFactory().create()
