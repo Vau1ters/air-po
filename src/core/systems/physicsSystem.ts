@@ -93,6 +93,7 @@ export default class PhysicsSystem extends System {
 
       let candidates: Collider[] = []
       for (const c of collider1.colliders) {
+        if (c.category === Category.WALL) continue // for performance
         for (const m of c.mask) {
           const bvh = bvhs[m]
           assert(bvh)
