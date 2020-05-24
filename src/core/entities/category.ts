@@ -12,12 +12,10 @@ export class CategorySet extends Set<Category> {
     Category.ENEMY
   )
   public static readonly ALL = new CategorySet(
-    Category.DEFAULT,
-    Category.WALL,
-    Category.PLAYER,
-    Category.ENEMY,
-    Category.AIR
+    ...Object.entries(Category).map(t => t[1] as Category)
   )
+
+  public static readonly NONE = new CategorySet()
 
   public constructor(...categories: Category[]) {
     super(categories)

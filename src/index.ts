@@ -12,8 +12,6 @@ import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
-import { Entity } from './core/ecs/entity'
-import { BVHComponent } from './core/components/bvhComponent'
 import * as Art from './core/graphics/art'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
@@ -106,11 +104,17 @@ export class Main {
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
-    const bvhEntity = new Entity()
-    bvhEntity.addComponent('BVH', new BVHComponent())
-    this.world.addEntity(bvhEntity)
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
+
+    /* eslint @typescript-eslint/no-var-requires: 0 */
+    const Stats = require('stats.js')
+
+    const stats = new Stats()
+    stats.showPanel(1) // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(stats.dom)
+
+    application.ticker.add(() => stats.update())
   }
 }
 Main.init()
