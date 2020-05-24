@@ -4,18 +4,19 @@ import DebugDrawSystem from './core/systems/debugDrawSystem'
 import { application, initializeApplication } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
-import { Container, Graphics } from 'pixi.js'
+import { Container, Rectangle } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
+import { AirSystem } from './core/systems/airSystem'
 import CameraSystem from './core/systems/cameraSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import { PlayerFactory } from './core/entities/playerFactory'
-import { AirFilter } from './filters/airFilter'
 import { Entity } from './core/ecs/entity'
 import { BVHComponent } from './core/components/bvhComponent'
-import { MapBuilder } from './map/mapBuilder'
 import * as Art from './core/graphics/art'
+import UiSystem from './core/systems/uiSystem'
+import { MapBuilder } from './map/mapBuilder'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
 import { BehaviourTree } from './core/ai/behaviourTree'
 import { SequenceNode } from './core/ai/composite/sequenceNode'
@@ -37,36 +38,27 @@ export class Main {
     KeyController.init()
     Art.init()
 
-    // air
-    const airFilter = new AirFilter({ x: 800, y: 600 })
-    airFilter.airs = [
-      {
-        center: {
-          x: 600,
-          y: 250,
-        },
-        radius: 80,
-      },
-      {
-        center: {
-          x: 400,
-          y: 300,
-        },
-        radius: 100,
-      },
-    ]
-    application.stage.filters = [airFilter]
-    const bg = new Graphics()
-    bg.beginFill(0x000000, 0)
-    bg.drawRect(0, 0, 800, 600)
-    bg.endFill()
-    application.stage.addChild(bg)
+    const gameWorldContainer = new Container()
+    application.stage.addChild(gameWorldContainer)
+
+    const drawContainer = new Container()
+    gameWorldContainer.addChild(drawContainer)
+    drawContainer.filterArea = new Rectangle(0, 0, 800, 600)
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
-    application.stage.addChild(debugContainer)
+    gameWorldContainer.addChild(debugContainer)
 
-    const cameraSystem = new CameraSystem(this.world)
+    const uiContainer = new Container()
+    uiContainer.zIndex = Infinity
+    application.stage.addChild(uiContainer)
+
+    const airSystem = new AirSystem(this.world, drawContainer)
+    const cameraSystem = new CameraSystem(
+      this.world,
+      gameWorldContainer,
+      drawContainer
+    )
 
     this.world.addSystem(
       new AISystem(this.world),
@@ -76,7 +68,9 @@ export class Main {
       new BulletSystem(this.world),
       new InvincibleSystem(this.world),
       new DamageSystem(this.world),
-      new DrawSystem(this.world, application.stage),
+      airSystem,
+      new DrawSystem(this.world, drawContainer),
+      new UiSystem(this.world, uiContainer),
       new DebugDrawSystem(this.world, debugContainer),
       cameraSystem
     )
@@ -108,6 +102,7 @@ export class Main {
     enemy1.addComponent('AI', new AIComponent(tree))
 
     cameraSystem.chaseTarget = position
+    airSystem.offset = position
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)

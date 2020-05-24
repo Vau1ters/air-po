@@ -3,9 +3,18 @@ import { EventNotifier } from '../eventNotifier'
 export class PlayerComponent {
   private _state: PlayerState = 'Standing'
   public landing = false
+  private _status: PlayerStatus
   public bulletAngle = 0
 
+  public constructor(initialStatus: PlayerStatus) {
+    this._status = initialStatus
+  }
+
   public readonly changeState = new EventNotifier<PlayerState>()
+
+  public get status(): PlayerStatus {
+    return this._status
+  }
 
   set state(value: PlayerState) {
     if (value != this._state) {
@@ -20,3 +29,9 @@ export class PlayerComponent {
 }
 
 export type PlayerState = 'Jumping' | 'Standing' | 'Walking'
+export type PlayerStatus = {
+  air: {
+    consumeSpeed: number
+    collectSpeed: number
+  }
+}

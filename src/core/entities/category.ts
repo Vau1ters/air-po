@@ -3,6 +3,7 @@ export enum Category {
   WALL,
   PLAYER,
   ENEMY,
+  AIR,
 }
 
 export class CategorySet extends Set<Category> {
@@ -14,7 +15,8 @@ export class CategorySet extends Set<Category> {
     Category.DEFAULT,
     Category.WALL,
     Category.PLAYER,
-    Category.ENEMY
+    Category.ENEMY,
+    Category.AIR
   )
 
   public constructor(...categories: Category[]) {
@@ -22,11 +24,11 @@ export class CategorySet extends Set<Category> {
   }
 
   public clone(): CategorySet {
-    const hoge = new CategorySet()
+    const set = new CategorySet()
     for (const category of this) {
-      hoge.add(category)
+      set.add(category)
     }
-    return hoge
+    return set
   }
 
   public negate(category: Category): CategorySet {

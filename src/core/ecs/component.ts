@@ -5,6 +5,8 @@ import { DrawComponent } from '../components/drawComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
+import { AirComponent } from '../components/airComponent'
+import { AirHolderComponent } from '../components/airHolderComponent'
 import { AIComponent } from '../components/aiComponent'
 import { HPComponent } from '../components/hpComponent'
 import { AttackComponent } from '../components/attackComponent'
@@ -19,6 +21,8 @@ export interface ComponentMap {
   Player: PlayerComponent
   Bullet: BulletComponent
   HorizontalDirection: HorizontalDirectionComponent
+  Air: AirComponent
+  AirHolder: AirHolderComponent
   AI: AIComponent
   HP: HPComponent
   Invincible: InvincibleComponent

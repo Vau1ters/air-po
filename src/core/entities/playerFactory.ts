@@ -11,6 +11,7 @@ import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { Graphics } from 'pixi.js'
+import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 
@@ -30,6 +31,10 @@ export class PlayerFactory extends EntityFactory {
   readonly CLIP_TOLERANCE_X =
     (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
+  readonly INITIAL_AIR_QUANTITY = 1600
+  readonly MAX_AIR_QUANTITY = 2000
+  readonly AIR_COLLECT_SPEED = 2
+  readonly AIR_CONSUME_SPEED = 1
 
   public create(): Entity {
     const entity = new Entity()
@@ -41,9 +46,18 @@ export class PlayerFactory extends EntityFactory {
       this.RESTITUTION
     )
     const draw = new DrawComponent()
-    const player = new PlayerComponent()
+    const player = new PlayerComponent({
+      air: {
+        collectSpeed: this.AIR_COLLECT_SPEED,
+        consumeSpeed: this.AIR_CONSUME_SPEED,
+      },
+    })
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
+    const airHolder = new AirHolderComponent({
+      initialQuantity: this.INITIAL_AIR_QUANTITY,
+      maxQuantity: this.MAX_AIR_QUANTITY,
+    })
     const hp = new HPComponent(10)
     const invincible = new InvincibleComponent()
 
@@ -107,6 +121,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
+    entity.addComponent('AirHolder', airHolder)
     return entity
   }
 }
