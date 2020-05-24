@@ -3,6 +3,7 @@ export enum Category {
   WALL,
   PLAYER,
   ENEMY,
+  AIR,
 }
 
 export class CategorySet extends Set<Category> {
@@ -14,7 +15,8 @@ export class CategorySet extends Set<Category> {
     Category.DEFAULT,
     Category.WALL,
     Category.PLAYER,
-    Category.ENEMY
+    Category.ENEMY,
+    Category.AIR
   )
 
   public constructor(...categories: Category[]) {
