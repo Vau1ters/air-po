@@ -4,6 +4,8 @@ import { PositionComponent } from '../core/components/positionComponent'
 import { Random } from '../utils/random'
 import { AirFactory } from '../core/entities/airFactory'
 import { EnemyFactory } from '../core/entities/enemyFactory'
+import { PlayerFactory } from '../core/entities/playerFactory'
+import { assert } from '../utils/assertion'
 
 export class MapBuilder {
   private world: World
@@ -27,6 +29,9 @@ export class MapBuilder {
           break
         case 'enemy':
           this.buildEnemey(layer)
+          break
+        case 'player':
+          this.buildPlayer(layer)
           break
       }
     }
@@ -88,12 +93,25 @@ export class MapBuilder {
     for (const enemyData of enemyLayer.objects) {
       const enemy = new EnemyFactory().setType(enemyData.type).create()
       const enemyPosition = enemy.getComponent('Position') as PositionComponent
-      enemyPosition.x = enemyData.x
-      enemyPosition.y = enemyData.y
+      enemyPosition.x = enemyData.x + enemyData.width / 2
+      enemyPosition.y = enemyData.y + enemyData.height / 2
       this.world.addEntity(enemy)
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildPlayer(playerLayer: any): void {
+    assert(playerLayer.objects.length === 1)
+    for (const playerData of playerLayer.objects) {
+      const player = new PlayerFactory().create()
+      const playerPosition = player.getComponent(
+        'Position'
+      ) as PositionComponent
+      playerPosition.x = playerData.x + playerData.width / 2
+      playerPosition.y = playerData.y + playerData.height / 2
+      this.world.addEntity(player)
+    }
+  }
   private calcId(cell: number[]): number {
     if (
       cell[0] != 0 &&
