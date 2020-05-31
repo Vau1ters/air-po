@@ -2,6 +2,7 @@ import { BehaviourNode, NodeState } from '../behaviourNode'
 import { World } from '../../ecs/world'
 import { Entity } from '../../ecs/entity'
 import { AirFactory } from '../../entities/airFactory'
+import { assert } from '../../../utils/assertion'
 
 export class AirEmitterNode implements BehaviourNode {
   public airFactory: AirFactory
@@ -16,9 +17,8 @@ export class AirEmitterNode implements BehaviourNode {
 
   execute(entity: Entity, world: World): NodeState {
     const pos = entity.getComponent('Position')
-    if (pos) {
-      this.airFactory.setPosition(pos.x, pos.y)
-    }
+    assert(pos)
+    this.airFactory.setPosition(pos.x, pos.y)
     world.addEntity(this.airFactory.create())
     return NodeState.Success
   }
