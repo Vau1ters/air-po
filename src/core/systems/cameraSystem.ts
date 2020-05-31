@@ -20,7 +20,6 @@ export default class CameraSystem extends System {
       windowSize.width / 2 - this.chaseTarget.x,
       windowSize.height / 2 - this.chaseTarget.y
     )
-    this.drawContainer.filterArea.width = application.stage.width
-    this.drawContainer.filterArea.height = application.stage.height
+    this.drawContainer.filterArea = application.screen
   }
 }
