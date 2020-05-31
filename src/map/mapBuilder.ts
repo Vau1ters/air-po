@@ -3,6 +3,14 @@ import { WallFactory } from '../core/entities/wallFactory'
 import { PositionComponent } from '../core/components/positionComponent'
 import { Random } from '../utils/random'
 import { AirFactory } from '../core/entities/airFactory'
+import { Enemy1Factory } from '../core/entities/enemy1Factory'
+import { BehaviourTree } from '../core/ai/behaviourTree'
+import { SequenceNode } from '../core/ai/composite/sequenceNode'
+import { MoveNode, Direction } from '../core/ai/action/moveNode'
+import { AIComponent } from '../core/components/aiComponent'
+import { WhileNode } from '../core/ai/decorator/whileNode'
+import { TrueNode } from '../core/ai/condition/boolNode'
+import { ParallelNode } from '../core/ai/composite/parallelNode'
 
 export class MapBuilder {
   private world: World
@@ -23,6 +31,9 @@ export class MapBuilder {
           break
         case 'map':
           this.buildMap(layer, map.tilesets)
+          break
+        case 'enemy':
+          this.buildEnemey(layer)
           break
       }
     }
@@ -77,6 +88,38 @@ export class MapBuilder {
         this.world.addEntity(wall)
       }
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildEnemey(enemyLayer: any): void {
+    for (const enemyData of enemyLayer.objects) {
+      switch (enemyData.type) {
+        case 'enemy1':
+          this.buildEnemy1(enemyData)
+          break
+      }
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildEnemy1(enemyData: any): void {
+    const enemy1 = new Enemy1Factory().create()
+    const enemyPosition = enemy1.getComponent('Position') as PositionComponent
+    enemyPosition.x = enemyData.x
+    enemyPosition.y = enemyData.y
+    this.world.addEntity(enemy1)
+
+    const enemyAI = new ParallelNode([
+      new WhileNode({
+        cond: new TrueNode(),
+        exec: new SequenceNode([
+          new MoveNode(Direction.Right, 2, 60),
+          new MoveNode(Direction.Left, 2, 60),
+        ]),
+      }),
+    ])
+    const tree = new BehaviourTree(enemyAI)
+    enemy1.addComponent('AI', new AIComponent(tree))
   }
 
   private calcId(cell: number[]): number {
