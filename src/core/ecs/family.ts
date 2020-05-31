@@ -46,11 +46,6 @@ export class Family {
     return this.entities[Symbol.iterator]()
   }
 
-  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
-  public forEach(callback: (entity: Entity) => void): void {
-    this.entities.forEach(callback)
-  }
-
   private onEntityAdded(entity: Entity): void {
     entity.componentChangedEvent.addObserver((entity): void => {
       this.onEntityChanged(entity)

@@ -28,11 +28,6 @@ export class World {
     return this.entities[Symbol.iterator]()
   }
 
-  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
-  public forEachEntities(callback: (entity: Entity) => void): void {
-    this.entities.forEach(callback)
-  }
-
   public get systemSet(): Set<System> {
     return new Set(this.systems)
   }
@@ -44,11 +39,6 @@ export class World {
   // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
   public get systemIterator(): IterableIterator<System> {
     return this.systems[Symbol.iterator]()
-  }
-
-  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
-  public forEachSystems(callback: (entity: System) => void): void {
-    this.systems.forEach(callback)
   }
 
   public addEntity(...entities: Entity[]): void {
