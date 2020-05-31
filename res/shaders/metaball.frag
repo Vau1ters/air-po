@@ -4,6 +4,7 @@ varying vec2 vTextureCoord;
 varying vec4 vColor;
 
 uniform vec3 points[200];
+uniform float pointNum;
 uniform vec2 displaySize;
 uniform float effectiveRadius;
 
@@ -13,7 +14,7 @@ void main() {
 
   float metaball = 0.0;
   for(int i = 0; i < 200; i++) {
-    if (points[i].z != 0.0) {
+    if (i < int(pointNum) && abs(points[i].z) > 1e-3) {
       vec2 d = coord - points[i].xy;
       float dist = dot(d, d);
       float r = points[i].z;

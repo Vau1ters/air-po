@@ -11,6 +11,8 @@ import {
 } from '../components/colliderComponent'
 import { collide } from '../physics/collision'
 import { BVHComponent } from '../components/bvhComponent'
+import { Category, CategorySet } from '../entities/category'
+import { assert } from '../../utils/assertion'
 
 export default class PhysicsSystem extends System {
   private colliderFamily: Family
@@ -29,15 +31,36 @@ export default class PhysicsSystem extends System {
       .include('Position', 'RigidBody')
       .build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
+
+    for (const c of CategorySet.ALL) {
+      const e = new Entity()
+      const bvh = new BVHComponent(c)
+      e.addComponent('BVH', bvh)
+      this.world.addEntity(e)
+    }
   }
 
   public buildBVH(): void {
     const entities = [...this.colliderFamily.entities]
-    const colliders = entities
-      .map(e => (e.getComponent('Collider') as ColliderComponent).colliders)
-      .flat()
-    for (const entity of this.bvhFamily.entities) {
-      const bvh = entity.getComponent('BVH') as BVHComponent
+    const colliderMap = new Map<Category, Collider[]>()
+    for (const c of CategorySet.ALL) {
+      colliderMap.set(c, [])
+    }
+    for (const e of entities) {
+      const cs = (e.getComponent('Collider') as ColliderComponent).colliders
+      for (const c of cs) {
+        const colliders = colliderMap.get(c.category)
+        assert(colliders)
+        colliders.push(c)
+      }
+    }
+    const bvhs = Array.from(this.bvhFamily.entities).map(
+      e => e.getComponent('BVH') as BVHComponent
+    )
+    for (const bvh of bvhs) {
+      if (bvh.category === Category.WALL && bvh.root) continue
+      const colliders = colliderMap.get(bvh.category)
+      assert(colliders)
       bvh.build(colliders)
     }
   }
@@ -59,24 +82,29 @@ export default class PhysicsSystem extends System {
   }
 
   private broadPhase(entities: Array<Entity>): void {
+    const bvhs: { [key: string]: BVHComponent } = {}
     for (const entity of this.bvhFamily.entities) {
       const bvh = entity.getComponent('BVH') as BVHComponent
-      for (const entity1 of entities) {
-        const collider1 = entity1.getComponent('Collider') as ColliderComponent
-        const position1 = entity1.getComponent('Position') as PositionComponent
-        const candidates = collider1.colliders
-          .map(c => bvh.query(c.bound.add(position1))) // query all parts of entity1
-          .flat() // concat
-          .filter(
-            // remove duplicated candidates
-            (elem, index, self) =>
-              self.findIndex(
-                elem2 => elem2.component.entity.id === elem.component.entity.id
-              ) === index
-          )
-          .filter(elem => elem.component.entity !== entity1) // remove itself
-        for (const collider2 of candidates) {
-          this.collide(entity1, collider2.component.entity)
+      bvhs[bvh.category] = bvh
+    }
+    for (const entity1 of entities) {
+      const collider1 = entity1.getComponent('Collider') as ColliderComponent
+      const position1 = entity1.getComponent('Position') as PositionComponent
+
+      const collidedEntityIdSet = new Set<number>()
+      for (const c of collider1.colliders) {
+        if (c.category === Category.WALL) continue // for performance
+        for (const m of c.mask) {
+          const bvh = bvhs[m]
+          assert(bvh)
+          const rs = bvh.query(c.bound.add(position1))
+          for (const r of rs) {
+            if (r.component.entity === entity1) continue
+            const entity2 = r.component.entity
+            if (collidedEntityIdSet.has(entity2.id)) continue
+            this.collide(entity1, entity2)
+            collidedEntityIdSet.add(entity2.id)
+          }
         }
       }
     }

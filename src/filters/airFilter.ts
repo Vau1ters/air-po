@@ -41,5 +41,6 @@ export class AirFilter extends Filter {
       this.uniforms.points.push(air.center.y)
       this.uniforms.points.push(air.radius)
     })
+    this.uniforms.pointNum = airs.length
   }
 }

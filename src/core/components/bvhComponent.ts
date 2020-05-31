@@ -1,6 +1,8 @@
 import { AABB } from '../math/aabb'
 import { Collider } from './colliderComponent'
 import { PositionComponent } from './positionComponent'
+import { ReservedArray } from '../../utils/reservedArray'
+import { Category } from '../entities/category'
 
 type Axis = 'x' | 'y'
 
@@ -11,9 +13,9 @@ export class BVHLeaf {
     this.collider = collider
   }
 
-  public query(bound: AABB): Collider[] {
-    if (this.bound.overlap(bound)) return [this.collider]
-    return []
+  public query(bound: AABB, result: ReservedArray<Collider>): void {
+    if (!this.bound.overlap(bound)) return
+    result.push(this.collider)
   }
 
   public get bound(): AABB {
@@ -33,18 +35,28 @@ export class BVHNode {
     this.bound = child.map(c => c.bound).reduce((a, b) => a.merge(b))
   }
 
-  public query(bound: AABB): Collider[] {
-    if (!this.bound.overlap(bound)) return []
-    return this.child.map(c => c.query(bound)).flat()
+  public query(bound: AABB, result: ReservedArray<Collider>): void {
+    if (!this.bound.overlap(bound)) return
+    for (const c of this.child) {
+      c.query(bound, result)
+    }
   }
 }
 
 export class BVHComponent {
   public root?: BVHNode | BVHLeaf
+  public category: Category
+
+  constructor(category: Category) {
+    this.category = category
+  }
 
   public query(bound: AABB): Collider[] {
-    if (!this.root) return []
-    return this.root.query(bound)
+    const result = new ReservedArray<Collider>(100)
+    if (this.root) {
+      this.root.query(bound, result)
+    }
+    return result.toArray()
   }
 
   public build(colliders: Collider[]): void {
