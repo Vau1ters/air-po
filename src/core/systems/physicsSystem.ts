@@ -91,7 +91,7 @@ export default class PhysicsSystem extends System {
       const collider1 = entity1.getComponent('Collider') as ColliderComponent
       const position1 = entity1.getComponent('Position') as PositionComponent
 
-      let candidates: Collider[] = []
+      const collidedEntityIdSet = new Set<number>()
       for (const c of collider1.colliders) {
         if (c.category === Category.WALL) continue // for performance
         for (const m of c.mask) {
@@ -99,21 +99,13 @@ export default class PhysicsSystem extends System {
           assert(bvh)
           const rs = bvh.query(c.bound.add(position1))
           for (const r of rs) {
-            candidates.push(r)
+            if (r.component.entity === entity1) continue
+            const entity2 = r.component.entity
+            if (collidedEntityIdSet.has(entity2.id)) continue
+            this.collide(entity1, entity2)
+            collidedEntityIdSet.add(entity2.id)
           }
         }
-      }
-      candidates = candidates
-        .filter(
-          // remove duplicated candidates
-          (elem, index, self) =>
-            self.findIndex(
-              elem2 => elem2.component.entity.id === elem.component.entity.id
-            ) === index
-        )
-        .filter(elem => elem.component.entity !== entity1) // remove itself
-      for (const collider2 of candidates) {
-        this.collide(entity1, collider2.component.entity)
       }
     }
   }
