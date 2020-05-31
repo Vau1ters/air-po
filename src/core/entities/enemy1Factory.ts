@@ -12,6 +12,13 @@ import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
+import { BehaviourTree } from '../../core/ai/behaviourTree'
+import { SequenceNode } from '../../core/ai/composite/sequenceNode'
+import { MoveNode, Direction } from '../../core/ai/action/moveNode'
+import { AIComponent } from '../../core/components/aiComponent'
+import { WhileNode } from '../../core/ai/decorator/whileNode'
+import { TrueNode } from '../../core/ai/condition/boolNode'
+import { ParallelNode } from '../../core/ai/composite/parallelNode'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -85,6 +92,17 @@ export class Enemy1Factory extends EntityFactory {
       }
     })
 
+    const enemyAI = new ParallelNode([
+      new WhileNode({
+        cond: new TrueNode(),
+        exec: new SequenceNode([
+          new MoveNode(Direction.Right, 2, 60),
+          new MoveNode(Direction.Left, 2, 60),
+        ]),
+      }),
+    ])
+    const tree = new BehaviourTree(enemyAI)
+
     entity.addComponent('Position', position)
     entity.addComponent('RigidBody', body)
     entity.addComponent('HorizontalDirection', direction)
@@ -93,6 +111,7 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('Attack', attack)
     entity.addComponent('Invincible', invincible)
     entity.addComponent('HP', hp)
+    entity.addComponent('AI', new AIComponent(tree))
     return entity
   }
 }
