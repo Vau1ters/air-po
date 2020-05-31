@@ -40,7 +40,7 @@ export default class DebugDrawSystem extends System {
 
     if (this.state.position) {
       this.graphics.beginFill(0xff0000)
-      for (const entity of this.positionFamily.entities) {
+      for (const entity of this.positionFamily.entityIterator) {
         const position = entity.getComponent('Position') as PositionComponent
         this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
       }
@@ -49,7 +49,7 @@ export default class DebugDrawSystem extends System {
 
     if (this.state.collider) {
       this.graphics.beginFill(0x00ffff, 0.5)
-      for (const entity of this.colliderFamily.entities) {
+      for (const entity of this.colliderFamily.entityIterator) {
         const position = entity.getComponent('Position') as PositionComponent
         const collider = entity.getComponent('Collider') as ColliderComponent
 
@@ -69,7 +69,7 @@ export default class DebugDrawSystem extends System {
     if (this.state.bvh) {
       this.graphics.lineStyle(0.5, 0xff0000)
       this.graphics.beginFill(0xffffff, 0)
-      for (const entity of this.bvhFamily.entities) {
+      for (const entity of this.bvhFamily.entityIterator) {
         const bvh = entity.getComponent('BVH') as BVHComponent
 
         const draw = (n: BVHNode | BVHLeaf): void => {

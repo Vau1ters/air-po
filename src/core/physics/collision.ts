@@ -27,9 +27,12 @@ const collideCircleAndAABB = (circle: Circle, aabb: AABB): boolean => {
   return distX * distX + distY * distY < circle.radius * circle.radius
 }
 
-const collideAirAndAABB = (airs: Set<Entity>, aabb: AABB): boolean => {
+const collideAirAndAABB = (
+  airIterator: IterableIterator<Entity>,
+  aabb: AABB
+): boolean => {
   let score = 0
-  for (const air of airs) {
+  for (const air of airIterator) {
     const airComponent = air.getComponent('Air') as AirComponent
     const pos = air.getComponent('Position') as PositionComponent
     const r2 = airComponent.quantity
@@ -80,11 +83,11 @@ export const collide = (
     const circle2 = c2.circle.add(position2)
     return circle1.overlap(circle2)
   } else if (c1 instanceof AirCollider && c2 instanceof AABBCollider) {
-    const air = c1.airFamily.entities
+    const air = c1.airFamily.entityIterator
     const aabb = c2.aabb.add(position2)
     return collideAirAndAABB(air, aabb)
   } else if (c1 instanceof AABBCollider && c2 instanceof AirCollider) {
-    const air = c2.airFamily.entities
+    const air = c2.airFamily.entityIterator
     const aabb = c1.aabb.add(position1)
     return collideAirAndAABB(air, aabb)
   } else {
