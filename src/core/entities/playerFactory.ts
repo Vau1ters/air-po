@@ -58,7 +58,7 @@ export class PlayerFactory extends EntityFactory {
       initialQuantity: this.INITIAL_AIR_QUANTITY,
       maxQuantity: this.MAX_AIR_QUANTITY,
     })
-    const hp = new HPComponent(10)
+    const hp = new HPComponent(10, 10)
     const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
