@@ -37,6 +37,16 @@ export class Family {
     return new Set(this._entities)
   }
 
+  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
+  public get entityIterator(): IterableIterator<Entity> {
+    return this._entities[Symbol.iterator]()
+  }
+
+  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
+  public forEach(callback: (entity: Entity) => void): void {
+    this._entities.forEach(callback)
+  }
+
   private onEntityAdded(entity: Entity): void {
     entity.componentChangedEvent.addObserver((entity): void => {
       this.onEntityChanged(entity)

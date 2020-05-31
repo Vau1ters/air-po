@@ -24,7 +24,7 @@ export default class UiSystem extends System {
   }
 
   public update(): void {
-    for (const player of this.playerFamily.entities) {
+    for (const player of this.playerFamily.entityIterator) {
       const holder = player.getComponent('AirHolder') as AirHolderComponent
       this.airGauge.clear()
       this.airGauge.beginFill(0x3090ff)

@@ -47,7 +47,7 @@ export class PlayerControlSystem extends System {
   }
 
   public update(): void {
-    for (const entity of this.family.entities) {
+    for (const entity of this.family.entityIterator) {
       const player = entity.getComponent('Player') as PlayerComponent
       const direction = entity.getComponent(
         'HorizontalDirection'

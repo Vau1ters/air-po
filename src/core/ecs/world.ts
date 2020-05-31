@@ -19,8 +19,28 @@ export class World {
     return new Set(this._entities)
   }
 
+  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
+  public get entityIterator(): IterableIterator<Entity> {
+    return this._entities[Symbol.iterator]()
+  }
+
+  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
+  public forEachEntities(callback: (entity: Entity) => void): void {
+    this._entities.forEach(callback)
+  }
+
   public get systems(): Set<System> {
     return new Set(this._systems)
+  }
+
+  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
+  public get systemIterator(): IterableIterator<System> {
+    return this._systems[Symbol.iterator]()
+  }
+
+  // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
+  public forEachSystems(callback: (entity: System) => void): void {
+    this._systems.forEach(callback)
   }
 
   public addEntity(...entities: Entity[]): void {
