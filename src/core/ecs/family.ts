@@ -7,7 +7,7 @@ export class Family {
   private readonly world: World
   private readonly includeComponents: Set<ComponentName>
   private readonly excludeComponents: Set<ComponentName>
-  private readonly _entities: Set<Entity>
+  private readonly entities: Set<Entity>
   public readonly entityAddedEvent: EventNotifier<Entity>
   public readonly entityRemovedEvent: EventNotifier<Entity>
 
@@ -19,12 +19,12 @@ export class Family {
     this.world = world
     this.includeComponents = includeComponents
     this.excludeComponents = excludeComponents
-    this._entities = new Set()
+    this.entities = new Set()
 
     this.entityAddedEvent = new EventNotifier()
     this.entityRemovedEvent = new EventNotifier()
 
-    this.addEntitiesBySet(this.world.entities)
+    this.addEntitiesBySet(this.world.entitySet)
     this.world.entityAddedEvent.addObserver((entity: Entity): void => {
       this.onEntityAdded(entity)
     })
@@ -33,18 +33,22 @@ export class Family {
     })
   }
 
-  public get entities(): Set<Entity> {
-    return new Set(this._entities)
+  public get entitySet(): Set<Entity> {
+    return new Set(this.entities)
+  }
+
+  public get entityArray(): Entity[] {
+    return Array.from(this.entities)
   }
 
   // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
   public get entityIterator(): IterableIterator<Entity> {
-    return this._entities[Symbol.iterator]()
+    return this.entities[Symbol.iterator]()
   }
 
   // GCによるパフォーマンス低下を防ぐために、できるだけこちらを使う
   public forEach(callback: (entity: Entity) => void): void {
-    this._entities.forEach(callback)
+    this.entities.forEach(callback)
   }
 
   private onEntityAdded(entity: Entity): void {
@@ -52,22 +56,22 @@ export class Family {
       this.onEntityChanged(entity)
     })
     if (this.includesEntity(entity)) {
-      this._entities.add(entity)
+      this.entities.add(entity)
       this.entityAddedEvent.notify(entity)
     }
   }
 
   private onEntityRemoved(entity: Entity): void {
-    this._entities.delete(entity)
+    this.entities.delete(entity)
     this.entityRemovedEvent.notify(entity)
   }
 
   private onEntityChanged(entity: Entity): void {
     if (this.includesEntity(entity)) {
-      this._entities.add(entity)
+      this.entities.add(entity)
       this.entityAddedEvent.notify(entity)
     } else {
-      this._entities.delete(entity)
+      this.entities.delete(entity)
       this.entityRemovedEvent.notify(entity)
     }
   }

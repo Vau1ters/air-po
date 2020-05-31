@@ -72,11 +72,10 @@ export class AirSystem extends System {
     const airCollider = collider.colliders[0]
     assert(airCollider instanceof AirCollider)
 
-    const aabbBounds: AABB[] = []
-    for (const e of airCollider.airFamily.entityIterator) {
-      const p = e.getComponent('Position') as PositionComponent
-      aabbBounds.push(
-        new AABB(
+    const aabbBounds: AABB[] = airCollider.airFamily.entityArray.map(
+      (e: Entity) => {
+        const p = e.getComponent('Position') as PositionComponent
+        return new AABB(
           p.sub(
             new Vec2(AirFilter.EFFECTIVE_RADIUS, AirFilter.EFFECTIVE_RADIUS)
           ),
@@ -85,8 +84,8 @@ export class AirSystem extends System {
             AirFilter.EFFECTIVE_RADIUS * 2
           )
         )
-      )
-    }
+      }
+    )
     airCollider.bound = aabbBounds.reduce((a, b) => a.merge(b))
   }
 }

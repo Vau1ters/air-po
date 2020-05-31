@@ -41,12 +41,11 @@ export default class PhysicsSystem extends System {
   }
 
   public buildBVH(): void {
-    const entities = [...this.colliderFamily.entities]
     const colliderMap = new Map<Category, Collider[]>()
     for (const c of CategorySet.ALL) {
       colliderMap.set(c, [])
     }
-    for (const e of entities) {
+    for (const e of this.colliderFamily.entityIterator) {
       const cs = (e.getComponent('Collider') as ColliderComponent).colliders
       for (const c of cs) {
         const colliders = colliderMap.get(c.category)
@@ -54,10 +53,8 @@ export default class PhysicsSystem extends System {
         colliders.push(c)
       }
     }
-    const bvhs = Array.from(this.bvhFamily.entities).map(
-      e => e.getComponent('BVH') as BVHComponent
-    )
-    for (const bvh of bvhs) {
+    for (const entity of this.bvhFamily.entityIterator) {
+      const bvh = entity.getComponent('BVH') as BVHComponent
       if (bvh.category === Category.WALL && bvh.root) continue
       const colliders = colliderMap.get(bvh.category)
       assert(colliders)
@@ -68,9 +65,9 @@ export default class PhysicsSystem extends System {
   public update(delta: number): void {
     this.buildBVH()
     this.collidedList.length = 0
-    this.broadPhase([...this.colliderFamily.entities])
+    this.broadPhase()
     this.solve(this.collidedList)
-    for (const entity of this.rigidBodyFamily.entities) {
+    for (const entity of this.rigidBodyFamily.entityIterator) {
       const position = entity.getComponent('Position') as PositionComponent
       const body = entity.getComponent('RigidBody') as RigidBodyComponent
       body.velocity.x += body.acceleration.x * delta
@@ -81,13 +78,13 @@ export default class PhysicsSystem extends System {
     }
   }
 
-  private broadPhase(entities: Array<Entity>): void {
+  private broadPhase(): void {
     const bvhs: { [key: string]: BVHComponent } = {}
-    for (const entity of this.bvhFamily.entities) {
+    for (const entity of this.bvhFamily.entityIterator) {
       const bvh = entity.getComponent('BVH') as BVHComponent
       bvhs[bvh.category] = bvh
     }
-    for (const entity1 of entities) {
+    for (const entity1 of this.colliderFamily.entityIterator) {
       const collider1 = entity1.getComponent('Collider') as ColliderComponent
       const position1 = entity1.getComponent('Position') as PositionComponent
 
