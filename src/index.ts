@@ -31,10 +31,10 @@ import map from '../res/teststage.json'
 export class Main {
   public static world = new World()
   /*+.† INITIALIZATION †.+*/
-  public static init(): void {
+  public static async init(): Promise<void> {
     initializeApplication()
     KeyController.init()
-    Art.init()
+    await Art.init()
 
     const gameWorldContainer = new Container()
     application.stage.addChild(gameWorldContainer)
