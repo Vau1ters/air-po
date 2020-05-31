@@ -12,13 +12,18 @@ import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
-import { BehaviourTree } from '../../core/ai/behaviourTree'
-import { SequenceNode } from '../../core/ai/composite/sequenceNode'
-import { MoveNode, Direction } from '../../core/ai/action/moveNode'
-import { AIComponent } from '../../core/components/aiComponent'
-import { WhileNode } from '../../core/ai/decorator/whileNode'
-import { TrueNode } from '../../core/ai/condition/boolNode'
-import { ParallelNode } from '../../core/ai/composite/parallelNode'
+import { WhileNode } from '../ai/decorator/whileNode'
+import { TrueNode } from '../ai/condition/boolNode'
+import { IfNode } from '../ai/decorator/ifNode'
+import { AnimationNode } from '../ai/action/animationNode'
+import { SequenceNode } from '../ai/composite/sequenceNode'
+import { MoveNode, Direction } from '../ai/action/moveNode'
+import { BehaviourTree } from '../ai/behaviourTree'
+import { AIComponent } from '../components/aiComponent'
+import { IsDeadNode } from '../ai/condition/isDeadNode'
+import { WaitNode } from '../ai/action/waitNode'
+import { DeathNode } from '../ai/action/deathNode'
+import { AirEmitterNode } from '../ai/action/airEmitterNode'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -81,6 +86,7 @@ export class Enemy1Factory extends EntityFactory {
 
     const animatedTexture = {
       Floating: [enemy1Textures[0], enemy1Textures[1]],
+      Dying: [enemy1Textures[2]],
     }
     const sprite = new Animation(animatedTexture, 'Floating')
     draw.addChild(sprite)
@@ -92,17 +98,25 @@ export class Enemy1Factory extends EntityFactory {
       }
     })
 
-    const enemyAI = new ParallelNode([
-      new WhileNode({
-        cond: new TrueNode(),
-        exec: new SequenceNode([
+    const enemyAI = new WhileNode(
+      new TrueNode(),
+      new IfNode(
+        new IsDeadNode(),
+        new SequenceNode([
+          new AnimationNode(sprite, 'Dying'),
+          new WaitNode(60),
+          new AirEmitterNode(10000),
+          new DeathNode(),
+        ]),
+        new SequenceNode([
           new MoveNode(Direction.Right, 2, 60),
           new MoveNode(Direction.Left, 2, 60),
-        ]),
-      }),
-    ])
-    const tree = new BehaviourTree(enemyAI)
+        ])
+      )
+    )
+    const ai = new AIComponent(new BehaviourTree(enemyAI))
 
+    entity.addComponent('AI', ai)
     entity.addComponent('Position', position)
     entity.addComponent('RigidBody', body)
     entity.addComponent('HorizontalDirection', direction)
@@ -111,7 +125,6 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('Attack', attack)
     entity.addComponent('Invincible', invincible)
     entity.addComponent('HP', hp)
-    entity.addComponent('AI', new AIComponent(tree))
     return entity
   }
 }
