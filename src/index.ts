@@ -11,7 +11,6 @@ import CameraSystem from './core/systems/cameraSystem'
 import { KeyController } from './core/controller'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
-import { PlayerFactory } from './core/entities/playerFactory'
 import * as Art from './core/graphics/art'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
@@ -19,6 +18,7 @@ import AISystem from './core/systems/aiSystem'
 import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
+import { FamilyBuilder } from './core/ecs/family'
 
 export class Main {
   public static world = new World()
@@ -65,18 +65,15 @@ export class Main {
       cameraSystem
     )
 
-    // 主人公
-    const player = new PlayerFactory().create()
-    const position = player.getComponent('Position') as PositionComponent
-    position.x = 100
-    position.y = 50
-    this.world.addEntity(player)
-
-    cameraSystem.chaseTarget = position
-    airSystem.offset = position
-
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
+
+    for (const player of new FamilyBuilder(this.world).include('Player').build()
+      .entityIterator) {
+      const position = player.getComponent('Position') as PositionComponent
+      cameraSystem.chaseTarget = position
+      airSystem.offset = position
+    }
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
 
