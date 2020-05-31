@@ -15,7 +15,6 @@ import { PlayerFactory } from './core/entities/playerFactory'
 import * as Art from './core/graphics/art'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
-import { Enemy1Factory } from './core/entities/enemy1Factory'
 import AISystem from './core/systems/aiSystem'
 import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
@@ -72,13 +71,6 @@ export class Main {
     position.x = 100
     position.y = 50
     this.world.addEntity(player)
-
-    // 敵
-    const enemy1 = new Enemy1Factory().create()
-    const enemyPosition = enemy1.getComponent('Position') as PositionComponent
-    enemyPosition.x = 160
-    enemyPosition.y = 140
-    this.world.addEntity(enemy1)
 
     cameraSystem.chaseTarget = position
     airSystem.offset = position
