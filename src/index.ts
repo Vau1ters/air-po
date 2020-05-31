@@ -16,14 +16,7 @@ import * as Art from './core/graphics/art'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
 import { Enemy1Factory } from './core/entities/enemy1Factory'
-import { BehaviourTree } from './core/ai/behaviourTree'
-import { SequenceNode } from './core/ai/composite/sequenceNode'
-import { MoveNode, Direction } from './core/ai/action/moveNode'
-import { AIComponent } from './core/components/aiComponent'
 import AISystem from './core/systems/aiSystem'
-import { WhileNode } from './core/ai/decorator/whileNode'
-import { TrueNode } from './core/ai/condition/boolNode'
-import { ParallelNode } from './core/ai/composite/parallelNode'
 import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
@@ -86,18 +79,6 @@ export class Main {
     enemyPosition.x = 160
     enemyPosition.y = 140
     this.world.addEntity(enemy1)
-
-    const enemyAI = new ParallelNode([
-      new WhileNode({
-        cond: new TrueNode(),
-        exec: new SequenceNode([
-          new MoveNode(Direction.Right, 2, 60),
-          new MoveNode(Direction.Left, 2, 60),
-        ]),
-      }),
-    ])
-    const tree = new BehaviourTree(enemyAI)
-    enemy1.addComponent('AI', new AIComponent(tree))
 
     cameraSystem.chaseTarget = position
     airSystem.offset = position

@@ -65,10 +65,6 @@ export class DamageSystem extends System {
     ) {
       hp.hp -= attack.damage
       invincible.setInvincible()
-      // 死亡
-      if (hp.hp <= 0) {
-        this.world.removeEntity(entity)
-      }
     }
   }
 }
