@@ -18,7 +18,7 @@ export default class DrawSystem extends System {
 
     this.family = new FamilyBuilder(world).include('Draw').build()
 
-    for (const entity of this.family.entities) {
+    for (const entity of this.family.entityIterator) {
       this.onContainerAdded(entity)
     }
     this.family.entityAddedEvent.addObserver(entity =>
@@ -42,7 +42,7 @@ export default class DrawSystem extends System {
   }
 
   public update(): void {
-    for (const entity of this.family.entities) {
+    for (const entity of this.family.entityIterator) {
       const container = entity.getComponent('Draw') as DrawComponent
       if (entity.hasComponent('Position')) {
         const position = entity.getComponent('Position') as PositionComponent

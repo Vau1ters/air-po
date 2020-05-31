@@ -5,11 +5,7 @@ import { World } from '../ecs/world'
 import { KeyController } from '../controller'
 import { PlayerComponent } from '../components/playerComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import {
-  Collider,
-  AirCollider,
-  ColliderComponent,
-} from '../components/colliderComponent'
+import { Collider, AirCollider } from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { BulletFactory } from '../entities/bulletFactory'
 import { assert } from '../../utils/assertion'
@@ -47,7 +43,7 @@ export class PlayerControlSystem extends System {
   }
 
   public update(): void {
-    for (const entity of this.family.entities) {
+    for (const entity of this.family.entityIterator) {
       const player = entity.getComponent('Player') as PlayerComponent
       const direction = entity.getComponent(
         'HorizontalDirection'
@@ -134,32 +130,36 @@ export class PlayerControlSystem extends System {
   ): void {
     // collect air
     if (otherCollider.tag == 'air') {
+      assert(otherCollider instanceof AirCollider)
+
       const player = playerCollider.component.entity.getComponent(
         'Player'
       ) as PlayerComponent
-      const pp = playerCollider.component.entity.getComponent(
+      const position = playerCollider.component.entity.getComponent(
         'Position'
       ) as PositionComponent
       const airHolder = playerCollider.component.entity.getComponent(
         'AirHolder'
       ) as AirHolderComponent
-      const airs = Array.from(
-        ((otherCollider.component.entity.getComponent(
-          'Collider'
-        ) as ColliderComponent).colliders[0] as AirCollider).airFamily.entities
+
+      const hitAirs: Entity[] = otherCollider.airFamily.entityArray.filter(
+        (a: Entity) => (a.getComponent('Air') as AirComponent).hit
       )
-        .filter((a: Entity) => (a.getComponent('Air') as AirComponent).hit)
-        .sort((a, b) => {
-          const aa = a.getComponent('Air') as AirComponent
-          const pa = a.getComponent('Position') as PositionComponent
-          const ab = b.getComponent('Air') as AirComponent
-          const pb = b.getComponent('Position') as PositionComponent
-          return (
-            ab.quantity / pb.sub(pp).lengthSq() -
-            aa.quantity / pa.sub(pp).lengthSq()
-          )
-        })
-      const air = airs[0].getComponent('Air') as AirComponent
+      const nearestAir = hitAirs.reduce((a, b) => {
+        const aa = a.getComponent('Air') as AirComponent
+        const pa = a.getComponent('Position') as PositionComponent
+        const ab = b.getComponent('Air') as AirComponent
+        const pb = b.getComponent('Position') as PositionComponent
+        if (
+          pa.sub(position).lengthSq() / aa.quantity <
+          pb.sub(position).lengthSq() / ab.quantity
+        ) {
+          return a
+        } else {
+          return b
+        }
+      })
+      const air = nearestAir.getComponent('Air') as AirComponent
       const collectSpeed = Math.min(
         player.status.air.collectSpeed,
         airHolder.maxQuantity - airHolder.currentQuantity,

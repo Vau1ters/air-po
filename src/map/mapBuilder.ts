@@ -3,6 +3,7 @@ import { WallFactory } from '../core/entities/wallFactory'
 import { PositionComponent } from '../core/components/positionComponent'
 import { Random } from '../utils/random'
 import { AirFactory } from '../core/entities/airFactory'
+import { EnemyFactory } from '../core/entities/enemyFactory'
 
 export class MapBuilder {
   private world: World
@@ -23,6 +24,9 @@ export class MapBuilder {
           break
         case 'map':
           this.buildMap(layer, map.tilesets)
+          break
+        case 'enemy':
+          this.buildEnemey(layer)
           break
       }
     }
@@ -76,6 +80,17 @@ export class MapBuilder {
         p.y = 8 * y
         this.world.addEntity(wall)
       }
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildEnemey(enemyLayer: any): void {
+    for (const enemyData of enemyLayer.objects) {
+      const enemy = new EnemyFactory().setType(enemyData.type).create()
+      const enemyPosition = enemy.getComponent('Position') as PositionComponent
+      enemyPosition.x = enemyData.x
+      enemyPosition.y = enemyData.y
+      this.world.addEntity(enemy)
     }
   }
 
