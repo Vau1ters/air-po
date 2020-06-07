@@ -8,9 +8,9 @@ import { ColliderComponent, AABBCollider, CircleCollider } from '../components/c
 
 export default class DebugDrawSystem extends System {
   private state = {
-    position: false,
-    collider: false,
-    bvh: false,
+    position: true,
+    collider: true,
+    bvh: true,
   }
 
   private positionFamily: Family
