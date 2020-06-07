@@ -66,12 +66,7 @@ export class MapBuilder {
           for (let i = 0; i < 3; i++) {
             const xi = x + i - 1
             const yj = y + j - 1
-            if (
-              0 <= xi &&
-              xi < mapLayer.width &&
-              0 <= yj &&
-              yj < mapLayer.height
-            ) {
+            if (0 <= xi && xi < mapLayer.width && 0 <= yj && yj < mapLayer.height) {
               cells.push(mapLayer.data[xi + yj * mapLayer.width])
             } else {
               cells.push(0)
@@ -104,9 +99,7 @@ export class MapBuilder {
     assert(playerLayer.objects.length === 1)
     for (const playerData of playerLayer.objects) {
       const player = new PlayerFactory().create()
-      const playerPosition = player.getComponent(
-        'Position'
-      ) as PositionComponent
+      const playerPosition = player.getComponent('Position') as PositionComponent
       playerPosition.x = playerData.x + playerData.width / 2
       playerPosition.y = playerData.y + playerData.height / 2
       this.world.addEntity(player)

@@ -4,11 +4,7 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import {
-  ColliderComponent,
-  Collider,
-  AABBCollider,
-} from '../components/colliderComponent'
+import { ColliderComponent, Collider, AABBCollider } from '../components/colliderComponent'
 import { collide } from '../physics/collision'
 import { BVHComponent } from '../components/bvhComponent'
 import { Category, CategorySet } from '../entities/category'
@@ -24,12 +20,8 @@ export default class PhysicsSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.colliderFamily = new FamilyBuilder(world)
-      .include('Position', 'Collider')
-      .build()
-    this.rigidBodyFamily = new FamilyBuilder(world)
-      .include('Position', 'RigidBody')
-      .build()
+    this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
+    this.rigidBodyFamily = new FamilyBuilder(world).include('Position', 'RigidBody').build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
 
     for (const c of CategorySet.ALL) {
@@ -144,19 +136,11 @@ export default class PhysicsSystem extends System {
   private solve(collidedList: Array<[Collider, Collider]>): void {
     // 互いに押し合う
     for (const [c1, c2] of collidedList) {
-      const body1 = c1.component.entity.getComponent(
-        'RigidBody'
-      ) as RigidBodyComponent
-      const body2 = c2.component.entity.getComponent(
-        'RigidBody'
-      ) as RigidBodyComponent
+      const body1 = c1.component.entity.getComponent('RigidBody') as RigidBodyComponent
+      const body2 = c2.component.entity.getComponent('RigidBody') as RigidBodyComponent
 
-      const position1 = c1.component.entity.getComponent(
-        'Position'
-      ) as PositionComponent
-      const position2 = c2.component.entity.getComponent(
-        'Position'
-      ) as PositionComponent
+      const position1 = c1.component.entity.getComponent('Position') as PositionComponent
+      const position2 = c2.component.entity.getComponent('Position') as PositionComponent
       // TODO:別クラスに分ける
       if (c1 instanceof AABBCollider && c2 instanceof AABBCollider) {
         const aabb1 = c1.aabb.add(position1)
@@ -178,8 +162,7 @@ export default class PhysicsSystem extends System {
           continue
         }
 
-        const ratio =
-          (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
+        const ratio = (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
 
         const sumMass = body1.invMass + body2.invMass
         // 反発係数

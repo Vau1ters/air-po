@@ -20,15 +20,9 @@ export const initializeApplication = (): void => {
 
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()
-    const scale = Math.min(
-      rect.width / windowSize.width,
-      rect.height / windowSize.height
-    )
+    const scale = Math.min(rect.width / windowSize.width, rect.height / windowSize.height)
     application.stage.scale.set(scale)
-    application.renderer.resize(
-      windowSize.width * scale,
-      windowSize.height * scale
-    )
+    application.renderer.resize(windowSize.width * scale, windowSize.height * scale)
   }
   onResizeCallback()
   window.addEventListener('resize', onResizeCallback)

@@ -12,11 +12,7 @@ export enum Direction {
 export class MoveNode implements BehaviourNode {
   private timer = 0
 
-  public constructor(
-    private dir: Direction,
-    private speed: number,
-    private limitTime: number
-  ) {}
+  public constructor(private dir: Direction, private speed: number, private limitTime: number) {}
 
   public initState(): void {
     this.timer = 0
