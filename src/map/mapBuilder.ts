@@ -28,7 +28,7 @@ export class MapBuilder {
           this.buildMap(layer, map.tilesets)
           break
         case 'enemy':
-          this.buildEnemey(layer)
+          this.buildEnemy(layer)
           break
         case 'player':
           this.buildPlayer(layer)
@@ -84,7 +84,7 @@ export class MapBuilder {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildEnemey(enemyLayer: any): void {
+  private buildEnemy(enemyLayer: any): void {
     for (const enemyData of enemyLayer.objects) {
       const enemy = new EnemyFactory().setType(enemyData.type).create()
       const enemyPosition = enemy.getComponent('Position') as PositionComponent
