@@ -9,6 +9,10 @@ import {
   AABBCollider,
   CircleCollider,
 } from '../components/colliderComponent'
+import { windowSize } from '../application'
+import { assert } from '../../utils/assertion'
+import { AABB } from '../math/aabb'
+import { Vec2 } from '../math/vec2'
 
 export default class DebugDrawSystem extends System {
   private state = {
@@ -20,6 +24,7 @@ export default class DebugDrawSystem extends System {
   private positionFamily: Family
   private colliderFamily: Family
   private bvhFamily: Family
+  private cameraFamily: Family
 
   private graphics: Graphics = new Graphics()
 
@@ -31,6 +36,7 @@ export default class DebugDrawSystem extends System {
       .include('Position', 'Collider')
       .build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
+    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     container.addChild(this.graphics)
   }
@@ -38,11 +44,34 @@ export default class DebugDrawSystem extends System {
   public update(): void {
     this.graphics.clear()
 
+    // 表示領域のみ描画して最適化
+    let cameraPosition: { x: number; y: number } | undefined = undefined
+    for (const camera of this.cameraFamily.entityIterator) {
+      const position = camera.getComponent('Position')
+      assert(position instanceof PositionComponent)
+      cameraPosition = {
+        x: position.x,
+        y: position.y,
+      }
+    }
+    assert(cameraPosition != undefined)
+    const cameraX = cameraPosition.x - windowSize.width / 2
+    const cameraY = cameraPosition.y - windowSize.height / 2
+    const cameraW = windowSize.width
+    const cameraH = windowSize.height
+    const cameraArea = new AABB(
+      new Vec2(cameraX, cameraY),
+      new Vec2(cameraW, cameraH)
+    )
+
     if (this.state.position) {
       this.graphics.beginFill(0xff0000)
       for (const entity of this.positionFamily.entityIterator) {
         const position = entity.getComponent('Position') as PositionComponent
-        this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
+        new AABB().contains
+        if (cameraArea.contains(position)) {
+          this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
+        }
       }
       this.graphics.endFill()
     }
@@ -56,10 +85,18 @@ export default class DebugDrawSystem extends System {
         for (const c of collider.colliders) {
           if (c instanceof AABBCollider) {
             const pos = position.add(c.aabb.position)
-            this.graphics.drawRect(pos.x, pos.y, c.aabb.size.x, c.aabb.size.y)
+            if (cameraArea.overlap(new AABB(pos, c.aabb.size))) {
+              this.graphics.drawRect(pos.x, pos.y, c.aabb.size.x, c.aabb.size.y)
+            }
           } else if (c instanceof CircleCollider) {
             const pos = position.add(c.circle.position)
-            this.graphics.drawCircle(pos.x, pos.y, c.circle.radius)
+            if (
+              cameraArea.overlap(
+                new AABB(pos, new Vec2(c.circle.radius, c.circle.radius))
+              )
+            ) {
+              this.graphics.drawCircle(pos.x, pos.y, c.circle.radius)
+            }
           }
         }
       }
@@ -67,22 +104,29 @@ export default class DebugDrawSystem extends System {
     }
 
     if (this.state.bvh) {
-      this.graphics.lineStyle(0.5, 0xff0000)
-      this.graphics.beginFill(0xffffff, 0)
       for (const entity of this.bvhFamily.entityIterator) {
+        // webGLの頂点数上限に引っかからないようにnative: trueにしている
+        this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)
         const bvh = entity.getComponent('BVH') as BVHComponent
 
         const draw = (n: BVHNode | BVHLeaf): void => {
           const b = n.bound
-          this.graphics.drawRect(b.position.x, b.position.y, b.size.x, b.size.y)
+          if (cameraArea.overlap(b)) {
+            this.graphics.drawRect(
+              b.position.x,
+              b.position.y,
+              b.size.x,
+              b.size.y
+            )
+          }
           if (n instanceof BVHNode) {
             for (const c of n.child) draw(c)
           }
         }
 
         if (bvh.root) draw(bvh.root)
+        this.graphics.endFill()
       }
-      this.graphics.endFill()
     }
   }
 }
