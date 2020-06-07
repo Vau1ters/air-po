@@ -84,7 +84,7 @@ export class PlayerFactory extends EntityFactory {
       this.FOOT_CLIP_TOLERANCE_Y
     )
     collider.createCollider(aabbFoot)
-    
+
     const animatedTexture = {
       Standing: [playerTextures[0]],
       Walking: [playerTextures[0], playerTextures[1]],
