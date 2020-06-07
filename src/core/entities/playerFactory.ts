@@ -14,6 +14,7 @@ import { Graphics } from 'pixi.js'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
+import { CameraComponent } from '../components/cameraComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -60,6 +61,9 @@ export class PlayerFactory extends EntityFactory {
     })
     const hp = new HPComponent(10, 10)
     const invincible = new InvincibleComponent()
+
+    // TODO: カメラをプレイヤーから分離する
+    const camera = new CameraComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag = 'playerBody'
@@ -122,6 +126,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
+    entity.addComponent('Camera', camera)
     return entity
   }
 }
