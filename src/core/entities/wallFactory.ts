@@ -30,7 +30,7 @@ export class WallFactory extends EntityFactory {
     const draw = new DrawComponent()
 
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabb.tag = 'wall'
+    aabb.tag.add('wall')
     aabb.category = CategoryList.wall.category
     aabb.mask = CategoryList.wall.mask
 

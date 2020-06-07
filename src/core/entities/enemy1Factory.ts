@@ -57,7 +57,7 @@ export class Enemy1Factory extends EntityFactory {
     const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag = 'enemy1Body'
+    aabbBody.tag.add('enemy1Body')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.enemy1Body.category
     aabbBody.mask = CategoryList.enemy1Body.mask
@@ -74,7 +74,7 @@ export class Enemy1Factory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
-    attackHitBox.tag = 'AttackHitBox'
+    attackHitBox.tag.add('AttackHitBox')
     attackHitBox.offset = new Vec2(
       this.ATTACK_HIT_BOX_OFFSET_X,
       this.ATTACK_HIT_BOX_OFFSET_Y
