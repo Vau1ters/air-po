@@ -10,7 +10,6 @@ import { CategoryList } from './category'
 import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
-import { Graphics } from 'pixi.js'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
@@ -85,25 +84,14 @@ export class PlayerFactory extends EntityFactory {
       this.FOOT_CLIP_TOLERANCE_Y
     )
     collider.createCollider(aabbFoot)
-
-    const graphics = new Graphics()
-    graphics.beginFill(0xffff00)
-    graphics.drawRect(this.OFFSET_X, this.OFFSET_Y, this.WIDTH, this.HEIGHT)
-    graphics.beginFill(0xff0000)
-    graphics.drawRect(
-      this.OFFSET_X + this.FOOT_OFFSET_X,
-      this.OFFSET_Y + this.FOOT_OFFSET_Y,
-      this.FOOT_WIDTH,
-      this.FOOT_HEIGHT
-    )
+    
     const animatedTexture = {
       Standing: [playerTextures[0]],
       Walking: [playerTextures[0], playerTextures[1]],
       Jumping: [playerTextures[1]],
     }
     const sprite = new Animation(animatedTexture, 'Standing')
-    graphics.addChild(sprite)
-    draw.addChild(graphics)
+    draw.addChild(sprite)
     player.changeState.addObserver(x => sprite.changeTo(x))
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
