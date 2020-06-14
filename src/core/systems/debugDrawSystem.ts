@@ -68,7 +68,6 @@ export default class DebugDrawSystem extends System {
       this.graphics.beginFill(0xff0000)
       for (const entity of this.positionFamily.entityIterator) {
         const position = entity.getComponent('Position') as PositionComponent
-        new AABB().contains
         if (cameraArea.contains(position)) {
           this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
         }
