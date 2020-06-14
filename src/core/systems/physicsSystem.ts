@@ -122,11 +122,11 @@ export default class PhysicsSystem extends System {
           ) {
             this.collidedList.push([c1, c2])
           }
-          if (c1.callback) {
-            c1.callback(c1, c2)
+          for (const callback of c1.callbacks) {
+            callback(c1, c2)
           }
-          if (c2.callback) {
-            c2.callback(c2, c1)
+          for (const callback of c2.callbacks) {
+            callback(c2, c1)
           }
         }
       }

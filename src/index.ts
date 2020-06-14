@@ -19,6 +19,7 @@ import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
+import { AirHolderSystem } from './core/systems/airHolderSystem'
 
 export class Main {
   public static world = new World()
@@ -58,6 +59,7 @@ export class Main {
       new InvincibleSystem(this.world),
       new DamageSystem(this.world),
       airSystem,
+      new AirHolderSystem(this.world),
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(this.world, debugContainer),

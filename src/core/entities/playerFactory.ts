@@ -40,17 +40,14 @@ export class PlayerFactory extends EntityFactory {
     const position = new PositionComponent(200, 100)
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
     const draw = new DrawComponent()
-    const player = new PlayerComponent({
-      air: {
-        collectSpeed: this.AIR_COLLECT_SPEED,
-        consumeSpeed: this.AIR_CONSUME_SPEED,
-      },
-    })
+    const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const airHolder = new AirHolderComponent({
       initialQuantity: this.INITIAL_AIR_QUANTITY,
       maxQuantity: this.MAX_AIR_QUANTITY,
+      collectSpeed: this.AIR_COLLECT_SPEED,
+      consumeSpeed: this.AIR_CONSUME_SPEED,
     })
     const hp = new HPComponent(10, 10)
     const invincible = new InvincibleComponent()
@@ -60,6 +57,7 @@ export class PlayerFactory extends EntityFactory {
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag.add('playerBody')
+    aabbBody.tag.add('airHolderBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.playerBody.category
     aabbBody.mask = CategoryList.playerBody.mask
