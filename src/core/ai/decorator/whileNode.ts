@@ -3,10 +3,7 @@ import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
 
 export class WhileNode implements BehaviourNode {
-  public constructor(
-    private condNode: BehaviourNode,
-    private execNode: BehaviourNode
-  ) {}
+  public constructor(private condNode: BehaviourNode, private execNode: BehaviourNode) {}
 
   public initState(): void {
     this.condNode.initState()

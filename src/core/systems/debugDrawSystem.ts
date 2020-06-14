@@ -4,11 +4,7 @@ import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { BVHLeaf, BVHNode, BVHComponent } from '../components/bvhComponent'
 import { Graphics, Container } from 'pixi.js'
-import {
-  ColliderComponent,
-  AABBCollider,
-  CircleCollider,
-} from '../components/colliderComponent'
+import { ColliderComponent, AABBCollider, CircleCollider } from '../components/colliderComponent'
 
 export default class DebugDrawSystem extends System {
   private state = {
@@ -27,9 +23,7 @@ export default class DebugDrawSystem extends System {
     super(world)
 
     this.positionFamily = new FamilyBuilder(world).include('Position').build()
-    this.colliderFamily = new FamilyBuilder(world)
-      .include('Position', 'Collider')
-      .build()
+    this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
 
     container.addChild(this.graphics)

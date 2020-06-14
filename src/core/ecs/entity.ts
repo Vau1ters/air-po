@@ -22,16 +22,11 @@ export class Entity {
     return this.componentMap[componentName] !== undefined
   }
 
-  public getComponent<K extends ComponentName>(
-    componentName: K
-  ): Partial<ComponentMap>[K] {
+  public getComponent<K extends ComponentName>(componentName: K): Partial<ComponentMap>[K] {
     return this.componentMap[componentName]
   }
 
-  public addComponent<K extends ComponentName>(
-    componentName: K,
-    component: ComponentMap[K]
-  ): void {
+  public addComponent<K extends ComponentName>(componentName: K, component: ComponentMap[K]): void {
     this.componentMap[componentName] = component
     this.componentChangedEvent.notify(this)
   }

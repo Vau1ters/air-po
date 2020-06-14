@@ -2,10 +2,7 @@ export class AirHolderComponent {
   private quantity: number
   private _maxQuantity: number
 
-  public constructor(airSetting: {
-    initialQuantity: number
-    maxQuantity: number
-  }) {
+  public constructor(airSetting: { initialQuantity: number; maxQuantity: number }) {
     this.quantity = airSetting.initialQuantity
     this._maxQuantity = airSetting.maxQuantity
   }

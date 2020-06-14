@@ -21,12 +21,8 @@ export default class DrawSystem extends System {
     for (const entity of this.family.entityIterator) {
       this.onContainerAdded(entity)
     }
-    this.family.entityAddedEvent.addObserver(entity =>
-      this.onContainerAdded(entity)
-    )
-    this.family.entityRemovedEvent.addObserver(entity =>
-      this.onContainerRemoved(entity)
-    )
+    this.family.entityAddedEvent.addObserver(entity => this.onContainerAdded(entity))
+    this.family.entityRemovedEvent.addObserver(entity => this.onContainerRemoved(entity))
   }
 
   public onContainerAdded(entity: Entity): void {
