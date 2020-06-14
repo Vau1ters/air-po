@@ -1,5 +1,4 @@
 import { World } from './core/ecs/world'
-import { PositionComponent } from './core/components/positionComponent'
 import DebugDrawSystem from './core/systems/debugDrawSystem'
 import { application, initializeApplication } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
@@ -68,7 +67,7 @@ export class Main {
     mapBuilder.build(map)
 
     for (const player of new FamilyBuilder(this.world).include('Player').build().entityIterator) {
-      const position = player.getComponent('Position') as PositionComponent
+      const position = player.getComponent('Position')
       airSystem.offset = position
     }
 

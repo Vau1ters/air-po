@@ -5,7 +5,6 @@ import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { Container } from 'pixi.js'
 import { AirFilter } from '../../filters/airFilter'
-import { AirComponent } from '../components/airComponent'
 import { AirDef, ColliderComponent, AirCollider } from '../components/colliderComponent'
 import { windowSize } from '../application'
 import { AABB } from '../math/aabb'
@@ -44,8 +43,8 @@ export class AirSystem extends System {
   public update(): void {
     const airs = []
     for (const entity of this.family.entityIterator) {
-      const air = entity.getComponent('Air') as AirComponent
-      const position = entity.getComponent('Position') as PositionComponent
+      const air = entity.getComponent('Air')
+      const position = entity.getComponent('Position')
 
       if (air.quantity <= 0) {
         this.world.removeEntity(entity)
@@ -64,12 +63,12 @@ export class AirSystem extends System {
     }
     this.filter.airs = airs
 
-    const collider = this.entity.getComponent('Collider') as ColliderComponent
+    const collider = this.entity.getComponent('Collider')
     const airCollider = collider.colliders[0]
     assert(airCollider instanceof AirCollider)
 
     const aabbBounds: AABB[] = airCollider.airFamily.entityArray.map((e: Entity) => {
-      const p = e.getComponent('Position') as PositionComponent
+      const p = e.getComponent('Position')
       return new AABB(
         p.sub(new Vec2(AirFilter.EFFECTIVE_RADIUS, AirFilter.EFFECTIVE_RADIUS)),
         new Vec2(AirFilter.EFFECTIVE_RADIUS * 2, AirFilter.EFFECTIVE_RADIUS * 2)

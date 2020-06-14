@@ -1,8 +1,6 @@
 import { System } from '../ecs/system'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { DrawComponent } from '../components/drawComponent'
-import { PositionComponent } from '../components/positionComponent'
 import { Container } from 'pixi.js'
 import { Entity } from '../ecs/entity'
 
@@ -26,22 +24,22 @@ export default class DrawSystem extends System {
   }
 
   public onContainerAdded(entity: Entity): void {
-    const container = entity.getComponent('Draw') as DrawComponent
+    const container = entity.getComponent('Draw')
     this.container.addChild(container)
   }
 
   public onContainerRemoved(entity: Entity): void {
-    const container = entity.getComponent('Draw') as DrawComponent
-    if (container) {
+    if (entity.hasComponent('Draw')) {
+      const container = entity.getComponent('Draw')
       this.container.removeChild(container)
     }
   }
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      const container = entity.getComponent('Draw') as DrawComponent
+      const container = entity.getComponent('Draw')
       if (entity.hasComponent('Position')) {
-        const position = entity.getComponent('Position') as PositionComponent
+        const position = entity.getComponent('Position')
         container.position.set(position.x, position.y)
       }
     }

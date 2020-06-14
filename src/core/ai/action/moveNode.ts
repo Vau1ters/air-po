@@ -1,4 +1,3 @@
-import { PositionComponent } from '../../components/positionComponent'
 import { Entity } from '../../ecs/entity'
 import { BehaviourNode, NodeState } from '../behaviourNode'
 
@@ -19,7 +18,7 @@ export class MoveNode implements BehaviourNode {
   }
 
   public execute(entity: Entity): NodeState {
-    const position = entity.getComponent('Position') as PositionComponent
+    const position = entity.getComponent('Position')
     switch (this.dir) {
       case Direction.Left:
         position.x -= this.speed

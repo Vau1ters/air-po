@@ -1,6 +1,5 @@
 import { AABB } from '../math/aabb'
 import { Collider } from './colliderComponent'
-import { PositionComponent } from './positionComponent'
 import { ReservedArray } from '../../utils/reservedArray'
 import { Category } from '../entities/category'
 
@@ -19,7 +18,7 @@ export class BVHLeaf {
   }
 
   public get bound(): AABB {
-    const position = this.collider.component.entity.getComponent('Position') as PositionComponent
+    const position = this.collider.component.entity.getComponent('Position')
     return this.collider.bound.add(position)
   }
 }

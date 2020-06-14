@@ -1,10 +1,9 @@
 import { System } from '../ecs/system'
 import { FamilyBuilder, Family } from '../ecs/family'
 import { World } from '../ecs/world'
-import { PositionComponent } from '../components/positionComponent'
-import { BVHLeaf, BVHNode, BVHComponent } from '../components/bvhComponent'
 import { Graphics, Container } from 'pixi.js'
-import { ColliderComponent, AABBCollider, CircleCollider } from '../components/colliderComponent'
+import { AABBCollider, CircleCollider } from '../components/colliderComponent'
+import { BVHLeaf, BVHNode } from '../components/bvhComponent'
 import { windowSize } from '../application'
 import { assert } from '../../utils/assertion'
 import { AABB } from '../math/aabb'
@@ -42,7 +41,6 @@ export default class DebugDrawSystem extends System {
     let cameraPosition: { x: number; y: number } | undefined = undefined
     for (const camera of this.cameraFamily.entityIterator) {
       const position = camera.getComponent('Position')
-      assert(position instanceof PositionComponent)
       cameraPosition = {
         x: position.x,
         y: position.y,
@@ -58,7 +56,7 @@ export default class DebugDrawSystem extends System {
     if (this.state.position) {
       this.graphics.beginFill(0xff0000)
       for (const entity of this.positionFamily.entityIterator) {
-        const position = entity.getComponent('Position') as PositionComponent
+        const position = entity.getComponent('Position')
         if (cameraArea.contains(position)) {
           this.graphics.drawRect(position.x - 1, position.y - 1, 2, 2)
         }
@@ -69,8 +67,8 @@ export default class DebugDrawSystem extends System {
     if (this.state.collider) {
       this.graphics.beginFill(0x00ffff, 0.5)
       for (const entity of this.colliderFamily.entityIterator) {
-        const position = entity.getComponent('Position') as PositionComponent
-        const collider = entity.getComponent('Collider') as ColliderComponent
+        const position = entity.getComponent('Position')
+        const collider = entity.getComponent('Collider')
 
         for (const c of collider.colliders) {
           if (c instanceof AABBCollider) {
@@ -93,7 +91,7 @@ export default class DebugDrawSystem extends System {
       for (const entity of this.bvhFamily.entityIterator) {
         // webGLの頂点数上限に引っかからないようにnative: trueにしている
         this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)
-        const bvh = entity.getComponent('BVH') as BVHComponent
+        const bvh = entity.getComponent('BVH')
 
         const draw = (n: BVHNode | BVHLeaf): void => {
           const b = n.bound

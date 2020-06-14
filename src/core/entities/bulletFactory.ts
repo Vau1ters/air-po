@@ -1,10 +1,8 @@
 import { Entity } from '../ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
-import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
@@ -26,11 +24,9 @@ export class BulletFactory extends EntityFactory {
       console.log('player is not defined')
       return new Entity()
     }
-    const player = this.player.getComponent('Player') as PlayerComponent
-    const playerPosition = this.player.getComponent('Position') as PositionComponent
-    const playerDirection = this.player.getComponent(
-      'HorizontalDirection'
-    ) as HorizontalDirectionComponent
+    const player = this.player.getComponent('Player')
+    const playerPosition = this.player.getComponent('Position')
+    const playerDirection = this.player.getComponent('HorizontalDirection')
 
     const direction = new Vec2(
       (playerDirection.looking == 'Left' ? -1 : +1) *

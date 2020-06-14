@@ -1,9 +1,8 @@
 import { System } from '../ecs/system'
 import { Entity } from '../ecs/entity'
-import { ColliderComponent, Collider } from '../components/colliderComponent'
+import { Collider } from '../components/colliderComponent'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { AttackComponent } from '../components/attackComponent'
 
 export class DamageSystem extends System {
   private family: Family
@@ -21,7 +20,7 @@ export class DamageSystem extends System {
   }
 
   private entityAdded(entity: Entity): void {
-    const collider = entity.getComponent('Collider') as ColliderComponent
+    const collider = entity.getComponent('Collider')
     for (const c of collider.colliders) {
       if (c.tag.has('AttackHitBox')) {
         c.callback = this.attackCollisionCallback
@@ -31,7 +30,7 @@ export class DamageSystem extends System {
 
   private entityRemoved(entity: Entity): void {
     if (entity.hasComponent('Collider')) {
-      const collider = entity.getComponent('Collider') as ColliderComponent
+      const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
         if (c.tag.has('AttackHitBox')) {
           c.callback = null
@@ -44,13 +43,15 @@ export class DamageSystem extends System {
     // AttackComponent持ってるEntityのColliderComponentと
     // HPComponentとInvincibleComponent持ちEntityとの衝突を見てHPを減らす
     const entity = other.component.entity
-    const hp = entity.getComponent('HP')
-    const invincible = entity.getComponent('Invincible')
-    const attack = hitbox.component.entity.getComponent('Attack') as AttackComponent
 
-    if (hp && invincible && !invincible.isInvincible() && attack.entity !== entity) {
-      hp.hp -= attack.damage
-      invincible.setInvincible()
+    if (entity.hasComponent('HP') && entity.hasComponent('Invincible')) {
+      const hp = entity.getComponent('HP')
+      const invincible = entity.getComponent('Invincible')
+      const attack = hitbox.component.entity.getComponent('Attack')
+      if (!invincible.isInvincible() && attack.entity !== entity) {
+        hp.hp -= attack.damage
+        invincible.setInvincible()
+      }
     }
   }
 }

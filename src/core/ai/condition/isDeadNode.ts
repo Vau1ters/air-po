@@ -7,9 +7,8 @@ export class IsDeadNode implements BehaviourNode {
   }
 
   public execute(entity: Entity): NodeState {
-    const hp = entity.getComponent('HP')
-
-    if (hp) {
+    if (entity.hasComponent('HP')) {
+      const hp = entity.getComponent('HP')
       if (hp.hp <= 0) {
         return NodeState.Success
       } else {

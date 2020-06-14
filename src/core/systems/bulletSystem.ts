@@ -2,8 +2,6 @@ import { System } from '../ecs/system'
 import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { BulletComponent } from '../components/bulletComponent'
-import { PositionComponent } from '../components/positionComponent'
 import { Collider } from '../components/colliderComponent'
 
 export class BulletSystem extends System {
@@ -29,8 +27,8 @@ export class BulletSystem extends System {
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      const bullet = entity.getComponent('Bullet') as BulletComponent
-      const pos = entity.getComponent('Position') as PositionComponent
+      const bullet = entity.getComponent('Bullet')
+      const pos = entity.getComponent('Position')
       pos.x += bullet.speed.x
       pos.y += bullet.speed.y
 
@@ -41,8 +39,7 @@ export class BulletSystem extends System {
   }
 
   private bulletCollisionCallback(bullet: Collider): void {
-    const tc = bullet.component.entity.getComponent('Bullet')
-    if (tc) {
+    if (bullet.component.entity.hasComponent('Bullet')) {
       this.world.removeEntity(bullet.component.entity)
     }
   }

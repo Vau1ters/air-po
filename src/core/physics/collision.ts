@@ -10,7 +10,6 @@ import { AABB } from '../math/aabb'
 import { AirFilter } from '../../filters/airFilter'
 import { Entity } from '../ecs/entity'
 import { assert } from '../../utils/assertion'
-import { AirComponent } from '../components/airComponent'
 
 const collideCircleAndAABB = (circle: Circle, aabb: AABB): boolean => {
   const distX = Math.max(0, aabb.left - circle.center.x, circle.center.x - aabb.right)
@@ -22,8 +21,8 @@ const collideCircleAndAABB = (circle: Circle, aabb: AABB): boolean => {
 const collideAirAndAABB = (airIterator: IterableIterator<Entity>, aabb: AABB): boolean => {
   let score = 0
   for (const air of airIterator) {
-    const airComponent = air.getComponent('Air') as AirComponent
-    const pos = air.getComponent('Position') as PositionComponent
+    const airComponent = air.getComponent('Air')
+    const pos = air.getComponent('Position')
     const r2 = airComponent.quantity
     const d2 = pos.sub(aabb.center).lengthSq()
     const R2 = AirFilter.EFFECTIVE_RADIUS * AirFilter.EFFECTIVE_RADIUS
