@@ -20,6 +20,7 @@ export class SequenceNode implements BehaviourNode {
   }
 
   public execute(entity: Entity, world: World): NodeState {
+    if (this.children.length === 0) return NodeState.Success
     if (this.executingNodes.length === 0) {
       throw 'call already successed sequence node.'
     }
