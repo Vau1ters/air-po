@@ -1,6 +1,5 @@
 import { World } from '../core/ecs/world'
 import { WallFactory } from '../core/entities/wallFactory'
-import { PositionComponent } from '../core/components/positionComponent'
 import { Random } from '../utils/random'
 import { AirFactory } from '../core/entities/airFactory'
 import { EnemyFactory } from '../core/entities/enemyFactory'
@@ -75,7 +74,7 @@ export class MapBuilder {
         }
         factory.tileId = this.calcId(cells) - wallTileSet.firstgid
         const wall = factory.create()
-        const p = wall.getComponent('Position') as PositionComponent
+        const p = wall.getComponent('Position')
         p.x = 8 * x
         p.y = 8 * y
         this.world.addEntity(wall)
@@ -87,7 +86,7 @@ export class MapBuilder {
   private buildEnemy(enemyLayer: any): void {
     for (const enemyData of enemyLayer.objects) {
       const enemy = new EnemyFactory().setType(enemyData.type).create()
-      const enemyPosition = enemy.getComponent('Position') as PositionComponent
+      const enemyPosition = enemy.getComponent('Position')
       enemyPosition.x = enemyData.x + enemyData.width / 2
       enemyPosition.y = enemyData.y + enemyData.height / 2
       this.world.addEntity(enemy)
@@ -99,7 +98,7 @@ export class MapBuilder {
     assert(playerLayer.objects.length === 1)
     for (const playerData of playerLayer.objects) {
       const player = new PlayerFactory().create()
-      const playerPosition = player.getComponent('Position') as PositionComponent
+      const playerPosition = player.getComponent('Position')
       playerPosition.x = playerData.x + playerData.width / 2
       playerPosition.y = playerData.y + playerData.height / 2
       this.world.addEntity(player)

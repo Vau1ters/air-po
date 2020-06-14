@@ -3,13 +3,8 @@ import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { KeyController } from '../controller'
-import { PlayerComponent } from '../components/playerComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider } from '../components/colliderComponent'
-import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { BulletFactory } from '../entities/bulletFactory'
-import { assert } from '../../utils/assertion'
-import { AirHolderComponent } from '../components/airHolderComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -37,11 +32,11 @@ export class PlayerControlSystem extends System {
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      const player = entity.getComponent('Player') as PlayerComponent
-      const direction = entity.getComponent('HorizontalDirection') as HorizontalDirectionComponent
+      const player = entity.getComponent('Player')
+      const direction = entity.getComponent('HorizontalDirection')
       console.log(player.state)
 
-      const body = entity.getComponent('RigidBody') as RigidBodyComponent
+      const body = entity.getComponent('RigidBody')
 
       const velocity = body.velocity
 
@@ -71,11 +66,6 @@ export class PlayerControlSystem extends System {
         this.world.addEntity(this.bulletFactory.create())
       }
       player.landing = false
-
-      // air consume
-      const airHolder = entity.getComponent('AirHolder')
-      assert(airHolder instanceof AirHolderComponent)
-      airHolder.consume()
     }
 
     KeyController.onUpdateFinished()
@@ -101,8 +91,7 @@ export class PlayerControlSystem extends System {
 
   private static footCollisionCallback(player: Collider, other: Collider): void {
     if (!other.isSensor) {
-      const pc = player.component.entity.getComponent('Player')
-      if (pc) pc.landing = true
+      player.component.entity.getComponent('Player').landing = true
     }
   }
 }

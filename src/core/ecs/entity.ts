@@ -1,5 +1,6 @@
 import { ComponentName, ComponentMap } from './component'
 import { EventNotifier } from '../eventNotifier'
+import { assert } from '../../utils/assertion'
 
 export class Entity {
   private static id = 0
@@ -22,8 +23,10 @@ export class Entity {
     return this.componentMap[componentName] !== undefined
   }
 
-  public getComponent<K extends ComponentName>(componentName: K): Partial<ComponentMap>[K] {
-    return this.componentMap[componentName]
+  public getComponent<K extends ComponentName>(componentName: K): ComponentMap[K] {
+    const result = this.componentMap[componentName] as ComponentMap[K]
+    assert(result)
+    return result
   }
 
   public addComponent<K extends ComponentName>(componentName: K, component: ComponentMap[K]): void {
