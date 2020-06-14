@@ -59,7 +59,7 @@ export class PlayerFactory extends EntityFactory {
     const camera = new CameraComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag = 'playerBody'
+    aabbBody.tag.add('playerBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.playerBody.category
     aabbBody.mask = CategoryList.playerBody.mask
@@ -71,7 +71,7 @@ export class PlayerFactory extends EntityFactory {
       this.OFFSET_X + this.FOOT_OFFSET_X,
       this.OFFSET_Y + this.FOOT_OFFSET_Y
     )
-    aabbFoot.tag = 'playerFoot'
+    aabbFoot.tag.add('playerFoot')
     aabbFoot.category = CategoryList.playerFoot.category
     aabbFoot.mask = CategoryList.playerFoot.mask
     aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)

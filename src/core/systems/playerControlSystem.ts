@@ -30,10 +30,10 @@ export class PlayerControlSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        if (c.tag === 'playerFoot') {
+        if (c.tag.has('playerFoot')) {
           c.callback = PlayerControlSystem.footCollisionCallback
         }
-        if (c.tag == 'playerBody') {
+        if (c.tag.has('playerBody')) {
           c.callback = PlayerControlSystem.bodySensor
         }
       }
@@ -113,7 +113,7 @@ export class PlayerControlSystem extends System {
 
   private static bodySensor(playerCollider: Collider, otherCollider: Collider): void {
     // collect air
-    if (otherCollider.tag == 'air') {
+    if (otherCollider.tag.has('air')) {
       assert(otherCollider instanceof AirCollider)
 
       const player = playerCollider.component.entity.getComponent('Player') as PlayerComponent

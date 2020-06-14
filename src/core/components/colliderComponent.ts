@@ -10,7 +10,7 @@ export interface Collider {
   component: ColliderComponent
   isSensor: boolean
   callback: ((me: Collider, other: Collider) => void) | null
-  tag: string
+  tag: Set<string>
   category: Category
   mask: CategorySet
   bound: AABB
@@ -25,7 +25,7 @@ export class AABBCollider implements Collider {
     public maxClipTolerance: Vec2,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
-    public tag: string,
+    public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
   ) {
@@ -41,7 +41,7 @@ export class CircleCollider implements Collider {
     public circle: Circle,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
-    public tag: string,
+    public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
   ) {
@@ -69,7 +69,7 @@ export class AirCollider implements Collider {
     public airFamily: Family,
     public isSensor: boolean,
     public callback: ((me: Collider, other: Collider) => void) | null,
-    public tag: string,
+    public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
   ) {
@@ -80,7 +80,7 @@ export class AirCollider implements Collider {
 export interface ColliderDef {
   isSensor: boolean
   callback: ((me: Collider, other: Collider) => void) | null
-  tag: string
+  tag: Set<string>
   category: Category
   mask: Set<Category>
 }
@@ -90,7 +90,7 @@ export class AABBDef implements ColliderDef {
   public maxClipTolerance = new Vec2()
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
-  public tag = ''
+  public tag: Set<string> = new Set()
   public category = Category.DEFAULT
   public mask = CategorySet.ALL
   public constructor(public size: Vec2) {}
@@ -100,7 +100,7 @@ export class CircleDef implements ColliderDef {
   public offset = new Vec2()
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
-  public tag = ''
+  public tag: Set<string> = new Set()
   public category = Category.DEFAULT
   public mask = CategorySet.ALL
   public constructor(public radius: number) {}
@@ -109,7 +109,7 @@ export class CircleDef implements ColliderDef {
 export class AirDef implements ColliderDef {
   public isSensor = false
   public callback: ((me: Collider, other: Collider) => void) | null = null
-  public tag = ''
+  public tag: Set<string> = new Set()
   public category = Category.DEFAULT
   public mask = new CategorySet(Category.PLAYER)
   public constructor(public airFamily: Family) {}

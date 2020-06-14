@@ -49,7 +49,7 @@ export class BulletFactory extends EntityFactory {
     aabbBody.category = CategoryList.bulletBody.category
     aabbBody.mask = CategoryList.bulletBody.mask
     aabbBody.maxClipTolerance = new Vec2(0, 0)
-    aabbBody.tag = 'bulletBody'
+    aabbBody.tag.add('bulletBody')
     collider.createCollider(aabbBody)
 
     // 攻撃判定
@@ -58,7 +58,7 @@ export class BulletFactory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
-    attackHitBox.tag = 'AttackHitBox'
+    attackHitBox.tag.add('AttackHitBox')
     attackHitBox.category = CategoryList.bulletAttack.category
     attackHitBox.mask = CategoryList.bulletAttack.mask
     attackHitBox.isSensor = true
