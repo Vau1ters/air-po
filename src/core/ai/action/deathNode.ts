@@ -7,7 +7,7 @@ export class DeathNode implements BehaviourNode {
     // 何もしない
   }
 
-  execute(entity: Entity, world: World): NodeState {
+  public execute(entity: Entity, world: World): NodeState {
     world.removeEntity(entity)
     return NodeState.Success
   }

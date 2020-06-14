@@ -15,7 +15,7 @@ export class AirEmitterNode implements BehaviourNode {
     // 何もしない
   }
 
-  execute(entity: Entity, world: World): NodeState {
+  public execute(entity: Entity, world: World): NodeState {
     const pos = entity.getComponent('Position')
     assert(pos)
     this.airFactory.setPosition(pos.x, pos.y)

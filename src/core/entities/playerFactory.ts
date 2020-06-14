@@ -25,6 +25,8 @@ import { WaitNode } from '../ai/action/waitNode'
 import { DeathNode } from '../ai/action/deathNode'
 import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
+import { FireGunNode } from '../ai/action/fireGunNode'
+import { ParallelNode } from '../ai/composite/parallelNode'
 // import { RemoveComponentNode } from '../ai/action/removeComponentNode'
 
 export class PlayerFactory extends EntityFactory {
@@ -141,7 +143,7 @@ export class PlayerFactory extends EntityFactory {
         ]),
         // 生きているときの処理
         // TODO:playerControlSystem内部処理をActionNodeにしてここに追加
-        new SequenceNode([])
+        new ParallelNode([new FireGunNode()])
       )
     )
     const ai = new AIComponent(new BehaviourTree(playerAI))

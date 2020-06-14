@@ -9,7 +9,7 @@ export class RemoveComponentNode implements BehaviourNode {
     // 何もしない
   }
 
-  execute(entity: Entity): NodeState {
+  public execute(entity: Entity): NodeState {
     entity.removeComponent(this.removeComponent)
     return NodeState.Success
   }

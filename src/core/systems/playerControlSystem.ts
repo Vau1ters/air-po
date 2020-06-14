@@ -7,7 +7,6 @@ import { PlayerComponent } from '../components/playerComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Collider, AirCollider } from '../components/colliderComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
-import { BulletFactory } from '../entities/bulletFactory'
 import { assert } from '../../utils/assertion'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { AirComponent } from '../components/airComponent'
@@ -15,7 +14,6 @@ import { PositionComponent } from '../components/positionComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
-  private bulletFactory: BulletFactory
 
   public constructor(world: World) {
     super(world)
@@ -24,8 +22,6 @@ export class PlayerControlSystem extends System {
       .include('Player', 'RigidBody')
       .build()
     this.family.entityAddedEvent.addObserver(this.entityAdded)
-
-    this.bulletFactory = new BulletFactory()
   }
 
   private entityAdded(entity: Entity): void {
@@ -74,11 +70,6 @@ export class PlayerControlSystem extends System {
         velocity.y = -250
         player.state = 'Jumping'
       }
-      if (KeyController.isKeyPressing('Z')) {
-        this.bulletFactory.player = entity
-        player.bulletAngle = this.calcAngle()
-        this.world.addEntity(this.bulletFactory.create())
-      }
       player.landing = false
 
       // air consume
@@ -88,30 +79,6 @@ export class PlayerControlSystem extends System {
     }
 
     KeyController.onUpdateFinished()
-  }
-
-  private calcAngle(): number {
-    if (KeyController.isKeyPressing('Down')) {
-      if (
-        KeyController.isKeyPressing('Left') ||
-        KeyController.isKeyPressing('Right')
-      ) {
-        return +45
-      } else {
-        return +90
-      }
-    }
-    if (KeyController.isKeyPressing('Up')) {
-      if (
-        KeyController.isKeyPressing('Left') ||
-        KeyController.isKeyPressing('Right')
-      ) {
-        return -45
-      } else {
-        return -90
-      }
-    }
-    return 0
   }
 
   private static footCollisionCallback(
