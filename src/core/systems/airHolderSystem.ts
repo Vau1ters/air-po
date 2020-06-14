@@ -17,7 +17,11 @@ export class AirHolderSystem extends System {
   }
 
   public update(): void {
-    // no implementation
+    for (const entity of this.family.entityIterator) {
+      // air consume
+      const airHolder = entity.getComponent('AirHolder')
+      airHolder.consume()
+    }
   }
 
   private entityAdded(entity: Entity): void {

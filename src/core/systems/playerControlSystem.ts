@@ -5,8 +5,6 @@ import { World } from '../ecs/world'
 import { KeyController } from '../controller'
 import { Collider } from '../components/colliderComponent'
 import { BulletFactory } from '../entities/bulletFactory'
-import { assert } from '../../utils/assertion'
-import { AirHolderComponent } from '../components/airHolderComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -68,11 +66,6 @@ export class PlayerControlSystem extends System {
         this.world.addEntity(this.bulletFactory.create())
       }
       player.landing = false
-
-      // air consume
-      const airHolder = entity.getComponent('AirHolder')
-      assert(airHolder instanceof AirHolderComponent)
-      airHolder.consume()
     }
 
     KeyController.onUpdateFinished()
