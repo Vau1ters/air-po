@@ -3,7 +3,7 @@ import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { KeyController } from '../controller'
-import { Collider, AirCollider } from '../components/colliderComponent'
+import { Collider } from '../components/colliderComponent'
 import { BulletFactory } from '../entities/bulletFactory'
 import { assert } from '../../utils/assertion'
 import { AirHolderComponent } from '../components/airHolderComponent'
@@ -26,10 +26,7 @@ export class PlayerControlSystem extends System {
     if (collider) {
       for (const c of collider.colliders) {
         if (c.tag.has('playerFoot')) {
-          c.callback = PlayerControlSystem.footCollisionCallback
-        }
-        if (c.tag.has('playerBody')) {
-          c.callback = PlayerControlSystem.bodySensor
+          c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
       }
     }
@@ -75,7 +72,7 @@ export class PlayerControlSystem extends System {
       // air consume
       const airHolder = entity.getComponent('AirHolder')
       assert(airHolder instanceof AirHolderComponent)
-      airHolder.consume(player.status.air.consumeSpeed)
+      airHolder.consume()
     }
 
     KeyController.onUpdateFinished()
@@ -102,41 +99,7 @@ export class PlayerControlSystem extends System {
   private static footCollisionCallback(player: Collider, other: Collider): void {
     if (!other.isSensor) {
       const pc = player.component.entity.getComponent('Player')
-      if (pc) pc.landing = true
-    }
-  }
-
-  private static bodySensor(playerCollider: Collider, otherCollider: Collider): void {
-    // collect air
-    if (otherCollider.tag.has('air')) {
-      assert(otherCollider instanceof AirCollider)
-
-      const player = playerCollider.component.entity.getComponent('Player')
-      const position = playerCollider.component.entity.getComponent('Position')
-      const airHolder = playerCollider.component.entity.getComponent('AirHolder')
-
-      const hitAirs: Entity[] = otherCollider.airFamily.entityArray.filter(
-        (a: Entity) => a.getComponent('Air').hit
-      )
-      const nearestAir = hitAirs.reduce((a, b) => {
-        const aa = a.getComponent('Air')
-        const pa = a.getComponent('Position')
-        const ab = b.getComponent('Air')
-        const pb = b.getComponent('Position')
-        if (pa.sub(position).lengthSq() / aa.quantity < pb.sub(position).lengthSq() / ab.quantity) {
-          return a
-        } else {
-          return b
-        }
-      })
-      const air = nearestAir.getComponent('Air')
-      const collectSpeed = Math.min(
-        player.status.air.collectSpeed,
-        airHolder.maxQuantity - airHolder.currentQuantity,
-        air.quantity
-      )
-      airHolder.collect(collectSpeed)
-      air.decrease(collectSpeed)
+      if (player.component.entity.getComponent('Player')) pc.landing = true
     }
   }
 }

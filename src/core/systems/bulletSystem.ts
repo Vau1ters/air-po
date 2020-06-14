@@ -19,7 +19,7 @@ export class BulletSystem extends System {
     if (collider) {
       for (const c of collider.colliders) {
         if (c.tag.has('bulletBody')) {
-          c.callback = (bullet): void => this.bulletCollisionCallback(bullet)
+          c.callbacks.add((bullet): void => this.bulletCollisionCallback(bullet))
         }
       }
     }

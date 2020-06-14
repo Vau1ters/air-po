@@ -23,7 +23,7 @@ export class DamageSystem extends System {
     const collider = entity.getComponent('Collider')
     for (const c of collider.colliders) {
       if (c.tag.has('AttackHitBox')) {
-        c.callback = this.attackCollisionCallback
+        c.callbacks.add(this.attackCollisionCallback)
       }
     }
   }
@@ -33,7 +33,7 @@ export class DamageSystem extends System {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
         if (c.tag.has('AttackHitBox')) {
-          c.callback = null
+          c.callbacks.delete(this.attackCollisionCallback)
         }
       }
     }
