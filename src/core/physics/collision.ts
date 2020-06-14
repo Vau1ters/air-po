@@ -13,24 +13,13 @@ import { assert } from '../../utils/assertion'
 import { AirComponent } from '../components/airComponent'
 
 const collideCircleAndAABB = (circle: Circle, aabb: AABB): boolean => {
-  const distX = Math.max(
-    0,
-    aabb.left - circle.center.x,
-    circle.center.x - aabb.right
-  )
-  const distY = Math.max(
-    0,
-    aabb.top - circle.center.y,
-    circle.center.y - aabb.bottom
-  )
+  const distX = Math.max(0, aabb.left - circle.center.x, circle.center.x - aabb.right)
+  const distY = Math.max(0, aabb.top - circle.center.y, circle.center.y - aabb.bottom)
 
   return distX * distX + distY * distY < circle.radius * circle.radius
 }
 
-const collideAirAndAABB = (
-  airIterator: IterableIterator<Entity>,
-  aabb: AABB
-): boolean => {
+const collideAirAndAABB = (airIterator: IterableIterator<Entity>, aabb: AABB): boolean => {
   let score = 0
   for (const air of airIterator) {
     const airComponent = air.getComponent('Air') as AirComponent

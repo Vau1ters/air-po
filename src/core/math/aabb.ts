@@ -27,10 +27,7 @@ export class AABB {
 
   public merge(other: AABB): AABB {
     const p1 = Vec2.min(this.position, other.position)
-    const p2 = Vec2.max(
-      this.position.add(this.size),
-      other.position.add(other.size)
-    )
+    const p2 = Vec2.max(this.position.add(this.size), other.position.add(other.size))
     const size = p2.sub(p1)
 
     return new AABB(p1, size)

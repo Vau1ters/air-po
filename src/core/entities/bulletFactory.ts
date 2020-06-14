@@ -27,9 +27,7 @@ export class BulletFactory extends EntityFactory {
       return new Entity()
     }
     const player = this.player.getComponent('Player') as PlayerComponent
-    const playerPosition = this.player.getComponent(
-      'Position'
-    ) as PositionComponent
+    const playerPosition = this.player.getComponent('Position') as PositionComponent
     const playerDirection = this.player.getComponent(
       'HorizontalDirection'
     ) as HorizontalDirectionComponent
@@ -43,9 +41,7 @@ export class BulletFactory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent(playerPosition.x, playerPosition.y)
     const draw = new DrawComponent()
-    const bullet = new BulletComponent(
-      new Vec2(direction.x * this.SPEED, direction.y * this.SPEED)
-    )
+    const bullet = new BulletComponent(new Vec2(direction.x * this.SPEED, direction.y * this.SPEED))
     const collider = new ColliderComponent(entity)
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))

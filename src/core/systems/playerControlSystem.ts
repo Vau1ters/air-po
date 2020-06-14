@@ -20,9 +20,7 @@ export class PlayerControlSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world)
-      .include('Player', 'RigidBody')
-      .build()
+    this.family = new FamilyBuilder(world).include('Player', 'RigidBody').build()
     this.family.entityAddedEvent.addObserver(this.entityAdded)
 
     this.bulletFactory = new BulletFactory()
@@ -45,9 +43,7 @@ export class PlayerControlSystem extends System {
   public update(): void {
     for (const entity of this.family.entityIterator) {
       const player = entity.getComponent('Player') as PlayerComponent
-      const direction = entity.getComponent(
-        'HorizontalDirection'
-      ) as HorizontalDirectionComponent
+      const direction = entity.getComponent('HorizontalDirection') as HorizontalDirectionComponent
       console.log(player.state)
 
       const body = entity.getComponent('RigidBody') as RigidBodyComponent
@@ -92,20 +88,14 @@ export class PlayerControlSystem extends System {
 
   private calcAngle(): number {
     if (KeyController.isKeyPressing('Down')) {
-      if (
-        KeyController.isKeyPressing('Left') ||
-        KeyController.isKeyPressing('Right')
-      ) {
+      if (KeyController.isKeyPressing('Left') || KeyController.isKeyPressing('Right')) {
         return +45
       } else {
         return +90
       }
     }
     if (KeyController.isKeyPressing('Up')) {
-      if (
-        KeyController.isKeyPressing('Left') ||
-        KeyController.isKeyPressing('Right')
-      ) {
+      if (KeyController.isKeyPressing('Left') || KeyController.isKeyPressing('Right')) {
         return -45
       } else {
         return -90
@@ -114,30 +104,20 @@ export class PlayerControlSystem extends System {
     return 0
   }
 
-  private static footCollisionCallback(
-    player: Collider,
-    other: Collider
-  ): void {
+  private static footCollisionCallback(player: Collider, other: Collider): void {
     if (!other.isSensor) {
       const pc = player.component.entity.getComponent('Player')
       if (pc) pc.landing = true
     }
   }
 
-  private static bodySensor(
-    playerCollider: Collider,
-    otherCollider: Collider
-  ): void {
+  private static bodySensor(playerCollider: Collider, otherCollider: Collider): void {
     // collect air
     if (otherCollider.tag.has('air')) {
       assert(otherCollider instanceof AirCollider)
 
-      const player = playerCollider.component.entity.getComponent(
-        'Player'
-      ) as PlayerComponent
-      const position = playerCollider.component.entity.getComponent(
-        'Position'
-      ) as PositionComponent
+      const player = playerCollider.component.entity.getComponent('Player') as PlayerComponent
+      const position = playerCollider.component.entity.getComponent('Position') as PositionComponent
       const airHolder = playerCollider.component.entity.getComponent(
         'AirHolder'
       ) as AirHolderComponent
@@ -150,10 +130,7 @@ export class PlayerControlSystem extends System {
         const pa = a.getComponent('Position') as PositionComponent
         const ab = b.getComponent('Air') as AirComponent
         const pb = b.getComponent('Position') as PositionComponent
-        if (
-          pa.sub(position).lengthSq() / aa.quantity <
-          pb.sub(position).lengthSq() / ab.quantity
-        ) {
+        if (pa.sub(position).lengthSq() / aa.quantity < pb.sub(position).lengthSq() / ab.quantity) {
           return a
         } else {
           return b

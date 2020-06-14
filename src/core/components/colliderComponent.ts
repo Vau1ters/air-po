@@ -55,9 +55,7 @@ export class CircleCollider implements Collider {
 
   private buildAABBBound(): AABB {
     return new AABB(
-      this.circle.position.sub(
-        new Vec2(this.circle.radius, this.circle.radius)
-      ),
+      this.circle.position.sub(new Vec2(this.circle.radius, this.circle.radius)),
       new Vec2(this.circle.radius, this.circle.radius).mul(2)
     )
   }

@@ -12,12 +12,8 @@ export class DamageSystem extends System {
     super(world)
 
     this.family = new FamilyBuilder(world).include('Attack', 'Collider').build()
-    this.family.entityAddedEvent.addObserver((entity: Entity) =>
-      this.entityAdded(entity)
-    )
-    this.family.entityRemovedEvent.addObserver((entity: Entity) =>
-      this.entityRemoved(entity)
-    )
+    this.family.entityAddedEvent.addObserver((entity: Entity) => this.entityAdded(entity))
+    this.family.entityRemovedEvent.addObserver((entity: Entity) => this.entityRemoved(entity))
   }
 
   public update(): void {
@@ -44,25 +40,15 @@ export class DamageSystem extends System {
     }
   }
 
-  private attackCollisionCallback = (
-    hitbox: Collider,
-    other: Collider
-  ): void => {
+  private attackCollisionCallback = (hitbox: Collider, other: Collider): void => {
     // AttackComponent持ってるEntityのColliderComponentと
     // HPComponentとInvincibleComponent持ちEntityとの衝突を見てHPを減らす
     const entity = other.component.entity
     const hp = entity.getComponent('HP')
     const invincible = entity.getComponent('Invincible')
-    const attack = hitbox.component.entity.getComponent(
-      'Attack'
-    ) as AttackComponent
+    const attack = hitbox.component.entity.getComponent('Attack') as AttackComponent
 
-    if (
-      hp &&
-      invincible &&
-      !invincible.isInvincible() &&
-      attack.entity !== entity
-    ) {
+    if (hp && invincible && !invincible.isInvincible() && attack.entity !== entity) {
       hp.hp -= attack.damage
       invincible.setInvincible()
     }

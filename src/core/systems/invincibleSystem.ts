@@ -14,9 +14,7 @@ export default class InvincibleSystem extends System {
 
   public update(delta: number): void {
     for (const entity of this.family.entityIterator) {
-      const invincible = entity.getComponent(
-        'Invincible'
-      ) as InvincibleComponent
+      const invincible = entity.getComponent('Invincible') as InvincibleComponent
       invincible.decreaseTime(delta)
     }
   }

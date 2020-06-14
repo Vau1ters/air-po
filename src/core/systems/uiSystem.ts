@@ -19,11 +19,7 @@ export default class UiSystem extends System {
   private playerHpGauge: Graphics = new Graphics()
   private playerAirGauge: Graphics = new Graphics()
 
-  public constructor(
-    world: World,
-    uiContainer: Container,
-    gameWorldUiContainer: Container
-  ) {
+  public constructor(world: World, uiContainer: Container, gameWorldUiContainer: Container) {
     super(world)
 
     this.hpGauge.position.set(0)
@@ -46,12 +42,7 @@ export default class UiSystem extends System {
       assert(hp instanceof HPComponent)
       this.playerHpGauge.clear()
       this.playerHpGauge.beginFill(0x30ff70)
-      this.playerHpGauge.drawRect(
-        0,
-        0,
-        (hp.hp / hp.maxHp) * windowSize.width,
-        16
-      )
+      this.playerHpGauge.drawRect(0, 0, (hp.hp / hp.maxHp) * windowSize.width, 16)
       this.playerHpGauge.endFill()
 
       const holder = player.getComponent('AirHolder') as AirHolderComponent
@@ -71,12 +62,7 @@ export default class UiSystem extends System {
     for (const entity of this.hpFamily.entityIterator) {
       const hp = entity.getComponent('HP') as HPComponent
       const position = entity.getComponent('Position') as PositionComponent
-      this.hpGauge.drawRect(
-        position.x - 8,
-        position.y - 12,
-        (hp.hp / hp.maxHp) * 16,
-        2
-      )
+      this.hpGauge.drawRect(position.x - 8, position.y - 12, (hp.hp / hp.maxHp) * 16, 2)
     }
     this.hpGauge.endFill()
   }

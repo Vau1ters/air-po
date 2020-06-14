@@ -19,9 +19,7 @@ export class BVHLeaf {
   }
 
   public get bound(): AABB {
-    const position = this.collider.component.entity.getComponent(
-      'Position'
-    ) as PositionComponent
+    const position = this.collider.component.entity.getComponent('Position') as PositionComponent
     return this.collider.bound.add(position)
   }
 }
@@ -65,25 +63,14 @@ export class BVHComponent {
     if (root) this.root = root
   }
 
-  private static fromBoundsImpl(
-    leafList: BVHLeaf[],
-    axis: Axis
-  ): BVHNode | BVHLeaf | undefined {
+  private static fromBoundsImpl(leafList: BVHLeaf[], axis: Axis): BVHNode | BVHLeaf | undefined {
     if (leafList.length === 0) return undefined
     if (leafList.length === 1) return leafList[0]
-    leafList = leafList.sort(
-      (a, b) => a.bound.center[axis] - b.bound.center[axis]
-    )
+    leafList = leafList.sort((a, b) => a.bound.center[axis] - b.bound.center[axis])
 
     const other = (axis: Axis): Axis => (axis === 'x' ? 'y' : 'x')
-    const left = BVHComponent.fromBoundsImpl(
-      leafList.slice(0, leafList.length >> 1),
-      other(axis)
-    )
-    const right = BVHComponent.fromBoundsImpl(
-      leafList.slice(leafList.length >> 1),
-      other(axis)
-    )
+    const left = BVHComponent.fromBoundsImpl(leafList.slice(0, leafList.length >> 1), other(axis))
+    const right = BVHComponent.fromBoundsImpl(leafList.slice(leafList.length >> 1), other(axis))
     if (!left) {
       throw new Error('There are any bugs.')
     }

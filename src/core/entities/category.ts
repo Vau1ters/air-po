@@ -7,10 +7,7 @@ export enum Category {
 }
 
 export class CategorySet extends Set<Category> {
-  public static readonly MOVERS = new CategorySet(
-    Category.PLAYER,
-    Category.ENEMY
-  )
+  public static readonly MOVERS = new CategorySet(Category.PLAYER, Category.ENEMY)
   public static readonly ALL = new CategorySet(
     ...Object.entries(Category).map(t => t[1] as Category)
   )

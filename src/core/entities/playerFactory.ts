@@ -13,6 +13,7 @@ import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
+import { CameraComponent } from '../components/cameraComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -27,8 +28,7 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_OFFSET_Y = 13
   readonly FOOT_CLIP_TOLERANCE_X = 2
   readonly FOOT_CLIP_TOLERANCE_Y = 14
-  readonly CLIP_TOLERANCE_X =
-    (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
+  readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
   readonly INITIAL_AIR_QUANTITY = 1600
   readonly MAX_AIR_QUANTITY = 2000
@@ -38,12 +38,7 @@ export class PlayerFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(
-      this.MASS,
-      new Vec2(),
-      new Vec2(),
-      this.RESTITUTION
-    )
+    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
     const draw = new DrawComponent()
     const player = new PlayerComponent({
       air: {
@@ -60,15 +55,15 @@ export class PlayerFactory extends EntityFactory {
     const hp = new HPComponent(10, 10)
     const invincible = new InvincibleComponent()
 
+    // TODO: カメラをプレイヤーから分離する
+    const camera = new CameraComponent()
+
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag.add('playerBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.playerBody.category
     aabbBody.mask = CategoryList.playerBody.mask
-    aabbBody.maxClipTolerance = new Vec2(
-      this.CLIP_TOLERANCE_X,
-      this.CLIP_TOLERANCE_Y
-    )
+    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
     const aabbFoot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
@@ -79,10 +74,7 @@ export class PlayerFactory extends EntityFactory {
     aabbFoot.tag.add('playerFoot')
     aabbFoot.category = CategoryList.playerFoot.category
     aabbFoot.mask = CategoryList.playerFoot.mask
-    aabbFoot.maxClipTolerance = new Vec2(
-      this.FOOT_CLIP_TOLERANCE_X,
-      this.FOOT_CLIP_TOLERANCE_Y
-    )
+    aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     collider.createCollider(aabbFoot)
 
     const animatedTexture = {
@@ -110,6 +102,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
+    entity.addComponent('Camera', camera)
     return entity
   }
 }
