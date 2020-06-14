@@ -62,7 +62,7 @@ export class BVHComponent {
   public build(colliders: Collider[]): void {
     const leafList = colliders.map(c => new BVHLeaf(c))
     const root = BVHComponent.fromBoundsImpl(leafList, 'x')
-    if (root) this.root = root
+    this.root = root
   }
 
   private static fromBoundsImpl(

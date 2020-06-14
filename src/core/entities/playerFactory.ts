@@ -140,6 +140,7 @@ export class PlayerFactory extends EntityFactory {
           new DeathNode(),
         ]),
         // 生きているときの処理
+        // TODO:playerControlSystem内部処理をActionNodeにしてここに追加
         new SequenceNode([])
       )
     )
