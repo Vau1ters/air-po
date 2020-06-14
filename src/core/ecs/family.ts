@@ -118,10 +118,6 @@ export class FamilyBuilder {
   }
 
   build(): Family {
-    return new Family(
-      this.world,
-      this.includeComponents,
-      this.excludeComponents
-    )
+    return new Family(this.world, this.includeComponents, this.excludeComponents)
   }
 }

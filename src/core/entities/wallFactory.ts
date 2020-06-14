@@ -19,13 +19,7 @@ export class WallFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(
-      0,
-      new Vec2(),
-      new Vec2(),
-      this.RESTITUTION,
-      0
-    )
+    const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
     body.invMass = this.INV_MASS
     const draw = new DrawComponent()
 

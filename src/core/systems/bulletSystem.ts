@@ -12,9 +12,7 @@ export class BulletSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world)
-      .include('Bullet', 'Collider', 'Position')
-      .build()
+    this.family = new FamilyBuilder(world).include('Bullet', 'Collider', 'Position').build()
     this.family.entityAddedEvent.addObserver(entity => this.entityAdded(entity))
   }
 

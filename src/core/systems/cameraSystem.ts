@@ -22,10 +22,7 @@ export default class CameraSystem extends System {
     for (const camera of this.cameraFamily.entityIterator) {
       const position = camera.getComponent('Position')
       assert(position instanceof PositionComponent)
-      this.stage.position.set(
-        windowSize.width / 2 - position.x,
-        windowSize.height / 2 - position.y
-      )
+      this.stage.position.set(windowSize.width / 2 - position.x, windowSize.height / 2 - position.y)
     }
   }
 }

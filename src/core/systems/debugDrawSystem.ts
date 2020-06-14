@@ -4,11 +4,7 @@ import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
 import { BVHLeaf, BVHNode, BVHComponent } from '../components/bvhComponent'
 import { Graphics, Container } from 'pixi.js'
-import {
-  ColliderComponent,
-  AABBCollider,
-  CircleCollider,
-} from '../components/colliderComponent'
+import { ColliderComponent, AABBCollider, CircleCollider } from '../components/colliderComponent'
 import { windowSize } from '../application'
 import { assert } from '../../utils/assertion'
 import { AABB } from '../math/aabb'
@@ -32,9 +28,7 @@ export default class DebugDrawSystem extends System {
     super(world)
 
     this.positionFamily = new FamilyBuilder(world).include('Position').build()
-    this.colliderFamily = new FamilyBuilder(world)
-      .include('Position', 'Collider')
-      .build()
+    this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
@@ -59,10 +53,7 @@ export default class DebugDrawSystem extends System {
     const cameraY = cameraPosition.y - windowSize.height / 2
     const cameraW = windowSize.width
     const cameraH = windowSize.height
-    const cameraArea = new AABB(
-      new Vec2(cameraX, cameraY),
-      new Vec2(cameraW, cameraH)
-    )
+    const cameraArea = new AABB(new Vec2(cameraX, cameraY), new Vec2(cameraW, cameraH))
 
     if (this.state.position) {
       this.graphics.beginFill(0xff0000)
@@ -89,11 +80,7 @@ export default class DebugDrawSystem extends System {
             }
           } else if (c instanceof CircleCollider) {
             const pos = position.add(c.circle.position)
-            if (
-              cameraArea.overlap(
-                new AABB(pos, new Vec2(c.circle.radius, c.circle.radius))
-              )
-            ) {
+            if (cameraArea.overlap(new AABB(pos, new Vec2(c.circle.radius, c.circle.radius)))) {
               this.graphics.drawCircle(pos.x, pos.y, c.circle.radius)
             }
           }
@@ -111,12 +98,7 @@ export default class DebugDrawSystem extends System {
         const draw = (n: BVHNode | BVHLeaf): void => {
           const b = n.bound
           if (cameraArea.overlap(b)) {
-            this.graphics.drawRect(
-              b.position.x,
-              b.position.y,
-              b.size.x,
-              b.size.y
-            )
+            this.graphics.drawRect(b.position.x, b.position.y, b.size.x, b.size.y)
           }
           if (n instanceof BVHNode) {
             for (const c of n.child) draw(c)

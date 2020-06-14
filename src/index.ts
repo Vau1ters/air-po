@@ -67,8 +67,7 @@ export class Main {
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
 
-    for (const player of new FamilyBuilder(this.world).include('Player').build()
-      .entityIterator) {
+    for (const player of new FamilyBuilder(this.world).include('Player').build().entityIterator) {
       const position = player.getComponent('Position') as PositionComponent
       airSystem.offset = position
     }
