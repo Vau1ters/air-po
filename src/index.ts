@@ -48,7 +48,6 @@ export class Main {
     application.stage.addChild(uiContainer)
 
     const airSystem = new AirSystem(this.world, drawContainer)
-    const cameraSystem = new CameraSystem(this.world, gameWorldContainer)
 
     this.world.addSystem(
       new AISystem(this.world),
@@ -62,7 +61,7 @@ export class Main {
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(this.world, debugContainer),
-      cameraSystem
+      new CameraSystem(this.world, gameWorldContainer)
     )
 
     const mapBuilder = new MapBuilder(this.world)
@@ -70,7 +69,6 @@ export class Main {
 
     for (const player of new FamilyBuilder(this.world).include('Player').build().entityIterator) {
       const position = player.getComponent('Position') as PositionComponent
-      cameraSystem.chaseTarget = position
       airSystem.offset = position
     }
 
