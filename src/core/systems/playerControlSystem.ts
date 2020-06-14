@@ -31,10 +31,10 @@ export class PlayerControlSystem extends System {
     if (collider) {
       for (const c of collider.colliders) {
         if (c.tag.has('playerFoot')) {
-          c.callback = PlayerControlSystem.footCollisionCallback
+          c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
         if (c.tag.has('playerBody')) {
-          c.callback = PlayerControlSystem.bodySensor
+          c.callbacks.add(PlayerControlSystem.bodySensor)
         }
       }
     }
