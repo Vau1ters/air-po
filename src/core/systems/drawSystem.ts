@@ -37,6 +37,7 @@ export default class DrawSystem extends System {
   }
 
   public update(): void {
+    const THRESHOLD = 20 // to avoid 1-frame drop
     for (const entity of this.family.entityIterator) {
       const container = entity.getComponent('Draw')
       if (entity.hasComponent('Position')) {
@@ -44,12 +45,11 @@ export default class DrawSystem extends System {
         container.position.set(position.x, position.y)
       }
       const r = container.getBounds()
-      const N = 20 // magic threshold
       container.visible =
-        -N <= r.x + r.width &&
-        -N <= r.y + r.height &&
-        r.x < windowSize.width * application.stage.scale.x + N &&
-        r.y < windowSize.height * application.stage.scale.y + N
+        -THRESHOLD <= r.x + r.width &&
+        -THRESHOLD <= r.y + r.height &&
+        r.x < windowSize.width * application.stage.scale.x + THRESHOLD &&
+        r.y < windowSize.height * application.stage.scale.y + THRESHOLD
     }
   }
 }
