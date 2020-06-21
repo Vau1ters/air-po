@@ -7,29 +7,16 @@ import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
-import { playerTextures } from '../graphics/art'
-import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
-import { WhileNode } from '../ai/decorator/whileNode'
-import { TrueNode } from '../ai/condition/boolNode'
-import { IfNode } from '../ai/decorator/ifNode'
-import { IsDeadNode } from '../ai/condition/isDeadNode'
-import { SequenceNode } from '../ai/composite/sequenceNode'
-import { AnimationNode } from '../ai/action/animationNode'
-import { WaitNode } from '../ai/action/waitNode'
-// import { AirEmitterNode } from '../ai/action/airEmitterNode'
-import { DeathNode } from '../ai/action/deathNode'
 import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
-import { PlayerGunShootNode } from '../ai/action/playerGunShootNode'
-import { ParallelNode } from '../ai/composite/parallelNode'
-// import { RemoveComponentNode } from '../ai/action/removeComponentNode'
+import { parseAI } from '../ai/parser'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import { PlayerMoveNode } from '../ai/action/playerMoveNode'
+import playerAIData from '../../../res/playerai.json'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -91,13 +78,8 @@ export class PlayerFactory extends EntityFactory {
     aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     collider.createCollider(aabbFoot)
 
-    const animatedTexture = {
-      Standing: [playerTextures[0]],
-      Walking: [playerTextures[0], playerTextures[1]],
-      Jumping: [playerTextures[1]],
-      Dying: [playerTextures[2]],
-    }
-    const sprite = new Animation(animatedTexture, 'Standing')
+    const { sprite, ai: playerAI } = parseAI(playerAIData)
+
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
@@ -110,23 +92,6 @@ export class PlayerFactory extends EntityFactory {
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
 
-    // AI
-    const playerAI = new WhileNode(
-      new TrueNode(),
-      new IfNode(
-        new IsDeadNode(),
-        // 死んだときの処理
-        new SequenceNode([
-          new AnimationNode('Dying'),
-          // new RemoveComponentNode('RigidBody'),
-          new WaitNode(60),
-          // new AirEmitterNode(10000),
-          new DeathNode(),
-        ]),
-        // 生きているときの処理
-        new ParallelNode([new PlayerGunShootNode(), new PlayerMoveNode()])
-      )
-    )
     const ai = new AIComponent(new BehaviourTree(playerAI))
 
     entity.addComponent('AI', ai)

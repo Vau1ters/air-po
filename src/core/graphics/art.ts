@@ -16,14 +16,14 @@ function loadTexture(url: string): Promise<BaseTexture> {
   })
 }
 
-export const playerTextures = new Array<Texture>()
+export const textureStore: { [key: string]: Array<Texture> } = {}
 export const wallBaseTextures = new Array<Texture>()
-export const enemy1Textures = new Array<Texture>()
 export const init = async (): Promise<void> => {
   const playerBase = await loadTexture(playerImg)
+  textureStore.player = new Array<Texture>()
   for (let x = 0; x < playerBase.width / 16; x++) {
     const texture = new Texture(playerBase, new Rectangle(x * 16, 0, 16, 16))
-    playerTextures.push(texture)
+    textureStore.player.push(texture)
   }
 
   const wallBase = await loadTexture(wallImg)
@@ -33,10 +33,12 @@ export const init = async (): Promise<void> => {
       wallBaseTextures.push(texture)
     }
   }
+  textureStore.wallBase = wallBaseTextures
 
   const enemy1Base = await loadTexture(enemy1Img)
+  textureStore.enemy1 = new Array<Texture>()
   for (let x = 0; x < enemy1Base.width / 16; x++) {
     const texture = new Texture(enemy1Base, new Rectangle(x * 16, 0, 16, 16))
-    enemy1Textures.push(texture)
+    textureStore.enemy1.push(texture)
   }
 }
