@@ -1,7 +1,6 @@
 import { System } from '../ecs/system'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { AIComponent } from '../components/aiComponent'
 
 export default class AISystem extends System {
   private family: Family
@@ -14,7 +13,7 @@ export default class AISystem extends System {
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      const ai = entity.getComponent('AI') as AIComponent
+      const ai = entity.getComponent('AI')
       ai.execute(entity, this.world)
     }
   }

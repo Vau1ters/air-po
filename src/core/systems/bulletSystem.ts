@@ -2,8 +2,6 @@ import { System } from '../ecs/system'
 import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { BulletComponent } from '../components/bulletComponent'
-import { PositionComponent } from '../components/positionComponent'
 import { Collider } from '../components/colliderComponent'
 
 export class BulletSystem extends System {
@@ -12,9 +10,7 @@ export class BulletSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world)
-      .include('Bullet', 'Collider', 'Position')
-      .build()
+    this.family = new FamilyBuilder(world).include('Bullet', 'Collider', 'Position').build()
     this.family.entityAddedEvent.addObserver(entity => this.entityAdded(entity))
   }
 
@@ -22,8 +18,8 @@ export class BulletSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        if (c.tag === 'bulletBody') {
-          c.callback = (bullet): void => this.bulletCollisionCallback(bullet)
+        if (c.tag.has('bulletBody')) {
+          c.callbacks.add((bullet): void => this.bulletCollisionCallback(bullet))
         }
       }
     }
@@ -31,8 +27,8 @@ export class BulletSystem extends System {
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      const bullet = entity.getComponent('Bullet') as BulletComponent
-      const pos = entity.getComponent('Position') as PositionComponent
+      const bullet = entity.getComponent('Bullet')
+      const pos = entity.getComponent('Position')
       pos.x += bullet.speed.x
       pos.y += bullet.speed.y
 
@@ -43,8 +39,7 @@ export class BulletSystem extends System {
   }
 
   private bulletCollisionCallback(bullet: Collider): void {
-    const tc = bullet.component.entity.getComponent('Bullet')
-    if (tc) {
+    if (bullet.component.entity.hasComponent('Bullet')) {
       this.world.removeEntity(bullet.component.entity)
     }
   }

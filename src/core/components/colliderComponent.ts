@@ -9,8 +9,8 @@ import { Category, CategorySet } from '../entities/category'
 export interface Collider {
   component: ColliderComponent
   isSensor: boolean
-  callback: ((me: Collider, other: Collider) => void) | null
-  tag: string
+  callbacks: Set<(me: Collider, other: Collider) => void>
+  tag: Set<string>
   category: Category
   mask: CategorySet
   bound: AABB
@@ -24,8 +24,8 @@ export class AABBCollider implements Collider {
     public aabb: AABB,
     public maxClipTolerance: Vec2,
     public isSensor: boolean,
-    public callback: ((me: Collider, other: Collider) => void) | null,
-    public tag: string,
+    public callbacks: Set<(me: Collider, other: Collider) => void>,
+    public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
   ) {
@@ -40,8 +40,8 @@ export class CircleCollider implements Collider {
     public component: ColliderComponent,
     public circle: Circle,
     public isSensor: boolean,
-    public callback: ((me: Collider, other: Collider) => void) | null,
-    public tag: string,
+    public callbacks: Set<(me: Collider, other: Collider) => void>,
+    public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
   ) {
@@ -55,9 +55,7 @@ export class CircleCollider implements Collider {
 
   private buildAABBBound(): AABB {
     return new AABB(
-      this.circle.position.sub(
-        new Vec2(this.circle.radius, this.circle.radius)
-      ),
+      this.circle.position.sub(new Vec2(this.circle.radius, this.circle.radius)),
       new Vec2(this.circle.radius, this.circle.radius).mul(2)
     )
   }
@@ -70,8 +68,8 @@ export class AirCollider implements Collider {
     public component: ColliderComponent,
     public airFamily: Family,
     public isSensor: boolean,
-    public callback: ((me: Collider, other: Collider) => void) | null,
-    public tag: string,
+    public callbacks: Set<(me: Collider, other: Collider) => void>,
+    public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
   ) {
@@ -81,8 +79,8 @@ export class AirCollider implements Collider {
 
 export interface ColliderDef {
   isSensor: boolean
-  callback: ((me: Collider, other: Collider) => void) | null
-  tag: string
+  callbacks: Set<(me: Collider, other: Collider) => void>
+  tag: Set<string>
   category: Category
   mask: Set<Category>
 }
@@ -91,8 +89,8 @@ export class AABBDef implements ColliderDef {
   public offset = new Vec2()
   public maxClipTolerance = new Vec2()
   public isSensor = false
-  public callback: ((me: Collider, other: Collider) => void) | null = null
-  public tag = ''
+  public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
+  public tag: Set<string> = new Set()
   public category = Category.DEFAULT
   public mask = CategorySet.ALL
   public constructor(public size: Vec2) {}
@@ -101,8 +99,8 @@ export class AABBDef implements ColliderDef {
 export class CircleDef implements ColliderDef {
   public offset = new Vec2()
   public isSensor = false
-  public callback: ((me: Collider, other: Collider) => void) | null = null
-  public tag = ''
+  public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
+  public tag: Set<string> = new Set()
   public category = Category.DEFAULT
   public mask = CategorySet.ALL
   public constructor(public radius: number) {}
@@ -110,8 +108,8 @@ export class CircleDef implements ColliderDef {
 
 export class AirDef implements ColliderDef {
   public isSensor = false
-  public callback: ((me: Collider, other: Collider) => void) | null = null
-  public tag = ''
+  public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
+  public tag: Set<string> = new Set()
   public category = Category.DEFAULT
   public mask = new CategorySet(Category.PLAYER)
   public constructor(public airFamily: Family) {}
@@ -128,7 +126,7 @@ export class ColliderComponent {
         new AABB(def.offset, def.size),
         def.maxClipTolerance,
         def.isSensor,
-        def.callback,
+        def.callbacks,
         def.tag,
         def.category,
         def.mask
@@ -139,7 +137,7 @@ export class ColliderComponent {
         this,
         new Circle(def.offset, def.radius),
         def.isSensor,
-        def.callback,
+        def.callbacks,
         def.tag,
         def.category,
         def.mask
@@ -150,7 +148,7 @@ export class ColliderComponent {
         this,
         def.airFamily,
         def.isSensor,
-        def.callback,
+        def.callbacks,
         def.tag,
         def.category,
         def.mask

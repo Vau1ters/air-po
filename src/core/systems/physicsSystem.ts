@@ -2,13 +2,7 @@ import { System } from '../ecs/system'
 import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { PositionComponent } from '../components/positionComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import {
-  ColliderComponent,
-  Collider,
-  AABBCollider,
-} from '../components/colliderComponent'
+import { Collider, AABBCollider } from '../components/colliderComponent'
 import { collide } from '../physics/collision'
 import { BVHComponent } from '../components/bvhComponent'
 import { Category, CategorySet } from '../entities/category'
@@ -24,12 +18,8 @@ export default class PhysicsSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.colliderFamily = new FamilyBuilder(world)
-      .include('Position', 'Collider')
-      .build()
-    this.rigidBodyFamily = new FamilyBuilder(world)
-      .include('Position', 'RigidBody')
-      .build()
+    this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
+    this.rigidBodyFamily = new FamilyBuilder(world).include('Position', 'RigidBody').build()
     this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
 
     for (const c of CategorySet.ALL) {
@@ -46,7 +36,7 @@ export default class PhysicsSystem extends System {
       colliderMap.set(c, [])
     }
     for (const e of this.colliderFamily.entityIterator) {
-      const cs = (e.getComponent('Collider') as ColliderComponent).colliders
+      const cs = e.getComponent('Collider').colliders
       for (const c of cs) {
         const colliders = colliderMap.get(c.category)
         assert(colliders)
@@ -54,7 +44,7 @@ export default class PhysicsSystem extends System {
       }
     }
     for (const entity of this.bvhFamily.entityIterator) {
-      const bvh = entity.getComponent('BVH') as BVHComponent
+      const bvh = entity.getComponent('BVH')
       if (bvh.category === Category.WALL && bvh.root) continue
       const colliders = colliderMap.get(bvh.category)
       assert(colliders)
@@ -68,8 +58,8 @@ export default class PhysicsSystem extends System {
     this.broadPhase()
     this.solve(this.collidedList)
     for (const entity of this.rigidBodyFamily.entityIterator) {
-      const position = entity.getComponent('Position') as PositionComponent
-      const body = entity.getComponent('RigidBody') as RigidBodyComponent
+      const position = entity.getComponent('Position')
+      const body = entity.getComponent('RigidBody')
       body.velocity.x += body.acceleration.x * delta
       body.velocity.y += body.acceleration.y * delta
       position.x += body.velocity.x * delta
@@ -81,12 +71,12 @@ export default class PhysicsSystem extends System {
   private broadPhase(): void {
     const bvhs: { [key: string]: BVHComponent } = {}
     for (const entity of this.bvhFamily.entityIterator) {
-      const bvh = entity.getComponent('BVH') as BVHComponent
+      const bvh = entity.getComponent('BVH')
       bvhs[bvh.category] = bvh
     }
     for (const entity1 of this.colliderFamily.entityIterator) {
-      const collider1 = entity1.getComponent('Collider') as ColliderComponent
-      const position1 = entity1.getComponent('Position') as PositionComponent
+      const collider1 = entity1.getComponent('Collider')
+      const position1 = entity1.getComponent('Position')
 
       const collidedEntityIdSet = new Set<number>()
       for (const c of collider1.colliders) {
@@ -109,10 +99,10 @@ export default class PhysicsSystem extends System {
 
   // 衝突判定
   private collide(entity1: Entity, entity2: Entity): void {
-    const position1 = entity1.getComponent('Position') as PositionComponent
-    const position2 = entity2.getComponent('Position') as PositionComponent
-    const colliders1 = entity1.getComponent('Collider') as ColliderComponent
-    const colliders2 = entity2.getComponent('Collider') as ColliderComponent
+    const position1 = entity1.getComponent('Position')
+    const position2 = entity2.getComponent('Position')
+    const colliders1 = entity1.getComponent('Collider')
+    const colliders2 = entity2.getComponent('Collider')
 
     for (const c1 of colliders1.colliders) {
       for (const c2 of colliders2.colliders) {
@@ -130,11 +120,11 @@ export default class PhysicsSystem extends System {
           ) {
             this.collidedList.push([c1, c2])
           }
-          if (c1.callback) {
-            c1.callback(c1, c2)
+          for (const callback of c1.callbacks) {
+            callback(c1, c2)
           }
-          if (c2.callback) {
-            c2.callback(c2, c1)
+          for (const callback of c2.callbacks) {
+            callback(c2, c1)
           }
         }
       }
@@ -144,19 +134,11 @@ export default class PhysicsSystem extends System {
   private solve(collidedList: Array<[Collider, Collider]>): void {
     // 互いに押し合う
     for (const [c1, c2] of collidedList) {
-      const body1 = c1.component.entity.getComponent(
-        'RigidBody'
-      ) as RigidBodyComponent
-      const body2 = c2.component.entity.getComponent(
-        'RigidBody'
-      ) as RigidBodyComponent
+      const body1 = c1.component.entity.getComponent('RigidBody')
+      const body2 = c2.component.entity.getComponent('RigidBody')
 
-      const position1 = c1.component.entity.getComponent(
-        'Position'
-      ) as PositionComponent
-      const position2 = c2.component.entity.getComponent(
-        'Position'
-      ) as PositionComponent
+      const position1 = c1.component.entity.getComponent('Position')
+      const position2 = c2.component.entity.getComponent('Position')
       // TODO:別クラスに分ける
       if (c1 instanceof AABBCollider && c2 instanceof AABBCollider) {
         const aabb1 = c1.aabb.add(position1)
@@ -178,8 +160,7 @@ export default class PhysicsSystem extends System {
           continue
         }
 
-        const ratio =
-          (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
+        const ratio = (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
 
         const sumMass = body1.invMass + body2.invMass
         // 反発係数

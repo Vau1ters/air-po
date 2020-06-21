@@ -43,13 +43,7 @@ export class Enemy1Factory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(
-      this.MASS,
-      new Vec2(),
-      new Vec2(),
-      this.RESTITUTION,
-      0
-    )
+    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 0)
     const draw = new DrawComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
@@ -57,15 +51,12 @@ export class Enemy1Factory extends EntityFactory {
     const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag = 'enemy1Body'
+    aabbBody.tag.add('enemy1Body')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.enemy1Body.category
     aabbBody.mask = CategoryList.enemy1Body.mask
 
-    aabbBody.maxClipTolerance = new Vec2(
-      this.CLIP_TOLERANCE_X,
-      this.CLIP_TOLERANCE_Y
-    )
+    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
     // 攻撃判定
@@ -74,11 +65,8 @@ export class Enemy1Factory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
-    attackHitBox.tag = 'AttackHitBox'
-    attackHitBox.offset = new Vec2(
-      this.ATTACK_HIT_BOX_OFFSET_X,
-      this.ATTACK_HIT_BOX_OFFSET_Y
-    )
+    attackHitBox.tag.add('AttackHitBox')
+    attackHitBox.offset = new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y)
     attackHitBox.category = CategoryList.enemy1Attack.category
     attackHitBox.mask = CategoryList.enemy1Attack.mask
     attackHitBox.isSensor = true

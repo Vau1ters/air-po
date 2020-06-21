@@ -1,5 +1,4 @@
 import { World } from './core/ecs/world'
-import { PositionComponent } from './core/components/positionComponent'
 import DebugDrawSystem from './core/systems/debugDrawSystem'
 import { application, initializeApplication } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
@@ -19,6 +18,7 @@ import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
+import { AirHolderSystem } from './core/systems/airHolderSystem'
 
 export class Main {
   public static world = new World()
@@ -48,7 +48,6 @@ export class Main {
     application.stage.addChild(uiContainer)
 
     const airSystem = new AirSystem(this.world, drawContainer)
-    const cameraSystem = new CameraSystem(this.world, gameWorldContainer)
 
     this.world.addSystem(
       new AISystem(this.world),
@@ -59,19 +58,18 @@ export class Main {
       new InvincibleSystem(this.world),
       new DamageSystem(this.world),
       airSystem,
+      new AirHolderSystem(this.world),
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(this.world, debugContainer),
-      cameraSystem
+      new CameraSystem(this.world, gameWorldContainer)
     )
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
 
-    for (const player of new FamilyBuilder(this.world).include('Player').build()
-      .entityIterator) {
-      const position = player.getComponent('Position') as PositionComponent
-      cameraSystem.chaseTarget = position
+    for (const player of new FamilyBuilder(this.world).include('Player').build().entityIterator) {
+      const position = player.getComponent('Position')
       airSystem.offset = position
     }
 

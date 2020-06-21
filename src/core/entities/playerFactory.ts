@@ -10,7 +10,6 @@ import { CategoryList } from './category'
 import { playerTextures } from '../graphics/art'
 import { Animation } from '../graphics/animation'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
-import { Graphics } from 'pixi.js'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
@@ -25,9 +24,10 @@ import { WaitNode } from '../ai/action/waitNode'
 import { DeathNode } from '../ai/action/deathNode'
 import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
-import { FireGunNode } from '../ai/action/fireGunNode'
+import { GunShootNode } from '../ai/action/gunShootNode'
 import { ParallelNode } from '../ai/composite/parallelNode'
 // import { RemoveComponentNode } from '../ai/action/removeComponentNode'
+import { CameraComponent } from '../components/cameraComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -42,8 +42,7 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_OFFSET_Y = 13
   readonly FOOT_CLIP_TOLERANCE_X = 2
   readonly FOOT_CLIP_TOLERANCE_Y = 14
-  readonly CLIP_TOLERANCE_X =
-    (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
+  readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
   readonly INITIAL_AIR_QUANTITY = 1600
   readonly MAX_AIR_QUANTITY = 2000
@@ -53,37 +52,30 @@ export class PlayerFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(
-      this.MASS,
-      new Vec2(),
-      new Vec2(),
-      this.RESTITUTION
-    )
+    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
     const draw = new DrawComponent()
-    const player = new PlayerComponent({
-      air: {
-        collectSpeed: this.AIR_COLLECT_SPEED,
-        consumeSpeed: this.AIR_CONSUME_SPEED,
-      },
-    })
+    const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const airHolder = new AirHolderComponent({
       initialQuantity: this.INITIAL_AIR_QUANTITY,
       maxQuantity: this.MAX_AIR_QUANTITY,
+      collectSpeed: this.AIR_COLLECT_SPEED,
+      consumeSpeed: this.AIR_CONSUME_SPEED,
     })
     const hp = new HPComponent(1, 1)
     const invincible = new InvincibleComponent()
 
+    // TODO: カメラをプレイヤーから分離する
+    const camera = new CameraComponent()
+
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag = 'playerBody'
+    aabbBody.tag.add('playerBody')
+    aabbBody.tag.add('airHolderBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.playerBody.category
     aabbBody.mask = CategoryList.playerBody.mask
-    aabbBody.maxClipTolerance = new Vec2(
-      this.CLIP_TOLERANCE_X,
-      this.CLIP_TOLERANCE_Y
-    )
+    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
     const aabbFoot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
@@ -91,25 +83,12 @@ export class PlayerFactory extends EntityFactory {
       this.OFFSET_X + this.FOOT_OFFSET_X,
       this.OFFSET_Y + this.FOOT_OFFSET_Y
     )
-    aabbFoot.tag = 'playerFoot'
+    aabbFoot.tag.add('playerFoot')
     aabbFoot.category = CategoryList.playerFoot.category
     aabbFoot.mask = CategoryList.playerFoot.mask
-    aabbFoot.maxClipTolerance = new Vec2(
-      this.FOOT_CLIP_TOLERANCE_X,
-      this.FOOT_CLIP_TOLERANCE_Y
-    )
+    aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     collider.createCollider(aabbFoot)
 
-    const graphics = new Graphics()
-    graphics.beginFill(0xffff00)
-    graphics.drawRect(this.OFFSET_X, this.OFFSET_Y, this.WIDTH, this.HEIGHT)
-    graphics.beginFill(0xff0000)
-    graphics.drawRect(
-      this.OFFSET_X + this.FOOT_OFFSET_X,
-      this.OFFSET_Y + this.FOOT_OFFSET_Y,
-      this.FOOT_WIDTH,
-      this.FOOT_HEIGHT
-    )
     const animatedTexture = {
       Standing: [playerTextures[0]],
       Walking: [playerTextures[0], playerTextures[1]],
@@ -117,8 +96,7 @@ export class PlayerFactory extends EntityFactory {
       Dying: [playerTextures[2]],
     }
     const sprite = new Animation(animatedTexture, 'Standing')
-    graphics.addChild(sprite)
-    draw.addChild(graphics)
+    draw.addChild(sprite)
     player.changeState.addObserver(x => sprite.changeTo(x))
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
@@ -143,7 +121,7 @@ export class PlayerFactory extends EntityFactory {
         ]),
         // 生きているときの処理
         // TODO:playerControlSystem内部処理をActionNodeにしてここに追加
-        new ParallelNode([new FireGunNode()])
+        new ParallelNode([new GunShootNode()])
       )
     )
     const ai = new AIComponent(new BehaviourTree(playerAI))
@@ -158,6 +136,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
+    entity.addComponent('Camera', camera)
     return entity
   }
 }

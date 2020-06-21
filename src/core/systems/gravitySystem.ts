@@ -1,7 +1,6 @@
 import { System } from '../ecs/system'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
 
 export default class GravitySystem extends System {
   private family: Family
@@ -15,7 +14,7 @@ export default class GravitySystem extends System {
 
   public update(delta: number): void {
     for (const entity of this.family.entityIterator) {
-      const body = entity.getComponent('RigidBody') as RigidBodyComponent
+      const body = entity.getComponent('RigidBody')
       body.velocity.y += this.acceleration * body.gravityScale * delta
     }
   }

@@ -1,7 +1,6 @@
 import { System } from '../ecs/system'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { InvincibleComponent } from '../components/invincibleComponent'
 
 export default class InvincibleSystem extends System {
   private family: Family
@@ -14,9 +13,7 @@ export default class InvincibleSystem extends System {
 
   public update(delta: number): void {
     for (const entity of this.family.entityIterator) {
-      const invincible = entity.getComponent(
-        'Invincible'
-      ) as InvincibleComponent
+      const invincible = entity.getComponent('Invincible')
       invincible.decreaseTime(delta)
     }
   }

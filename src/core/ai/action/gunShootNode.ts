@@ -6,7 +6,7 @@ import { BulletFactory } from '../../entities/bulletFactory'
 import { PlayerComponent } from '../../components/playerComponent'
 import { AirHolderComponent } from '../../components/airHolderComponent'
 
-export class FireGunNode implements BehaviourNode {
+export class GunShootNode implements BehaviourNode {
   static readonly CONSUME_SPEED = 10
   private bulletFactory: BulletFactory
 
@@ -21,7 +21,7 @@ export class FireGunNode implements BehaviourNode {
     if (KeyController.isKeyPressing('Z')) {
       // 空気の消費
       const airHolder = entity.getComponent('AirHolder') as AirHolderComponent
-      airHolder.consume(FireGunNode.CONSUME_SPEED)
+      airHolder.consumeBy(GunShootNode.CONSUME_SPEED)
 
       // 弾を打つ
       this.bulletFactory.player = entity
@@ -34,20 +34,14 @@ export class FireGunNode implements BehaviourNode {
 
   private calcAngle(): number {
     if (KeyController.isKeyPressing('Down')) {
-      if (
-        KeyController.isKeyPressing('Left') ||
-        KeyController.isKeyPressing('Right')
-      ) {
+      if (KeyController.isKeyPressing('Left') || KeyController.isKeyPressing('Right')) {
         return +45
       } else {
         return +90
       }
     }
     if (KeyController.isKeyPressing('Up')) {
-      if (
-        KeyController.isKeyPressing('Left') ||
-        KeyController.isKeyPressing('Right')
-      ) {
+      if (KeyController.isKeyPressing('Left') || KeyController.isKeyPressing('Right')) {
         return -45
       } else {
         return -90

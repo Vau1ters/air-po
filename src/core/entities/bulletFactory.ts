@@ -1,10 +1,8 @@
 import { Entity } from '../ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
-import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { PlayerComponent } from '../components/playerComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
@@ -26,13 +24,9 @@ export class BulletFactory extends EntityFactory {
       console.log('player is not defined')
       return new Entity()
     }
-    const player = this.player.getComponent('Player') as PlayerComponent
-    const playerPosition = this.player.getComponent(
-      'Position'
-    ) as PositionComponent
-    const playerDirection = this.player.getComponent(
-      'HorizontalDirection'
-    ) as HorizontalDirectionComponent
+    const player = this.player.getComponent('Player')
+    const playerPosition = this.player.getComponent('Position')
+    const playerDirection = this.player.getComponent('HorizontalDirection')
 
     const direction = new Vec2(
       (playerDirection.looking == 'Left' ? -1 : +1) *
@@ -43,9 +37,7 @@ export class BulletFactory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent(playerPosition.x, playerPosition.y)
     const draw = new DrawComponent()
-    const bullet = new BulletComponent(
-      new Vec2(direction.x * this.SPEED, direction.y * this.SPEED)
-    )
+    const bullet = new BulletComponent(new Vec2(direction.x * this.SPEED, direction.y * this.SPEED))
     const collider = new ColliderComponent(entity)
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
@@ -53,7 +45,7 @@ export class BulletFactory extends EntityFactory {
     aabbBody.category = CategoryList.bulletBody.category
     aabbBody.mask = CategoryList.bulletBody.mask
     aabbBody.maxClipTolerance = new Vec2(0, 0)
-    aabbBody.tag = 'bulletBody'
+    aabbBody.tag.add('bulletBody')
     collider.createCollider(aabbBody)
 
     // 攻撃判定
@@ -62,7 +54,7 @@ export class BulletFactory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
-    attackHitBox.tag = 'AttackHitBox'
+    attackHitBox.tag.add('AttackHitBox')
     attackHitBox.category = CategoryList.bulletAttack.category
     attackHitBox.mask = CategoryList.bulletAttack.mask
     attackHitBox.isSensor = true

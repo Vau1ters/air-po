@@ -19,18 +19,12 @@ export class WallFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(
-      0,
-      new Vec2(),
-      new Vec2(),
-      this.RESTITUTION,
-      0
-    )
+    const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
     body.invMass = this.INV_MASS
     const draw = new DrawComponent()
 
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabb.tag = 'wall'
+    aabb.tag.add('wall')
     aabb.category = CategoryList.wall.category
     aabb.mask = CategoryList.wall.mask
 
