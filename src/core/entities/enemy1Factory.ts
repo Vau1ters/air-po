@@ -12,7 +12,8 @@ import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
-import { parseAI } from '../ai/parser'
+import { parseAI } from '../parser/aiParser'
+import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import enemy1AIData from '../../../res/enemy1ai.json'
 
@@ -63,7 +64,8 @@ export class Enemy1Factory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    const { sprite, ai: enemyAI } = parseAI(enemy1AIData)
+    const sprite = parseSprite(enemy1AIData.sprite)
+    const enemyAI = parseAI(enemy1AIData.ai)
 
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
