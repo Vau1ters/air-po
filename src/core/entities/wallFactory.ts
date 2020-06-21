@@ -15,14 +15,14 @@ export class WallFactory extends EntityFactory {
   readonly WIDTH = 8
   readonly HEIGHT = 8
   public tileId = 0
-  public createCollider = true
+  public shouldCollide = true
 
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
     const draw = new DrawComponent()
 
-    if (this.createCollider) {
+    if (this.shouldCollide) {
       const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
       aabb.tag.add('wall')
       aabb.category = CategoryList.wall.category
