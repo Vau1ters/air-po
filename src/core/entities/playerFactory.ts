@@ -65,7 +65,7 @@ export class PlayerFactory extends EntityFactory {
       collectSpeed: this.AIR_COLLECT_SPEED,
       consumeSpeed: this.AIR_CONSUME_SPEED,
     })
-    const hp = new HPComponent(1, 1)
+    const hp = new HPComponent(3, 3)
     const invincible = new InvincibleComponent()
 
     // TODO: カメラをプレイヤーから分離する
