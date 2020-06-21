@@ -24,6 +24,7 @@ import { IsDeadNode } from '../ai/condition/isDeadNode'
 import { WaitNode } from '../ai/action/waitNode'
 import { DeathNode } from '../ai/action/deathNode'
 import { AirEmitterNode } from '../ai/action/airEmitterNode'
+import { AnimationStateComponent } from '../components/animationStateComponent'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -86,12 +87,15 @@ export class Enemy1Factory extends EntityFactory {
       }
     })
 
+    const animState = new AnimationStateComponent()
+    animState.changeState.addObserver(x => sprite.changeTo(x))
+
     const enemyAI = new WhileNode(
       new TrueNode(),
       new IfNode(
         new IsDeadNode(),
         new SequenceNode([
-          new AnimationNode(sprite, 'Dying'),
+          new AnimationNode('Dying'),
           new WaitNode(60),
           new AirEmitterNode(10000),
           new DeathNode(),
@@ -113,6 +117,7 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('Attack', attack)
     entity.addComponent('Invincible', invincible)
     entity.addComponent('HP', hp)
+    entity.addComponent('AnimationState', animState)
     return entity
   }
 }

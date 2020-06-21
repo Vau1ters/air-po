@@ -1,15 +1,15 @@
 import { BehaviourNode, NodeState } from '../behaviourNode'
-import { Animation } from '../../graphics/animation'
+import { Entity } from '../../ecs/entity'
 
 export class AnimationNode implements BehaviourNode {
-  public constructor(private animation: Animation, private animationName: string) {}
+  public constructor(private animationName: string) {}
 
   public initState(): void {
     // 何もしない
   }
 
-  public execute(): NodeState {
-    this.animation.changeTo(this.animationName)
+  public execute(entity: Entity): NodeState {
+    entity.getComponent('AnimationState').state = this.animationName
     return NodeState.Success
   }
 }

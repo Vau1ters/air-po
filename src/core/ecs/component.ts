@@ -13,6 +13,7 @@ import { AttackComponent } from '../components/attackComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { BVHComponent } from '../components/bvhComponent'
 import { CameraComponent } from '../components/cameraComponent'
+import { AnimationStateComponent } from '../components/animationStateComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -30,6 +31,7 @@ export interface ComponentMap {
   Attack: AttackComponent
   BVH: BVHComponent
   Camera: CameraComponent
+  AnimationState: AnimationStateComponent
 }
 
 export type ComponentName = keyof ComponentMap

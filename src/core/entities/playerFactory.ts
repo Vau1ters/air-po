@@ -24,10 +24,11 @@ import { WaitNode } from '../ai/action/waitNode'
 import { DeathNode } from '../ai/action/deathNode'
 import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
-import { GunShootNode } from '../ai/action/gunShootNode'
+import { PlayerGunShootNode } from '../ai/action/playerGunShootNode'
 import { ParallelNode } from '../ai/composite/parallelNode'
 // import { RemoveComponentNode } from '../ai/action/removeComponentNode'
 import { CameraComponent } from '../components/cameraComponent'
+import { AnimationStateComponent } from '../components/animationStateComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -97,7 +98,6 @@ export class PlayerFactory extends EntityFactory {
     }
     const sprite = new Animation(animatedTexture, 'Standing')
     draw.addChild(sprite)
-    player.changeState.addObserver(x => sprite.changeTo(x))
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1
@@ -106,6 +106,9 @@ export class PlayerFactory extends EntityFactory {
       }
     })
 
+    const animState = new AnimationStateComponent()
+    animState.changeState.addObserver(x => sprite.changeTo(x))
+
     // AI
     const playerAI = new WhileNode(
       new TrueNode(),
@@ -113,7 +116,7 @@ export class PlayerFactory extends EntityFactory {
         new IsDeadNode(),
         // 死んだときの処理
         new SequenceNode([
-          new AnimationNode(sprite, 'Dying'),
+          new AnimationNode('Dying'),
           // new RemoveComponentNode('RigidBody'),
           new WaitNode(60),
           // new AirEmitterNode(10000),
@@ -121,7 +124,7 @@ export class PlayerFactory extends EntityFactory {
         ]),
         // 生きているときの処理
         // TODO:playerControlSystem内部処理をActionNodeにしてここに追加
-        new ParallelNode([new GunShootNode()])
+        new ParallelNode([new PlayerGunShootNode()])
       )
     )
     const ai = new AIComponent(new BehaviourTree(playerAI))
@@ -137,6 +140,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Camera', camera)
+    entity.addComponent('AnimationState', animState)
     return entity
   }
 }

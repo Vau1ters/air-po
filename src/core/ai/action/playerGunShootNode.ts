@@ -6,7 +6,7 @@ import { BulletFactory } from '../../entities/bulletFactory'
 import { PlayerComponent } from '../../components/playerComponent'
 import { AirHolderComponent } from '../../components/airHolderComponent'
 
-export class GunShootNode implements BehaviourNode {
+export class PlayerGunShootNode implements BehaviourNode {
   static readonly CONSUME_SPEED = 10
   private bulletFactory: BulletFactory
 
@@ -21,7 +21,7 @@ export class GunShootNode implements BehaviourNode {
     if (KeyController.isKeyPressing('Z')) {
       // 空気の消費
       const airHolder = entity.getComponent('AirHolder') as AirHolderComponent
-      airHolder.consumeBy(GunShootNode.CONSUME_SPEED)
+      airHolder.consumeBy(PlayerGunShootNode.CONSUME_SPEED)
 
       // 弾を打つ
       this.bulletFactory.player = entity
