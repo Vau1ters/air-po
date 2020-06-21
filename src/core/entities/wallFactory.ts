@@ -15,26 +15,29 @@ export class WallFactory extends EntityFactory {
   readonly WIDTH = 8
   readonly HEIGHT = 8
   public tileId = 0
+  public shouldCollide = true
 
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    body.invMass = this.INV_MASS
     const draw = new DrawComponent()
 
-    const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabb.tag.add('wall')
-    aabb.category = CategoryList.wall.category
-    aabb.mask = CategoryList.wall.mask
+    if (this.shouldCollide) {
+      const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+      aabb.tag.add('wall')
+      aabb.category = CategoryList.wall.category
+      aabb.mask = CategoryList.wall.mask
+      const collider = new ColliderComponent(entity)
+      collider.createCollider(aabb)
+      entity.addComponent('Collider', collider)
 
-    const collider = new ColliderComponent(entity)
-    collider.createCollider(aabb)
+      const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
+      body.invMass = this.INV_MASS
+      entity.addComponent('RigidBody', body)
+    }
 
     entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
     // const graphics = new Graphics()
     // graphics.beginFill(0xff00ff)
     // graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)

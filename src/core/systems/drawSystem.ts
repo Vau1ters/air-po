@@ -3,6 +3,7 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Container } from 'pixi.js'
 import { Entity } from '../ecs/entity'
+import { application, windowSize } from '../../core/application'
 
 export default class DrawSystem extends System {
   private family: Family
@@ -36,12 +37,19 @@ export default class DrawSystem extends System {
   }
 
   public update(): void {
+    const THRESHOLD = 20 // to avoid 1-frame drop
     for (const entity of this.family.entityIterator) {
       const container = entity.getComponent('Draw')
       if (entity.hasComponent('Position')) {
         const position = entity.getComponent('Position')
         container.position.set(position.x, position.y)
       }
+      const r = container.getBounds()
+      container.visible =
+        -THRESHOLD <= r.x + r.width &&
+        -THRESHOLD <= r.y + r.height &&
+        r.x < windowSize.width * application.stage.scale.x + THRESHOLD &&
+        r.y < windowSize.height * application.stage.scale.y + THRESHOLD
     }
   }
 }
