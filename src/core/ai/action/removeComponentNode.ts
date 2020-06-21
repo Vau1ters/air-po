@@ -1,15 +1,16 @@
 import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
+import { ComponentName } from '../../ecs/component'
 
-export class AnimationNode implements BehaviourNode {
-  public constructor(private animationName: string) {}
+export class RemoveComponentNode implements BehaviourNode {
+  public constructor(private removeComponent: ComponentName) {}
 
   public initState(): void {
     // 何もしない
   }
 
   public execute(entity: Entity): NodeState {
-    entity.getComponent('AnimationState').state = this.animationName
+    entity.removeComponent(this.removeComponent)
     return NodeState.Success
   }
 }

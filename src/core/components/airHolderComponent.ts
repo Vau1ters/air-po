@@ -28,6 +28,10 @@ export class AirHolderComponent {
     this.quantity = Math.max(0, this.quantity - this.consumeSpeed)
   }
 
+  public consumeBy(consumeSpeed: number): void {
+    this.quantity = Math.max(0, this.quantity - consumeSpeed)
+  }
+
   public collect(airQuantity: number): number {
     const prevQuantity = this.quantity
     this.quantity = Math.min(

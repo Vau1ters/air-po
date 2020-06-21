@@ -13,7 +13,23 @@ import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
+import { WhileNode } from '../ai/decorator/whileNode'
+import { TrueNode } from '../ai/condition/boolNode'
+import { IfNode } from '../ai/decorator/ifNode'
+import { IsDeadNode } from '../ai/condition/isDeadNode'
+import { SequenceNode } from '../ai/composite/sequenceNode'
+import { AnimationNode } from '../ai/action/animationNode'
+import { WaitNode } from '../ai/action/waitNode'
+// import { AirEmitterNode } from '../ai/action/airEmitterNode'
+import { DeathNode } from '../ai/action/deathNode'
+import { BehaviourTree } from '../ai/behaviourTree'
+import { AIComponent } from '../components/aiComponent'
+import { PlayerGunShootNode } from '../ai/action/playerGunShootNode'
+import { ParallelNode } from '../ai/composite/parallelNode'
+// import { RemoveComponentNode } from '../ai/action/removeComponentNode'
 import { CameraComponent } from '../components/cameraComponent'
+import { AnimationStateComponent } from '../components/animationStateComponent'
+import { PlayerMoveNode } from '../ai/action/playerMoveNode'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -49,7 +65,7 @@ export class PlayerFactory extends EntityFactory {
       collectSpeed: this.AIR_COLLECT_SPEED,
       consumeSpeed: this.AIR_CONSUME_SPEED,
     })
-    const hp = new HPComponent(10, 10)
+    const hp = new HPComponent(3, 3)
     const invincible = new InvincibleComponent()
 
     // TODO: カメラをプレイヤーから分離する
@@ -79,10 +95,10 @@ export class PlayerFactory extends EntityFactory {
       Standing: [playerTextures[0]],
       Walking: [playerTextures[0], playerTextures[1]],
       Jumping: [playerTextures[1]],
+      Dying: [playerTextures[2]],
     }
     const sprite = new Animation(animatedTexture, 'Standing')
     draw.addChild(sprite)
-    player.changeState.addObserver(x => sprite.changeTo(x))
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1
@@ -91,6 +107,29 @@ export class PlayerFactory extends EntityFactory {
       }
     })
 
+    const animState = new AnimationStateComponent()
+    animState.changeState.addObserver(x => sprite.changeTo(x))
+
+    // AI
+    const playerAI = new WhileNode(
+      new TrueNode(),
+      new IfNode(
+        new IsDeadNode(),
+        // 死んだときの処理
+        new SequenceNode([
+          new AnimationNode('Dying'),
+          // new RemoveComponentNode('RigidBody'),
+          new WaitNode(60),
+          // new AirEmitterNode(10000),
+          new DeathNode(),
+        ]),
+        // 生きているときの処理
+        new ParallelNode([new PlayerGunShootNode(), new PlayerMoveNode()])
+      )
+    )
+    const ai = new AIComponent(new BehaviourTree(playerAI))
+
+    entity.addComponent('AI', ai)
     entity.addComponent('Position', position)
     entity.addComponent('RigidBody', body)
     entity.addComponent('HorizontalDirection', direction)
@@ -101,6 +140,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Camera', camera)
+    entity.addComponent('AnimationState', animState)
     return entity
   }
 }
