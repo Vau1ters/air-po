@@ -3,7 +3,7 @@ import { World } from '../../ecs/world'
 import { Entity } from '../../ecs/entity'
 import { AirFactory } from '../../entities/airFactory'
 
-export class AirEmitterNode implements BehaviourNode {
+export class EmitAirNode implements BehaviourNode {
   public airFactory: AirFactory
 
   public constructor(quantity: number) {

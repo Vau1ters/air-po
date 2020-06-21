@@ -2,9 +2,9 @@ import { Texture } from 'pixi.js'
 import { Animation } from '../graphics/animation'
 import { textureStore } from '../graphics/art'
 import { BehaviourNode } from './behaviourNode'
-import { AirEmitterNode } from './action/airEmitterNode'
 import { AnimationNode } from './action/animationNode'
 import { DeathNode } from './action/deathNode'
+import { EmitAirNode } from './action/emitAirNode'
 import { MoveNode, Direction } from './action/moveNode'
 import { PlayerGunShootNode } from './action/playerGunShootNode'
 import { PlayerMoveNode } from './action/playerMoveNode'
@@ -51,12 +51,12 @@ function parseAINode(sprite: Animation, json: any): BehaviourNode {
   const name = Object.keys(json)[0]
   const body = json[name]
   switch (name) {
-    case 'emitAir':
-      return parseEmitAirNode(body)
     case 'animation':
       return parseAnimationNode(body)
     case 'death':
       return parseDeathNode(body)
+    case 'emitAir':
+      return parseEmitAirNode(body)
     case 'move':
       return parseMoveNode(body)
     case 'playerGunShoot':
@@ -84,11 +84,6 @@ function parseAINode(sprite: Animation, json: any): BehaviourNode {
   }
 }
 
-function parseEmitAirNode(json: any): AirEmitterNode {
-  checkMembers(json, { quantity: 'number' }, 'emitAir')
-  return new AirEmitterNode(json.quantity)
-}
-
 function parseAnimationNode(json: any): AnimationNode {
   checkMembers(json, { state: 'string' }, 'animation')
   return new AnimationNode(json.state)
@@ -97,6 +92,11 @@ function parseAnimationNode(json: any): AnimationNode {
 function parseDeathNode(json: any): DeathNode {
   checkMembers(json, {}, 'death')
   return new DeathNode()
+}
+
+function parseEmitAirNode(json: any): EmitAirNode {
+  checkMembers(json, { quantity: 'number' }, 'emitAir')
+  return new EmitAirNode(json.quantity)
 }
 
 function parseMoveNode(json: any): MoveNode {
