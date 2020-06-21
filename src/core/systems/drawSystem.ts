@@ -3,10 +3,11 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Container } from 'pixi.js'
 import { Entity } from '../ecs/entity'
-import { application, windowSize } from '../../core/application'
+import { windowSize } from '../../core/application'
 
 export default class DrawSystem extends System {
   private family: Family
+  private cameraFamily: Family
 
   private container: Container = new Container()
 
@@ -22,6 +23,7 @@ export default class DrawSystem extends System {
     }
     this.family.entityAddedEvent.addObserver(entity => this.onContainerAdded(entity))
     this.family.entityRemovedEvent.addObserver(entity => this.onContainerRemoved(entity))
+    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
   }
 
   public onContainerAdded(entity: Entity): void {
@@ -37,19 +39,24 @@ export default class DrawSystem extends System {
   }
 
   public update(): void {
-    const THRESHOLD = 20 // to avoid 1-frame drop
-    for (const entity of this.family.entityIterator) {
-      const container = entity.getComponent('Draw')
-      if (entity.hasComponent('Position')) {
-        const position = entity.getComponent('Position')
-        container.position.set(position.x, position.y)
+    for (const camera of this.cameraFamily.entityIterator) {
+      const cpos = camera.getComponent('Position')
+      for (const entity of this.family.entityIterator) {
+        const container = entity.getComponent('Draw')
+        if (entity.hasComponent('Position')) {
+          const position = entity.getComponent('Position')
+          const x = position.x - cpos.x
+          const y = position.y - cpos.y
+          const w = 8
+          const h = 8
+          const sw = windowSize.width
+          const sh = windowSize.height
+          container.visible = -sw / 2 <= x + w && -sh / 2 <= y + h && x < sw / 2 && y < sh / 2
+          if (container.visible) {
+            container.position.set(position.x, position.y)
+          }
+        }
       }
-      const r = container.getBounds()
-      container.visible =
-        -THRESHOLD <= r.x + r.width &&
-        -THRESHOLD <= r.y + r.height &&
-        r.x < windowSize.width * application.stage.scale.x + THRESHOLD &&
-        r.y < windowSize.height * application.stage.scale.y + THRESHOLD
     }
   }
 }
