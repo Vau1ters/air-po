@@ -73,6 +73,7 @@ export class MapBuilder {
           }
         }
         factory.tileId = this.calcId(cells) - wallTileSet.firstgid
+        factory.createCollider = cells.some(c => c === 0)
         const wall = factory.create()
         const p = wall.getComponent('Position')
         p.x = 8 * x

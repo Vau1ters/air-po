@@ -37,6 +37,7 @@ export class Main {
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
+    debugContainer.filterArea = application.screen
     gameWorldContainer.addChild(debugContainer)
 
     const gameWorldUiContainer = new Container()

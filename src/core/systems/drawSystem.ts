@@ -3,6 +3,7 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Container } from 'pixi.js'
 import { Entity } from '../ecs/entity'
+import { application, windowSize } from '../../core/application'
 
 export default class DrawSystem extends System {
   private family: Family
@@ -42,6 +43,13 @@ export default class DrawSystem extends System {
         const position = entity.getComponent('Position')
         container.position.set(position.x, position.y)
       }
+      const r = container.getBounds()
+      const N = 20 // magic threshold
+      container.visible =
+        -N <= r.x + r.width &&
+        -N <= r.y + r.height &&
+        r.x < windowSize.width * application.stage.scale.x + N &&
+        r.y < windowSize.height * application.stage.scale.y + N
     }
   }
 }
