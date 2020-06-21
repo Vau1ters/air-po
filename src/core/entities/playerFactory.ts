@@ -29,6 +29,7 @@ import { ParallelNode } from '../ai/composite/parallelNode'
 // import { RemoveComponentNode } from '../ai/action/removeComponentNode'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
+import { PlayerMoveNode } from '../ai/action/playerMoveNode'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -123,8 +124,7 @@ export class PlayerFactory extends EntityFactory {
           new DeathNode(),
         ]),
         // 生きているときの処理
-        // TODO:playerControlSystem内部処理をActionNodeにしてここに追加
-        new ParallelNode([new PlayerGunShootNode()])
+        new ParallelNode([new PlayerGunShootNode(), new PlayerMoveNode()])
       )
     )
     const ai = new AIComponent(new BehaviourTree(playerAI))
