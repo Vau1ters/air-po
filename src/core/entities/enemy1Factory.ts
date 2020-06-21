@@ -66,6 +66,13 @@ export class Enemy1Factory extends EntityFactory {
     const { sprite, ai: enemyAI } = parseAI(enemy1AIData)
 
     draw.addChild(sprite)
+    direction.changeDirection.addObserver(x => {
+      if (x === 'Left') {
+        sprite.scale.x = -1
+      } else {
+        sprite.scale.x = 1
+      }
+    })
 
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))

@@ -52,17 +52,11 @@
                  }
                },
                {
-                 "horizontalFlip": {}
-               },
-               {
                  "move": {
                    "direction": "Left",
                    "speed": 2,
                    "interval": 60
                  }
-               },
-               {
-                 "horizontalFlip": {}
                }
              ]
            }

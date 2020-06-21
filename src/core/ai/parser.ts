@@ -5,7 +5,6 @@ import { BehaviourNode } from './behaviourNode'
 import { AirEmitterNode } from './action/airEmitterNode'
 import { AnimationNode } from './action/animationNode'
 import { DeathNode } from './action/deathNode'
-import { HorizontalFlipNode } from './action/horizontalFlipNode'
 import { MoveNode, Direction } from './action/moveNode'
 import { PlayerGunShootNode } from './action/playerGunShootNode'
 import { PlayerMoveNode } from './action/playerMoveNode'
@@ -58,8 +57,6 @@ function parseAINode(sprite: Animation, json: any): BehaviourNode {
       return parseAnimationNode(body)
     case 'death':
       return parseDeathNode(body)
-    case 'horizontalFlip':
-      return parseHorizontalFlipNode(sprite, body)
     case 'move':
       return parseMoveNode(body)
     case 'playerGunShoot':
@@ -100,11 +97,6 @@ function parseAnimationNode(json: any): AnimationNode {
 function parseDeathNode(json: any): DeathNode {
   checkMembers(json, {}, 'death')
   return new DeathNode()
-}
-
-function parseHorizontalFlipNode(sprite: Animation, json: any): HorizontalFlipNode {
-  checkMembers(json, {}, 'horizontalFlip')
-  return new HorizontalFlipNode(sprite)
 }
 
 function parseMoveNode(json: any): MoveNode {
