@@ -102,3 +102,66 @@ export class KeyController {
     }
   }
 }
+
+export type MouseButton = 'Left' | 'Middle' | 'Right'
+
+export class MouseController {
+  private static readonly mousePressingMap: Map<MouseButton, boolean> = new Map()
+
+  private static readonly mousePressedMap: Map<MouseButton, boolean> = new Map()
+
+  private static pressMouse(button: MouseButton): void {
+    if (!this.mousePressingMap.get(button)) {
+      this.mousePressedMap.set(button, true)
+    }
+    this.mousePressingMap.set(button, true)
+  }
+
+  private static releaseMouse(button: MouseButton): void {
+    this.mousePressingMap.set(button, false)
+    this.mousePressedMap.set(button, false)
+  }
+
+  private static numberToMouseButton(button: number): MouseButton | undefined {
+    switch (button) {
+      case 0:
+        return 'Left'
+      case 1:
+        return 'Middle'
+      case 2:
+        return 'Right'
+      default:
+        return
+    }
+  }
+
+  public static init(): void {
+    window.addEventListener('mousedown', e => {
+      const button = MouseController.numberToMouseButton(e.button)
+      if (button) {
+        this.pressMouse(button)
+      }
+    })
+    window.addEventListener('mouseup', e => {
+      const button = MouseController.numberToMouseButton(e.button)
+      if (button) {
+        this.releaseMouse(button)
+      }
+    })
+  }
+
+  public static isMousePressed(button: MouseButton): boolean {
+    return !!this.mousePressedMap.get(button)
+  }
+
+  public static isMousePressing(button: MouseButton): boolean {
+    return !!this.mousePressingMap.get(button)
+  }
+
+  // 毎フレーム呼び出す
+  public static onUpdateFinished(): void {
+    for (const button of this.mousePressedMap.keys()) {
+      this.mousePressedMap.set(button, false)
+    }
+  }
+}

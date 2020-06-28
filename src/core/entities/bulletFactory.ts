@@ -26,11 +26,9 @@ export class BulletFactory extends EntityFactory {
     }
     const player = this.player.getComponent('Player')
     const playerPosition = this.player.getComponent('Position')
-    const playerDirection = this.player.getComponent('HorizontalDirection')
 
     const direction = new Vec2(
-      (playerDirection.looking == 'Left' ? -1 : +1) *
-        Math.cos((player.bulletAngle * Math.PI) / 180),
+      Math.cos((player.bulletAngle * Math.PI) / 180),
       Math.sin((player.bulletAngle * Math.PI) / 180)
     )
 

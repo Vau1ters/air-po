@@ -1,6 +1,6 @@
 import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
-import { KeyController } from '../../controller'
+import { KeyController, MouseController } from '../../controller'
 
 export class PlayerMoveNode implements BehaviourNode {
   public initState(): void {
@@ -16,11 +16,11 @@ export class PlayerMoveNode implements BehaviourNode {
 
     const velocity = body.velocity
 
-    if (KeyController.isKeyPressing('Right')) {
+    if (KeyController.isKeyPressing('D')) {
       if (velocity.x < 100) velocity.x += 10
       if (player.landing) animState.state = 'Walking'
       direction.looking = 'Right'
-    } else if (KeyController.isKeyPressing('Left')) {
+    } else if (KeyController.isKeyPressing('A')) {
       if (velocity.x > -100) velocity.x -= 10
       if (player.landing) animState.state = 'Walking'
       direction.looking = 'Left'
@@ -32,13 +32,14 @@ export class PlayerMoveNode implements BehaviourNode {
     if (player.landing) {
       velocity.y = 0
     }
-    if (KeyController.isKeyPressing('Space') && player.landing) {
+    if (KeyController.isKeyPressing('W') && player.landing) {
       velocity.y = -250
       animState.state = 'Jumping'
     }
     player.landing = false
 
     KeyController.onUpdateFinished()
+    MouseController.onUpdateFinished()
     return NodeState.Success
   }
 }
