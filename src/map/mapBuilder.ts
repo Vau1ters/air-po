@@ -89,7 +89,7 @@ export class MapBuilder {
       const enemy = new EnemyFactory().setType(enemyData.type).create()
       const enemyPosition = enemy.getComponent('Position')
       enemyPosition.x = enemyData.x + enemyData.width / 2
-      enemyPosition.y = enemyData.y + enemyData.height / 2
+      enemyPosition.y = enemyData.y - enemyData.height / 2
       this.world.addEntity(enemy)
     }
   }
@@ -101,7 +101,7 @@ export class MapBuilder {
       const player = new PlayerFactory().create()
       const playerPosition = player.getComponent('Position')
       playerPosition.x = playerData.x + playerData.width / 2
-      playerPosition.y = playerData.y + playerData.height / 2
+      playerPosition.y = playerData.y - playerData.height / 2
       this.world.addEntity(player)
     }
   }
