@@ -21,6 +21,11 @@
            "sequence": {
              "body": [
                {
+                 "removeComponent": {
+                   "component": "Collider"
+                 }
+               },
+               {
                  "animation": {
                    "state": "Dying"
                  }
@@ -44,20 +49,6 @@
          "false": {
            "sequence": {
              "body": [
-               {
-                 "move": {
-                  "direction": "Right",
-                  "speed": 2,
-                  "interval": 60
-                 }
-               },
-               {
-                 "move": {
-                   "direction": "Left",
-                   "speed": 2,
-                   "interval": 60
-                 }
-               }
              ]
            }
          }

@@ -36,6 +36,7 @@ export class PlayerMoveNode implements BehaviourNode {
       velocity.y = -250
       animState.state = 'Jumping'
     }
+    if (velocity.y > 240) velocity.y = 240
     player.landing = false
 
     KeyController.onUpdateFinished()

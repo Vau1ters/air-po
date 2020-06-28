@@ -17,7 +17,16 @@
       "body": {
         "if": {
           "condition": {
-            "isDead": {}
+            "select": {
+              "body": [
+                {
+                  "isDead": {}
+                },
+                {
+                  "hasAir": {}
+                }
+              ]
+            }
           },
           "true": {
             "sequence": {
