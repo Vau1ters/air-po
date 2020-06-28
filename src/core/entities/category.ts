@@ -56,7 +56,7 @@ export const CategoryList = {
   },
   enemy1Attack: {
     category: Category.DEFAULT,
-    mask: CategorySet.ALL,
+    mask: new CategorySet(Category.PLAYER),
   },
   playerBody: {
     category: Category.PLAYER,

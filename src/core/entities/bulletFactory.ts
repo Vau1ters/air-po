@@ -35,7 +35,7 @@ export class BulletFactory extends EntityFactory {
     )
 
     const entity = new Entity()
-    const position = new PositionComponent(playerPosition.x, playerPosition.y)
+    const position = new PositionComponent(playerPosition.x, playerPosition.y + 1)
     const draw = new DrawComponent()
     const bullet = new BulletComponent(new Vec2(direction.x * this.SPEED, direction.y * this.SPEED))
     const collider = new ColliderComponent(entity)

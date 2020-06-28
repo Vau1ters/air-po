@@ -39,7 +39,7 @@ export class Enemy1Factory extends EntityFactory {
     const draw = new DrawComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
-    const hp = new HPComponent(2, 2)
+    const hp = new HPComponent(1, 1)
     const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))

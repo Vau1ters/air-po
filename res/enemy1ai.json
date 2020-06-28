@@ -27,37 +27,23 @@
                },
                {
                  "wait": {
-                   "interval": 60
+                   "interval": 30
                  }
                },
                {
                  "emitAir": {
-                   "quantity": 10000
+                   "quantity": 3000
                  }
                },
                {
                  "death": {}
                }
              ]
-           } 
+           }
          },
          "false": {
            "sequence": {
              "body": [
-               {
-                 "move": {
-                  "direction": "Right",
-                  "speed": 2,
-                  "interval": 60
-                 }
-               },
-               {
-                 "move": {
-                   "direction": "Left",
-                   "speed": 2,
-                   "interval": 60
-                 }
-               }
              ]
            }
          }
