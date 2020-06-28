@@ -53,10 +53,6 @@ export default class PhysicsSystem extends System {
   }
 
   public update(delta: number): void {
-    this.buildBVH()
-    this.collidedList.length = 0
-    this.broadPhase()
-    this.solve(this.collidedList)
     for (const entity of this.rigidBodyFamily.entityIterator) {
       const position = entity.getComponent('Position')
       const body = entity.getComponent('RigidBody')
@@ -66,6 +62,10 @@ export default class PhysicsSystem extends System {
       position.y += body.velocity.y * delta
       body.acceleration.x = body.acceleration.y = 0
     }
+    this.buildBVH()
+    this.collidedList.length = 0
+    this.broadPhase()
+    this.solve(this.collidedList)
   }
 
   private broadPhase(): void {
