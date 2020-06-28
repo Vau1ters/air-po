@@ -1,5 +1,5 @@
 export class InvincibleComponent {
-  private static INVINCIBLE_TIME = 1
+  private static INVINCIBLE_TIME = 0
 
   private invincibleTime = 0
 

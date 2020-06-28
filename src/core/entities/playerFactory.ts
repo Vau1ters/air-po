@@ -34,10 +34,10 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_CLIP_TOLERANCE_Y = 14
   readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
-  readonly INITIAL_AIR_QUANTITY = 1600
-  readonly MAX_AIR_QUANTITY = 2000
-  readonly AIR_COLLECT_SPEED = 2
-  readonly AIR_CONSUME_SPEED = 1
+  readonly INITIAL_AIR_QUANTITY = 200
+  readonly MAX_AIR_QUANTITY = 200
+  readonly AIR_COLLECT_SPEED = 0.1
+  readonly AIR_CONSUME_SPEED = 0.05
 
   public create(): Entity {
     const entity = new Entity()

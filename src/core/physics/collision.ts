@@ -23,7 +23,7 @@ const collideAirAndAABB = (airIterator: IterableIterator<Entity>, aabb: AABB): b
   for (const air of airIterator) {
     const airComponent = air.getComponent('Air')
     const pos = air.getComponent('Position')
-    const r2 = airComponent.quantity
+    const r2 = airComponent.quantity * airComponent.quantity
     const d2 = pos.sub(aabb.center).lengthSq()
     const R2 = AirFilter.EFFECTIVE_RADIUS * AirFilter.EFFECTIVE_RADIUS
     airComponent.hit = d2 < R2

@@ -44,7 +44,7 @@ export class MapBuilder {
       const y = airData.y + radius
       const air = new AirFactory()
         .setPosition(x, y)
-        .setQuantity(radius * radius)
+        .setQuantity(radius)
         .create()
       this.world.addEntity(air)
     }

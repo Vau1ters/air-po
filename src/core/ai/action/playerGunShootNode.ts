@@ -7,7 +7,7 @@ import { PlayerComponent } from '../../components/playerComponent'
 import { AirHolderComponent } from '../../components/airHolderComponent'
 
 export class PlayerGunShootNode implements BehaviourNode {
-  static readonly CONSUME_SPEED = 10
+  static readonly CONSUME_SPEED = 1
   private bulletFactory: BulletFactory
 
   public constructor() {
@@ -21,13 +21,15 @@ export class PlayerGunShootNode implements BehaviourNode {
     if (KeyController.isKeyPressing('Z')) {
       // 空気の消費
       const airHolder = entity.getComponent('AirHolder') as AirHolderComponent
-      airHolder.consumeBy(PlayerGunShootNode.CONSUME_SPEED)
+      if (airHolder.currentQuantity >= PlayerGunShootNode.CONSUME_SPEED) {
+        airHolder.consumeBy(PlayerGunShootNode.CONSUME_SPEED)
 
-      // 弾を打つ
-      this.bulletFactory.player = entity
-      const player = entity.getComponent('Player') as PlayerComponent
-      player.bulletAngle = this.calcAngle()
-      world.addEntity(this.bulletFactory.create())
+        // 弾を打つ
+        this.bulletFactory.player = entity
+        const player = entity.getComponent('Player') as PlayerComponent
+        player.bulletAngle = this.calcAngle()
+        world.addEntity(this.bulletFactory.create())
+      }
     }
     return NodeState.Success
   }
