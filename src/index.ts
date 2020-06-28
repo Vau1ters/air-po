@@ -73,7 +73,10 @@ export class Main {
       airSystem.offset = position
     }
 
-    application.ticker.add((delta: number) => this.world.update(delta / 60))
+    application.ticker.add((delta: number) => {
+      this.world.update(delta / 60)
+      KeyController.onUpdateFinished()
+    })
 
     /* eslint @typescript-eslint/no-var-requires: 0 */
     const Stats = require('stats.js')

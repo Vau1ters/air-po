@@ -38,7 +38,6 @@ export class PlayerMoveNode implements BehaviourNode {
     }
     player.landing = false
 
-    KeyController.onUpdateFinished()
     return NodeState.Success
   }
 }
