@@ -5,6 +5,7 @@ import { Vec2 } from '../../math/vec2'
 
 export class PlayerJetNode implements BehaviourNode {
   static readonly CONSUME_SPEED = 10
+  static readonly JET_SPEED = 180
 
   public initState(): void {
     // 何もしない
@@ -21,8 +22,8 @@ export class PlayerJetNode implements BehaviourNode {
       playerAngle.lengthSq() > 0 &&
       airHolder.currentQuantity >= PlayerJetNode.CONSUME_SPEED
     ) {
-      velocity.x = playerAngle.x * 160
-      velocity.y = playerAngle.y * 200
+      velocity.x = playerAngle.x * PlayerJetNode.JET_SPEED
+      velocity.y = playerAngle.y * PlayerJetNode.JET_SPEED
       airHolder.consumeBy(PlayerJetNode.CONSUME_SPEED)
     }
 
