@@ -17,7 +17,7 @@ export class PlayerJetNode implements BehaviourNode {
 
     const playerAngle = this.calcPlayerAngle()
     if (
-      KeyController.isKeyPressing('Shift') &&
+      KeyController.isActionPressing('Jet') &&
       playerAngle.lengthSq() > 0 &&
       airHolder.currentQuantity >= PlayerJetNode.CONSUME_SPEED
     ) {
@@ -31,16 +31,16 @@ export class PlayerJetNode implements BehaviourNode {
   private calcPlayerAngle(): Vec2 {
     const angle = new Vec2()
 
-    if (KeyController.isKeyPressing('A')) {
+    if (KeyController.isActionPressing('MoveLeft')) {
       angle.x -= 1
     }
-    if (KeyController.isKeyPressing('D')) {
+    if (KeyController.isActionPressing('MoveRight')) {
       angle.x += 1
     }
-    if (KeyController.isKeyPressing('W')) {
+    if (KeyController.isActionPressing('MoveUp')) {
       angle.y -= 1
     }
-    if (KeyController.isKeyPressing('S')) {
+    if (KeyController.isActionPressing('MoveDown')) {
       angle.y += 1
     }
 
