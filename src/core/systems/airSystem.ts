@@ -51,7 +51,7 @@ export class AirSystem extends System {
         continue
       }
 
-      const radius = air.quantity * 1
+      const radius = air.quantity
 
       airs.push({
         center: new PositionComponent(
