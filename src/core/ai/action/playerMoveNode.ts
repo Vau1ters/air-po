@@ -16,11 +16,11 @@ export class PlayerMoveNode implements BehaviourNode {
 
     const velocity = body.velocity
 
-    if (KeyController.isKeyPressing('D')) {
+    if (KeyController.isActionPressing('MoveRight')) {
       if (velocity.x < 100) velocity.x += 10
       if (player.landing) animState.state = 'Walking'
       direction.looking = 'Right'
-    } else if (KeyController.isKeyPressing('A')) {
+    } else if (KeyController.isActionPressing('MoveLeft')) {
       if (velocity.x > -100) velocity.x -= 10
       if (player.landing) animState.state = 'Walking'
       direction.looking = 'Left'
@@ -32,7 +32,7 @@ export class PlayerMoveNode implements BehaviourNode {
     if (player.landing) {
       velocity.y = 0
     }
-    if (KeyController.isKeyPressing('W') && player.landing) {
+    if (KeyController.isActionPressing('Jump') && player.landing) {
       velocity.y = -250
       animState.state = 'Jumping'
     }

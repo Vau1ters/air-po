@@ -1,3 +1,13 @@
+export type KeyActionType = 'MoveLeft' | 'MoveRight' | 'MoveUp' | 'MoveDown' | 'Jump' | 'Jet'
+export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
+  MoveLeft: 'A',
+  MoveRight: 'D',
+  MoveUp: 'W',
+  MoveDown: 'S',
+  Jump: 'W',
+  Jet: 'Shift',
+}
+
 export class KeyController {
   private static readonly keyPressingMap: Map<KeyCode, boolean> = new Map()
 
@@ -93,6 +103,14 @@ export class KeyController {
 
   public static isKeyPressing(keyCode: KeyCode): boolean {
     return !!this.keyPressingMap.get(keyCode)
+  }
+
+  public static isActionPressed(action: KeyActionType): boolean {
+    return KeyController.isKeyPressed(KeyConfig[action])
+  }
+
+  public static isActionPressing(action: KeyActionType): boolean {
+    return KeyController.isKeyPressing(KeyConfig[action])
   }
 
   // 毎フレーム呼び出す
