@@ -1,6 +1,6 @@
 import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
-import { KeyController, MouseController } from '../../controller'
+import { KeyController } from '../../systems/controlSystem'
 
 export class PlayerMoveNode implements BehaviourNode {
   public initState(): void {
@@ -10,7 +10,6 @@ export class PlayerMoveNode implements BehaviourNode {
     const player = entity.getComponent('Player')
     const animState = entity.getComponent('AnimationState')
     const direction = entity.getComponent('HorizontalDirection')
-    console.log(animState.state)
 
     const body = entity.getComponent('RigidBody')
 
@@ -38,8 +37,6 @@ export class PlayerMoveNode implements BehaviourNode {
     }
     player.landing = false
 
-    KeyController.onUpdateFinished()
-    MouseController.onUpdateFinished()
     return NodeState.Success
   }
 }

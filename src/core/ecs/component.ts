@@ -14,6 +14,8 @@ import { InvincibleComponent } from '../components/invincibleComponent'
 import { BVHComponent } from '../components/bvhComponent'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
+import { PickupTargetComponent } from '../components/pickupTargetComponent'
+import { PlayerPointerComponent } from '../components/playerPointerComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -32,6 +34,8 @@ export interface ComponentMap {
   BVH: BVHComponent
   Camera: CameraComponent
   AnimationState: AnimationStateComponent
+  PickupTarget: PickupTargetComponent
+  PlayerPointer: PlayerPointerComponent
 }
 
 export type ComponentName = keyof ComponentMap

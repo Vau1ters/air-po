@@ -1,10 +1,13 @@
+import { System } from '../ecs/system'
+import { World } from '../ecs/world'
+
 export class KeyController {
   private static readonly keyPressingMap: Map<KeyCode, boolean> = new Map()
 
   private static readonly keyPressedMap: Map<KeyCode, boolean> = new Map()
 
   private static pressKey(keyCode: KeyCode): void {
-    if (!this.keyPressingMap.get(keyCode)) {
+    if (this.keyPressingMap.get(keyCode) !== true) {
       this.keyPressedMap.set(keyCode, true)
     }
     this.keyPressingMap.set(keyCode, true)
@@ -95,7 +98,6 @@ export class KeyController {
     return !!this.keyPressingMap.get(keyCode)
   }
 
-  // 毎フレーム呼び出す
   public static onUpdateFinished(): void {
     for (const keyCode of this.keyPressedMap.keys()) {
       this.keyPressedMap.set(keyCode, false)
@@ -163,5 +165,19 @@ export class MouseController {
     for (const button of this.mousePressedMap.keys()) {
       this.mousePressedMap.set(button, false)
     }
+  }
+}
+
+export class ControlSystem extends System {
+  public constructor(world: World) {
+    super(world)
+
+    KeyController.init()
+    MouseController.init()
+  }
+
+  public update(): void {
+    KeyController.onUpdateFinished()
+    MouseController.onUpdateFinished()
   }
 }

@@ -1,0 +1,93 @@
+{
+  "sprite": {
+    "name": "balloonvine",
+    "state": {
+      "Dead": [0],
+      "Alive": [1]
+    },
+    "default": "Dead"
+  },
+  "ai": {
+   "while": {
+     "condition": {
+       "true": {}
+     },
+     "body": {
+       "parallel": {
+         "body": [
+           {
+            "if": {
+               "condition": {
+                 "hasAir": {}
+               },
+               "true": {
+                 "animation": {
+                   "state": "Alive"
+                 }
+               },
+               "false": {
+                 "animation": {
+                   "state": "Dead"
+                 }
+               }
+            }
+           },
+           {
+             "if": {
+               "condition": {
+                 "isDead": {}
+               },
+               "true": {
+                 "sequence": {
+                   "body": [
+                     {
+                       "wait": {
+                         "interval": 60
+                       }
+                     },
+                     {
+                       "if": {
+                         "condition": {
+                           "hasAir": {}
+                         },
+                         "true": {
+                           "emitAir": {
+                             "quantity": 10
+                           }
+                         },
+                         "false": {
+                           "wait": {
+                             "interval": 1
+                           }
+                         }
+                       }
+                     },
+                     {
+                       "death": {}
+                     }
+                   ]
+                 }
+               },
+               "false": {
+                 "if": {
+                    "condition": {
+                      "isPossessed": {}
+                    },
+                    "true": {
+                      "balloonVineChase": {}
+                    },
+                    "false": {
+                      "wait": {
+                        "interval": 1
+                      }
+                    }
+                 }
+               }
+             }
+           }
+         ]
+       }
+     }
+   }
+ }
+}

@@ -10,6 +10,7 @@ import { windowSize } from '../application'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
 import { assert } from '../../utils/assertion'
+import { CategoryList } from '../entities/category'
 
 export class AirSystem extends System {
   private family: Family
@@ -34,6 +35,8 @@ export class AirSystem extends System {
     const air = new AirDef(this.family)
     air.tag.add('air')
     air.isSensor = true
+    air.category = CategoryList.air.category
+    air.mask = CategoryList.air.mask
     collider.createCollider(air)
     this.entity.addComponent('Collider', collider)
     this.entity.addComponent('Position', new PositionComponent())

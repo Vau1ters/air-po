@@ -18,7 +18,8 @@ export class MapBuilder {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public build(map: any): void {
     // layerごとに分ける
-    for (const layer of map.layers) {
+    for (const layer of map.layers.sort((a: string, b: string) => a > b)) {
+      // to load player at first
       switch (layer.name) {
         case 'air':
           this.buildAir(layer)
@@ -86,7 +87,10 @@ export class MapBuilder {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildEnemy(enemyLayer: any): void {
     for (const enemyData of enemyLayer.objects) {
-      const enemy = new EnemyFactory().setType(enemyData.type).create()
+      const enemy = new EnemyFactory()
+        .setType(enemyData.type)
+        .setWorld(this.world)
+        .create()
       const enemyPosition = enemy.getComponent('Position')
       enemyPosition.x = enemyData.x + enemyData.width / 2
       enemyPosition.y = enemyData.y - enemyData.height / 2

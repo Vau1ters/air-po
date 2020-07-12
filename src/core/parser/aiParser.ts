@@ -1,15 +1,18 @@
 import { BehaviourNode } from '../ai/behaviourNode'
 import { AnimationNode } from '../ai/action/animationNode'
+import { BalloonVineChaseNode } from '../ai/action/balloonVineChaseNode'
 import { DeathNode } from '../ai/action/deathNode'
 import { EmitAirNode } from '../ai/action/emitAirNode'
 import { MoveNode, Direction } from '../ai/action/moveNode'
 import { PlayerGunShootNode } from '../ai/action/playerGunShootNode'
 import { PlayerMoveNode } from '../ai/action/playerMoveNode'
+import { PlayerPickupNode } from '../ai/action/playerPickupNode'
 import { WaitNode } from '../ai/action/waitNode'
 import { ParallelNode } from '../ai/composite/parallelNode'
 import { SequenceNode } from '../ai/composite/sequenceNode'
 import { TrueNode, FalseNode } from '../ai/condition/boolNode'
 import { IsDeadNode } from '../ai/condition/isDeadNode'
+import { IsPossessedNode } from '../ai/condition/isPossessedNode'
 import { IfNode } from '../ai/decorator/ifNode'
 import { WhileNode } from '../ai/decorator/whileNode'
 import { assert, checkMembers } from '../../utils/assertion'
@@ -27,6 +30,8 @@ export function parseAI(json: any): BehaviourNode {
     // action
     case 'animation':
       return parseAnimationNode(body)
+    case 'balloonVineChase':
+      return parseBalloonVineChaseNode(body)
     case 'death':
       return parseDeathNode(body)
     case 'emitAir':
@@ -37,6 +42,8 @@ export function parseAI(json: any): BehaviourNode {
       return parsePlayerGunShootNode(body)
     case 'playerMove':
       return parsePlayerMoveNode(body)
+    case 'playerPickup':
+      return parsePlayerPickupNode(body)
     case 'removeComponent':
       return parseRemoveComponentNode(body)
     case 'wait':
@@ -57,6 +64,8 @@ export function parseAI(json: any): BehaviourNode {
       return parseHasAirNode(body)
     case 'isDead':
       return parseIsDeadNode(body)
+    case 'isPossessed':
+      return parseIsPossessedNode(body)
     // decorator
     case 'if':
       return parseIfNode(body)
@@ -70,6 +79,11 @@ export function parseAI(json: any): BehaviourNode {
 function parseAnimationNode(json: any): AnimationNode {
   checkMembers(json, { state: 'string' }, 'animation')
   return new AnimationNode(json.state)
+}
+
+function parseBalloonVineChaseNode(json: any): BalloonVineChaseNode {
+  checkMembers(json, {}, 'balloonVineChase')
+  return new BalloonVineChaseNode()
 }
 
 function parseDeathNode(json: any): DeathNode {
@@ -95,6 +109,11 @@ function parsePlayerGunShootNode(json: any): PlayerGunShootNode {
 function parsePlayerMoveNode(json: any): PlayerMoveNode {
   checkMembers(json, {}, 'playerMove')
   return new PlayerMoveNode()
+}
+
+function parsePlayerPickupNode(json: any): PlayerPickupNode {
+  checkMembers(json, {}, 'playerPickup')
+  return new PlayerPickupNode()
 }
 
 function parseRemoveComponentNode(json: any): RemoveComponentNode {
@@ -140,6 +159,11 @@ function parseHasAirNode(json: any): HasAirNode {
 function parseIsDeadNode(json: any): IsDeadNode {
   checkMembers(json, {}, 'isDeath')
   return new IsDeadNode()
+}
+
+function parseIsPossessedNode(json: any): IsPossessedNode {
+  checkMembers(json, {}, 'isPossessed')
+  return new IsPossessedNode()
 }
 
 function parseIfNode(json: any): IfNode {

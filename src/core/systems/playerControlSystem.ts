@@ -21,6 +21,9 @@ export class PlayerControlSystem extends System {
         if (c.tag.has('playerFoot')) {
           c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
+        if (c.tag.has('playerBody')) {
+          c.callbacks.add(PlayerControlSystem.bodyCollisionCallback)
+        }
       }
     }
   }
@@ -29,9 +32,18 @@ export class PlayerControlSystem extends System {
     // 何もしない
   }
 
-  private static footCollisionCallback(player: Collider, other: Collider): void {
-    if (!other.isSensor) {
-      player.component.entity.getComponent('Player').landing = true
+  private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
+    const player = playerCollider.component.entity.getComponent('Player')
+    if (!otherCollider.isSensor) {
+      player.landing = true
+    }
+  }
+
+  private static bodyCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
+    const player = playerCollider.component.entity.getComponent('Player')
+    const other = otherCollider.component.entity
+    if (other.hasComponent('PickupTarget')) {
+      player.pickupTarget = other // this target reference will be removed in playerPickupNode
     }
   }
 }

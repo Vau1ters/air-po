@@ -1,7 +1,16 @@
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
+
 import playerImg from '../../../res/player.png'
+import playerSetting from '../../../res/player.json'
+
 import wallImg from '../../../res/wall.png'
+import wallSetting from '../../../res/wall.json'
+
 import enemy1Img from '../../../res/enemy1.png'
+import enemy1Setting from '../../../res/enemy1.json'
+
+import balloonvineImg from '../../../res/balloonvine.png'
+import balloonvineSetting from '../../../res/balloonvine.json'
 
 function loadTexture(url: string): Promise<BaseTexture> {
   return new Promise((resolve, reject) => {
@@ -16,29 +25,25 @@ function loadTexture(url: string): Promise<BaseTexture> {
   })
 }
 
-export const textureStore: { [key: string]: Array<Texture> } = {}
-export const wallBaseTextures = new Array<Texture>()
-export const init = async (): Promise<void> => {
-  const playerBase = await loadTexture(playerImg)
-  textureStore.player = new Array<Texture>()
-  for (let x = 0; x < playerBase.width / 16; x++) {
-    const texture = new Texture(playerBase, new Rectangle(x * 16, 0, 16, 16))
-    textureStore.player.push(texture)
-  }
-
-  const wallBase = await loadTexture(wallImg)
-  for (let y = 0; y < wallBase.height / 8; y++) {
-    for (let x = 0; x < wallBase.width / 8; x++) {
-      const texture = new Texture(wallBase, new Rectangle(x * 8, y * 8, 8, 8))
-      wallBaseTextures.push(texture)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function buildAnimationTexture(baseURL: string, setting: any): Promise<Array<Texture>> {
+  const base = await loadTexture(baseURL)
+  const result = new Array<Texture>()
+  const w = setting.tilewidth
+  const h = setting.tileheight
+  for (let y = 0; y < base.height / h; y++) {
+    for (let x = 0; x < base.width / w; x++) {
+      const texture = new Texture(base, new Rectangle(x * w, y * h, w, h))
+      result.push(texture)
     }
   }
-  textureStore.wallBase = wallBaseTextures
+  return result
+}
 
-  const enemy1Base = await loadTexture(enemy1Img)
-  textureStore.enemy1 = new Array<Texture>()
-  for (let x = 0; x < enemy1Base.width / 16; x++) {
-    const texture = new Texture(enemy1Base, new Rectangle(x * 16, 0, 16, 16))
-    textureStore.enemy1.push(texture)
-  }
+export const textureStore: { [key: string]: Array<Texture> } = {}
+export const init = async (): Promise<void> => {
+  textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
+  textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
+  textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
+  textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
 }
