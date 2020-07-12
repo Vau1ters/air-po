@@ -1,6 +1,16 @@
 import { System } from '../ecs/system'
 import { World } from '../ecs/world'
 
+export type KeyActionType = 'MoveLeft' | 'MoveRight' | 'MoveUp' | 'MoveDown' | 'Jump' | 'Jet'
+export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
+  MoveLeft: 'A',
+  MoveRight: 'D',
+  MoveUp: 'W',
+  MoveDown: 'S',
+  Jump: 'W',
+  Jet: 'Shift',
+}
+
 export class KeyController {
   private static readonly keyPressingMap: Map<KeyCode, boolean> = new Map()
 
@@ -98,6 +108,15 @@ export class KeyController {
     return !!this.keyPressingMap.get(keyCode)
   }
 
+  public static isActionPressed(action: KeyActionType): boolean {
+    return KeyController.isKeyPressed(KeyConfig[action])
+  }
+
+  public static isActionPressing(action: KeyActionType): boolean {
+    return KeyController.isKeyPressing(KeyConfig[action])
+  }
+
+  // 毎フレーム呼び出す
   public static onUpdateFinished(): void {
     for (const keyCode of this.keyPressedMap.keys()) {
       this.keyPressedMap.set(keyCode, false)

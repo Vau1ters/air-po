@@ -16,6 +16,7 @@ import { IsPossessedNode } from '../ai/condition/isPossessedNode'
 import { IfNode } from '../ai/decorator/ifNode'
 import { WhileNode } from '../ai/decorator/whileNode'
 import { assert, checkMembers } from '../../utils/assertion'
+import { PlayerJetNode } from '../ai/action/playerJetNode'
 import { RemoveComponentNode } from '../ai/action/removeComponentNode'
 import { SelectNode } from '../ai/composite/selectNode'
 import { HasAirNode } from '../ai/condition/hasAirNode'
@@ -40,6 +41,8 @@ export function parseAI(json: any): BehaviourNode {
       return parseMoveNode(body)
     case 'playerGunShoot':
       return parsePlayerGunShootNode(body)
+    case 'playerJet':
+      return parsePlayerJetNode(body)
     case 'playerMove':
       return parsePlayerMoveNode(body)
     case 'playerPickup':
@@ -114,6 +117,11 @@ function parsePlayerMoveNode(json: any): PlayerMoveNode {
 function parsePlayerPickupNode(json: any): PlayerPickupNode {
   checkMembers(json, {}, 'playerPickup')
   return new PlayerPickupNode()
+}
+
+function parsePlayerJetNode(json: any): PlayerJetNode {
+  checkMembers(json, {}, 'playerJet')
+  return new PlayerJetNode()
 }
 
 function parseRemoveComponentNode(json: any): RemoveComponentNode {
