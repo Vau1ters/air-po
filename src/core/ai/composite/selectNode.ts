@@ -22,7 +22,7 @@ export class SelectNode implements BehaviourNode {
   public execute(entity: Entity, world: World): NodeState {
     if (this.children.length === 0) return NodeState.Failure
     if (this.executingNodes.length === 0) {
-      throw 'call already failed select node.'
+      throw new Error('call already failed select node.')
     }
 
     let state = this.executingNodes[0].execute(entity, world)
