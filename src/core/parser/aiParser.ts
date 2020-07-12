@@ -13,6 +13,7 @@ import { IsDeadNode } from '../ai/condition/isDeadNode'
 import { IfNode } from '../ai/decorator/ifNode'
 import { WhileNode } from '../ai/decorator/whileNode'
 import { assert, checkMembers } from '../../utils/assertion'
+import { PlayerJetNode } from '../ai/action/playerJetNode'
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-use-before-define */
 
@@ -31,6 +32,8 @@ export function parseAI(json: any): BehaviourNode {
       return parseMoveNode(body)
     case 'playerGunShoot':
       return parsePlayerGunShootNode(body)
+    case 'playerJet':
+      return parsePlayerJetNode(body)
     case 'playerMove':
       return parsePlayerMoveNode(body)
     case 'wait':
@@ -82,6 +85,11 @@ function parsePlayerGunShootNode(json: any): PlayerGunShootNode {
 function parsePlayerMoveNode(json: any): PlayerMoveNode {
   checkMembers(json, {}, 'playerMove')
   return new PlayerMoveNode()
+}
+
+function parsePlayerJetNode(json: any): PlayerJetNode {
+  checkMembers(json, {}, 'playerJet')
+  return new PlayerJetNode()
 }
 
 function parseWaitNode(json: any): WaitNode {
