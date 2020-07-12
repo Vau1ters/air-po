@@ -2,7 +2,7 @@ import { Entity } from '../../ecs/entity'
 import { World } from '../../ecs/world'
 import { BehaviourNode, NodeState } from '../behaviourNode'
 
-export class SequenceNode implements BehaviourNode {
+export class SelectNode implements BehaviourNode {
   private executingNodes: Array<BehaviourNode> = []
 
   public constructor(protected children: Array<BehaviourNode> = []) {
@@ -20,16 +20,16 @@ export class SequenceNode implements BehaviourNode {
   }
 
   public execute(entity: Entity, world: World): NodeState {
-    if (this.children.length === 0) return NodeState.Success
+    if (this.children.length === 0) return NodeState.Failure
     if (this.executingNodes.length === 0) {
-      throw new Error('call already successed sequence node.')
+      throw new Error('call already failed select node.')
     }
 
     let state = this.executingNodes[0].execute(entity, world)
-    while (state === NodeState.Success) {
+    while (state === NodeState.Failure) {
       this.executingNodes.shift()
       if (this.executingNodes.length === 0) {
-        return NodeState.Success
+        return NodeState.Failure
       }
 
       state = this.executingNodes[0].execute(entity, world)

@@ -13,6 +13,9 @@ import { IsDeadNode } from '../ai/condition/isDeadNode'
 import { IfNode } from '../ai/decorator/ifNode'
 import { WhileNode } from '../ai/decorator/whileNode'
 import { assert, checkMembers } from '../../utils/assertion'
+import { RemoveComponentNode } from '../ai/action/removeComponentNode'
+import { SelectNode } from '../ai/composite/selectNode'
+import { HasAirNode } from '../ai/condition/hasAirNode'
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-use-before-define */
 
@@ -21,6 +24,7 @@ export function parseAI(json: any): BehaviourNode {
   const name = Object.keys(json)[0]
   const body = json[name]
   switch (name) {
+    // action
     case 'animation':
       return parseAnimationNode(body)
     case 'death':
@@ -33,18 +37,27 @@ export function parseAI(json: any): BehaviourNode {
       return parsePlayerGunShootNode(body)
     case 'playerMove':
       return parsePlayerMoveNode(body)
+    case 'removeComponent':
+      return parseRemoveComponentNode(body)
     case 'wait':
       return parseWaitNode(body)
+    // composite
     case 'parallel':
       return parseParallelNode(body)
     case 'sequence':
       return parseSequenceNode(body)
+    case 'select':
+      return parseSelectNode(body)
+    // condition
     case 'true':
       return parseTrueNode(body)
     case 'false':
       return parseFalseNode(body)
+    case 'hasAir':
+      return parseHasAirNode(body)
     case 'isDead':
       return parseIsDeadNode(body)
+    // decorator
     case 'if':
       return parseIfNode(body)
     case 'while':
@@ -84,6 +97,11 @@ function parsePlayerMoveNode(json: any): PlayerMoveNode {
   return new PlayerMoveNode()
 }
 
+function parseRemoveComponentNode(json: any): RemoveComponentNode {
+  checkMembers(json, { component: 'string' }, 'removeComponent')
+  return new RemoveComponentNode(json.component)
+}
+
 function parseWaitNode(json: any): WaitNode {
   checkMembers(json, { interval: 'number' }, 'wait')
   return new WaitNode(json.interval)
@@ -99,6 +117,11 @@ function parseSequenceNode(json: any): SequenceNode {
   return new SequenceNode(json.body.map((b: any) => parseAI(b)))
 }
 
+function parseSelectNode(json: any): SelectNode {
+  checkMembers(json, { body: 'array' }, 'select')
+  return new SelectNode(json.body.map((b: any) => parseAI(b)))
+}
+
 function parseTrueNode(json: any): TrueNode {
   checkMembers(json, {}, 'true')
   return new TrueNode()
@@ -107,6 +130,11 @@ function parseTrueNode(json: any): TrueNode {
 function parseFalseNode(json: any): FalseNode {
   checkMembers(json, {}, 'false')
   return new FalseNode()
+}
+
+function parseHasAirNode(json: any): HasAirNode {
+  checkMembers(json, {}, 'hasAir')
+  return new HasAirNode()
 }
 
 function parseIsDeadNode(json: any): IsDeadNode {
