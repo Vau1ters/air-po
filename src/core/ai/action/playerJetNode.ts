@@ -23,6 +23,7 @@ export class PlayerJetNode implements BehaviourNode {
     ) {
       velocity.x = playerAngle.x * 160
       velocity.y = playerAngle.y * 200
+      airHolder.consumeBy(PlayerJetNode.CONSUME_SPEED)
     }
 
     return NodeState.Success
