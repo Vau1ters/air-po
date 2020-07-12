@@ -41,18 +41,13 @@
                  "sequence": {
                    "body": [
                      {
-                       "wait": {
-                         "interval": 60
-                       }
-                     },
-                     {
                        "if": {
                          "condition": {
                            "hasAir": {}
                          },
                          "true": {
                            "emitAir": {
-                             "quantity": 10
+                             "quantity": 40
                            }
                          },
                          "false": {
@@ -69,19 +64,7 @@
                  }
                },
                "false": {
-                 "if": {
-                    "condition": {
-                      "isPossessed": {}
-                    },
-                    "true": {
-                      "balloonVineChase": {}
-                    },
-                    "false": {
-                      "wait": {
-                        "interval": 1
-                      }
-                    }
-                 }
+                 "balloonVineChase": {}
                }
              }
            }
