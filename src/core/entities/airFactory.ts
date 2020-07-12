@@ -3,6 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { AirComponent } from '../components/airComponent'
 import { Vec2 } from '../math/vec2'
+import { RigidBodyComponent } from '../components/rigidBodyComponent'
 
 export class AirFactory extends EntityFactory {
   private quantity = 10000
@@ -23,9 +24,11 @@ export class AirFactory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent(this.position.x, this.position.y)
     const air = new AirComponent(this.quantity)
+    const rigidBody = new RigidBodyComponent(0, new Vec2(), new Vec2(), 0, 0)
 
     entity.addComponent('Position', position)
     entity.addComponent('Air', air)
+    entity.addComponent('RigidBody', rigidBody)
     return entity
   }
 }
