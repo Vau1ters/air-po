@@ -9,7 +9,7 @@ export class HasAirNode implements BehaviourNode {
   public execute(entity: Entity): NodeState {
     if (entity.hasComponent('AirHolder')) {
       const holder = entity.getComponent('AirHolder')
-      if (holder.currentQuantity <= 0) {
+      if (holder.currentQuantity > 0) {
         return NodeState.Success
       } else {
         return NodeState.Failure
