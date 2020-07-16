@@ -16,6 +16,13 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-constant-condition": [
+      "error",
+      {
+        "checkLoops": false
+      }
+    ],
+    "@typescript-eslint/no-empty-function": "off",
     "prettier/prettier": [
       "error",
       {
