@@ -19,6 +19,7 @@ import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
+import { TimerManager } from './utils/timer'
 
 export class Main {
   public static world = new World()
@@ -75,6 +76,7 @@ export class Main {
     }
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
+    application.ticker.add(() => TimerManager.update())
 
     /* eslint @typescript-eslint/no-var-requires: 0 */
     const Stats = require('stats.js')

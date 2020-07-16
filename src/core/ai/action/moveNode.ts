@@ -1,5 +1,6 @@
+import { BehaviourNode, ExecuteResult } from '../behaviour'
 import { Entity } from '../../ecs/entity'
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import Timer from '../../../utils/timer'
 
 export enum Direction {
   Left,
@@ -8,18 +9,30 @@ export enum Direction {
   Down,
 }
 
-export class MoveNode implements BehaviourNode {
-  private timer = 0
+export class MoveNode extends BehaviourNode {
+  private entity: Entity
+  private direction: Direction
+  private speed: number
+  private mover: Timer
 
-  public constructor(private dir: Direction, private speed: number, private limitTime: number) {}
+  public constructor(entity: Entity, direction: Direction, speed: number, duration: number) {
+    super()
+    this.entity = entity
+    this.direction = direction
+    this.speed = speed
 
-  public initState(): void {
-    this.timer = 0
+    this.mover = new Timer(duration).onUpdate(() => this.moveEntity())
   }
 
-  public execute(entity: Entity): NodeState {
-    const position = entity.getComponent('Position')
-    switch (this.dir) {
+  protected async behaviour(): Promise<ExecuteResult> {
+    this.mover.start()
+    await this.mover.end
+    return 'Success'
+  }
+
+  private moveEntity(): void {
+    const position = this.entity.getComponent('Position')
+    switch (this.direction) {
       case Direction.Left:
         position.x -= this.speed
         break
@@ -33,11 +46,5 @@ export class MoveNode implements BehaviourNode {
         position.y += this.speed
         break
     }
-
-    this.timer++
-    if (this.timer > this.limitTime) {
-      return NodeState.Success
-    }
-    return NodeState.Running
   }
 }

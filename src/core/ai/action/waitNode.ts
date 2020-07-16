@@ -1,18 +1,22 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, ExecuteResult } from '../behaviour'
+import Timer from '../../../utils/timer'
 
-export class WaitNode implements BehaviourNode {
-  private currentTime = 0
-  public constructor(private time: number) {}
+export class WaitNode extends BehaviourNode {
+  private timer: Timer
 
-  public initState(): void {
-    this.currentTime = 0
+  public constructor(time = 0) {
+    super()
+    this.timer = new Timer(time)
   }
 
-  public execute(): NodeState {
-    if (this.currentTime >= this.time) {
-      return NodeState.Success
-    }
-    this.currentTime++
-    return NodeState.Running
+  protected async behaviour(): Promise<ExecuteResult> {
+    this.timer.start()
+    await this.timer.end
+    return 'Success'
+  }
+
+  public terminate(result: ExecuteResult): void {
+    super.terminate(result)
+    this.timer.terminate()
   }
 }

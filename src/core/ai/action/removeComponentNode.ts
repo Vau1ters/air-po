@@ -1,16 +1,19 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 import { ComponentName } from '../../ecs/component'
+import { BehaviourNode, ExecuteResult } from '../behaviour'
 
-export class RemoveComponentNode implements BehaviourNode {
-  public constructor(private removeComponent: ComponentName) {}
+export class RemoveComponentNode extends BehaviourNode {
+  private entity: Entity
+  private componentName: ComponentName
 
-  public initState(): void {
-    // 何もしない
+  public constructor(entity: Entity, componentName: ComponentName) {
+    super()
+    this.entity = entity
+    this.componentName = componentName
   }
 
-  public execute(entity: Entity): NodeState {
-    entity.removeComponent(this.removeComponent)
-    return NodeState.Success
+  protected async behaviour(): Promise<ExecuteResult> {
+    this.entity.removeComponent(this.componentName)
+    return 'Success'
   }
 }

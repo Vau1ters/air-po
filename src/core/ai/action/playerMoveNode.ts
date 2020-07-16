@@ -1,18 +1,22 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 import { KeyController, MouseController } from '../../controller'
+import { BehaviourNode, ExecuteResult } from '../behaviour'
 
-export class PlayerMoveNode implements BehaviourNode {
-  public initState(): void {
-    // 何もしない
+export class PlayerMoveNode extends BehaviourNode {
+  private entity: Entity
+
+  public constructor(entity: Entity) {
+    super()
+    this.entity = entity
   }
-  public execute(entity: Entity): NodeState {
-    const player = entity.getComponent('Player')
-    const animState = entity.getComponent('AnimationState')
-    const direction = entity.getComponent('HorizontalDirection')
+
+  protected async behaviour(): Promise<ExecuteResult> {
+    const player = this.entity.getComponent('Player')
+    const animState = this.entity.getComponent('AnimationState')
+    const direction = this.entity.getComponent('HorizontalDirection')
     console.log(animState.state)
 
-    const body = entity.getComponent('RigidBody')
+    const body = this.entity.getComponent('RigidBody')
 
     const velocity = body.velocity
 
@@ -40,6 +44,7 @@ export class PlayerMoveNode implements BehaviourNode {
 
     KeyController.onUpdateFinished()
     MouseController.onUpdateFinished()
-    return NodeState.Success
+
+    return 'Success'
   }
 }

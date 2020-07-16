@@ -1,19 +1,22 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
+import { BehaviourNode, ExecuteResult } from '../behaviour'
 import { KeyController } from '../../controller'
 import { Vec2 } from '../../math/vec2'
 
-export class PlayerJetNode implements BehaviourNode {
+export class PlayerJetNode extends BehaviourNode {
   static readonly CONSUME_SPEED = 10
   static readonly JET_SPEED = 180
 
-  public initState(): void {
-    // 何もしない
+  private entity: Entity
+
+  public constructor(entity: Entity) {
+    super()
+    this.entity = entity
   }
 
-  public execute(entity: Entity): NodeState {
-    const body = entity.getComponent('RigidBody')
-    const airHolder = entity.getComponent('AirHolder')
+  protected async behaviour(): Promise<ExecuteResult> {
+    const body = this.entity.getComponent('RigidBody')
+    const airHolder = this.entity.getComponent('AirHolder')
     const velocity = body.velocity
 
     const playerAngle = this.calcPlayerAngle()
@@ -27,7 +30,7 @@ export class PlayerJetNode implements BehaviourNode {
       airHolder.consumeBy(PlayerJetNode.CONSUME_SPEED)
     }
 
-    return NodeState.Success
+    return 'Success'
   }
 
   private calcPlayerAngle(): Vec2 {

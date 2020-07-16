@@ -1,38 +1,24 @@
-import { Entity } from '../../ecs/entity'
-import { World } from '../../ecs/world'
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, ExecuteResult } from '../behaviour'
+import { CompositeNode } from './compositeNode'
 
-export class ParallelNode implements BehaviourNode {
-  private executingNodes: Array<BehaviourNode> = []
-
-  public addChild(node: BehaviourNode): void {
-    this.children.push(node)
-  }
-
-  public constructor(protected children: Array<BehaviourNode> = []) {
-    this.initState()
-  }
-
-  public initState(): void {
-    this.executingNodes = this.children.concat()
-    this.children.forEach(node => node.initState())
-  }
-  // 全部Successになるかどれか一つがFailureになったら終了
-  public execute(entity: Entity, world: World): NodeState {
-    const nextExecutingNodes = new Array<BehaviourNode>()
-    for (const child of this.children) {
-      switch (child.execute(entity, world)) {
-        case NodeState.Success:
-          break
-        case NodeState.Failure:
-          return NodeState.Failure
-        case NodeState.Running:
-          nextExecutingNodes.push(child)
-          break
-      }
+export class ParallelNode extends CompositeNode {
+  protected async behaviour(): Promise<ExecuteResult> {
+    try {
+      await Promise.all(this.children.map(node => this.promiseWrapper(node)))
+    } catch {
+      // 一つでも失敗したらすべてを強制終了して、ParallelNodeも失敗状態にする
+      this.terminate('Failure')
+      return 'Failure'
     }
-    this.executingNodes = nextExecutingNodes
-    if (this.executingNodes.length === 0) return NodeState.Success
-    return NodeState.Running
+    return 'Success'
+  }
+
+  // 失敗したときにPromise.allから抜け出せるラッパー
+  private async promiseWrapper(node: BehaviourNode): Promise<ExecuteResult> {
+    const result = await node.execute()
+    if (result === 'Failure') {
+      throw new Error()
+    }
+    return result
   }
 }

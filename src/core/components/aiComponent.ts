@@ -1,15 +1,13 @@
-import { BehaviourTree } from '../ai/behaviourTree'
-import { Entity } from '../ecs/entity'
-import { World } from '../ecs/world'
+import { BehaviourNode } from '../ai/behaviour'
 
 export class AIComponent {
-  private tree: BehaviourTree
+  private tree: BehaviourNode
 
-  public constructor(tree: BehaviourTree) {
+  public constructor(tree: BehaviourNode) {
     this.tree = tree
   }
 
-  public execute(entity: Entity, world: World): void {
-    this.tree.execute(entity, world)
+  public execute(): void {
+    this.tree.execute()
   }
 }

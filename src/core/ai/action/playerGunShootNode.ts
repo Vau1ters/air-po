@@ -1,38 +1,39 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
-import { World } from '../../ecs/world'
+import { BehaviourNode, ExecuteResult } from '../behaviour'
 import { Entity } from '../../ecs/entity'
-import { MouseController } from '../../controller'
+import { World } from '../../ecs/world'
 import { BulletFactory } from '../../entities/bulletFactory'
-import { PlayerComponent } from '../../components/playerComponent'
-import { AirHolderComponent } from '../../components/airHolderComponent'
+import { MouseController } from '../../controller'
 import { application, windowSize } from '../../application'
 
-export class PlayerGunShootNode implements BehaviourNode {
+export class PlayerGunShootNode extends BehaviourNode {
   static readonly CONSUME_SPEED = 10
+
+  private entity: Entity
+  private world: World
   private bulletFactory: BulletFactory
 
-  public constructor() {
+  public constructor(entity: Entity, world: World) {
+    super()
+    this.entity = entity
+    this.world = world
     this.bulletFactory = new BulletFactory()
   }
-  public initState(): void {
-    // 何もしない
-  }
 
-  public execute(entity: Entity, world: World): NodeState {
-    if (MouseController.isMousePressing('Left')) {
+  protected async behaviour(): Promise<ExecuteResult> {
+    if (MouseController.isMousePressed('Left')) {
       // 空気の消費
-      const airHolder = entity.getComponent('AirHolder') as AirHolderComponent
+      const airHolder = this.entity.getComponent('AirHolder')
       if (airHolder.currentQuantity >= PlayerGunShootNode.CONSUME_SPEED) {
         airHolder.consumeBy(PlayerGunShootNode.CONSUME_SPEED)
 
         // 弾を打つ
-        this.bulletFactory.player = entity
-        const player = entity.getComponent('Player') as PlayerComponent
+        this.bulletFactory.player = this.entity
+        const player = this.entity.getComponent('Player')
         player.bulletAngle = this.calcAngle()
-        world.addEntity(this.bulletFactory.create())
+        this.world.addEntity(this.bulletFactory.create())
       }
     }
-    return NodeState.Success
+    return 'Success'
   }
 
   private calcAngle(): number {
