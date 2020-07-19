@@ -19,6 +19,7 @@ import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
+import { VineFactory } from './core/entities/vineFactory'
 
 export class Main {
   public static world = new World()
@@ -73,6 +74,12 @@ export class Main {
       const position = player.getComponent('Position')
       airSystem.offset = position
     }
+
+    const vf = new VineFactory()
+    const vine = vf.create()
+    vine.getComponent('Position').x = 30 * 8
+    vine.getComponent('Position').y = 20 * 8
+    this.world.addEntity(vine)
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
 
