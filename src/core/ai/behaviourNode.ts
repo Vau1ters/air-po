@@ -16,18 +16,17 @@ export abstract class BehaviourNode {
 
   private *_behaviour(): Behaviour {
     this._currentState = 'Running'
-    console.log(this._currentState)
     this._currentState = yield* this.behaviour()
     return this._currentState
   }
 
   public execute(): ExecuteState {
-    this.iterator.next()
+    this._iterator.next()
     return this.currentState
   }
 
   public get iterator(): Behaviour {
-    return this.iterator
+    return this._iterator
   }
 
   public get currentState(): ExecuteState {
