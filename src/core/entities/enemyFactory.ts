@@ -6,7 +6,7 @@ import { World } from '../ecs/world'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { assert } from '../../utils/assertion'
 
-type EnemyType = 'enemy1' | 'balloonvine'
+export type EnemyType = 'enemy1' | 'balloonvine'
 
 export class EnemyFactory extends EntityFactory {
   private type?: EnemyType
@@ -17,7 +17,8 @@ export class EnemyFactory extends EntityFactory {
       case 'enemy1':
         return new Enemy1Factory().create()
       case 'balloonvine':
-        return new BalloonVineFactory().setPlayer(this.family?.entityArray[0]).create()
+        assert(this.family)
+        return new BalloonVineFactory().setPlayerFamily(this.family).create()
       default:
         assert(false)
     }

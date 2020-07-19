@@ -14,7 +14,7 @@ export class BalloonVineChaseNode implements BehaviourNode {
   }
 
   public execute(entity: Entity): NodeState {
-    const player = entity.getComponent('PlayerPointer').player
+    const player = entity.getComponent('PlayerPointer').getPlayer()
     if (!player) return NodeState.Failure
     const draw = entity.getComponent('Draw')
     const pickup = entity.getComponent('PickupTarget')

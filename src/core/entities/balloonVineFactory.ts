@@ -1,5 +1,6 @@
 import { EntityFactory } from './entityFactory'
 import { Entity } from '../ecs/entity'
+import { Family } from '../ecs/family'
 import { PositionComponent } from '../components/positionComponent'
 import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
@@ -15,6 +16,7 @@ import { AnimationStateComponent } from '../components/animationStateComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { PlayerPointerComponent } from '../components/playerPointerComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
+import { assert } from '../../utils/assertion'
 import balloonvineAIData from '../../../res/balloonvineai.json'
 
 export class BalloonVineFactory extends EntityFactory {
@@ -34,9 +36,10 @@ export class BalloonVineFactory extends EntityFactory {
   readonly AIR_COLLECT_SPEED = 10
   readonly AIR_CONSUME_SPEED = 0
 
-  private player?: Entity
+  private playerFamily?: Family
 
   public create(): Entity {
+    assert(this.playerFamily)
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
     const draw = new DrawComponent()
@@ -50,7 +53,7 @@ export class BalloonVineFactory extends EntityFactory {
       consumeSpeed: this.AIR_CONSUME_SPEED,
     })
     const pickup = new PickupTargetComponent(false)
-    const playerPointer = new PlayerPointerComponent(this.player)
+    const playerPointer = new PlayerPointerComponent(this.playerFamily)
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag.add('balloonVine')
@@ -86,8 +89,8 @@ export class BalloonVineFactory extends EntityFactory {
     return entity
   }
 
-  setPlayer(player?: Entity): BalloonVineFactory {
-    this.player = player
+  setPlayerFamily(playerFamily: Family): BalloonVineFactory {
+    this.playerFamily = playerFamily
     return this
   }
 }
