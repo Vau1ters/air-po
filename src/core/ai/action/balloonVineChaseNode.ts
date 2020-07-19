@@ -2,12 +2,15 @@ import { Entity } from '../../ecs/entity'
 import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Vec2 } from '../../math/vec2'
 import * as PIXI from 'pixi.js'
-import { AABBCollider } from '../../components/colliderComponent'
+import { AABBCollider, Collider } from '../../components/colliderComponent'
+import { PositionComponent } from '../../components/positionComponent'
 
 export class BalloonVineChaseNode implements BehaviourNode {
   private v = new Vec2(0, 0)
   private himo?: PIXI.SimpleRope
   private points: Array<PIXI.Point> = []
+  private walls?: Array<Entity>
+  private targetWall?: PositionComponent
 
   public initState(): void {
     // empty
@@ -27,9 +30,37 @@ export class BalloonVineChaseNode implements BehaviourNode {
       draw.addChild(this.himo)
     }
 
-    if (pickup.isPossessed) {
-      const po = player.getComponent('Position')
-      const pp = po.add(new Vec2(0, -20))
+    const [gripAABB, _, rootAABB, wallAABB] = entity.getComponent('Collider').colliders as Array<
+      AABBCollider
+    >
+
+    if (!this.walls) {
+      this.walls = []
+      wallAABB.callbacks.add((me: Collider, other: Collider) => {
+        this.walls?.push(other.component.entity)
+      })
+    }
+    const findAppropriateWall = (): PositionComponent | undefined => {
+      if (this.walls?.length === 0) return
+      return this.walls
+        ?.map(wall => {
+          const p = wall.getComponent('Position').add(new Vec2(4, 4))
+          const v = p.sub(wallAABB.bound.center)
+          return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
+        })
+        .filter(w => w.value > 0)
+        .reduce((a, b) => (a.value > b.value ? a : b))?.p
+    }
+    if (pickup.isPossessed) this.targetWall = undefined
+    else if (!this.targetWall) {
+      this.targetWall = findAppropriateWall()
+    }
+    this.walls = []
+    const target = pickup.isPossessed ? player.getComponent('Position') : this.targetWall
+
+    if (target) {
+      const po = target
+      const pp = po.sub(new Vec2(-10, 30))
       const p = entity.getComponent('Position')
       const r = p.sub(pp)
       const l = r.length()
@@ -37,7 +68,7 @@ export class BalloonVineChaseNode implements BehaviourNode {
       const vr = this.v.dot(nr)
 
       const l0 = 2
-      const k = 0.01
+      const k = 0.02
       const c = 0.1
       const d = 0.1
       const ml = 10
@@ -66,15 +97,33 @@ export class BalloonVineChaseNode implements BehaviourNode {
         this.points[i].x = -x
         this.points[i].y = -y
       }
-
-      const aabb = entity.getComponent('Collider').colliders[0] as AABBCollider
-      aabb.bound.position.x = this.points.map(p => p.x).reduce((a, b) => Math.min(a, b))
-      aabb.bound.position.y = this.points.map(p => p.y).reduce((a, b) => Math.min(a, b))
-      aabb.bound.size.x =
-        this.points.map(p => p.x).reduce((a, b) => Math.max(a, b)) - aabb.bound.position.x
-      aabb.bound.size.y =
-        this.points.map(p => p.y).reduce((a, b) => Math.max(a, b)) - aabb.bound.position.y
     }
+    gripAABB.bound.position.x = this.points.map(p => p.x).reduce((a, b) => Math.min(a, b))
+    gripAABB.bound.position.y = this.points.map(p => p.y).reduce((a, b) => Math.min(a, b))
+    gripAABB.bound.size.x =
+      this.points.map(p => p.x).reduce((a, b) => Math.max(a, b)) - gripAABB.bound.position.x + 1
+    gripAABB.bound.size.y =
+      this.points.map(p => p.y).reduce((a, b) => Math.max(a, b)) - gripAABB.bound.position.y
+
+    const lp = this.points[this.points.length - 1]
+    rootAABB.bound.position.x = lp.x - rootAABB.bound.size.x / 2
+    rootAABB.bound.position.y = lp.y - rootAABB.bound.size.y
+
+    wallAABB.bound.position.x = lp.x - wallAABB.bound.size.x / 2
+    wallAABB.bound.position.y = lp.y
+
+    const rigidBody = entity.getComponent('RigidBody')
+
+    if (!pickup.isPossessed && !this.targetWall) {
+      rigidBody.gravityScale = 0.5
+      if (rigidBody.velocity.length() > 400) {
+        rigidBody.velocity = rigidBody.velocity.mul(400 / rigidBody.velocity.length())
+      }
+    } else {
+      rigidBody.gravityScale = 0
+      rigidBody.velocity = new Vec2(0, 0)
+    }
+
     return NodeState.Running
   }
 }

@@ -2,10 +2,11 @@ import { EntityFactory } from './entityFactory'
 import { Entity } from '../ecs/entity'
 import { Family } from '../ecs/family'
 import { PositionComponent } from '../components/positionComponent'
+import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { CategoryList } from './category'
+import { CategoryList, CategorySet, Category } from './category'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { BehaviourTree } from '../ai/behaviourTree'
@@ -36,6 +37,9 @@ export class BalloonVineFactory extends EntityFactory {
   readonly AIR_COLLECT_SPEED = 10
   readonly AIR_CONSUME_SPEED = 0
 
+  readonly MASS = 0.0001
+  readonly RESTITUTION = 0
+
   private playerFamily?: Family
 
   public create(): Entity {
@@ -55,16 +59,44 @@ export class BalloonVineFactory extends EntityFactory {
     const pickup = new PickupTargetComponent(false)
     const playerPointer = new PlayerPointerComponent(this.playerFamily)
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag.add('balloonVine')
-    aabbBody.tag.add('airHolderBody')
-    aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.category = CategoryList.item.category
-    aabbBody.mask = CategoryList.item.mask
-    aabbBody.isSensor = true
+    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
 
-    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(aabbBody)
+    const gripAABB = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    gripAABB.tag.add('balloonVine')
+    gripAABB.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    gripAABB.category = CategoryList.item.category
+    gripAABB.mask = new CategorySet(Category.PLAYER)
+    gripAABB.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    gripAABB.isSensor = true
+    collider.createCollider(gripAABB)
+
+    const bodyAABB = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    bodyAABB.tag.add('balloonVine')
+    bodyAABB.tag.add('airHolderBody')
+    bodyAABB.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    bodyAABB.category = CategoryList.item.category
+    bodyAABB.mask = new CategorySet(Category.AIR, Category.DEFAULT)
+    bodyAABB.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    bodyAABB.isSensor = true
+    collider.createCollider(bodyAABB)
+
+    const rootAABB = new AABBDef(new Vec2(5, 5))
+    rootAABB.tag.add('balloonVine')
+    rootAABB.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y + 8)
+    rootAABB.category = CategoryList.item.category
+    rootAABB.mask = new CategorySet(Category.WALL)
+    rootAABB.maxClipTolerance = new Vec2(0, 0)
+    rootAABB.isSensor = false
+    collider.createCollider(rootAABB)
+
+    const wallAABB = new AABBDef(new Vec2(2, 10))
+    wallAABB.tag.add('balloonVine')
+    wallAABB.offset = new Vec2(-1, 0)
+    wallAABB.category = CategoryList.item.category
+    wallAABB.mask = new CategorySet(Category.WALL)
+    wallAABB.maxClipTolerance = new Vec2(0, 0)
+    wallAABB.isSensor = true
+    collider.createCollider(wallAABB)
 
     const sprite = parseSprite(balloonvineAIData.sprite)
     const enemyAI = parseAI(balloonvineAIData.ai)
@@ -78,6 +110,7 @@ export class BalloonVineFactory extends EntityFactory {
 
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)
+    entity.addComponent('RigidBody', body)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('HP', hp)
