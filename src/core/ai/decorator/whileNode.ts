@@ -1,14 +1,22 @@
 import { BehaviourNode, Behaviour } from '../behaviourNode'
 
 export class WhileNode extends BehaviourNode {
-  public constructor(private condNode: BehaviourNode, private execNode: BehaviourNode) {
+  private condition: () => boolean
+  private node: BehaviourNode
+
+  public constructor(condition: () => boolean, node: BehaviourNode) {
     super()
+    this.condition = condition
+    this.node = node
   }
 
   protected *behaviour(): Behaviour {
-    while (this.condNode.currentState === 'Running') {
-      yield* this.execNode.iterator
-      this.condNode.execute()
+    while (this.condition()) {
+      this.node.execute()
+      if (this.node.hasDone) {
+        this.node.initialize()
+      }
+      yield
     }
     return 'Success'
   }

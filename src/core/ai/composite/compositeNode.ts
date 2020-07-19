@@ -8,6 +8,13 @@ export abstract class CompositeNode extends BehaviourNode {
     this.children = children
   }
 
+  public initialize(): void {
+    super.initialize()
+    for (const node of this.children) {
+      node.initialize()
+    }
+  }
+
   public addChild(...children: Array<BehaviourNode>): void {
     this.children.push(...children)
   }

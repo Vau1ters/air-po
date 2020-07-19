@@ -4,10 +4,16 @@ export type ExecuteState = ExecuteResult | 'Pending' | 'Running'
 export type Behaviour = Generator<void, ExecuteResult>
 
 export abstract class BehaviourNode {
-  private readonly _iterator: Behaviour
+  private _iterator: Behaviour
   private _currentState: ExecuteState
 
   public constructor() {
+    // 気持ち的にはthis.init()だが、TSが許してくれない
+    this._iterator = this._behaviour()
+    this._currentState = 'Pending'
+  }
+
+  public initialize(): void {
     this._iterator = this._behaviour()
     this._currentState = 'Pending'
   }

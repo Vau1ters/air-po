@@ -163,7 +163,7 @@ function parseIfNode(json: any, entity: Entity, world: World): IfNode {
 
 function parseWhileNode(json: any, entity: Entity, world: World): WhileNode {
   checkMembers(json, { condition: 'any', body: 'any' }, 'while')
-  return new WhileNode(parseAI(json.condition, entity, world), parseAI(json.body, entity, world))
+  return new WhileNode(() => true, parseAI(json.body, entity, world))
 }
 
 function parseDirection(json: string): Direction {

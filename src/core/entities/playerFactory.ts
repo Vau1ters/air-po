@@ -13,11 +13,11 @@ import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
 import { parseSprite } from '../parser/spriteParser'
-import { parseAI } from '../parser/aiParser'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import playerAIData from '../../../res/playerai.json'
 import { World } from '../ecs/world'
+import { PlayerAI } from '../ai/playerAI'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -84,7 +84,6 @@ export class PlayerFactory extends EntityFactory {
     collider.createCollider(aabbFoot)
 
     const sprite = parseSprite(playerAIData.sprite)
-    const playerAI = parseAI(playerAIData.ai, entity, this.world)
 
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
@@ -98,7 +97,7 @@ export class PlayerFactory extends EntityFactory {
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
 
-    const ai = new AIComponent(playerAI)
+    const ai = new AIComponent(new PlayerAI(entity, this.world))
 
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)
