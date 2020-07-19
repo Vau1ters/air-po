@@ -1,20 +1,24 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 
-export class IsDeadNode implements BehaviourNode {
-  public initState(): void {
-    // 何もしない
+export class IsDeadNode extends BehaviourNode {
+  private entity: Entity
+
+  public constructor(entity: Entity) {
+    super()
+    this.entity = entity
   }
 
-  public execute(entity: Entity): NodeState {
-    if (entity.hasComponent('HP')) {
-      const hp = entity.getComponent('HP')
+  protected *behaviour(): Behaviour {
+    yield
+    if (this.entity.hasComponent('HP')) {
+      const hp = this.entity.getComponent('HP')
       if (hp.hp <= 0) {
-        return NodeState.Success
+        return 'Success'
       } else {
-        return NodeState.Failure
+        return 'Failure'
       }
     }
-    return NodeState.Failure
+    return 'Failure'
   }
 }

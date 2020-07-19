@@ -1,14 +1,20 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 import { World } from '../../ecs/world'
 import { Entity } from '../../ecs/entity'
 
-export class DeathNode implements BehaviourNode {
-  public initState(): void {
-    // 何もしない
+export class DeathNode extends BehaviourNode {
+  private entity: Entity
+  private world: World
+
+  public constructor(entity: Entity, world: World) {
+    super()
+    this.entity = entity
+    this.world = world
   }
 
-  public execute(entity: Entity, world: World): NodeState {
-    world.removeEntity(entity)
-    return NodeState.Success
+  protected *behaviour(): Behaviour {
+    this.world.removeEntity(this.entity)
+    yield
+    return 'Success'
   }
 }

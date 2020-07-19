@@ -1,23 +1,25 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 import { World } from '../../ecs/world'
 import { Entity } from '../../ecs/entity'
 import { AirFactory } from '../../entities/airFactory'
 
-export class EmitAirNode implements BehaviourNode {
-  public airFactory: AirFactory
+export class EmitAirNode extends BehaviourNode {
+  private entity: Entity
+  private world: World
+  private airFactory: AirFactory
 
-  public constructor(quantity: number) {
+  public constructor(entity: Entity, world: World, quantity: number) {
+    super()
+    this.entity = entity
+    this.world = world
     this.airFactory = new AirFactory().setQuantity(quantity)
   }
 
-  public initState(): void {
-    // 何もしない
-  }
-
-  public execute(entity: Entity, world: World): NodeState {
-    const pos = entity.getComponent('Position')
+  protected *behaviour(): Behaviour {
+    const pos = this.entity.getComponent('Position')
     this.airFactory.setPosition(pos.x, pos.y)
-    world.addEntity(this.airFactory.create())
-    return NodeState.Success
+    this.world.addEntity(this.airFactory.create())
+    yield
+    return 'Success'
   }
 }

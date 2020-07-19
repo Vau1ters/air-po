@@ -1,15 +1,19 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 
-export class AnimationNode implements BehaviourNode {
-  public constructor(private animationName: string) {}
+export class AnimationNode extends BehaviourNode {
+  private entity: Entity
+  private animationName: string
 
-  public initState(): void {
-    // 何もしない
+  public constructor(entity: Entity, animationName: string) {
+    super()
+    this.entity = entity
+    this.animationName = animationName
   }
 
-  public execute(entity: Entity): NodeState {
-    entity.getComponent('AnimationState').state = this.animationName
-    return NodeState.Success
+  protected *behaviour(): Behaviour {
+    this.entity.getComponent('AnimationState').state = this.animationName
+    yield
+    return 'Success'
   }
 }

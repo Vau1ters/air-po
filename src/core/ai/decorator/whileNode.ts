@@ -1,27 +1,15 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
-import { Entity } from '../../ecs/entity'
-import { World } from '../../ecs/world'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 
-export class WhileNode implements BehaviourNode {
-  public constructor(private condNode: BehaviourNode, private execNode: BehaviourNode) {}
-
-  public initState(): void {
-    this.condNode.initState()
-    this.execNode.initState()
+export class WhileNode extends BehaviourNode {
+  public constructor(private condNode: BehaviourNode, private execNode: BehaviourNode) {
+    super()
   }
 
-  public execute(entity: Entity, world: World): NodeState {
-    switch (this.condNode.execute(entity, world)) {
-      case NodeState.Success:
-        this.condNode.initState()
-        if (this.execNode.execute(entity, world) !== NodeState.Running) {
-          this.execNode.initState()
-        }
-        return NodeState.Running
-      case NodeState.Running:
-        return NodeState.Running
-      case NodeState.Failure:
-        return NodeState.Success
+  protected *behaviour(): Behaviour {
+    while (this.condNode.currentState === 'Running') {
+      yield* this.execNode.iterator
+      this.condNode.execute()
     }
+    return 'Success'
   }
 }

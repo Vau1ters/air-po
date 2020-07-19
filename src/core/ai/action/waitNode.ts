@@ -1,18 +1,14 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, ExecuteResult } from '../behaviourNode'
 
-export class WaitNode implements BehaviourNode {
-  private currentTime = 0
-  public constructor(private time: number) {}
-
-  public initState(): void {
-    this.currentTime = 0
+export class WaitNode extends BehaviourNode {
+  public constructor(private duration: number) {
+    super()
   }
 
-  public execute(): NodeState {
-    if (this.currentTime >= this.time) {
-      return NodeState.Success
+  protected *behaviour(): Generator<void, ExecuteResult> {
+    for (let time = 0; time < this.duration; time++) {
+      yield
     }
-    this.currentTime++
-    return NodeState.Running
+    return 'Success'
   }
 }

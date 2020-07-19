@@ -1,13 +1,40 @@
-import { World } from '../ecs/world'
-import { Entity } from '../ecs/entity'
+export type ExecuteResult = 'Success' | 'Failure'
+export type ExecuteState = ExecuteResult | 'Pending' | 'Running'
 
-export interface BehaviourNode {
-  initState(): void
-  execute(entity: Entity, world: World): NodeState
-}
+export type Behaviour = Generator<void, ExecuteResult>
 
-export enum NodeState {
-  Failure,
-  Success,
-  Running,
+export abstract class BehaviourNode {
+  private readonly _iterator: Behaviour
+  private _currentState: ExecuteState
+
+  public constructor() {
+    this._iterator = this._behaviour()
+    this._currentState = 'Pending'
+  }
+
+  protected abstract behaviour(): Behaviour
+
+  private *_behaviour(): Behaviour {
+    this._currentState = 'Running'
+    console.log(this._currentState)
+    this._currentState = yield* this.behaviour()
+    return this._currentState
+  }
+
+  public execute(): ExecuteState {
+    this.iterator.next()
+    return this.currentState
+  }
+
+  public get iterator(): Behaviour {
+    return this.iterator
+  }
+
+  public get currentState(): ExecuteState {
+    return this._currentState
+  }
+
+  public get hasDone(): boolean {
+    return this.currentState === 'Failure' || this.currentState === 'Success'
+  }
 }

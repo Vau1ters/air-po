@@ -10,12 +10,12 @@ import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
-import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
 import { parseAI } from '../parser/aiParser'
 import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import enemy1AIData from '../../../res/enemy1ai.json'
+import { World } from '../ecs/world'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -31,6 +31,10 @@ export class Enemy1Factory extends EntityFactory {
   readonly ATTACK_HIT_BOX_HEIGHT = 13
   readonly ATTACK_HIT_BOX_OFFSET_X = -5
   readonly ATTACK_HIT_BOX_OFFSET_Y = -6
+
+  public constructor(private world: World) {
+    super()
+  }
 
   public create(): Entity {
     const entity = new Entity()
@@ -65,7 +69,7 @@ export class Enemy1Factory extends EntityFactory {
     collider.createCollider(attackHitBox)
 
     const sprite = parseSprite(enemy1AIData.sprite)
-    const enemyAI = parseAI(enemy1AIData.ai)
+    const enemyAI = parseAI(enemy1AIData.ai, entity, this.world)
 
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
@@ -79,7 +83,7 @@ export class Enemy1Factory extends EntityFactory {
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
 
-    const ai = new AIComponent(new BehaviourTree(enemyAI))
+    const ai = new AIComponent(enemyAI)
 
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)

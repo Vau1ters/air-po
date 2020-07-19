@@ -1,20 +1,24 @@
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 
-export class HasAirNode implements BehaviourNode {
-  public initState(): void {
-    // 何もしない
+export class HasAirNode extends BehaviourNode {
+  private entity: Entity
+
+  public constructor(entity: Entity) {
+    super()
+    this.entity = entity
   }
 
-  public execute(entity: Entity): NodeState {
-    if (entity.hasComponent('AirHolder')) {
-      const holder = entity.getComponent('AirHolder')
+  protected *behaviour(): Behaviour {
+    yield
+    if (this.entity.hasComponent('AirHolder')) {
+      const holder = this.entity.getComponent('AirHolder')
       if (holder.currentQuantity > 0) {
-        return NodeState.Success
+        return 'Success'
       } else {
-        return NodeState.Failure
+        return 'Failure'
       }
     }
-    return NodeState.Failure
+    return 'Failure'
   }
 }

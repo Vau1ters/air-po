@@ -1,39 +1,14 @@
-import { Entity } from '../../ecs/entity'
-import { World } from '../../ecs/world'
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { Behaviour } from '../behaviourNode'
+import { CompositeNode } from './compositeNode'
 
-export class SequenceNode implements BehaviourNode {
-  private executingNodes: Array<BehaviourNode> = []
-
-  public constructor(protected children: Array<BehaviourNode> = []) {
-    this.initState()
-  }
-
-  public addChild(node: BehaviourNode): void {
-    this.children.push(node)
-    this.executingNodes.push(node)
-  }
-
-  public initState(): void {
-    this.children.forEach(node => node.initState())
-    this.executingNodes = this.children.concat()
-  }
-
-  public execute(entity: Entity, world: World): NodeState {
-    if (this.children.length === 0) return NodeState.Success
-    if (this.executingNodes.length === 0) {
-      throw new Error('call already successed sequence node.')
-    }
-
-    let state = this.executingNodes[0].execute(entity, world)
-    while (state === NodeState.Success) {
-      this.executingNodes.shift()
-      if (this.executingNodes.length === 0) {
-        return NodeState.Success
+export class SequenceNode extends CompositeNode {
+  protected *behaviour(): Behaviour {
+    for (const node of this.children) {
+      const result = yield* node.iterator
+      if (result === 'Failure') {
+        return 'Failure'
       }
-
-      state = this.executingNodes[0].execute(entity, world)
     }
-    return state
+    return 'Success'
   }
 }

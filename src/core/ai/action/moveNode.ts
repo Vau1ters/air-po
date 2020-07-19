@@ -1,5 +1,5 @@
 import { Entity } from '../../ecs/entity'
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
 
 export enum Direction {
   Left,
@@ -8,36 +8,39 @@ export enum Direction {
   Down,
 }
 
-export class MoveNode implements BehaviourNode {
-  private timer = 0
+export class MoveNode extends BehaviourNode {
+  private entity: Entity
+  private direction: Direction
+  private speed: number
+  private duration: number
 
-  public constructor(private dir: Direction, private speed: number, private limitTime: number) {}
-
-  public initState(): void {
-    this.timer = 0
+  public constructor(entity: Entity, direction: Direction, speed: number, duration: number) {
+    super()
+    this.entity = entity
+    this.direction = direction
+    this.speed = speed
+    this.duration = duration
   }
 
-  public execute(entity: Entity): NodeState {
-    const position = entity.getComponent('Position')
-    switch (this.dir) {
-      case Direction.Left:
-        position.x -= this.speed
-        break
-      case Direction.Right:
-        position.x += this.speed
-        break
-      case Direction.Up:
-        position.y -= this.speed
-        break
-      case Direction.Down:
-        position.y += this.speed
-        break
+  protected *behaviour(): Behaviour {
+    for (let time = 0; time < this.duration; time++) {
+      const position = this.entity.getComponent('Position')
+      switch (this.direction) {
+        case Direction.Left:
+          position.x -= this.speed
+          break
+        case Direction.Right:
+          position.x += this.speed
+          break
+        case Direction.Up:
+          position.y -= this.speed
+          break
+        case Direction.Down:
+          position.y += this.speed
+          break
+      }
+      yield
     }
-
-    this.timer++
-    if (this.timer > this.limitTime) {
-      return NodeState.Success
-    }
-    return NodeState.Running
+    return 'Success'
   }
 }

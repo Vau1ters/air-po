@@ -1,38 +1,19 @@
-import { Entity } from '../../ecs/entity'
-import { World } from '../../ecs/world'
-import { BehaviourNode, NodeState } from '../behaviourNode'
+import { Behaviour } from '../behaviourNode'
+import { CompositeNode } from './compositeNode'
 
-export class ParallelNode implements BehaviourNode {
-  private executingNodes: Array<BehaviourNode> = []
-
-  public addChild(node: BehaviourNode): void {
-    this.children.push(node)
-  }
-
-  public constructor(protected children: Array<BehaviourNode> = []) {
-    this.initState()
-  }
-
-  public initState(): void {
-    this.executingNodes = this.children.concat()
-    this.children.forEach(node => node.initState())
-  }
-  // 全部Successになるかどれか一つがFailureになったら終了
-  public execute(entity: Entity, world: World): NodeState {
-    const nextExecutingNodes = new Array<BehaviourNode>()
-    for (const child of this.children) {
-      switch (child.execute(entity, world)) {
-        case NodeState.Success:
-          break
-        case NodeState.Failure:
-          return NodeState.Failure
-        case NodeState.Running:
-          nextExecutingNodes.push(child)
-          break
+export class ParallelNode extends CompositeNode {
+  protected *behaviour(): Behaviour {
+    // 全部完了していたら終了
+    while (!this.children.every(node => node.hasDone)) {
+      for (const node of this.children) {
+        const nodeState = node.execute()
+        if (nodeState === 'Failure') {
+          return 'Failure'
+        }
       }
+      yield
     }
-    this.executingNodes = nextExecutingNodes
-    if (this.executingNodes.length === 0) return NodeState.Success
-    return NodeState.Running
+
+    return 'Success'
   }
 }
