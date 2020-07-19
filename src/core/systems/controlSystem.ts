@@ -17,7 +17,7 @@ export class KeyController {
   private static readonly keyPressedMap: Map<KeyCode, boolean> = new Map()
 
   private static pressKey(keyCode: KeyCode): void {
-    if (this.keyPressingMap.get(keyCode) !== true) {
+    if (!this.keyPressingMap.get(keyCode)) {
       this.keyPressedMap.set(keyCode, true)
     }
     this.keyPressingMap.set(keyCode, true)
