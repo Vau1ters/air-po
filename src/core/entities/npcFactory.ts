@@ -6,10 +6,10 @@ import { World } from '../ecs/world'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { assert } from '../../utils/assertion'
 
-export type EnemyType = 'enemy1' | 'balloonvine'
+export type NPCType = 'enemy1' | 'balloonvine'
 
-export class EnemyFactory extends EntityFactory {
-  private type?: EnemyType
+export class NPCFactory extends EntityFactory {
+  private type?: NPCType
   private family?: Family
 
   public create(): Entity {
@@ -24,12 +24,12 @@ export class EnemyFactory extends EntityFactory {
     }
   }
 
-  public setType(type: EnemyType): EnemyFactory {
+  public setType(type: NPCType): NPCFactory {
     this.type = type
     return this
   }
 
-  public setWorld(world: World): EnemyFactory {
+  public setWorld(world: World): NPCFactory {
     this.family = new FamilyBuilder(world).include('Player').build()
     return this
   }

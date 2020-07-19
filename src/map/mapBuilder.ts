@@ -2,7 +2,7 @@ import { World } from '../core/ecs/world'
 import { WallFactory } from '../core/entities/wallFactory'
 import { Random } from '../utils/random'
 import { AirFactory } from '../core/entities/airFactory'
-import { EnemyFactory, EnemyType } from '../core/entities/enemyFactory'
+import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
 
@@ -78,14 +78,14 @@ export class MapBuilder {
           builders.push({
             firstgid,
             builder: (pos: number[]) =>
-              this.buildEnemy(pos, tileSize, { type: content.name as EnemyType, size }),
+              this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
           })
           break
         case 'balloonvine':
           builders.push({
             firstgid,
             builder: (pos: number[]) =>
-              this.buildEnemy(pos, tileSize, { type: content.name as EnemyType, size }),
+              this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
           })
           break
       }
@@ -139,12 +139,12 @@ export class MapBuilder {
   private buildEnemy(
     pos: number[],
     tileSize: number[],
-    enemyInfo: { type: EnemyType; size: number[] }
+    enemyInfo: { type: NPCType; size: number[] }
   ): void {
     const [x, y] = pos
     const [w, h] = enemyInfo.size
     const [tw, th] = tileSize
-    const enemy = new EnemyFactory()
+    const enemy = new NPCFactory()
       .setType(enemyInfo.type)
       .setWorld(this.world)
       .create()
