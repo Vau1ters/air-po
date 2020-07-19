@@ -1,6 +1,6 @@
 import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
-import { KeyController } from '../../controller'
+import { KeyController } from '../../systems/controlSystem'
 import { Vec2 } from '../../math/vec2'
 
 export class PlayerJetNode implements BehaviourNode {
