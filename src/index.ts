@@ -7,7 +7,7 @@ import { Container } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
 import { AirSystem } from './core/systems/airSystem'
 import CameraSystem from './core/systems/cameraSystem'
-import { KeyController, MouseController } from './core/controller'
+import { ControlSystem } from './core/systems/controlSystem'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import * as Art from './core/graphics/art'
@@ -26,8 +26,6 @@ export class Main {
   /*+.† INITIALIZATION †.+*/
   public static async init(): Promise<void> {
     initializeApplication()
-    KeyController.init()
-    MouseController.init()
     await Art.init()
 
     const gameWorldContainer = new Container()
@@ -64,7 +62,8 @@ export class Main {
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(this.world, debugContainer),
-      new CameraSystem(this.world, gameWorldContainer)
+      new CameraSystem(this.world, gameWorldContainer),
+      new ControlSystem(this.world)
     )
 
     const mapBuilder = new MapBuilder(this.world)

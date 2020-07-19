@@ -1,6 +1,6 @@
 import { BehaviourNode, NodeState } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
-import { KeyController, MouseController } from '../../controller'
+import { KeyController } from '../../systems/controlSystem'
 
 export class PlayerMoveNode implements BehaviourNode {
   public initState(): void {
@@ -10,17 +10,16 @@ export class PlayerMoveNode implements BehaviourNode {
     const player = entity.getComponent('Player')
     const animState = entity.getComponent('AnimationState')
     const direction = entity.getComponent('HorizontalDirection')
-    console.log(animState.state)
 
     const body = entity.getComponent('RigidBody')
 
     const velocity = body.velocity
 
-    if (KeyController.isKeyPressing('D')) {
+    if (KeyController.isActionPressing('MoveRight')) {
       if (velocity.x < 100) velocity.x += 10
       if (player.landing) animState.state = 'Walking'
       direction.looking = 'Right'
-    } else if (KeyController.isKeyPressing('A')) {
+    } else if (KeyController.isActionPressing('MoveLeft')) {
       if (velocity.x > -100) velocity.x -= 10
       if (player.landing) animState.state = 'Walking'
       direction.looking = 'Left'
@@ -32,14 +31,12 @@ export class PlayerMoveNode implements BehaviourNode {
     if (player.landing) {
       velocity.y = 0
     }
-    if (KeyController.isKeyPressing('W') && player.landing) {
+    if (KeyController.isActionPressing('Jump') && player.landing) {
       velocity.y = -250
       animState.state = 'Jumping'
     }
     player.landing = false
 
-    KeyController.onUpdateFinished()
-    MouseController.onUpdateFinished()
     return NodeState.Success
   }
 }

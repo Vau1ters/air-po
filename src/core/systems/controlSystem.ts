@@ -1,3 +1,6 @@
+import { System } from '../ecs/system'
+import { World } from '../ecs/world'
+
 export type KeyActionType = 'MoveLeft' | 'MoveRight' | 'MoveUp' | 'MoveDown' | 'Jump' | 'Jet'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveLeft: 'A',
@@ -181,5 +184,19 @@ export class MouseController {
     for (const button of this.mousePressedMap.keys()) {
       this.mousePressedMap.set(button, false)
     }
+  }
+}
+
+export class ControlSystem extends System {
+  public constructor(world: World) {
+    super(world)
+
+    KeyController.init()
+    MouseController.init()
+  }
+
+  public update(): void {
+    KeyController.onUpdateFinished()
+    MouseController.onUpdateFinished()
   }
 }
