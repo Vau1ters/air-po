@@ -1,45 +1,49 @@
+import { Entity } from '../ecs/entity'
+import { World } from '../ecs/world'
+
 export type ExecuteResult = 'Success' | 'Failure'
-export type ExecuteState = ExecuteResult | 'Pending' | 'Running'
 
 export type Behaviour = Generator<void, ExecuteResult>
 
-export abstract class BehaviourNode {
-  private _iterator: Behaviour
-  private _currentState: ExecuteState
+export type BehaviourNode = (entity: Entity, world: World) => Behaviour
 
-  public constructor() {
-    // 気持ち的にはthis.init()だが、TSが許してくれない
-    this._iterator = this._behaviour()
-    this._currentState = 'Pending'
-  }
+// export abstract class BehaviourNopo {
+//   private _iterator: Behaviour
+//   private _currentState: ExecuteState
 
-  public initialize(): void {
-    this._iterator = this._behaviour()
-    this._currentState = 'Pending'
-  }
+//   public constructor() {
+//     // 気持ち的にはthis.initialize()だが、TSが許してくれない
+//     this._iterator = this._behaviour()
+//     this._currentState = 'Pending'
+//   }
 
-  protected abstract behaviour(): Behaviour
+//   public initialize(): void {
+//     this._iterator = this._behaviour()
+//     this._currentState = 'Pending'
+//   }
 
-  private *_behaviour(): Behaviour {
-    this._currentState = 'Running'
-    this._currentState = yield* this.behaviour()
-    return this._currentState
-  }
+//   protected abstract behaviour(): Behaviour
 
-  public execute(): ExecuteState {
-    this._iterator.next()
-    return this.currentState
-  }
+//   private *_behaviour(): Behaviour {
+//     this._currentState = 'Running'
+//     this._currentState = yield* this.behaviour()
+//     return this._currentState
+//   }
 
-  public get iterator(): Behaviour {
-    return this._iterator
-  }
+//   public execute(): ExecuteState {
+//     this._iterator.next()
+//     return this.currentState
+//   }
 
-  public get currentState(): ExecuteState {
-    return this._currentState
-  }
+//   public get iterator(): Behaviour {
+//     return this._iterator
+//   }
 
-  public get hasDone(): boolean {
-    return this.currentState === 'Failure' || this.currentState === 'Success'
-  }
-}
+//   public get currentState(): ExecuteState {
+//     return this._currentState
+//   }
+
+//   public get hasDone(): boolean {
+//     return this.currentState === 'Failure' || this.currentState === 'Success'
+//   }
+// }

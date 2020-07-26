@@ -1,21 +1,45 @@
-import { BehaviourNode } from '../behaviourNode'
+import { BehaviourNode, Behaviour } from '../behaviourNode'
+import { Entity } from '../../ecs/entity'
+import { World } from '../../ecs/world'
 
-export abstract class CompositeNode extends BehaviourNode {
-  protected children: Array<BehaviourNode>
-
-  public constructor(children: Array<BehaviourNode> = []) {
-    super()
-    this.children = children
-  }
-
-  public initialize(): void {
-    super.initialize()
-    for (const node of this.children) {
-      node.initialize()
+export const parallelNode = (nodes: Array<BehaviourNode>) =>
+  function*(entity: Entity, world: World): Behaviour {
+    const behaviourList = nodes.map(node => node(entity, world))
+    while (true) {
+      let hasAllDone = true
+      for (const behaviour of behaviourList) {
+        const result = behaviour.next()
+        hasAllDone = hasAllDone && !!result.done
+        if (result.value === 'Failure') {
+          return 'Failure'
+        }
+      }
+      if (hasAllDone) {
+        return 'Success'
+      }
     }
   }
 
-  public addChild(...children: Array<BehaviourNode>): void {
-    this.children.push(...children)
+export const selectNode = (nodes: Array<BehaviourNode>) =>
+  function*(entity: Entity, world: World): Behaviour {
+    const behaviourList = nodes.map(node => node(entity, world))
+    for (const behaviour of behaviourList) {
+      const result = yield* behaviour
+      if (result === 'Success') {
+        return 'Success'
+      }
+    }
+    return 'Failure'
   }
-}
+
+export const sequenceNode = (nodes: Array<BehaviourNode>) =>
+  function*(entity: Entity, world: World): Behaviour {
+    const behaviourList = nodes.map(node => node(entity, world))
+    for (const behaviour of behaviourList) {
+      const result = yield* behaviour
+      if (result === 'Failure') {
+        return 'Failure'
+      }
+    }
+    return 'Success'
+  }

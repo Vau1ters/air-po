@@ -1,55 +1,47 @@
-import { BehaviourNode, Behaviour } from '../behaviourNode'
+import { Behaviour } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 import { KeyController } from '../../controller'
 import { Vec2 } from '../../math/vec2'
 
-export class PlayerJetNode extends BehaviourNode {
-  static readonly CONSUME_SPEED = 10
-  static readonly JET_SPEED = 180
+const SETTING = {
+  CONSUME_SPEED: 10,
+  JET_SPEED: 180,
+}
+const calcPlayerAngle = (): Vec2 => {
+  const angle = new Vec2()
 
-  private entity: Entity
-
-  public constructor(entity: Entity) {
-    super()
-    this.entity = entity
+  if (KeyController.isActionPressing('MoveLeft')) {
+    angle.x -= 1
+  }
+  if (KeyController.isActionPressing('MoveRight')) {
+    angle.x += 1
+  }
+  if (KeyController.isActionPressing('MoveUp')) {
+    angle.y -= 1
+  }
+  if (KeyController.isActionPressing('MoveDown')) {
+    angle.y += 1
   }
 
-  protected *behaviour(): Behaviour {
-    const body = this.entity.getComponent('RigidBody')
-    const airHolder = this.entity.getComponent('AirHolder')
-    const velocity = body.velocity
+  return angle.normalize()
+}
 
-    const playerAngle = this.calcPlayerAngle()
-    if (
-      KeyController.isActionPressing('Jet') &&
-      playerAngle.lengthSq() > 0 &&
-      airHolder.currentQuantity >= PlayerJetNode.CONSUME_SPEED
-    ) {
-      velocity.x = playerAngle.x * PlayerJetNode.JET_SPEED
-      velocity.y = playerAngle.y * PlayerJetNode.JET_SPEED
-      airHolder.consumeBy(PlayerJetNode.CONSUME_SPEED)
-    }
+export const playerJetNode = function*(entity: Entity): Behaviour {
+  const body = entity.getComponent('RigidBody')
+  const airHolder = entity.getComponent('AirHolder')
+  const velocity = body.velocity
 
-    yield
-    return 'Success'
+  const playerAngle = calcPlayerAngle()
+  if (
+    KeyController.isActionPressing('Jet') &&
+    playerAngle.lengthSq() > 0 &&
+    airHolder.currentQuantity >= SETTING.CONSUME_SPEED
+  ) {
+    velocity.x = playerAngle.x * SETTING.JET_SPEED
+    velocity.y = playerAngle.y * SETTING.JET_SPEED
+    airHolder.consumeBy(SETTING.CONSUME_SPEED)
   }
 
-  private calcPlayerAngle(): Vec2 {
-    const angle = new Vec2()
-
-    if (KeyController.isActionPressing('MoveLeft')) {
-      angle.x -= 1
-    }
-    if (KeyController.isActionPressing('MoveRight')) {
-      angle.x += 1
-    }
-    if (KeyController.isActionPressing('MoveUp')) {
-      angle.y -= 1
-    }
-    if (KeyController.isActionPressing('MoveDown')) {
-      angle.y += 1
-    }
-
-    return angle.normalize()
-  }
+  yield
+  return 'Success'
 }

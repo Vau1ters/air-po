@@ -1,19 +1,8 @@
-import { BehaviourNode, Behaviour } from '../behaviourNode'
+import { Behaviour } from '../behaviourNode'
 import { Entity } from '../../ecs/entity'
 
-export class AnimationNode extends BehaviourNode {
-  private entity: Entity
-  private animationName: string
-
-  public constructor(entity: Entity, animationName: string) {
-    super()
-    this.entity = entity
-    this.animationName = animationName
-  }
-
-  protected *behaviour(): Behaviour {
-    this.entity.getComponent('AnimationState').state = this.animationName
-    yield
+export const animationNode = (animationName: string) =>
+  function*(entity: Entity): Behaviour {
+    entity.getComponent('AnimationState').state = animationName
     return 'Success'
   }
-}

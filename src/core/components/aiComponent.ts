@@ -1,13 +1,13 @@
-import { BehaviourNode } from '../ai/behaviourNode'
+import { Behaviour } from '../ai/behaviourNode'
 
 export class AIComponent {
-  private tree: BehaviourNode
+  private root: Behaviour
 
-  public constructor(tree: BehaviourNode) {
-    this.tree = tree
+  public constructor(root: Behaviour) {
+    this.root = root
   }
 
   public execute(): void {
-    this.tree.execute()
+    this.root.next()
   }
 }

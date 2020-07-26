@@ -17,7 +17,7 @@ import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import playerAIData from '../../../res/playerai.json'
 import { World } from '../ecs/world'
-import { PlayerAI } from '../ai/playerAI'
+import { playerAI } from '../ai/playerAI'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -97,7 +97,7 @@ export class PlayerFactory extends EntityFactory {
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
 
-    const ai = new AIComponent(new PlayerAI(entity, this.world))
+    const ai = new AIComponent(playerAI(entity, this.world))
 
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)

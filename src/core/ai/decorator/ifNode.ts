@@ -1,21 +1,18 @@
-import { BehaviourNode, Behaviour } from '../behaviourNode'
+import { Behaviour, BehaviourNode } from '../behaviourNode'
+import { Entity } from '../../ecs/entity'
+import { World } from '../../ecs/world'
 
-export class IfNode extends BehaviourNode {
-  public constructor(
-    private condNode: BehaviourNode,
-    private thenNode: BehaviourNode,
-    private elseNode?: BehaviourNode
-  ) {
-    super()
-  }
-
-  protected *behaviour(): Behaviour {
-    const cond = yield* this.condNode.iterator
-    if (cond === 'Success') {
-      return yield* this.thenNode.iterator
-    } else if (this.elseNode) {
-      return yield* this.elseNode.iterator
+export const ifNode = (
+  condNode: BehaviourNode,
+  thenNode: BehaviourNode,
+  elseNode?: BehaviourNode
+) =>
+  function*(entity: Entity, world: World): Behaviour {
+    const condition = yield* condNode(entity, world)
+    if (condition === 'Success') {
+      return yield* thenNode(entity, world)
+    } else if (elseNode !== undefined) {
+      return yield* elseNode(entity, world)
     }
     return 'Failure'
   }
-}

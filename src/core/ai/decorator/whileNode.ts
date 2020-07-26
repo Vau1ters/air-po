@@ -1,23 +1,19 @@
 import { BehaviourNode, Behaviour } from '../behaviourNode'
+import { Entity } from '../../ecs/entity'
+import { World } from '../../ecs/world'
 
-export class WhileNode extends BehaviourNode {
-  private condition: () => boolean
-  private node: BehaviourNode
+export const whileNode = (conditionNode: BehaviourNode, executionNode: BehaviourNode) =>
+  function*(entity: Entity, world: World): Behaviour {
+    let behaviour = executionNode(entity, world)
+    while (true) {
+      const condition = yield* conditionNode(entity, world)
+      if (condition === 'Failure') break
 
-  public constructor(condition: () => boolean, node: BehaviourNode) {
-    super()
-    this.condition = condition
-    this.node = node
-  }
-
-  protected *behaviour(): Behaviour {
-    while (this.condition()) {
-      this.node.execute()
-      if (this.node.hasDone) {
-        this.node.initialize()
+      const result = behaviour.next()
+      if (result.done) {
+        behaviour = executionNode(entity, world)
       }
       yield
     }
     return 'Success'
   }
-}
