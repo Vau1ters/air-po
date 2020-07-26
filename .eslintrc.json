@@ -16,6 +16,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "require-yield": "off",
     "no-constant-condition": [
       "error",
       {
