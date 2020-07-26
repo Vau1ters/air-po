@@ -3,7 +3,7 @@ import { World } from '../ecs/world'
 import { Behaviour } from './behaviour'
 import { suspendable } from './decorator/suspendable'
 import { isAlive } from './condition/isAlive'
-import { concurrent } from './composite/compositeBehaviour'
+import { parallel } from './composite/compositeBehaviour'
 import { playerGunShoot } from './action/playerGunShoot'
 import { playerMove } from './action/playerMove'
 import { playerJet } from './action/playerJet'
@@ -13,7 +13,7 @@ import { kill } from './action/kill'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
-    yield* concurrent([playerGunShoot(entity, world), playerMove(entity), playerJet(entity)])
+    yield* parallel([playerGunShoot(entity, world), playerMove(entity), playerJet(entity)])
     yield
   }
 }
