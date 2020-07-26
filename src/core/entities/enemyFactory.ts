@@ -2,16 +2,21 @@ import { Entity } from '../ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { Enemy1Factory } from './enemy1Factory'
 import { assert } from '../../utils/assertion'
+import { World } from '../ecs/world'
 
 type EnemyType = 'enemy1'
 
 export class EnemyFactory extends EntityFactory {
   private type?: EnemyType
 
+  public constructor(private world: World) {
+    super()
+  }
+
   public create(): Entity {
     switch (this.type) {
       case 'enemy1':
-        return new Enemy1Factory().create()
+        return new Enemy1Factory(this.world).create()
       default:
         assert(false)
     }
