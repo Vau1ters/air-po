@@ -6,7 +6,6 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
   const animState = entity.getComponent('AnimationState')
   const direction = entity.getComponent('HorizontalDirection')
-  console.log(animState.state)
 
   const body = entity.getComponent('RigidBody')
 
