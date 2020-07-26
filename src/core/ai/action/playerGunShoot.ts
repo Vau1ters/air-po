@@ -1,7 +1,7 @@
 import { Behaviour } from '../behaviour'
 import { World } from '../../ecs/world'
 import { Entity } from '../../ecs/entity'
-import { MouseController } from '../../controller'
+import { MouseController } from '../../systems/controlSystem'
 import { BulletFactory } from '../../entities/bulletFactory'
 import { PlayerComponent } from '../../components/playerComponent'
 import { AirHolderComponent } from '../../components/airHolderComponent'

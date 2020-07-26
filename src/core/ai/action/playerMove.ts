@@ -1,6 +1,6 @@
 import { Behaviour } from '../behaviour'
 import { Entity } from '../../ecs/entity'
-import { KeyController, MouseController } from '../../controller'
+import { KeyController } from '../../systems/controlSystem'
 
 export const playerMove = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
@@ -33,7 +33,4 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
     animState.state = 'Jumping'
   }
   player.landing = false
-
-  KeyController.onUpdateFinished()
-  MouseController.onUpdateFinished()
 }
