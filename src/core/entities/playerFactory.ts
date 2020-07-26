@@ -11,13 +11,13 @@ import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
-import { BehaviourTree } from '../ai/behaviourTree'
 import { AIComponent } from '../components/aiComponent'
 import { parseSprite } from '../parser/spriteParser'
-import { parseAI } from '../parser/aiParser'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import playerAIData from '../../../res/playerai.json'
+import playerDefinition from '../../../res/entities/player.json'
+import { World } from '../ecs/world'
+import { playerAI } from '../ai/playerAI'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -38,6 +38,10 @@ export class PlayerFactory extends EntityFactory {
   readonly MAX_AIR_QUANTITY = 200
   readonly AIR_COLLECT_SPEED = 0.1
   readonly AIR_CONSUME_SPEED = 0.05
+
+  public constructor(private world: World) {
+    super()
+  }
 
   public create(): Entity {
     const entity = new Entity()
@@ -79,8 +83,7 @@ export class PlayerFactory extends EntityFactory {
     aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     collider.createCollider(aabbFoot)
 
-    const sprite = parseSprite(playerAIData.sprite)
-    const playerAI = parseAI(playerAIData.ai)
+    const sprite = parseSprite(playerDefinition.sprite)
 
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
@@ -94,7 +97,7 @@ export class PlayerFactory extends EntityFactory {
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
 
-    const ai = new AIComponent(new BehaviourTree(playerAI))
+    const ai = new AIComponent(playerAI(entity, this.world))
 
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)

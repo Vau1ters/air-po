@@ -1,0 +1,12 @@
+{
+  "sprite": {
+    "name": "player",
+    "state": {
+      "Standing": [0],
+      "Walking": [0, 1],
+      "Jumping": [1],
+      "Dying": [2]
+    },
+    "default": "Standing"
+  }
+}

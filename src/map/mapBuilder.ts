@@ -86,7 +86,7 @@ export class MapBuilder {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildEnemy(enemyLayer: any): void {
     for (const enemyData of enemyLayer.objects) {
-      const enemy = new EnemyFactory().setType(enemyData.type).create()
+      const enemy = new EnemyFactory(this.world).setType(enemyData.type).create()
       const enemyPosition = enemy.getComponent('Position')
       enemyPosition.x = enemyData.x + enemyData.width / 2
       enemyPosition.y = enemyData.y - enemyData.height / 2
@@ -98,7 +98,7 @@ export class MapBuilder {
   private buildPlayer(playerLayer: any): void {
     assert(playerLayer.objects.length === 1)
     for (const playerData of playerLayer.objects) {
-      const player = new PlayerFactory().create()
+      const player = new PlayerFactory(this.world).create()
       const playerPosition = player.getComponent('Position')
       playerPosition.x = playerData.x + playerData.width / 2
       playerPosition.y = playerData.y - playerData.height / 2
