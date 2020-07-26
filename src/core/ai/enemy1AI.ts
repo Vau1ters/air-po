@@ -17,7 +17,7 @@ const enemy1Move = function*(entity: Entity): Behaviour<void> {
 }
 
 export const enemy1AI = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* suspendable(() => isAlive(entity), enemy1Move(entity))
+  yield* suspendable(isAlive(entity), enemy1Move(entity))
   yield* animate(entity, 'Dying')
   yield* wait(60)
   yield* emitAir(entity, world, 50)

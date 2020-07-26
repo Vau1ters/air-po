@@ -19,7 +19,7 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
 }
 
 export const playerAI = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* suspendable(() => isAlive(entity), playerControl(entity, world))
+  yield* suspendable(isAlive(entity), playerControl(entity, world))
   yield* animate(entity, 'Dying')
   yield* wait(60)
   yield* kill(entity, world)
