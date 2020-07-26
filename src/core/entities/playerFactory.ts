@@ -15,7 +15,7 @@ import { AIComponent } from '../components/aiComponent'
 import { parseSprite } from '../parser/spriteParser'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import playerAIData from '../../../res/playerai.json'
+import playerDefinition from '../../../res/entities/player.json'
 import { World } from '../ecs/world'
 import { playerAI } from '../ai/playerAI'
 
@@ -83,7 +83,7 @@ export class PlayerFactory extends EntityFactory {
     aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     collider.createCollider(aabbFoot)
 
-    const sprite = parseSprite(playerAIData.sprite)
+    const sprite = parseSprite(playerDefinition.sprite)
 
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {

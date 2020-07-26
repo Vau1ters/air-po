@@ -1,0 +1,10 @@
+{
+  "sprite": {
+    "name": "enemy1",
+    "state": {
+      "Floating": [0, 1],
+      "Dying": [2]
+    },
+    "default": "Floating"
+  }
+}
