@@ -1,8 +1,8 @@
-import { Behaviour } from '../behaviourNode'
+import { Behaviour } from '../behaviour'
 import { Entity } from '../../ecs/entity'
 import { KeyController, MouseController } from '../../controller'
 
-export const playerMoveNode = function*(entity: Entity): Behaviour {
+export const playerMove = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
   const animState = entity.getComponent('AnimationState')
   const direction = entity.getComponent('HorizontalDirection')
@@ -36,7 +36,4 @@ export const playerMoveNode = function*(entity: Entity): Behaviour {
 
   KeyController.onUpdateFinished()
   MouseController.onUpdateFinished()
-
-  yield
-  return 'Success'
 }

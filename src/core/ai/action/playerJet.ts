@@ -1,4 +1,4 @@
-import { Behaviour } from '../behaviourNode'
+import { Behaviour } from '../behaviour'
 import { Entity } from '../../ecs/entity'
 import { KeyController } from '../../controller'
 import { Vec2 } from '../../math/vec2'
@@ -26,7 +26,7 @@ const calcPlayerAngle = (): Vec2 => {
   return angle.normalize()
 }
 
-export const playerJetNode = function*(entity: Entity): Behaviour {
+export const playerJet = function*(entity: Entity): Behaviour<void> {
   const body = entity.getComponent('RigidBody')
   const airHolder = entity.getComponent('AirHolder')
   const velocity = body.velocity
@@ -41,7 +41,4 @@ export const playerJetNode = function*(entity: Entity): Behaviour {
     velocity.y = playerAngle.y * SETTING.JET_SPEED
     airHolder.consumeBy(SETTING.CONSUME_SPEED)
   }
-
-  yield
-  return 'Success'
 }

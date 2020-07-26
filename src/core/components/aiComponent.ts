@@ -1,9 +1,9 @@
-import { Behaviour } from '../ai/behaviourNode'
+import { Behaviour } from '../ai/behaviour'
 
 export class AIComponent {
-  private root: Behaviour
+  private root: Behaviour<void>
 
-  public constructor(root: Behaviour) {
+  public constructor(root: Behaviour<void>) {
     this.root = root
   }
 

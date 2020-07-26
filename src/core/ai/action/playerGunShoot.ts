@@ -1,4 +1,4 @@
-import { Behaviour } from '../behaviourNode'
+import { Behaviour } from '../behaviour'
 import { World } from '../../ecs/world'
 import { Entity } from '../../ecs/entity'
 import { MouseController } from '../../controller'
@@ -25,7 +25,7 @@ const calcAngle = (): number => {
   )
 }
 
-export const playerGunShootNode = function*(entity: Entity, world: World): Behaviour {
+export const playerGunShoot = function*(entity: Entity, world: World): Behaviour<void> {
   if (MouseController.isMousePressing('Left')) {
     // 空気の消費
     const airHolder = entity.getComponent('AirHolder') as AirHolderComponent
@@ -39,7 +39,4 @@ export const playerGunShootNode = function*(entity: Entity, world: World): Behav
       world.addEntity(bulletFactory.create())
     }
   }
-
-  yield
-  return 'Success'
 }
