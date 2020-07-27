@@ -9,28 +9,22 @@ import { assert } from '../../utils/assertion'
 export type NPCType = 'enemy1' | 'balloonvine'
 
 export class NPCFactory extends EntityFactory {
-  private type?: NPCType
-  private family?: Family
+  private family: Family
+
+  public constructor(private world: World, private type: NPCType) {
+    super()
+    this.family = new FamilyBuilder(this.world).include('Player').build()
+  }
 
   public create(): Entity {
     switch (this.type) {
       case 'enemy1':
-        return new Enemy1Factory().create()
+        return new Enemy1Factory(this.world).create()
       case 'balloonvine':
         assert(this.family)
-        return new BalloonVineFactory().setPlayerFamily(this.family).create()
+        return new BalloonVineFactory(this.world, this.family).create()
       default:
         assert(false)
     }
-  }
-
-  public setType(type: NPCType): NPCFactory {
-    this.type = type
-    return this
-  }
-
-  public setWorld(world: World): NPCFactory {
-    this.family = new FamilyBuilder(world).include('Player').build()
-    return this
   }
 }

@@ -58,10 +58,6 @@ export const CategoryList = {
     category: Category.DEFAULT,
     mask: CategorySet.ALL,
   },
-  item: {
-    category: Category.DEFAULT,
-    mask: CategorySet.ALL,
-  },
   playerBody: {
     category: Category.PLAYER,
     mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),

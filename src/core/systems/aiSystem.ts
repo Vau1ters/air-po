@@ -14,7 +14,7 @@ export default class AISystem extends System {
   public update(): void {
     for (const entity of this.family.entityIterator) {
       const ai = entity.getComponent('AI')
-      ai.execute(entity, this.world)
+      ai.execute()
     }
   }
 }

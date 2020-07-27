@@ -17,9 +17,7 @@ export class MapBuilder {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public build(map: any): void {
-    // layerごとに分ける
-    for (const layer of map.layers.sort((a: string, b: string) => a > b)) {
-      // to load player at first
+    for (const layer of map.layers) {
       switch (layer.name) {
         case 'air':
           this.buildAir(layer)
@@ -58,8 +56,7 @@ export class MapBuilder {
     type Builder = { firstgid: number; builder: (pos: number[]) => void }
     const builders = new Array<Builder>()
     for (const { firstgid, source } of tileSets) {
-      // eslint-disable-next-line  @typescript-eslint/no-var-requires
-      const content = require(`../../res/${source}`)
+      const content = require(`../../res/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
       const size = [content.tilewidth, content.tileheight]
       switch (content.name) {
         case 'wall':
@@ -144,10 +141,7 @@ export class MapBuilder {
     const [x, y] = pos
     const [w, h] = enemyInfo.size
     const [tw, th] = tileSize
-    const enemy = new NPCFactory()
-      .setType(enemyInfo.type)
-      .setWorld(this.world)
-      .create()
+    const enemy = new NPCFactory(this.world, enemyInfo.type).create()
     const enemyPosition = enemy.getComponent('Position')
     enemyPosition.x = x * tw + w / 2
     enemyPosition.y = y * th - h / 2
@@ -159,7 +153,7 @@ export class MapBuilder {
     const [x, y] = pos
     const [w, h] = playerInfo.size
     const [tw, th] = tileSize
-    const player = new PlayerFactory().create()
+    const player = new PlayerFactory(this.world).create()
     const playerPosition = player.getComponent('Position')
     playerPosition.x = x * tw + w / 2
     playerPosition.y = y * th - h / 2
