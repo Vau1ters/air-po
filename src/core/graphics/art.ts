@@ -12,6 +12,22 @@ import enemy1Setting from '../../../res/enemy1.json'
 import balloonvineImg from '../../../res/balloonvine.png'
 import balloonvineSetting from '../../../res/balloonvine.json'
 
+type Setting = {
+  columns: number
+  image: string
+  imageheight: number
+  imagewidth: number
+  margin: number
+  name: string
+  spacing: number
+  tilecount: number
+  tiledversion: string
+  tileheight: number
+  tilewidth: number
+  type: string
+  version: number
+}
+
 function loadTexture(url: string): Promise<BaseTexture> {
   return new Promise((resolve, reject) => {
     const texture = BaseTexture.from(url)
@@ -25,8 +41,7 @@ function loadTexture(url: string): Promise<BaseTexture> {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function buildAnimationTexture(baseURL: string, setting: any): Promise<Array<Texture>> {
+async function buildAnimationTexture(baseURL: string, setting: Setting): Promise<Array<Texture>> {
   const base = await loadTexture(baseURL)
   const result = new Array<Texture>()
   const w = setting.tilewidth

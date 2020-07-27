@@ -6,6 +6,73 @@ import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
 
+type MapObject = {
+  ellipse: boolean
+  height: number
+  id: number
+  name: string
+  rotation: number
+  type: string
+  visible: boolean
+  width: number
+  x: number
+  y: number
+}
+
+type TileLayer = {
+  data: Array<number>
+  height: number
+  id: number
+  name: string
+  opacity: number
+  type: string
+  visible: boolean
+  width: number
+  x: number
+  y: number
+}
+
+type ObjectLayer = {
+  draworder: string
+  id: number
+  name: string
+  objects: Array<MapObject>
+  opacity: number
+  type: string
+  visible: boolean
+  x: number
+  y: number
+}
+
+type TileSet = {
+  firstgid: number
+  source: string
+}
+
+type Map = {
+  compressionlevel: number
+  editorsettings: {
+    export: {
+      format: string
+      target: string
+    }
+  }
+  height: number
+  infinite: boolean
+  layers: Array<TileLayer | ObjectLayer>
+  nextlayerid: number
+  nextobjectid: number
+  orientation: string
+  renderorder: string
+  tiledversion: string
+  tileheight: number
+  tilesets: Array<TileSet>
+  tilewidth: number
+  type: string
+  version: number
+  width: number
+}
+
 export class MapBuilder {
   private world: World
   private rand: Random
@@ -15,22 +82,21 @@ export class MapBuilder {
     this.rand = new Random()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public build(map: any): void {
+  public build(map: Map): void {
     for (const layer of map.layers) {
       switch (layer.name) {
         case 'air':
-          this.buildAir(layer)
+          this.buildAir(layer as ObjectLayer)
           break
         case 'map':
-          this.buildMap(layer, map.tilesets, [map.tilewidth, map.tileheight])
+          this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
           break
       }
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildAir(airLayer: any): void {
+  private buildAir(airLayer: ObjectLayer): void {
+    assert(airLayer.objects)
     for (const airData of airLayer.objects) {
       const radius = airData.width / 2
       const x = airData.x + radius
@@ -43,8 +109,7 @@ export class MapBuilder {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private buildMap(mapLayer: any, tileSets: Array<any>, tileSize: number[]): void {
+  private buildMap(mapLayer: TileLayer, tileSets: Array<TileSet>, tileSize: number[]): void {
     const getTileId = (x: number, y: number): number => {
       if (x < 0) return 0
       if (y < 0) return 0
@@ -132,7 +197,6 @@ export class MapBuilder {
     this.world.addEntity(wall)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildEnemy(
     pos: number[],
     tileSize: number[],
@@ -148,7 +212,6 @@ export class MapBuilder {
     this.world.addEntity(enemy)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildPlayer(pos: number[], tileSize: number[], playerInfo: { size: number[] }): void {
     const [x, y] = pos
     const [w, h] = playerInfo.size
