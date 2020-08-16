@@ -6,7 +6,7 @@ import { AABBCollider, Collider } from '../../components/colliderComponent'
 import { PositionComponent } from '../../components/positionComponent'
 import { assert } from '../../../utils/assertion'
 
-export const balloonVineChase = function*(entity: Entity): Behaviour<void> {
+export const balloonVineBehaviour = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('PlayerPointer').getPlayer()
   assert(player)
   const draw = entity.getComponent('Draw')
@@ -22,32 +22,39 @@ export const balloonVineChase = function*(entity: Entity): Behaviour<void> {
     AABBCollider
   >
 
-  let walls: Array<Entity> = []
-  let targetWall: PositionComponent | undefined = undefined
+  const targetWall = ((): { update: () => void; get: () => PositionComponent | undefined } => {
+    let walls: Array<Entity> = []
+    let targetWall: PositionComponent | undefined = undefined
 
-  wallAABB.callbacks.add((_: Collider, other: Collider) => {
-    walls.push(other.component.entity)
-  })
+    wallAABB.callbacks.add((_: Collider, other: Collider) => {
+      walls.push(other.component.entity)
+    })
 
-  const findAppropriateWall = (): PositionComponent | undefined => {
-    if (walls.length === 0) return
-    return walls
-      .map(wall => {
-        const p = wall.getComponent('Position').add(new Vec2(4, 4))
-        const v = p.sub(wallAABB.bound.center)
-        return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
-      })
-      .filter(w => w.value > 0)
-      .reduce((a, b) => (a.value > b.value ? a : b))?.p
-  }
+    const findAppropriateWall = (): PositionComponent | undefined => {
+      if (walls.length === 0) return
+      return walls
+        .map(wall => {
+          const p = wall.getComponent('Position').add(new Vec2(4, 4))
+          const v = p.sub(wallAABB.bound.center)
+          return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
+        })
+        .filter(w => w.value > 0)
+        .reduce((a, b) => (a.value > b.value ? a : b))?.p
+    }
+
+    return {
+      update: (): void => {
+        if (pickup.isPossessed) targetWall = undefined
+        else if (!targetWall) targetWall = findAppropriateWall()
+        walls = []
+      },
+      get: (): PositionComponent | undefined => targetWall,
+    }
+  })()
 
   while (true) {
-    if (pickup.isPossessed) targetWall = undefined
-    else if (!targetWall) targetWall = findAppropriateWall()
-    walls = []
-    const target = pickup.isPossessed ? player.getComponent('Position') : targetWall
-
-    let v = new Vec2(0, 0)
+    targetWall.update()
+    const target = pickup.isPossessed ? player.getComponent('Position') : targetWall.get()
 
     if (target) {
       const po = target
@@ -56,17 +63,15 @@ export const balloonVineChase = function*(entity: Entity): Behaviour<void> {
       const r = p.sub(pp)
       const l = r.length()
       const nr = r.normalize()
-      const vr = v.dot(nr)
 
       const l0 = 2
       const k = 0.02
-      const c = 0.1
       const d = 0.1
       const ml = 10
 
-      const ar = -k * (l - l0) - c * vr
+      const ar = -k * (l - l0)
 
-      v = v.add(nr.mul(ar))
+      let v = nr.mul(ar)
       v = v.mul(1 - d)
 
       let np = p.add(v)
