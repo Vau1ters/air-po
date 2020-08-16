@@ -19,7 +19,6 @@ const shouldShrink = (me: Collider, other: Collider): void => {
   }
 }
 
-// ↓正しいのかわからんのでちゃんと読んでね
 let factory: VineFactory
 export const addTag = (vine: Entity): void => {
   for (const collider of vine.getComponent('Collider').colliders) {
