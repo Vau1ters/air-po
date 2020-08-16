@@ -1,6 +1,5 @@
 import { EntityFactory } from './entityFactory'
 import { Entity } from '../ecs/entity'
-import { Family } from '../ecs/family'
 import { PositionComponent } from '../components/positionComponent'
 import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Vec2 } from '../math/vec2'
@@ -13,9 +12,7 @@ import { AIComponent } from '../components/aiComponent'
 import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
-import { PlayerPointerComponent } from '../components/playerPointerComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
-import { assert } from '../../utils/assertion'
 import balloonvineDefinition from '../../../res/entities/balloonvine.json'
 import { World } from '../ecs/world'
 import { balloonvineAI } from '../ai/balloonvineAI'
@@ -40,12 +37,11 @@ export class BalloonVineFactory extends EntityFactory {
   private readonly MASS = 0.0001
   private readonly RESTITUTION = 0
 
-  constructor(private world: World, private playerFamily: Family) {
+  constructor(private world: World) {
     super()
   }
 
   public create(): Entity {
-    assert(this.playerFamily)
     const entity = new Entity()
     const position = new PositionComponent(0, 0)
     const draw = new DrawComponent()
@@ -59,7 +55,6 @@ export class BalloonVineFactory extends EntityFactory {
       consumeSpeed: this.AIR_CONSUME_SPEED,
     })
     const pickup = new PickupTargetComponent(false)
-    const playerPointer = new PlayerPointerComponent(this.playerFamily)
 
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
 
@@ -115,7 +110,6 @@ export class BalloonVineFactory extends EntityFactory {
     entity.addComponent('Invincible', invincible)
     entity.addComponent('PickupTarget', pickup)
     entity.addComponent('AnimationState', animState)
-    entity.addComponent('PlayerPointer', playerPointer)
     entity.addComponent('AirHolder', airHolder)
     return entity
   }

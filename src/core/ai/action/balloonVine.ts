@@ -1,14 +1,14 @@
 import { Entity } from '../../ecs/entity'
+import { FamilyBuilder } from '../../ecs/family'
+import { World } from '../../ecs/world'
 import { Behaviour } from '../behaviour'
 import { Vec2 } from '../../math/vec2'
 import * as PIXI from 'pixi.js'
 import { AABBCollider, Collider } from '../../components/colliderComponent'
 import { PositionComponent } from '../../components/positionComponent'
-import { assert } from '../../../utils/assertion'
 
-export const balloonVineBehaviour = function*(entity: Entity): Behaviour<void> {
-  const player = entity.getComponent('PlayerPointer').getPlayer()
-  assert(player)
+export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
+  const player = new FamilyBuilder(world).include('Player').build().entityArray[0]
   const draw = entity.getComponent('Draw')
   const pickup = entity.getComponent('PickupTarget')
 
