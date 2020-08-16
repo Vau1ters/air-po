@@ -43,7 +43,7 @@ export class PlayerControlSystem extends System {
     const player = playerCollider.component.entity.getComponent('Player')
     const other = otherCollider.component.entity
     if (other.hasComponent('PickupTarget')) {
-      player.pickupTarget = other // this target reference will be removed in playerPickup
+      player.pickupTarget.add(other) // this target reference will be removed in playerPickup
     }
   }
 }

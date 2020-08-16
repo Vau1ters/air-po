@@ -18,15 +18,14 @@ export const balloonVineBehaviour = function*(entity: Entity): Behaviour<void> {
   himo.tint = 0x22ff22
   draw.addChild(himo)
 
-  const [gripAABB, _, rootAABB, wallAABB] = entity.getComponent('Collider').colliders as Array<
-    AABBCollider
-  >
+  const [gripAABB, _, rootAABB, wallDetectionAABB] = entity.getComponent('Collider')
+    .colliders as Array<AABBCollider>
 
   const targetWall = ((): { update: () => void; get: () => PositionComponent | undefined } => {
     let walls: Array<Entity> = []
     let targetWall: PositionComponent | undefined = undefined
 
-    wallAABB.callbacks.add((_: Collider, other: Collider) => {
+    wallDetectionAABB.callbacks.add((_: Collider, other: Collider) => {
       walls.push(other.component.entity)
     })
 
@@ -35,7 +34,7 @@ export const balloonVineBehaviour = function*(entity: Entity): Behaviour<void> {
       return walls
         .map(wall => {
           const p = wall.getComponent('Position').add(new Vec2(4, 4))
-          const v = p.sub(wallAABB.bound.center)
+          const v = p.sub(wallDetectionAABB.bound.center)
           return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
         })
         .filter(w => w.value > 0)
@@ -105,8 +104,8 @@ export const balloonVineBehaviour = function*(entity: Entity): Behaviour<void> {
     rootAABB.bound.position.x = lp.x - rootAABB.bound.size.x / 2
     rootAABB.bound.position.y = lp.y - rootAABB.bound.size.y
 
-    wallAABB.bound.position.x = lp.x - wallAABB.bound.size.x / 2
-    wallAABB.bound.position.y = lp.y
+    wallDetectionAABB.bound.position.x = lp.x - wallDetectionAABB.bound.size.x / 2
+    wallDetectionAABB.bound.position.y = lp.y
 
     const rigidBody = entity.getComponent('RigidBody')
 
