@@ -9,6 +9,9 @@ import wallSetting from '../../../res/wall.json'
 import enemy1Img from '../../../res/enemy1.png'
 import enemy1Setting from '../../../res/enemy1.json'
 
+import vineImg from '../../../res/vine.png'
+import vineSetting from '../../../res/vine.json'
+
 function loadTexture(url: string): Promise<BaseTexture> {
   return new Promise((resolve, reject) => {
     const texture = BaseTexture.from(url)
@@ -42,4 +45,5 @@ export const init = async (): Promise<void> => {
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
+  textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
 }

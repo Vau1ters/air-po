@@ -6,20 +6,30 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
-import { Sprite } from 'pixi.js'
-import { wallBaseTextures } from '../graphics/art'
+import vineDefinition from '../../../res/entities/vine.json'
 import { VineComponent } from '../components/vineComponent'
-import { BehaviourTree } from '../ai/behaviourTree'
-import { ExtendVineNode } from '../ai/action/extendVineNode'
 import { AIComponent } from '../components/aiComponent'
-import { TrueNode } from '../ai/condition/boolNode'
-import { WhileNode } from '../ai/decorator/whileNode'
+import { vineAI } from '../ai/vineAI'
+import { World } from '../ecs/world'
+import { parseSprite } from '../parser/spriteParser'
+import { addTag } from '../ai/action/extendVine'
 
 export class VineFactory extends EntityFactory {
   readonly INV_MASS = 0
   readonly RESTITUTION = 0
   readonly WIDTH = 16
   readonly HEIGHT = 16
+  readonly OFFSET_X = -8
+  readonly OFFSET_Y = -8
+
+  readonly SENSOR_WIDTH = 16
+  readonly SENSOR_HEIGHT = 15
+  readonly SENSOR_OFFSET_X = -8
+  readonly SENSOR_OFFSET_Y = 8
+
+  public constructor(private world: World) {
+    super()
+  }
 
   public parent: Entity | undefined = undefined
   public create(): Entity {
@@ -28,14 +38,15 @@ export class VineFactory extends EntityFactory {
     const draw = new DrawComponent()
 
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabb.tag.add('vine')
     aabb.category = CategoryList.vine.category
     aabb.mask = CategoryList.vine.mask
     const collider = new ColliderComponent(entity)
     collider.createCollider(aabb)
 
-    const aabbSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbSensor.offset = new Vec2(0, 16)
+    const aabbSensor = new AABBDef(new Vec2(this.SENSOR_WIDTH, this.SENSOR_HEIGHT))
+    aabbSensor.offset = new Vec2(this.SENSOR_OFFSET_X, this.SENSOR_OFFSET_Y)
     aabbSensor.tag.add('vineSensor')
     aabbSensor.category = CategoryList.vine.category
     aabbSensor.mask = CategoryList.vine.mask
@@ -53,8 +64,9 @@ export class VineFactory extends EntityFactory {
 
     entity.addComponent('Collider', collider)
 
-    const vai = new BehaviourTree(new WhileNode(new TrueNode(), new ExtendVineNode(entity)))
-    const ai = new AIComponent(vai)
+    addTag(entity)
+
+    const ai = new AIComponent(vineAI(entity, this.world))
 
     entity.addComponent('AI', ai)
     entity.addComponent('RigidBody', body)
@@ -62,7 +74,7 @@ export class VineFactory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('Vine', vine)
 
-    const sprite = new Sprite(wallBaseTextures[0])
+    const sprite = parseSprite(vineDefinition.sprite)
     draw.addChild(sprite)
     return entity
   }

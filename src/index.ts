@@ -74,10 +74,10 @@ export class Main {
       airSystem.offset = position
     }
 
-    const vf = new VineFactory()
+    const vf = new VineFactory(this.world)
     const vine = vf.create()
     vine.getComponent('Position').x = 30 * 8
-    vine.getComponent('Position').y = 20 * 8
+    vine.getComponent('Position').y = 20 * 8 + 16
     this.world.addEntity(vine)
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
