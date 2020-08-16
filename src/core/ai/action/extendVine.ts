@@ -31,6 +31,7 @@ export const addTag = (vine: Entity): void => {
   }
 }
 
+// TODO:名前変える
 export const extendVine = function*(entity: Entity, world: World): Behaviour<void> {
   const vine = entity.getComponent('Vine')
 

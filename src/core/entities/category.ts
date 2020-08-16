@@ -75,4 +75,8 @@ export const CategoryList = {
     category: Category.VINE,
     mask: CategorySet.ALL.negate(Category.VINE),
   },
+  air: {
+    category: Category.AIR,
+    mask: CategorySet.ALL.negate(Category.WALL),
+  },
 }
