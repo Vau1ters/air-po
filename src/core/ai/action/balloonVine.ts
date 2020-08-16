@@ -110,7 +110,7 @@ export const balloonVineBehaviour = function*(entity: Entity): Behaviour<void> {
 
     const rigidBody = entity.getComponent('RigidBody')
 
-    if (!pickup.isPossessed && !targetWall) {
+    if (!pickup.isPossessed && !targetWall.get()) {
       rigidBody.gravityScale = 0.5
       if (rigidBody.velocity.length() > 400) {
         rigidBody.velocity = rigidBody.velocity.mul(400 / rigidBody.velocity.length())
