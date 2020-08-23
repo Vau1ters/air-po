@@ -12,13 +12,23 @@ import { AttackComponent } from '../components/attackComponent'
 export class BulletFactory extends EntityFactory {
   readonly WIDTH = 10
   readonly HEIGHT = 3
-  readonly SPEED = 10
 
   readonly ATTACK_HIT_BOX_WIDTH = 10
   readonly ATTACK_HIT_BOX_HEIGHT = 3
 
   public shooter?: Entity
   public angle = 0
+  public speed = 10
+  public life?: number
+  public offset: Vec2 = new Vec2(0, 0)
+
+  public setDirection(vector: Vec2): void {
+    this.angle = Math.atan2(vector.y, vector.x)
+  }
+
+  public setRange(range: number): void {
+    this.life = range / this.speed
+  }
 
   public create(): Entity {
     if (!this.shooter) {
@@ -27,18 +37,18 @@ export class BulletFactory extends EntityFactory {
     }
     const playerPosition = this.shooter.getComponent('Position')
 
-    const direction = new Vec2(
-      Math.cos((this.angle * Math.PI) / 180),
-      Math.sin((this.angle * Math.PI) / 180)
-    )
+    const direction = new Vec2(Math.cos(this.angle), Math.sin(this.angle))
 
     const entity = new Entity()
     const position = new PositionComponent(
-      playerPosition.x - 5 + (direction.x * this.WIDTH) / 2,
-      playerPosition.y - 4
+      playerPosition.x - this.WIDTH / 2 + (direction.x * (this.WIDTH + this.offset.x)) / 2,
+      playerPosition.y + this.offset.y
     )
     const draw = new DrawComponent()
-    const bullet = new BulletComponent(new Vec2(direction.x * this.SPEED, direction.y * this.SPEED))
+    const bullet = new BulletComponent(
+      new Vec2(direction.x * this.speed, direction.y * this.speed),
+      this.life
+    )
     const collider = new ColliderComponent(entity)
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))

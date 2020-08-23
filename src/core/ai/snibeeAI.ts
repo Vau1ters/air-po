@@ -7,7 +7,6 @@ import { kill } from './action/kill'
 import { emitAir } from './action/emitAir'
 import { FamilyBuilder } from '../ecs/family'
 import { BulletFactory } from '../entities/bulletFactory'
-import { Vec2 } from '../math/vec2'
 import { wait } from './action/wait'
 import { parallel } from './composite/compositeBehaviour'
 
@@ -15,9 +14,9 @@ const Setting = {
   interiorDistance: 80,
   exteriorDistance: 110,
   searchRange: 170,
-  coolTime: 120,
-  coolTimeRange: 30,
-  angleRange: 30.0,
+  coolTime: 1,
+  coolTimeRange: 0,
+  angleRange: Math.PI / 6.0,
   airResistance: 0.5,
 }
 
@@ -52,10 +51,9 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
 }
 
 const bulletFactory = new BulletFactory()
-
-const calcAngle = (vector: Vec2): number => {
-  return (Math.atan2(vector.y, vector.x) * 180) / Math.PI
-}
+bulletFactory.speed = 2
+bulletFactory.setRange(Setting.exteriorDistance + 10)
+bulletFactory.offset.y = 4
 
 const shootAI = function*(entity: Entity, world: World, player: Entity): Behaviour<void> {
   while (true) {
@@ -65,7 +63,8 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
 
     if (rv.length() < Setting.exteriorDistance) {
       bulletFactory.shooter = entity
-      bulletFactory.angle = calcAngle(rv) + (Math.random() - 0.5) * Setting.angleRange
+      bulletFactory.setDirection(rv)
+      bulletFactory.angle += (Math.random() - 0.5) * Setting.angleRange
       world.addEntity(bulletFactory.create())
       yield* wait(Setting.coolTime + (Math.random() - 0.5) * Setting.coolTimeRange)
     } else {
