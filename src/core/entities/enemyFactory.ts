@@ -3,8 +3,9 @@ import { EntityFactory } from './entityFactory'
 import { Enemy1Factory } from './enemy1Factory'
 import { assert } from '../../utils/assertion'
 import { World } from '../ecs/world'
+import { SnibeeFactory } from './snibeeFactory'
 
-type EnemyType = 'enemy1'
+type EnemyType = 'enemy1' | 'snibee'
 
 export class EnemyFactory extends EntityFactory {
   private type?: EnemyType
@@ -17,6 +18,8 @@ export class EnemyFactory extends EntityFactory {
     switch (this.type) {
       case 'enemy1':
         return new Enemy1Factory(this.world).create()
+      case 'snibee':
+        return new SnibeeFactory(this.world).create()
       default:
         assert(false)
     }
