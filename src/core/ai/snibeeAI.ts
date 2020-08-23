@@ -13,11 +13,12 @@ import { parallel } from './composite/compositeBehaviour'
 
 const Setting = {
   interiorDistance: 80,
-  exteriorDistance: 105,
-  searchRange: 160,
+  exteriorDistance: 110,
+  searchRange: 170,
   coolTime: 120,
   coolTimeRange: 30,
   angleRange: 30.0,
+  airResistance: 0.5,
 }
 
 const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
@@ -27,16 +28,21 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
     const pp = player.getComponent('Position')
     const ep = entity.getComponent('Position')
     const rv = pp.sub(ep)
+    const rb = entity.getComponent('RigidBody')
+    const v = rb.velocity
+    const a = rb.acceleration
 
     if (rv.length() < Setting.searchRange) {
       if (rv.length() > Setting.exteriorDistance) {
-        ep.x += rv.normalize().mul(0.4).x
-        ep.y += rv.normalize().mul(1.0).y
+        a.x = rv.normalize().mul(100).x
+        a.y = rv.normalize().mul(100).y
       } else if (rv.length() < Setting.interiorDistance) {
-        ep.x -= rv.normalize().mul(0.4).x
-        ep.y -= rv.normalize().mul(1.0).y
+        a.x = -rv.normalize().mul(100).x
+        a.y = -rv.normalize().mul(100).y
       }
     }
+    a.x -= v.x * Setting.airResistance
+    a.y -= v.y * Setting.airResistance
 
     // 常にプレイヤーの方向を向く
     direction.changeDirection.notify(rv.x > 0 ? 'Right' : 'Left')
