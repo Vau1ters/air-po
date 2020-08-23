@@ -32,7 +32,11 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
     const a = rb.acceleration
 
     if (rv.length() < Setting.searchRange) {
-      if (rv.length() > Setting.exteriorDistance) {
+      if (rv.x === 0 && rv.y === 0) {
+        // プレイヤーとの距離が0になったら動けなくなる可能背があるので緊急脱出
+        v.x += (Math.random() - 0.5) * 10
+        v.y += (Math.random() - 0.5) * 10
+      } else if (rv.length() > Setting.exteriorDistance) {
         a.x = rv.normalize().mul(100).x
         a.y = rv.normalize().mul(100).y
       } else if (rv.length() < Setting.interiorDistance) {
