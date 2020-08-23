@@ -24,17 +24,20 @@ const calcAngle = (): number => {
 }
 
 export const playerGunShoot = function*(entity: Entity, world: World): Behaviour<void> {
-  if (MouseController.isMousePressing('Left')) {
-    // 空気の消費
-    const airHolder = entity.getComponent('AirHolder')
-    if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
-      airHolder.consumeBy(SETTING.CONSUME_SPEED)
+  while (true) {
+    if (MouseController.isMousePressing('Left')) {
+      // 空気の消費
+      const airHolder = entity.getComponent('AirHolder')
+      if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
+        airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      // 弾を打つ
-      bulletFactory.player = entity
-      const player = entity.getComponent('Player')
-      player.bulletAngle = calcAngle()
-      world.addEntity(bulletFactory.create())
+        // 弾を打つ
+        bulletFactory.player = entity
+        const player = entity.getComponent('Player')
+        player.bulletAngle = calcAngle()
+        world.addEntity(bulletFactory.create())
+      }
     }
+    yield
   }
 }
