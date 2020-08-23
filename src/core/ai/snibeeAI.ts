@@ -14,8 +14,8 @@ const Setting = {
   interiorDistance: 80,
   exteriorDistance: 110,
   searchRange: 170,
-  coolTime: 1,
-  coolTimeRange: 0,
+  coolTime: 120,
+  coolTimeRange: 30,
   angleRange: Math.PI / 6.0,
   airResistance: 0.5,
 }
