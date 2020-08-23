@@ -31,9 +31,8 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
       // 弾を打つ
-      bulletFactory.player = entity
-      const player = entity.getComponent('Player')
-      player.bulletAngle = calcAngle()
+      bulletFactory.shooter = entity
+      bulletFactory.angle = calcAngle()
       world.addEntity(bulletFactory.create())
     }
   }

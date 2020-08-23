@@ -17,19 +17,19 @@ export class BulletFactory extends EntityFactory {
   readonly ATTACK_HIT_BOX_WIDTH = 10
   readonly ATTACK_HIT_BOX_HEIGHT = 3
 
-  public player?: Entity
+  public shooter?: Entity
+  public angle = 0
 
   public create(): Entity {
-    if (!this.player) {
+    if (!this.shooter) {
       console.log('player is not defined')
       return new Entity()
     }
-    const player = this.player.getComponent('Player')
-    const playerPosition = this.player.getComponent('Position')
+    const playerPosition = this.shooter.getComponent('Position')
 
     const direction = new Vec2(
-      Math.cos((player.bulletAngle * Math.PI) / 180),
-      Math.sin((player.bulletAngle * Math.PI) / 180)
+      Math.cos((this.angle * Math.PI) / 180),
+      Math.sin((this.angle * Math.PI) / 180)
     )
 
     const entity = new Entity()
@@ -50,7 +50,7 @@ export class BulletFactory extends EntityFactory {
     collider.createCollider(aabbBody)
 
     // 攻撃判定
-    const attack = new AttackComponent(1, this.player)
+    const attack = new AttackComponent(1, this.shooter)
 
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
