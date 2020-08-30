@@ -69,6 +69,7 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
       bulletFactory.shooter = entity
       bulletFactory.setDirection(rv)
       bulletFactory.angle += (Math.random() - 0.5) * Setting.angleRange
+      bulletFactory.type = 'needle'
       world.addEntity(bulletFactory.create())
       yield* wait(Setting.coolTime + (Math.random() - 0.5) * Setting.coolTimeRange)
     } else {

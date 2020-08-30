@@ -6,21 +6,31 @@ import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
-import { Graphics } from 'pixi.js'
 import { AttackComponent } from '../components/attackComponent'
+import ballBulletDefinition from '../../../res/entities/ballBullet.json'
+import needleBulletDefinition from '../../../res/entities/needleBullet.json'
+import { parseSprite } from '../parser/spriteParser'
+
+const bulletDefinition = {
+  ball: ballBulletDefinition,
+  needle: needleBulletDefinition,
+}
+
+type BulletType = 'ball' | 'needle'
 
 export class BulletFactory extends EntityFactory {
-  readonly WIDTH = 10
-  readonly HEIGHT = 3
+  readonly HIT_BOX_WIDTH = 4
+  readonly HIT_BOX_HEIGHT = 4
 
-  readonly ATTACK_HIT_BOX_WIDTH = 10
-  readonly ATTACK_HIT_BOX_HEIGHT = 3
+  readonly ATTACK_HIT_BOX_WIDTH = 4
+  readonly ATTACK_HIT_BOX_HEIGHT = 4
 
   public shooter?: Entity
   public angle = 0
   public speed = 10
   public life?: number
   public offset: Vec2 = new Vec2(0, 0)
+  public type: BulletType = 'ball'
 
   public setDirection(vector: Vec2): void {
     this.angle = Math.atan2(vector.y, vector.x)
@@ -32,7 +42,7 @@ export class BulletFactory extends EntityFactory {
 
   public create(): Entity {
     if (!this.shooter) {
-      console.log('player is not defined')
+      console.log('shooter is not defined')
       return new Entity()
     }
     const playerPosition = this.shooter.getComponent('Position')
@@ -41,7 +51,7 @@ export class BulletFactory extends EntityFactory {
 
     const entity = new Entity()
     const position = new PositionComponent(
-      playerPosition.x - this.WIDTH / 2 + (direction.x * (this.WIDTH + this.offset.x)) / 2,
+      playerPosition.x - (direction.x * this.offset.x) / 2,
       playerPosition.y + this.offset.y
     )
     const draw = new DrawComponent()
@@ -51,8 +61,8 @@ export class BulletFactory extends EntityFactory {
     )
     const collider = new ColliderComponent(entity)
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.offset = new Vec2(0, 0)
+    const aabbBody = new AABBDef(new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT))
+    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     aabbBody.category = CategoryList.bulletBody.category
     aabbBody.mask = CategoryList.bulletBody.mask
     aabbBody.maxClipTolerance = new Vec2(0, 0)
@@ -65,16 +75,33 @@ export class BulletFactory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
+    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     attackHitBox.tag.add('AttackHitBox')
     attackHitBox.category = CategoryList.bulletAttack.category
     attackHitBox.mask = CategoryList.bulletAttack.mask
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    const graphics = new Graphics()
-    graphics.beginFill(0x00ff00)
-    graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
-    draw.addChild(graphics)
+    const sprite = parseSprite(bulletDefinition[this.type].sprite)
+    const radAngle = (this.angle / Math.PI) * 180
+    if (-157.5 <= radAngle && radAngle < -112.5) {
+      sprite.changeTo('LeftUp')
+    } else if (-112.5 <= radAngle && radAngle < -67.5) {
+      sprite.changeTo('Up')
+    } else if (-67.5 <= radAngle && radAngle < -22.5) {
+      sprite.changeTo('RightUp')
+    } else if (-22.5 <= radAngle && radAngle < 22.5) {
+      sprite.changeTo('Right')
+    } else if (22.5 <= radAngle && radAngle < 67.5) {
+      sprite.changeTo('RightDown')
+    } else if (67.5 <= radAngle && radAngle < 112.5) {
+      sprite.changeTo('Down')
+    } else if (112.5 <= radAngle && radAngle < 157.5) {
+      sprite.changeTo('LeftDown')
+    } else {
+      sprite.changeTo('Left')
+    }
+    draw.addChild(sprite)
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
