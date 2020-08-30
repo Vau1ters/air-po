@@ -1,0 +1,10 @@
+{
+  "sprite": {
+    "name": "balloonvine",
+    "state": {
+      "Dead": [0],
+      "Alive": [1]
+    },
+    "default": "Dead"
+  }
+}

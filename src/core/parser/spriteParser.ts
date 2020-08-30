@@ -3,9 +3,13 @@ import { Texture } from 'pixi.js'
 import { textureStore } from '../graphics/art'
 import { checkMembers } from '../../utils/assertion'
 
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-use-before-define */
+type SpriteSetting = {
+  name: string
+  state: { [key: string]: Array<number> }
+  default: string
+}
 
-export function parseSprite(json: any): Animation {
+export function parseSprite(json: SpriteSetting): Animation {
   checkMembers(json, { name: 'string', state: 'any', default: 'string' }, 'sprite')
 
   const name = json.name
