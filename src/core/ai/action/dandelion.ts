@@ -5,24 +5,30 @@ import { Behaviour } from '../behaviour'
 import { Vec2 } from '../../math/vec2'
 import * as PIXI from 'pixi.js'
 
+const FLUFF_EMIT_INTERVAL = 200
+const HEAD_HEIGHT = 48
+const HIMO_WIDTH = 0.3
+const HIMO_COLOR = 0x22ff22
+const HEAD_OSCILLATION_TIME_SCALE = 0.03
+
 export const dandelionBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   const headPosition = entity.getComponent('Position')
   const draw = entity.getComponent('Draw')
 
-  headPosition.y -= 48
+  headPosition.y -= HEAD_HEIGHT
   const rootPosition = headPosition.add(new Vec2(0, 128 + 32))
 
   const points = new Array<PIXI.Point>(10)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
-  const himo = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, 0.3)
-  himo.tint = 0x22ff22
+  const himo = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, HIMO_WIDTH)
+  himo.tint = HIMO_COLOR
   draw.addChild(himo)
 
   const headOrigin = new Vec2(headPosition.x, headPosition.y)
   const n = headPosition.sub(rootPosition).normalize()
   let s = 0
   function updateHead(): void {
-    s += 0.03
+    s += HEAD_OSCILLATION_TIME_SCALE
     const d = Math.sin(s) * 5 + Math.sin(s * 0.1) * 5
     headPosition.x = headOrigin.x + d * n.y
     headPosition.y = headOrigin.y - d * n.x
@@ -45,7 +51,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   let t = 0
   function updateFluff(): void {
     t += 1
-    if (t % 200 == 0) {
+    if (t % FLUFF_EMIT_INTERVAL == 0) {
       world.addEntity(factory.create())
     }
   }
