@@ -52,14 +52,14 @@ export class BulletFactory extends EntityFactory {
       console.log('shooter is not defined')
       return new Entity()
     }
-    const playerPosition = this.shooter.getComponent('Position')
+    const shooterPosition = this.shooter.getComponent('Position')
 
     const direction = new Vec2(Math.cos(this.angle), Math.sin(this.angle))
 
     const entity = new Entity()
     const position = new PositionComponent(
-      playerPosition.x - (direction.x * this.offset.x) / 2,
-      playerPosition.y + this.offset.y
+      shooterPosition.x - (direction.x * this.offset.x) / 2,
+      shooterPosition.y + this.offset.y
     )
     const draw = new DrawComponent()
     const bullet = new BulletComponent(
