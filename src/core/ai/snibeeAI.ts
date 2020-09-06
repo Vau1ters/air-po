@@ -66,7 +66,7 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
     const rv = pp.sub(ep)
 
     if (rv.length() < Setting.exteriorDistance) {
-      bulletFactory.shooter = entity
+      bulletFactory.setShooter(entity, 'enemy')
       bulletFactory.setDirection(rv)
       bulletFactory.angle += (Math.random() - 0.5) * Setting.angleRange
       bulletFactory.type = 'needle'

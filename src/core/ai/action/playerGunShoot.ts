@@ -29,7 +29,7 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
       // 弾を打つ
-      bulletFactory.shooter = entity
+      bulletFactory.setShooter(entity, 'player')
       bulletFactory.setDirection(mouseDirection())
       world.addEntity(bulletFactory.create())
     }

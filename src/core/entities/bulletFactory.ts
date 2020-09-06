@@ -16,6 +16,7 @@ const bulletDefinition = {
   needle: needleBulletDefinition,
 }
 
+type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
 
 export class BulletFactory extends EntityFactory {
@@ -26,6 +27,7 @@ export class BulletFactory extends EntityFactory {
   readonly ATTACK_HIT_BOX_HEIGHT = 4
 
   public shooter?: Entity
+  public shooterType: ShooterType = 'player'
   public angle = 0
   public speed = 10
   public life?: number
@@ -38,6 +40,11 @@ export class BulletFactory extends EntityFactory {
 
   public setRange(range: number): void {
     this.life = range / this.speed
+  }
+
+  public setShooter(shooter: Entity, shooterType: ShooterType): void {
+    this.shooter = shooter
+    this.shooterType = shooterType
   }
 
   public create(): Entity {
@@ -77,8 +84,13 @@ export class BulletFactory extends EntityFactory {
     )
     attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     attackHitBox.tag.add('AttackHitBox')
-    attackHitBox.category = CategoryList.bulletAttack.category
-    attackHitBox.mask = CategoryList.bulletAttack.mask
+    if (this.shooterType === 'enemy') {
+      attackHitBox.category = CategoryList.enemyAttack.category
+      attackHitBox.mask = CategoryList.enemyAttack.mask
+    } else if (this.shooterType === 'player') {
+      attackHitBox.category = CategoryList.playerAttack.category
+      attackHitBox.mask = CategoryList.playerAttack.mask
+    }
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 

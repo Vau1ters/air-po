@@ -49,8 +49,8 @@ export class Enemy1Factory extends EntityFactory {
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag.add('enemy1Body')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.category = CategoryList.enemy1Body.category
-    aabbBody.mask = CategoryList.enemy1Body.mask
+    aabbBody.category = CategoryList.enemyBody.category
+    aabbBody.mask = CategoryList.enemyBody.mask
 
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
@@ -63,8 +63,8 @@ export class Enemy1Factory extends EntityFactory {
     )
     attackHitBox.tag.add('AttackHitBox')
     attackHitBox.offset = new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y)
-    attackHitBox.category = CategoryList.enemy1Attack.category
-    attackHitBox.mask = CategoryList.enemy1Attack.mask
+    attackHitBox.category = CategoryList.enemyAttack.category
+    attackHitBox.mask = CategoryList.enemyAttack.mask
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 

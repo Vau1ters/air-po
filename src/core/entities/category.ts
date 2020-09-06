@@ -3,6 +3,10 @@ export enum Category {
   WALL,
   PLAYER,
   ENEMY,
+  PLAYER_ATTACK,
+  ENEMY_ATTACK,
+  BULLET,
+  BALLOON_VINE,
   AIR,
 }
 
@@ -43,20 +47,16 @@ export class CategorySet extends Set<Category> {
 
 export const CategoryList = {
   bulletBody: {
-    category: Category.PLAYER,
+    category: Category.BULLET,
     mask: new CategorySet(Category.WALL),
   },
-  bulletAttack: {
-    category: Category.DEFAULT,
-    mask: CategorySet.ALL,
-  },
-  enemy1Body: {
+  enemyBody: {
     category: Category.ENEMY,
     mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
   },
-  enemy1Attack: {
-    category: Category.DEFAULT,
-    mask: CategorySet.ALL,
+  enemyAttack: {
+    category: Category.ENEMY_ATTACK,
+    mask: new CategorySet(Category.PLAYER, Category.BALLOON_VINE),
   },
   playerBody: {
     category: Category.PLAYER,
@@ -65,6 +65,14 @@ export const CategoryList = {
   playerFoot: {
     category: Category.PLAYER,
     mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
+  },
+  playerAttack: {
+    category: Category.PLAYER_ATTACK,
+    mask: new CategorySet(Category.ENEMY, Category.BALLOON_VINE),
+  },
+  balloonVine: {
+    category: Category.BALLOON_VINE,
+    mask: new CategorySet(Category.AIR, Category.ENEMY_ATTACK, Category.PLAYER_ATTACK),
   },
   wall: {
     category: Category.WALL,
