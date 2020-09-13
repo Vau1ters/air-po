@@ -10,7 +10,6 @@ import vineDefinition from '../../../res/entities/vine.json'
 import { VineComponent } from '../components/vineComponent'
 import { AIComponent } from '../components/aiComponent'
 import { vineAI } from '../ai/vineAI'
-import { World } from '../ecs/world'
 import { parseSprite } from '../parser/spriteParser'
 import { addTag } from '../ai/action/extendVine'
 
@@ -23,15 +22,14 @@ export class VineFactory extends EntityFactory {
   readonly OFFSET_Y = -8
 
   readonly SENSOR_WIDTH = 16
-  readonly SENSOR_HEIGHT = 15
+  readonly SENSOR_HEIGHT = 5
   readonly SENSOR_OFFSET_X = -8
-  readonly SENSOR_OFFSET_Y = 8
+  readonly SENSOR_OFFSET_Y = 0
 
-  public constructor(private world: World) {
+  public constructor() {
     super()
   }
 
-  public parent: Entity | undefined = undefined
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
@@ -56,17 +54,13 @@ export class VineFactory extends EntityFactory {
     const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
     body.invMass = this.INV_MASS
 
-    if (this.parent) {
-      this.parent.getComponent('Vine').child = entity
-    }
-
-    const vine = new VineComponent(this.parent, 3)
+    const vine = new VineComponent(0)
 
     entity.addComponent('Collider', collider)
 
     addTag(entity)
 
-    const ai = new AIComponent(vineAI(entity, this.world))
+    const ai = new AIComponent(vineAI(entity))
 
     entity.addComponent('AI', ai)
     entity.addComponent('RigidBody', body)
@@ -75,6 +69,7 @@ export class VineFactory extends EntityFactory {
     entity.addComponent('Vine', vine)
 
     const sprite = parseSprite(vineDefinition.sprite)
+    vine.sprites.push(sprite)
     draw.addChild(sprite)
     return entity
   }

@@ -74,7 +74,7 @@ export class Main {
       airSystem.offset = position
     }
 
-    const vf = new VineFactory(this.world)
+    const vf = new VineFactory()
     const vine = vf.create()
     vine.getComponent('Position').x = 30 * 8
     vine.getComponent('Position').y = 20 * 8 + 16

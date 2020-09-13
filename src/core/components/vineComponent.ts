@@ -1,8 +1,8 @@
-import { Entity } from '../ecs/entity'
+import { Animation } from '../graphics/animation'
 
 export class VineComponent {
-  public child: Entity | undefined
+  public sprites: Array<Animation> = []
   public canExtend = false
   public shouldShrink = false
-  public constructor(public parent: Entity | undefined, public length: number) {}
+  public constructor(public length: number) {}
 }
