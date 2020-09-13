@@ -10,13 +10,14 @@ import { BulletFactory } from '../entities/bulletFactory'
 import { wait } from './action/wait'
 import { parallel } from './composite/compositeBehaviour'
 
-const Setting = {
+export const SnibeeSetting = {
   interiorDistance: 80,
   exteriorDistance: 110,
   searchRange: 170,
   coolTime: 120,
   coolTimeRange: 30,
   angleRange: Math.PI / 6.0,
+  maxVelocity: 200, // px/s
   airResistance: 0.5,
 }
 
@@ -31,21 +32,21 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
     const v = rb.velocity
     const a = rb.acceleration
 
-    if (rv.length() < Setting.searchRange) {
+    if (rv.length() < SnibeeSetting.searchRange) {
       if (rv.x === 0 && rv.y === 0) {
         // プレイヤーとの距離が0になったら動けなくなる可能背があるので緊急脱出
         v.x += (Math.random() - 0.5) * 10
         v.y += (Math.random() - 0.5) * 10
-      } else if (rv.length() > Setting.exteriorDistance) {
-        a.x = rv.normalize().mul(100).x
-        a.y = rv.normalize().mul(100).y
-      } else if (rv.length() < Setting.interiorDistance) {
-        a.x = -rv.normalize().mul(100).x
-        a.y = -rv.normalize().mul(100).y
+      } else if (rv.length() > SnibeeSetting.exteriorDistance) {
+        a.x = rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).x
+        a.y = rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).y
+      } else if (rv.length() < SnibeeSetting.interiorDistance) {
+        a.x = -rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).x
+        a.y = -rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).y
       }
     }
-    a.x -= v.x * Setting.airResistance
-    a.y -= v.y * Setting.airResistance
+    a.x -= v.x * SnibeeSetting.airResistance
+    a.y -= v.y * SnibeeSetting.airResistance
 
     // 常にプレイヤーの方向を向く
     direction.changeDirection.notify(rv.x > 0 ? 'Right' : 'Left')
@@ -56,7 +57,7 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
 
 const bulletFactory = new BulletFactory()
 bulletFactory.speed = 2
-bulletFactory.setRange(Setting.exteriorDistance + 10)
+bulletFactory.setRange(SnibeeSetting.exteriorDistance + 10)
 bulletFactory.offset.y = 4
 
 const shootAI = function*(entity: Entity, world: World, player: Entity): Behaviour<void> {
@@ -65,13 +66,13 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
     const ep = entity.getComponent('Position')
     const rv = pp.sub(ep)
 
-    if (rv.length() < Setting.exteriorDistance) {
+    if (rv.length() < SnibeeSetting.exteriorDistance) {
       bulletFactory.setShooter(entity, 'enemy')
       bulletFactory.setDirection(rv)
-      bulletFactory.angle += (Math.random() - 0.5) * Setting.angleRange
+      bulletFactory.angle += (Math.random() - 0.5) * SnibeeSetting.angleRange
       bulletFactory.type = 'needle'
       world.addEntity(bulletFactory.create())
-      yield* wait(Setting.coolTime + (Math.random() - 0.5) * Setting.coolTimeRange)
+      yield* wait(SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange)
     } else {
       yield
     }

@@ -15,7 +15,7 @@ import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import snibeeDefinition from '../../../res/entities/snibee.json'
 import { World } from '../ecs/world'
-import { snibeeAI } from '../ai/snibeeAI'
+import { snibeeAI, SnibeeSetting } from '../ai/snibeeAI'
 
 export class SnibeeFactory extends EntityFactory {
   readonly MASS = 10
@@ -24,8 +24,8 @@ export class SnibeeFactory extends EntityFactory {
   readonly HEIGHT = 13
   readonly OFFSET_X = -5
   readonly OFFSET_Y = -6
-  readonly CLIP_TOLERANCE_X = 2
-  readonly CLIP_TOLERANCE_Y = 2
+  readonly CLIP_TOLERANCE_X = SnibeeSetting.maxVelocity / 60
+  readonly CLIP_TOLERANCE_Y = SnibeeSetting.maxVelocity / 60
 
   readonly ATTACK_HIT_BOX_WIDTH = 10
   readonly ATTACK_HIT_BOX_HEIGHT = 13
