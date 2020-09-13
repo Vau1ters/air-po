@@ -49,7 +49,7 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
     a.y -= v.y * SnibeeSetting.airResistance
 
     // 常にプレイヤーの方向を向く
-    direction.changeDirection.notify(rv.x > 0 ? 'Right' : 'Left')
+    direction.looking = rv.x > 0 ? 'Right' : 'Left'
 
     yield
   }
