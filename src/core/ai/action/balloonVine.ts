@@ -88,7 +88,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
       const a = dy / Math.sqrt(Math.abs(dx))
       for (let i = 0; i < points.length; i++) {
         const x = (i / points.length) * dx
-        const y = a * Math.sqrt(Math.abs(x))
+        const y = dx === 0 ? (dy * i) / points.length : a * Math.sqrt(Math.abs(x))
         points[i].x = -x
         points[i].y = -y
       }
