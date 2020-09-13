@@ -19,6 +19,7 @@ import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
+import * as PIXI from 'pixi.js'
 
 export class Main {
   public static world = new World()
@@ -32,6 +33,12 @@ export class Main {
 
     const drawContainer = new Container()
     gameWorldContainer.addChild(drawContainer)
+
+    const background = new PIXI.Graphics()
+    background.beginFill(0xc0c0c0)
+    background.drawRect(0, 0, 1919, 810)
+    background.endFill()
+    drawContainer.addChild(background)
     drawContainer.filterArea = application.screen
 
     const debugContainer = new Container()
