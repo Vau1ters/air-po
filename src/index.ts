@@ -3,7 +3,7 @@ import DebugDrawSystem from './core/systems/debugDrawSystem'
 import { application, initializeApplication, windowSize } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
-import { Container } from 'pixi.js'
+import { Container, BaseTexture, Sprite, Texture } from 'pixi.js'
 import DrawSystem from './core/systems/drawSystem'
 import { AirSystem } from './core/systems/airSystem'
 import CameraSystem from './core/systems/cameraSystem'
@@ -20,6 +20,7 @@ import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
 import * as PIXI from 'pixi.js'
+import titleImg from '../res/title.png'
 
 export class Main {
   public static world = new World()
@@ -54,6 +55,11 @@ export class Main {
     application.stage.addChild(uiContainer)
 
     const airSystem = new AirSystem(this.world, gameWorldContainer)
+
+    const base = BaseTexture.from(titleImg)
+    const title = new Sprite(new Texture(base))
+    uiContainer.addChild(title)
+
     this.world.addSystem(
       new AISystem(this.world),
       new PhysicsSystem(this.world),
