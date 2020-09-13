@@ -11,6 +11,7 @@ import { ControlSystem } from './core/systems/controlSystem'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import * as Art from './core/graphics/art'
+import * as Sound from './core/sound/sound'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
 import AISystem from './core/systems/aiSystem'
@@ -26,6 +27,7 @@ export class Main {
   public static async init(): Promise<void> {
     initializeApplication()
     await Art.init()
+    Sound.init()
 
     const gameWorldContainer = new Container()
     application.stage.addChild(gameWorldContainer)
