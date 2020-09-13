@@ -4,6 +4,7 @@ import { Entity } from '../../ecs/entity'
 import { MouseController } from '../../systems/controlSystem'
 import { BulletFactory } from '../../entities/bulletFactory'
 import { application, windowSize } from '../../application'
+import shotSound from '../../../../res/sound/shot.wav'
 import PIXI from 'pixi-sound'
 
 const SETTING = {
@@ -31,8 +32,7 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
     if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      const path = '../../../../res/sound/shot.wav'
-      const sound = PIXI.Sound.from(path)
+      const sound = PIXI.Sound.from(shotSound)
       sound.play()
       // 弾を打つ
       bulletFactory.player = entity
