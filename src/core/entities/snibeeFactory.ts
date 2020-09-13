@@ -13,19 +13,19 @@ import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
 import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import enemy1Definition from '../../../res/entities/enemy1.json'
+import snibeeDefinition from '../../../res/entities/snibee.json'
 import { World } from '../ecs/world'
-import { enemy1AI } from '../ai/enemy1AI'
+import { snibeeAI, SnibeeSetting } from '../ai/snibeeAI'
 
-export class Enemy1Factory extends EntityFactory {
+export class SnibeeFactory extends EntityFactory {
   readonly MASS = 10
   readonly RESTITUTION = 0
   readonly WIDTH = 10
   readonly HEIGHT = 13
   readonly OFFSET_X = -5
   readonly OFFSET_Y = -6
-  readonly CLIP_TOLERANCE_X = 2
-  readonly CLIP_TOLERANCE_Y = 2
+  readonly CLIP_TOLERANCE_X = SnibeeSetting.maxVelocity / 60
+  readonly CLIP_TOLERANCE_Y = SnibeeSetting.maxVelocity / 60
 
   readonly ATTACK_HIT_BOX_WIDTH = 10
   readonly ATTACK_HIT_BOX_HEIGHT = 13
@@ -47,7 +47,7 @@ export class Enemy1Factory extends EntityFactory {
     const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag.add('enemy1Body')
+    aabbBody.tag.add('snibeeBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.category = CategoryList.enemyBody.category
     aabbBody.mask = CategoryList.enemyBody.mask
@@ -68,7 +68,7 @@ export class Enemy1Factory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    const sprite = parseSprite(enemy1Definition.sprite)
+    const sprite = parseSprite(snibeeDefinition.sprite)
 
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
@@ -82,7 +82,7 @@ export class Enemy1Factory extends EntityFactory {
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
 
-    const ai = new AIComponent(enemy1AI(entity, this.world))
+    const ai = new AIComponent(snibeeAI(entity, this.world))
 
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)

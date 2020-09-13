@@ -3,6 +3,7 @@ export class AirHolderComponent {
   private _maxQuantity: number
   private consumeSpeed: number
   private collectSpeed: number
+  public inAir: boolean
 
   public constructor(airSetting: {
     initialQuantity: number
@@ -14,6 +15,7 @@ export class AirHolderComponent {
     this._maxQuantity = airSetting.maxQuantity
     this.consumeSpeed = airSetting.consumeSpeed
     this.collectSpeed = airSetting.collectSpeed
+    this.inAir = false
   }
 
   public get currentQuantity(): number {
@@ -39,6 +41,7 @@ export class AirHolderComponent {
       this.quantity + this.collectSpeed,
       this.quantity + airQuantity
     )
+    this.inAir = true
     // 空気の消費量を返す
     return this.quantity - prevQuantity
   }

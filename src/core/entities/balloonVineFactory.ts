@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { CategorySet, Category } from './category'
+import { CategorySet, Category, CategoryList } from './category'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
@@ -70,8 +70,8 @@ export class BalloonVineFactory extends EntityFactory {
     bodyAABB.tag.add('balloonVine')
     bodyAABB.tag.add('airHolderBody')
     bodyAABB.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    bodyAABB.category = Category.DEFAULT
-    bodyAABB.mask = new CategorySet(Category.AIR, Category.DEFAULT)
+    bodyAABB.category = CategoryList.balloonVine.category
+    bodyAABB.mask = CategoryList.balloonVine.mask
     bodyAABB.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     bodyAABB.isSensor = true
     collider.createCollider(bodyAABB)

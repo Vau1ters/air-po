@@ -145,6 +145,13 @@ export class MapBuilder {
               this.buildNPC(pos, tileSize, { type: content.name as NPCType, size }),
           })
           break
+        case 'snibee':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) =>
+              this.buildNPC(pos, tileSize, { type: content.name as NPCType, size }),
+          })
+          break
       }
     }
 
