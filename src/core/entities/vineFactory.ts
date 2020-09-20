@@ -11,7 +11,7 @@ import { VineComponent } from '../components/vineComponent'
 import { AIComponent } from '../components/aiComponent'
 import { vineAI } from '../ai/vineAI'
 import { parseSprite } from '../parser/spriteParser'
-import { addTag } from '../ai/action/extendVine'
+import { addTag } from '../ai/action/changeVineLength'
 
 export class VineFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -21,10 +21,15 @@ export class VineFactory extends EntityFactory {
   readonly OFFSET_X = -8
   readonly OFFSET_Y = -8
 
-  readonly SENSOR_WIDTH = 16
-  readonly SENSOR_HEIGHT = 5
-  readonly SENSOR_OFFSET_X = -8
-  readonly SENSOR_OFFSET_Y = 0
+  readonly WALL_SENSOR_WIDTH = 16
+  readonly WALL_SENSOR_HEIGHT = 5
+  readonly WALL_SENSOR_OFFSET_X = -8
+  readonly WALL_SENSOR_OFFSET_Y = 0
+
+  readonly AIR_SENSOR_WIDTH = 6
+  readonly AIR_SENSOR_HEIGHT = 6
+  readonly AIR_SENSOR_OFFSET_X = -3
+  readonly AIR_SENSOR_OFFSET_Y = -3
 
   public constructor() {
     super()
@@ -43,13 +48,23 @@ export class VineFactory extends EntityFactory {
     const collider = new ColliderComponent(entity)
     collider.createCollider(aabb)
 
-    const aabbSensor = new AABBDef(new Vec2(this.SENSOR_WIDTH, this.SENSOR_HEIGHT))
-    aabbSensor.offset = new Vec2(this.SENSOR_OFFSET_X, this.SENSOR_OFFSET_Y)
-    aabbSensor.tag.add('vineSensor')
-    aabbSensor.category = CategoryList.vine.category
-    aabbSensor.mask = CategoryList.vine.mask
-    aabbSensor.isSensor = true
-    collider.createCollider(aabbSensor)
+    const wallSensor = new AABBDef(new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT))
+    wallSensor.offset = new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y)
+    wallSensor.tag.add('vineSensor')
+    wallSensor.tag.add('wall')
+    wallSensor.category = CategoryList.vine.category
+    wallSensor.mask = CategoryList.vine.mask
+    wallSensor.isSensor = true
+    collider.createCollider(wallSensor)
+
+    const airSensor = new AABBDef(new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT))
+    airSensor.offset = new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y)
+    airSensor.tag.add('vineSensor')
+    airSensor.tag.add('air')
+    airSensor.category = CategoryList.vine.category
+    airSensor.mask = CategoryList.vine.mask
+    airSensor.isSensor = true
+    collider.createCollider(airSensor)
 
     const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
     body.invMass = this.INV_MASS

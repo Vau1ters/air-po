@@ -23,10 +23,11 @@ const shouldShrink = (me: Collider, other: Collider): void => {
 export const addTag = (vine: Entity): void => {
   for (const collider of vine.getComponent('Collider').colliders) {
     if (collider.tag.has('vineSensor')) {
-      collider.callbacks.add(canExtend)
-    }
-    if (collider.tag.has('vine')) {
-      collider.callbacks.add(shouldShrink)
+      if (collider.tag.has('wall')) {
+        collider.callbacks.add(canExtend)
+      } else if (collider.tag.has('air')) {
+        collider.callbacks.add(shouldShrink)
+      }
     }
   }
 }
@@ -36,7 +37,7 @@ const changeColliderLength = (colliderComponent: ColliderComponent, length: numb
     if (collider.tag.has('vine')) {
       ;(collider as AABBCollider).aabb.size.y = (length / 3) * 16
     }
-    if (collider.tag.has('vineSensor')) {
+    if (collider.tag.has('vineSensor') && collider.tag.has('wall')) {
       ;(collider as AABBCollider).aabb.position.y = (length / 3) * 16 - 8
     }
   }
@@ -63,6 +64,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
     }
   }
 
+  // 変更したいフレーム名
   let frame = ''
   if (vine.length < 3) {
     // 根
@@ -71,25 +73,12 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
     // 茎
     frame = 'Stalk'
   }
-  switch ((vine.length - 1) % 3) {
-    case 0:
-      frame = frame + '0'
-      break
-    case 1:
-      frame = frame + '1'
-      break
-    case 2:
-      frame = frame + '2'
-      break
-    default:
-      throw 'バーカ'
-  }
+  frame = frame + ((vine.length - 1) % 3)
+
   vine.sprites[vine.sprites.length - 1].changeTo(frame)
 }
 
-// TODO:名前変えるS
-// TODO:チラチラするのを抑える
-export const extendVine = function*(entity: Entity): Behaviour<void> {
+export const changeVineLength = function*(entity: Entity): Behaviour<void> {
   const vine = entity.getComponent('Vine')
   const collider = entity.getComponent('Collider')
   const draw = entity.getComponent('Draw')

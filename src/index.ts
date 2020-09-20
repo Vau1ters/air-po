@@ -76,7 +76,7 @@ export class Main {
 
     const vf = new VineFactory()
     const vine = vf.create()
-    vine.getComponent('Position').x = 30 * 8
+    vine.getComponent('Position').x = 25 * 8
     vine.getComponent('Position').y = 20 * 8 + 16
     this.world.addEntity(vine)
 
