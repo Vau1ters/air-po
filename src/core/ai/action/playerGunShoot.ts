@@ -4,11 +4,8 @@ import { Entity } from '../../ecs/entity'
 import { MouseController } from '../../systems/controlSystem'
 import { BulletFactory } from '../../entities/bulletFactory'
 import { application, windowSize } from '../../application'
-<<<<<<< HEAD
 import * as Sound from '../../sound/sound'
-=======
 import { Vec2 } from '../../math/vec2'
->>>>>>> master
 
 const SETTING = {
   CONSUME_SPEED: 10,
