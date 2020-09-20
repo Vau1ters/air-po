@@ -47,8 +47,8 @@ export default class DrawSystem extends System {
           const position = entity.getComponent('Position')
           const x = position.x - cpos.x
           const y = position.y - cpos.y
-          const w = 8
-          const h = 8
+          const w = container.width
+          const h = container.height
           const sw = windowSize.width
           const sh = windowSize.height
           container.visible = -sw / 2 <= x + w && -sh / 2 <= y + h && x < sw / 2 && y < sh / 2

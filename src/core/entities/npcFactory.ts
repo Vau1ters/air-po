@@ -1,12 +1,13 @@
 import { Entity } from '../ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { BalloonVineFactory } from './balloonVineFactory'
+import { DandelionFactory } from './dandelionFactory'
 import { Enemy1Factory } from './enemy1Factory'
 import { SnibeeFactory } from './snibeeFactory'
 import { World } from '../ecs/world'
 import { assert } from '../../utils/assertion'
 
-export type NPCType = 'enemy1' | 'snibee' | 'balloonvine'
+export type NPCType = 'enemy1' | 'snibee' | 'balloonvine' | 'dandelion'
 
 export class NPCFactory extends EntityFactory {
   public constructor(private world: World, private type: NPCType) {
@@ -21,6 +22,8 @@ export class NPCFactory extends EntityFactory {
         return new SnibeeFactory(this.world).create()
       case 'balloonvine':
         return new BalloonVineFactory(this.world).create()
+      case 'dandelion':
+        return new DandelionFactory(this.world).create()
       default:
         assert(false)
     }
