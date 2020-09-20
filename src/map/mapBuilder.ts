@@ -51,12 +51,12 @@ type TileSet = {
 
 type Map = {
   compressionlevel: number
-  editorsettings: {
-    export: {
-      format: string
-      target: string
-    }
-  }
+  // editorsettings: {
+  //   export: {
+  //     format: string
+  //     target: string
+  //   }
+  // }
   height: number
   infinite: boolean
   layers: Array<TileLayer | ObjectLayer>
@@ -144,6 +144,13 @@ export class MapBuilder {
           })
           break
         case 'balloonvine':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) =>
+              this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
+          })
+          break
+        case 'vine':
           builders.push({
             firstgid,
             builder: (pos: number[]) =>

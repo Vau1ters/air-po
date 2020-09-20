@@ -66,7 +66,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
 
   // 変更したいフレーム名
   let frame = ''
-  if (vine.length < 3) {
+  if (vine.length <= 3) {
     // 根
     frame = 'Root'
   } else {
