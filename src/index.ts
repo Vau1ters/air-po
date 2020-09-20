@@ -20,6 +20,7 @@ import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
 import * as PIXI from 'pixi.js'
+import { FilterSystem } from './core/systems/filterSystem'
 
 export class Main {
   public static world = new World()
@@ -53,7 +54,7 @@ export class Main {
     uiContainer.zIndex = Infinity
     application.stage.addChild(uiContainer)
 
-    const airSystem = new AirSystem(this.world, gameWorldContainer)
+    const airSystem = new AirSystem(this.world)
     this.world.addSystem(
       new AISystem(this.world),
       new PhysicsSystem(this.world),
@@ -63,6 +64,7 @@ export class Main {
       new InvincibleSystem(this.world),
       new DamageSystem(this.world),
       airSystem,
+      new FilterSystem(this.world, gameWorldContainer, airSystem),
       new AirHolderSystem(this.world),
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),

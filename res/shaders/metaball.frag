@@ -24,7 +24,7 @@ void main() {
     }
   }
   if (metaball < 1.0) {
-    color.rgb *= 1. * (1. - pow(metaball, 2.) * 0.3) * vec3(0.9, 1, 0.6);
+    color.rgb *= 1. * (1. - pow(metaball, 2.) * 0.3) * vec3(1);
   }
 
   gl_FragColor = color;
