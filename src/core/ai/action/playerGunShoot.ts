@@ -22,16 +22,19 @@ const mouseDirection = (): Vec2 => {
 }
 
 export const playerGunShoot = function*(entity: Entity, world: World): Behaviour<void> {
-  if (MouseController.isMousePressing('Left')) {
-    // 空気の消費
-    const airHolder = entity.getComponent('AirHolder')
-    if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
-      airHolder.consumeBy(SETTING.CONSUME_SPEED)
+  while (true) {
+    if (MouseController.isMousePressing('Left')) {
+      // 空気の消費
+      const airHolder = entity.getComponent('AirHolder')
+      if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
+        airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      // 弾を打つ
-      bulletFactory.setShooter(entity, 'player')
-      bulletFactory.setDirection(mouseDirection())
-      world.addEntity(bulletFactory.create())
+        // 弾を打つ
+        bulletFactory.setShooter(entity, 'player')
+        bulletFactory.setDirection(mouseDirection())
+        world.addEntity(bulletFactory.create())
+      }
     }
+    yield
   }
 }
