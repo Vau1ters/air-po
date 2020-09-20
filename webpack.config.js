@@ -30,6 +30,11 @@ module.exports = {
         loader: 'url-loader',
       },
       {
+        test: /\.wav$/,
+        exclude: /node_modules/,
+        loader: 'url-loader',
+      },
+      {
         test: /\.html$/,
         exclude: /node_modules/,
         loader: 'html-loader',
