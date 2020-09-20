@@ -17,10 +17,10 @@ import AISystem from './core/systems/aiSystem'
 import InvincibleSystem from './core/systems/invincibleSystem'
 import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
-import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
 import * as PIXI from 'pixi.js'
 import { FilterSystem } from './core/systems/filterSystem'
+import { LightSystem } from './core/systems/lightSystem'
 
 export class Main {
   public static world = new World()
@@ -54,7 +54,6 @@ export class Main {
     uiContainer.zIndex = Infinity
     application.stage.addChild(uiContainer)
 
-    const airSystem = new AirSystem(this.world)
     this.world.addSystem(
       new AISystem(this.world),
       new PhysicsSystem(this.world),
@@ -63,8 +62,9 @@ export class Main {
       new BulletSystem(this.world),
       new InvincibleSystem(this.world),
       new DamageSystem(this.world),
-      airSystem,
-      new FilterSystem(this.world, gameWorldContainer, airSystem),
+      new FilterSystem(this.world, gameWorldContainer),
+      new AirSystem(this.world),
+      new LightSystem(this.world),
       new AirHolderSystem(this.world),
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
@@ -75,11 +75,6 @@ export class Main {
 
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map)
-
-    for (const player of new FamilyBuilder(this.world).include('Player').build().entityIterator) {
-      const position = player.getComponent('Position')
-      airSystem.offset = position
-    }
 
     application.ticker.add((delta: number) => this.world.update(delta / 60))
 

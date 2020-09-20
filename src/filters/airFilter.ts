@@ -1,4 +1,4 @@
-import shader from '../../res/shaders/metaball.frag'
+import shader from '../../res/shaders/air.frag'
 import { Filter } from 'pixi.js'
 import { World } from '../core/ecs/world'
 import { Family, FamilyBuilder } from '../core/ecs/family'
@@ -42,11 +42,11 @@ export class AirFilter extends Filter {
 
   public set airs(airs: Array<AirDefinition>) {
     this.uniforms.points = []
-    airs.map(air => {
+    for (const air of airs) {
       this.uniforms.points.push(air.center.x)
       this.uniforms.points.push(air.center.y)
       this.uniforms.points.push(air.radius)
-    })
+    }
     this.uniforms.pointNum = airs.length
     if (this.family.entityArray[0].getComponent('AirHolder').inAir) {
       this.uniforms.inAirRate = Math.min(this.uniforms.inAirRate + 0.05, 1)

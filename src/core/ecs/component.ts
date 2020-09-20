@@ -15,6 +15,7 @@ import { BVHComponent } from '../components/bvhComponent'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
+import { LightComponent } from '../components/lightComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -34,6 +35,7 @@ export interface ComponentMap {
   Camera: CameraComponent
   AnimationState: AnimationStateComponent
   PickupTarget: PickupTargetComponent
+  Light: LightComponent
 }
 
 export type ComponentName = keyof ComponentMap

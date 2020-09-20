@@ -5,6 +5,7 @@ import { AirFactory } from '../core/entities/airFactory'
 import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
+import { KokeFactory } from '../core/entities/kokeFactory'
 
 type MapObject = {
   ellipse: boolean
@@ -91,6 +92,9 @@ export class MapBuilder {
         case 'map':
           this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
           break
+        case 'koke':
+          this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
+          break
       }
     }
   }
@@ -155,6 +159,12 @@ export class MapBuilder {
             firstgid,
             builder: (pos: number[]) =>
               this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
+          })
+          break
+        case 'koke':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) => this.buildKoke(pos, tileSize),
           })
           break
       }
@@ -228,6 +238,16 @@ export class MapBuilder {
     playerPosition.x = x * tw + w / 2
     playerPosition.y = y * th - h / 2
     this.world.addEntity(player)
+  }
+
+  private buildKoke(pos: number[], tileSize: number[]): void {
+    const [x, y] = pos
+    const [tw, th] = tileSize
+    const koke = new KokeFactory(this.world).create()
+    const kokePosition = koke.getComponent('Position')
+    kokePosition.x = x * tw
+    kokePosition.y = y * th
+    this.world.addEntity(koke)
   }
 
   private calcWallId(cell: number[]): number {

@@ -3,9 +3,8 @@ import { Entity } from '../ecs/entity'
 import { FamilyBuilder, Family } from '../ecs/family'
 import { World } from '../ecs/world'
 import { PositionComponent } from '../components/positionComponent'
-import { AirDefinition, AirFilter } from '../../filters/airFilter'
+import { AirFilter } from '../../filters/airFilter'
 import { AirDef, ColliderComponent, AirCollider } from '../components/colliderComponent'
-import { windowSize } from '../application'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
 import { assert } from '../../utils/assertion'
@@ -14,11 +13,7 @@ import { CategoryList } from '../entities/category'
 export class AirSystem extends System {
   private family: Family
 
-  public offset: PositionComponent = new PositionComponent()
-
   private entity: Entity
-
-  public airs: Array<AirDefinition>
 
   public constructor(world: World) {
     super(world)
@@ -36,29 +31,16 @@ export class AirSystem extends System {
     this.entity.addComponent('Collider', collider)
     this.entity.addComponent('Position', new PositionComponent())
     this.world.addEntity(this.entity)
-    this.airs = []
   }
 
   public update(): void {
-    this.airs = []
     for (const entity of this.family.entityIterator) {
       const air = entity.getComponent('Air')
-      const position = entity.getComponent('Position')
 
       if (air.quantity <= 0) {
         this.world.removeEntity(entity)
         continue
       }
-
-      const radius = air.quantity
-
-      this.airs.push({
-        center: new PositionComponent(
-          position.x - this.offset.x + windowSize.width / 2,
-          position.y - this.offset.y + windowSize.height / 2
-        ),
-        radius,
-      })
     }
 
     const collider = this.entity.getComponent('Collider')

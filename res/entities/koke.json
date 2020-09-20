@@ -1,0 +1,10 @@
+{
+    "sprite": {
+      "name": "koke",
+      "state": {
+        "Default": [0]
+      },
+      "default": "Default"
+    }
+  }
+  
