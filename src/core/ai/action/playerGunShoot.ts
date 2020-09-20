@@ -4,23 +4,24 @@ import { Entity } from '../../ecs/entity'
 import { MouseController } from '../../systems/controlSystem'
 import { BulletFactory } from '../../entities/bulletFactory'
 import { application, windowSize } from '../../application'
+<<<<<<< HEAD
 import * as Sound from '../../sound/sound'
+=======
+import { Vec2 } from '../../math/vec2'
+>>>>>>> master
 
 const SETTING = {
   CONSUME_SPEED: 10,
 }
 const bulletFactory = new BulletFactory()
+bulletFactory.offset.y = 1
 
-const calcAngle = (): number => {
+const mouseDirection = (): Vec2 => {
   const position = application.renderer.plugins.interaction.mouse.global
   const scale = application.stage.scale
-  return (
-    (Math.atan2(
-      position.y / scale.y - windowSize.height / 2,
-      position.x / scale.x - windowSize.width / 2
-    ) *
-      180) /
-    Math.PI
+  return new Vec2(
+    position.x / scale.x - windowSize.width / 2,
+    position.y / scale.y - windowSize.height / 2
   )
 }
 
@@ -33,9 +34,8 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
 
       Sound.play('shot')
       // 弾を打つ
-      bulletFactory.player = entity
-      const player = entity.getComponent('Player')
-      player.bulletAngle = calcAngle()
+      bulletFactory.setShooter(entity, 'player')
+      bulletFactory.setDirection(mouseDirection())
       world.addEntity(bulletFactory.create())
     }
   }

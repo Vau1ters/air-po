@@ -7,6 +7,7 @@ uniform vec3 points[200];
 uniform float pointNum;
 uniform vec2 displaySize;
 uniform float effectiveRadius;
+uniform float inAirRate;
 
 void main() {
   vec4 color = texture2D(uSampler, vTextureCoord);
@@ -23,8 +24,9 @@ void main() {
     }
   }
   if (metaball < 1.0) {
-    color.rgb += metaball * 0.6 + 0.2;
+    color.rgb *= 1. * (1. - pow(metaball, 2.) * 0.3) * vec3(0.9, 1, 0.6);
   }
 
   gl_FragColor = color;
+  gl_FragColor.rgb *= mix(pow(cos(0.7 * length(vTextureCoord - 0.5) * 3.141592 * .5), 4.), 1., inAirRate);
 }

@@ -1,0 +1,9 @@
+{
+  "sprite": {
+    "name": "snibee",
+    "state": {
+      "Alive": [0, 1]
+    },
+    "default": "Alive"
+  }
+}

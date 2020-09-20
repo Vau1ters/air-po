@@ -1,6 +1,6 @@
 import { World } from './core/ecs/world'
 import DebugDrawSystem from './core/systems/debugDrawSystem'
-import { application, initializeApplication } from './core/application'
+import { application, initializeApplication, windowSize } from './core/application'
 import PhysicsSystem from './core/systems/physicsSystem'
 import GravitySystem from './core/systems/gravitySystem'
 import { Container } from 'pixi.js'
@@ -20,6 +20,7 @@ import { DamageSystem } from './core/systems/damageSystem'
 import map from '../res/teststage.json'
 import { FamilyBuilder } from './core/ecs/family'
 import { AirHolderSystem } from './core/systems/airHolderSystem'
+import * as PIXI from 'pixi.js'
 
 export class Main {
   public static world = new World()
@@ -32,6 +33,12 @@ export class Main {
     const gameWorldContainer = new Container()
     application.stage.addChild(gameWorldContainer)
 
+    const background = new PIXI.Graphics()
+    background.beginFill(0xc0c0c0)
+    background.drawRect(0, 0, windowSize.width, windowSize.height)
+    background.endFill()
+    gameWorldContainer.addChild(background)
+
     const drawContainer = new Container()
     gameWorldContainer.addChild(drawContainer)
     drawContainer.filterArea = application.screen
@@ -42,14 +49,13 @@ export class Main {
 
     const gameWorldUiContainer = new Container()
     gameWorldUiContainer.zIndex = Infinity
-    gameWorldContainer.addChild(gameWorldUiContainer)
+    drawContainer.addChild(gameWorldUiContainer)
 
     const uiContainer = new Container()
     uiContainer.zIndex = Infinity
     application.stage.addChild(uiContainer)
 
-    const airSystem = new AirSystem(this.world, drawContainer)
-
+    const airSystem = new AirSystem(this.world, gameWorldContainer)
     this.world.addSystem(
       new AISystem(this.world),
       new PhysicsSystem(this.world),
@@ -63,7 +69,7 @@ export class Main {
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(this.world, debugContainer),
-      new CameraSystem(this.world, gameWorldContainer),
+      new CameraSystem(this.world, drawContainer),
       new ControlSystem(this.world)
     )
 
