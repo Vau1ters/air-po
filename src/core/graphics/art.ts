@@ -12,6 +12,15 @@ import enemy1Setting from '../../../res/enemy1.json'
 import vineImg from '../../../res/vine.png'
 import vineSetting from '../../../res/vine.json'
 
+import snibeeImg from '../../../res/snibee.png'
+import snibeeSetting from '../../../res/snibee.json'
+
+import ballBulletImg from '../../../res/ballBullet.png'
+import ballBulletSetting from '../../../res/ballBullet.json'
+
+import needleBulletImg from '../../../res/needleBullet.png'
+import needleBulletSetting from '../../../res/needleBullet.json'
+
 import balloonvineImg from '../../../res/balloonvine.png'
 import balloonvineSetting from '../../../res/balloonvine.json'
 
@@ -64,5 +73,8 @@ export const init = async (): Promise<void> => {
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
   textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
+  textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
+  textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
+  textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
 }
