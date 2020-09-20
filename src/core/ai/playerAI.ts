@@ -10,7 +10,6 @@ import { playerJet } from './action/playerJet'
 import { playerPickup } from './action/playerPickup'
 import { animate } from './action/animate'
 import { wait } from './action/wait'
-import { kill } from './action/kill'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
@@ -28,5 +27,4 @@ export const playerAI = function*(entity: Entity, world: World): Behaviour<void>
   yield* suspendable(isAlive(entity), playerControl(entity, world))
   yield* animate(entity, 'Dying')
   yield* wait(60)
-  yield* kill(entity, world)
 }
