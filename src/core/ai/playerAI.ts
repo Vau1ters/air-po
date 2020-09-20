@@ -8,6 +8,7 @@ import { playerGunShoot } from './action/playerGunShoot'
 import { playerMove } from './action/playerMove'
 import { playerJet } from './action/playerJet'
 import { playerPickup } from './action/playerPickup'
+import { invincibleTime } from './action/invincibleTime'
 import { animate } from './action/animate'
 import { wait } from './action/wait'
 import { kill } from './action/kill'
@@ -19,6 +20,7 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
       playerMove(entity),
       playerJet(entity),
       playerPickup(entity),
+      invincibleTime(entity),
     ])
     yield
   }
