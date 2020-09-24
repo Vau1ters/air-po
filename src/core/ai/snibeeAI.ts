@@ -14,7 +14,8 @@ export const SnibeeSetting = {
   interiorDistance: 80,
   exteriorDistance: 110,
   searchRange: 170,
-  coolTime: 120,
+  //coolTime: 120,
+  coolTime: 12,
   coolTimeRange: 30,
   angleRange: Math.PI / 6.0,
   maxVelocity: 200, // px/s
