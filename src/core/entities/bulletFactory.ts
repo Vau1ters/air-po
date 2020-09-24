@@ -113,25 +113,6 @@ export class BulletFactory extends EntityFactory {
     else if (index == 13) sprite.changeTo('RightUpUp')
     else if (index == 14) sprite.changeTo('RightUp')
     else if (index == 15) sprite.changeTo('RightUpDown')
-    /*
-    if (-157.5 <= radAngle && radAngle < -112.5) {
-      sprite.changeTo('LeftUp')
-    } else if (-112.5 <= radAngle && radAngle < -67.5) {
-      sprite.changeTo('Up')
-    } else if (-67.5 <= radAngle && radAngle < -22.5) {
-      sprite.changeTo('RightUp')
-    } else if (-22.5 <= radAngle && radAngle < 22.5) {
-      sprite.changeTo('Right')
-    } else if (22.5 <= radAngle && radAngle < 67.5) {
-      sprite.changeTo('RightDown')
-    } else if (67.5 <= radAngle && radAngle < 112.5) {
-      sprite.changeTo('Down')
-    } else if (112.5 <= radAngle && radAngle < 157.5) {
-      sprite.changeTo('LeftDown')
-    } else {
-      sprite.changeTo('Left')
-    }
-    */
     draw.addChild(sprite)
 
     entity.addComponent('Position', position)
