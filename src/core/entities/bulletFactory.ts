@@ -101,7 +101,7 @@ export class BulletFactory extends EntityFactory {
       'Right',
       'RightDownUp',
       'RightDown',
-      'RightDownDwon',
+      'RightDownDown',
       'Down',
       'LeftDownDown',
       'LeftDown',
