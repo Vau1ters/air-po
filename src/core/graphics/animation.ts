@@ -21,10 +21,6 @@ export class Animation extends Container {
     this.current = initialAnimation
   }
 
-  public setVisible(isVisible: boolean): void {
-    this.animatedSprites[this.current].visible = isVisible
-  }
-
   public changeTo(animation: string): void {
     if (animation != this.current) {
       this.animatedSprites[this.current].visible = false

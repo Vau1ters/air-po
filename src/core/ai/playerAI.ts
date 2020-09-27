@@ -9,7 +9,6 @@ import { playerMove } from './action/playerMove'
 import { playerJet } from './action/playerJet'
 import { playerPickup } from './action/playerPickup'
 import { playerItemAction } from './action/playerItemAction'
-import { invincibleTime } from './action/invincibleTime'
 import { animate } from './action/animate'
 import { wait } from './action/wait'
 import { kill } from './action/kill'
@@ -20,19 +19,8 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
     playerMove(entity),
     playerJet(entity),
     playerPickup(entity),
-    invincibleTime(entity),
     playerItemAction(entity),
   ])
-  while (true) {
-    yield* parallel([
-      playerGunShoot(entity, world),
-      playerMove(entity),
-      playerJet(entity),
-      playerPickup(entity),
-      invincibleTime(entity),
-    ])
-    yield
-  }
 }
 
 export const playerAI = function*(entity: Entity, world: World): Behaviour<void> {
