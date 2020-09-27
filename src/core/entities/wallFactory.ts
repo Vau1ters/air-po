@@ -6,14 +6,16 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
-import { Sprite } from 'pixi.js'
-import { textureStore } from '../graphics/art'
+import wallDefinition from '../../../res/entities/wall.json'
+import { parseSprite } from '../parser/spriteParser'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
   readonly RESTITUTION = 0
   readonly WIDTH = 8
   readonly HEIGHT = 8
+  readonly OFFSET_X = -this.WIDTH / 2
+  readonly OFFSET_Y = -this.HEIGHT / 2
   public tileId = 0
   public shouldCollide = true
 
@@ -25,6 +27,7 @@ export class WallFactory extends EntityFactory {
     if (this.shouldCollide) {
       const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
       aabb.tag.add('wall')
+      aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
       aabb.category = CategoryList.wall.category
       aabb.mask = CategoryList.wall.mask
       const collider = new ColliderComponent(entity)
@@ -38,10 +41,7 @@ export class WallFactory extends EntityFactory {
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
-    // const graphics = new Graphics()
-    // graphics.beginFill(0xff00ff)
-    // graphics.drawRect(0, 0, this.WIDTH, this.HEIGHT)
-    const sprite = new Sprite(textureStore.wall[this.tileId])
+    const sprite = parseSprite(wallDefinition.sprite)
     draw.addChild(sprite)
     return entity
   }
