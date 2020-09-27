@@ -97,22 +97,26 @@ export class BulletFactory extends EntityFactory {
     const sprite = parseSprite(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
     const index = Math.floor(((radAngle + 180 + 180 / 16) / 360) * 16) % 16
-    if (index == 0) sprite.changeTo('Right')
-    else if (index == 1) sprite.changeTo('RightDownUp')
-    else if (index == 2) sprite.changeTo('RightDown')
-    else if (index == 3) sprite.changeTo('RightDownDown')
-    else if (index == 4) sprite.changeTo('Down')
-    else if (index == 5) sprite.changeTo('LeftDownDown')
-    else if (index == 6) sprite.changeTo('LeftDown')
-    else if (index == 7) sprite.changeTo('LeftDownUp')
-    else if (index == 8) sprite.changeTo('Left')
-    else if (index == 9) sprite.changeTo('LeftUpDown')
-    else if (index == 10) sprite.changeTo('LeftUp')
-    else if (index == 11) sprite.changeTo('LeftUpUp')
-    else if (index == 12) sprite.changeTo('Up')
-    else if (index == 13) sprite.changeTo('RightUpUp')
-    else if (index == 14) sprite.changeTo('RightUp')
-    else if (index == 15) sprite.changeTo('RightUpDown')
+    const directions = [
+      'Right',
+      'RightDownUp',
+      'RightDown',
+      'RightDownDwon',
+      'Down',
+      'LeftDownDown',
+      'LeftDown',
+      'LeftDownUp',
+      'Left',
+      'LeftUpDown',
+      'LeftUp',
+      'LeftUpUp',
+      'Up',
+      'RightUpUp',
+      'RightUp',
+      'RightUpDown',
+    ]
+    sprite.changeTo(directions[index])
+
     draw.addChild(sprite)
 
     entity.addComponent('Position', position)
