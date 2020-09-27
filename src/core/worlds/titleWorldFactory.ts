@@ -1,18 +1,13 @@
 import { World } from './../../core/ecs/world'
 import { application, windowSize } from './../../core/application'
-import PhysicsSystem from './../../core/systems/physicsSystem'
-import GravitySystem from './../../core/systems/gravitySystem'
 import { Container, Sprite, Texture, BaseTexture, Graphics } from 'pixi.js'
 import DrawSystem from './../../core/systems/drawSystem'
 import { AirSystem } from './../../core/systems/airSystem'
 import CameraSystem from './../../core/systems/cameraSystem'
 import { ControlSystem } from './../../core/systems/controlSystem'
-import { PlayerControlSystem } from './../../core/systems/playerControlSystem'
-import { BulletSystem } from './../../core/systems/bulletSystem'
 import { MapBuilder } from './../../map/mapBuilder'
 import map from './../../../res/teststage.json'
 import { FamilyBuilder } from './../../core/ecs/family'
-import { AirHolderSystem } from './../../core/systems/airHolderSystem'
 import titleImg from './../../../res/title.png'
 import { Behaviour } from '../ai/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
@@ -62,12 +57,7 @@ export class TitleWorldFactory {
     const airSystem = new AirSystem(world, gameWorldContainer)
 
     world.addSystem(
-      new PhysicsSystem(world),
-      new GravitySystem(world),
-      new PlayerControlSystem(world),
-      new BulletSystem(world),
       airSystem,
-      new AirHolderSystem(world),
       new DrawSystem(world, drawContainer),
       new CameraSystem(world, drawContainer),
       new ControlSystem(world)
