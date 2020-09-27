@@ -13,14 +13,14 @@ const vec2 lightPos = vec2(0.5, 0.5);
 void main() {
   vec3 color = texture2D(uSampler, vTextureCoord).rgb;
   vec2 coord = vTextureCoord * displaySize;
-  float po = .1;
+  float power = .1;
   for (int i = 0; i < MAX_POINT_NUM; i++) {
     if (i >= int(pointNum)) continue;
-    if (po > .1) continue;
+    if (power > .1) continue;
     if (length(coord - points[i].xy) < 10.) {
-      po += points[i].z;
+      power += points[i].z;
     }
   }
-  color *= min(1., po);
+  color *= min(1., power);
   gl_FragColor = vec4(color, 1);
 }
