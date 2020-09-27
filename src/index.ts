@@ -28,7 +28,7 @@ export class Main {
   public static async init(): Promise<void> {
     initializeApplication()
     await Art.init()
-    Sound.init()
+    await Sound.init()
 
     const gameWorldContainer = new Container()
     application.stage.addChild(gameWorldContainer)
