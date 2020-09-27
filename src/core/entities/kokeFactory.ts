@@ -2,7 +2,6 @@ import { Entity } from '../ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { DrawComponent } from '../components/drawComponent'
-import { AirHolderComponent } from '../components/airHolderComponent'
 import { parseSprite } from '../parser/spriteParser'
 import kokeDefinition from '../../../res/entities/koke.json'
 import { World } from '../ecs/world'
@@ -24,12 +23,6 @@ export class KokeFactory extends EntityFactory {
     const position = new PositionComponent(200, 100)
     const draw = new DrawComponent()
     const collider = new ColliderComponent(entity)
-    const airHolder = new AirHolderComponent({
-      initialQuantity: 0,
-      maxQuantity: 1,
-      collectSpeed: 0,
-      consumeSpeed: 0,
-    })
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     aabbBody.tag.add('light')
@@ -44,7 +37,6 @@ export class KokeFactory extends EntityFactory {
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Light', new LightComponent(0))
     return entity
   }
