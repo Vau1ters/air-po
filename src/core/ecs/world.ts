@@ -15,15 +15,16 @@ export class World {
   public readonly behaviour: Behaviour<World>
 
   private readonly _updateCallback = (): void => {
+    const { done, value: nextWorld } = this.behaviour.next()
+
     this.systems.forEach(system => {
       system.update(1 / 60)
     })
 
-    const { done, value: nextWorld } = this.behaviour.next()
     if (!!done === true) {
       assert(nextWorld)
-      this.end()
       nextWorld.start()
+      this.end()
     }
   }
 

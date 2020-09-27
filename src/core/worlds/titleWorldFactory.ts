@@ -4,7 +4,7 @@ import { Container, Sprite, Texture, BaseTexture, Graphics } from 'pixi.js'
 import DrawSystem from './../../core/systems/drawSystem'
 import { AirSystem } from './../../core/systems/airSystem'
 import CameraSystem from './../../core/systems/cameraSystem'
-import { ControlSystem } from './../../core/systems/controlSystem'
+import { ControlSystem, MouseController } from './../../core/systems/controlSystem'
 import { MapBuilder } from './../../map/mapBuilder'
 import map from './../../../res/teststage.json'
 import { FamilyBuilder } from './../../core/ecs/family'
@@ -13,20 +13,9 @@ import { Behaviour } from '../ai/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
 import { wait } from '../ai/action/wait'
 
-const titleWorldBehaviour = (stage: Container) =>
+const titleWorldBehaviour = () =>
   function*(): Behaviour<World> {
-    let displayClicked = false
-    stage.addListener(
-      'pointerdown',
-      () => {
-        displayClicked = true
-      },
-      { once: true }
-    )
-
-    while (!displayClicked) {
-      yield
-    }
+    while (!MouseController.isMousePressed('Left')) yield
     yield* wait(30)
 
     return new GameWorldFactory().create()
@@ -51,7 +40,7 @@ export class TitleWorldFactory {
     title.interactive = true
     gameWorldContainer.addChild(title)
 
-    const world = new World(titleWorldBehaviour(title))
+    const world = new World(titleWorldBehaviour())
     world.stage.addChild(gameWorldContainer)
 
     const airSystem = new AirSystem(world, gameWorldContainer)
