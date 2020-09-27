@@ -21,8 +21,8 @@ import needleBulletSetting from '../../../res/needleBullet.json'
 import balloonvineImg from '../../../res/balloonvine.png'
 import balloonvineSetting from '../../../res/balloonvine.json'
 
-import kokeImg from '../../../res/kokoe.png'
-import kokeSetting from '../../../res/koke.json'
+import mossImg from '../../../res/moss.png'
+import mossSetting from '../../../res/moss.json'
 
 import dandelionHeadImg from '../../../res/dandelion_head.png'
 import dandelionFluffImg from '../../../res/dandelion_fluff.png'
@@ -86,7 +86,7 @@ export const init = async (): Promise<void> => {
   textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
-  textureStore.koke = await buildAnimationTexture(kokeImg, kokeSetting)
+  textureStore.moss = await buildAnimationTexture(mossImg, mossSetting)
   textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
   textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
 }

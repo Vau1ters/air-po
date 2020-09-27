@@ -10,6 +10,8 @@ uniform vec2 displaySize;
 
 const vec2 lightPos = vec2(0.5, 0.5);
 
+const float LIGHT_RADIUS = 10.;
+
 void main() {
   vec3 color = texture2D(uSampler, vTextureCoord).rgb;
   vec2 coord = vTextureCoord * displaySize;
@@ -17,7 +19,7 @@ void main() {
   for (int i = 0; i < MAX_POINT_NUM; i++) {
     if (i >= int(pointNum)) continue;
     if (power > .1) continue;
-    if (length(coord - points[i].xy) < 10.) {
+    if (length(coord - points[i].xy) < LIGHT_RADIUS) {
       power += points[i].z;
     }
   }

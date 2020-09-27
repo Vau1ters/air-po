@@ -3,14 +3,14 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { parseSprite } from '../parser/spriteParser'
-import kokeDefinition from '../../../res/entities/koke.json'
+import mossDefinition from '../../../res/entities/moss.json'
 import { World } from '../ecs/world'
 import { AABBDef, ColliderComponent } from '../components/colliderComponent'
 import { Category, CategorySet } from './category'
 import { Vec2 } from '../math/vec2'
 import { LightComponent } from '../components/lightComponent'
 
-export class KokeFactory extends EntityFactory {
+export class MossFactory extends EntityFactory {
   readonly WIDTH = 8
   readonly HEIGHT = 8
 
@@ -30,7 +30,7 @@ export class KokeFactory extends EntityFactory {
     aabbBody.mask = new CategorySet(Category.SEARCH, Category.AIR)
     collider.createCollider(aabbBody)
 
-    const sprite = parseSprite(kokeDefinition.sprite)
+    const sprite = parseSprite(mossDefinition.sprite)
 
     draw.addChild(sprite)
 
