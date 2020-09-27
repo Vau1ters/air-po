@@ -105,7 +105,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
     rootAABB.bound.position.y = lp.y - rootAABB.bound.size.y
 
     wallDetectionAABB.bound.position.x = lp.x - wallDetectionAABB.bound.size.x / 2
-    wallDetectionAABB.bound.position.y = lp.y
+    wallDetectionAABB.bound.position.y = lp.y - wallDetectionAABB.bound.size.y / 2
 
     const rigidBody = entity.getComponent('RigidBody')
 
