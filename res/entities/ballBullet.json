@@ -3,13 +3,21 @@
     "name": "ballBullet",
     "state": {
       "RightDown": [0],
+      "RightDownDown": [0],
       "Down": [1],
+      "LeftDownDown": [1],
       "LeftDown": [2],
+      "LeftDownUp": [2],
       "Left": [3],
+      "LeftUpDown": [3],
       "LeftUp": [4],
+      "LeftUpUp": [4],
       "Up": [5],
+      "RightUpUp": [5],
       "RightUp": [6],
-      "Right": [7]
+      "RightUpDown": [6],
+      "Right": [7],
+      "RightDownUp": [7]
     },
     "default": "Right"
   }

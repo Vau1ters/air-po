@@ -11,6 +11,7 @@ import { ControlSystem } from './core/systems/controlSystem'
 import { PlayerControlSystem } from './core/systems/playerControlSystem'
 import { BulletSystem } from './core/systems/bulletSystem'
 import * as Art from './core/graphics/art'
+import * as Sound from './core/sound/sound'
 import UiSystem from './core/systems/uiSystem'
 import { MapBuilder } from './map/mapBuilder'
 import AISystem from './core/systems/aiSystem'
@@ -27,33 +28,34 @@ export class Main {
   public static async init(): Promise<void> {
     initializeApplication()
     await Art.init()
+    await Sound.init()
 
     const gameWorldContainer = new Container()
     application.stage.addChild(gameWorldContainer)
-
-    const background = new PIXI.Graphics()
-    background.beginFill(0xc0c0c0)
-    background.drawRect(0, 0, windowSize.width, windowSize.height)
-    background.endFill()
-    gameWorldContainer.addChild(background)
 
     const drawContainer = new Container()
     gameWorldContainer.addChild(drawContainer)
     drawContainer.filterArea = application.screen
 
-    const debugContainer = new Container()
-    debugContainer.zIndex = Infinity
-    gameWorldContainer.addChild(debugContainer)
+    const background = new PIXI.Graphics()
+    background.beginFill(0xc0c0c0)
+    background.drawRect(0, 0, windowSize.width, windowSize.height)
+    background.endFill()
+    drawContainer.addChild(background)
 
     const gameWorldUiContainer = new Container()
     gameWorldUiContainer.zIndex = Infinity
     drawContainer.addChild(gameWorldUiContainer)
 
+    const debugContainer = new Container()
+    debugContainer.zIndex = Infinity
+    gameWorldContainer.addChild(debugContainer)
+
     const uiContainer = new Container()
     uiContainer.zIndex = Infinity
     application.stage.addChild(uiContainer)
 
-    const airSystem = new AirSystem(this.world, gameWorldContainer)
+    const airSystem = new AirSystem(this.world, drawContainer)
     this.world.addSystem(
       new AISystem(this.world),
       new PhysicsSystem(this.world),
@@ -67,7 +69,7 @@ export class Main {
       new DrawSystem(this.world, drawContainer),
       new UiSystem(this.world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(this.world, debugContainer),
-      new CameraSystem(this.world, drawContainer),
+      new CameraSystem(this.world, gameWorldContainer, background),
       new ControlSystem(this.world)
     )
 

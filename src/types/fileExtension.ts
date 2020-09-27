@@ -3,6 +3,11 @@ declare module '*.png' {
   export = value
 }
 
+declare module '*.wav' {
+  const value: string
+  export = value
+}
+
 declare module '*.vert' {
   const value: string
   export = value
