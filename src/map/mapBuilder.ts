@@ -240,8 +240,8 @@ export class MapBuilder {
     const [tw, th] = tileSize
     const koke = new KokeFactory(this.world).create()
     const kokePosition = koke.getComponent('Position')
-    kokePosition.x = x * tw
-    kokePosition.y = y * th
+    kokePosition.x = x * tw + tw / 2
+    kokePosition.y = y * th - th / 2
     this.world.addEntity(koke)
   }
 
