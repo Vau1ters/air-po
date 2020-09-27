@@ -9,6 +9,7 @@ import { FamilyBuilder } from '../ecs/family'
 import { BulletFactory } from '../entities/bulletFactory'
 import { wait } from './action/wait'
 import { parallel } from './composite/compositeBehaviour'
+import * as Sound from '../../core/sound/sound'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -72,6 +73,7 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
       bulletFactory.angle += (Math.random() - 0.5) * SnibeeSetting.angleRange
       bulletFactory.type = 'needle'
       world.addEntity(bulletFactory.create())
+      Sound.play('snibee')
       yield* wait(SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange)
     } else {
       yield
