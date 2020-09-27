@@ -1,0 +1,9 @@
+{
+  "sprite": {
+    "name": "dandelionHead",
+    "state": {
+      "Normal": [0]
+    },
+    "default": "Normal"
+  }
+}

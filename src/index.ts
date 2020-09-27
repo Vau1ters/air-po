@@ -1,5 +1,6 @@
 import { application, initializeApplication } from './core/application'
 import * as Art from './core/graphics/art'
+import * as Sound from './core/sound/sound'
 import { TitleWorldFactory } from './core/worlds/titleWorldFactory'
 
 export class Main {
@@ -7,6 +8,7 @@ export class Main {
   public static async init(): Promise<void> {
     initializeApplication()
     await Art.init()
+    await Sound.init()
 
     const world = new TitleWorldFactory().create()
     world.start()

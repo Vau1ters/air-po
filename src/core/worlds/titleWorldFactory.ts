@@ -32,15 +32,15 @@ export class TitleWorldFactory {
   public create(): World {
     const gameWorldContainer = new Container()
 
+    const drawContainer = new Container()
+    drawContainer.filterArea = application.screen
+    gameWorldContainer.addChild(drawContainer)
+
     const background = new Graphics()
     background.beginFill(0xc0c0c0)
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
-    gameWorldContainer.addChild(background)
-
-    const drawContainer = new Container()
-    drawContainer.filterArea = application.screen
-    gameWorldContainer.addChild(drawContainer)
+    drawContainer.addChild(background)
 
     const base = BaseTexture.from(titleImg)
     const title = new Sprite(new Texture(base))
@@ -55,7 +55,7 @@ export class TitleWorldFactory {
     world.addSystem(
       airSystem,
       new DrawSystem(world, drawContainer),
-      new CameraSystem(world, drawContainer),
+      new CameraSystem(world, drawContainer, background),
       new ControlSystem(world)
     )
 

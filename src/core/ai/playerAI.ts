@@ -8,19 +8,20 @@ import { playerGunShoot } from './action/playerGunShoot'
 import { playerMove } from './action/playerMove'
 import { playerJet } from './action/playerJet'
 import { playerPickup } from './action/playerPickup'
+import { playerItemAction } from './action/playerItemAction'
+import { invincibleTime } from './action/invincibleTime'
 import { animate } from './action/animate'
 import { wait } from './action/wait'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
-  while (true) {
-    yield* parallel([
-      playerGunShoot(entity, world),
-      playerMove(entity),
-      playerJet(entity),
-      playerPickup(entity),
-    ])
-    yield
-  }
+  yield* parallel([
+    playerGunShoot(entity, world),
+    playerMove(entity),
+    playerJet(entity),
+    playerPickup(entity),
+    playerItemAction(entity),
+    invincibleTime(entity),
+  ])
 }
 
 export const playerAI = function*(entity: Entity, world: World): Behaviour<void> {

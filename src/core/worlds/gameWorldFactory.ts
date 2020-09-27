@@ -42,33 +42,33 @@ const gameWorldBehaviour = function*(world: World): Behaviour<World> {
 export class GameWorldFactory {
   public create(): World {
     const world = new World(gameWorldBehaviour)
+
     const gameWorldContainer = new Container()
     world.stage.addChild(gameWorldContainer)
-
-    const background = new PIXI.Graphics()
-    background.beginFill(0xc0c0c0)
-    background.drawRect(0, 0, windowSize.width, windowSize.height)
-    background.endFill()
-    gameWorldContainer.addChild(background)
 
     const drawContainer = new Container()
     gameWorldContainer.addChild(drawContainer)
     drawContainer.filterArea = application.screen
 
-    const debugContainer = new Container()
-    debugContainer.zIndex = Infinity
-    gameWorldContainer.addChild(debugContainer)
+    const background = new PIXI.Graphics()
+    background.beginFill(0xc0c0c0)
+    background.drawRect(0, 0, windowSize.width, windowSize.height)
+    background.endFill()
+    drawContainer.addChild(background)
 
     const gameWorldUiContainer = new Container()
     gameWorldUiContainer.zIndex = Infinity
     drawContainer.addChild(gameWorldUiContainer)
 
+    const debugContainer = new Container()
+    debugContainer.zIndex = Infinity
+    gameWorldContainer.addChild(debugContainer)
+
     const uiContainer = new Container()
     uiContainer.zIndex = Infinity
     world.stage.addChild(uiContainer)
 
-    const airSystem = new AirSystem(world, gameWorldContainer)
-
+    const airSystem = new AirSystem(world, drawContainer)
     world.addSystem(
       new AISystem(world),
       new PhysicsSystem(world),
@@ -82,7 +82,7 @@ export class GameWorldFactory {
       new DrawSystem(world, drawContainer),
       new UiSystem(world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(world, debugContainer),
-      new CameraSystem(world, drawContainer),
+      new CameraSystem(world, gameWorldContainer, background),
       new ControlSystem(world)
     )
 
@@ -95,5 +95,60 @@ export class GameWorldFactory {
     }
 
     return world
+
+    // const world = new World(gameWorldBehaviour)
+    // const gameWorldContainer = new Container()
+    // world.stage.addChild(gameWorldContainer)
+
+    // const background = new PIXI.Graphics()
+    // background.beginFill(0xc0c0c0)
+    // background.drawRect(0, 0, windowSize.width, windowSize.height)
+    // background.endFill()
+    // gameWorldContainer.addChild(background)
+
+    // const drawContainer = new Container()
+    // gameWorldContainer.addChild(drawContainer)
+    // drawContainer.filterArea = application.screen
+
+    // const debugContainer = new Container()
+    // debugContainer.zIndex = Infinity
+    // gameWorldContainer.addChild(debugContainer)
+
+    // const gameWorldUiContainer = new Container()
+    // gameWorldUiContainer.zIndex = Infinity
+    // drawContainer.addChild(gameWorldUiContainer)
+
+    // const uiContainer = new Container()
+    // uiContainer.zIndex = Infinity
+    // world.stage.addChild(uiContainer)
+
+    // const airSystem = new AirSystem(world, gameWorldContainer)
+
+    // world.addSystem(
+    //   new AISystem(world),
+    //   new PhysicsSystem(world),
+    //   new GravitySystem(world),
+    //   new PlayerControlSystem(world),
+    //   new BulletSystem(world),
+    //   new InvincibleSystem(world),
+    //   new DamageSystem(world),
+    //   airSystem,
+    //   new AirHolderSystem(world),
+    //   new DrawSystem(world, drawContainer),
+    //   new UiSystem(world, uiContainer, gameWorldUiContainer),
+    //   new DebugDrawSystem(world, debugContainer),
+    //   new CameraSystem(world, drawContainer),
+    //   new ControlSystem(world)
+    // )
+
+    // const mapBuilder = new MapBuilder(world)
+    // mapBuilder.build(map)
+
+    // for (const player of new FamilyBuilder(world).include('Player').build().entityIterator) {
+    //   const position = player.getComponent('Position')
+    //   airSystem.offset = position
+    // }
+
+    // return world
   }
 }

@@ -137,24 +137,19 @@ export class MapBuilder {
           })
           break
         case 'enemy1':
-          builders.push({
-            firstgid,
-            builder: (pos: number[]) =>
-              this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
-          })
-          break
         case 'balloonvine':
+        case 'dandelion':
           builders.push({
             firstgid,
             builder: (pos: number[]) =>
-              this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
+              this.buildNPC(pos, tileSize, { type: content.name as NPCType, size }),
           })
           break
         case 'snibee':
           builders.push({
             firstgid,
             builder: (pos: number[]) =>
-              this.buildEnemy(pos, tileSize, { type: content.name as NPCType, size }),
+              this.buildNPC(pos, tileSize, { type: content.name as NPCType, size }),
           })
           break
       }
@@ -199,24 +194,24 @@ export class MapBuilder {
     factory.shouldCollide = cells.some(c => c === 0)
     const wall = factory.create()
     const p = wall.getComponent('Position')
-    p.x = tw * x
-    p.y = th * y
+    p.x = tw * x + tw / 2
+    p.y = th * y - th / 2
     this.world.addEntity(wall)
   }
 
-  private buildEnemy(
+  private buildNPC(
     pos: number[],
     tileSize: number[],
-    enemyInfo: { type: NPCType; size: number[] }
+    npcInfo: { type: NPCType; size: number[] }
   ): void {
     const [x, y] = pos
-    const [w, h] = enemyInfo.size
+    const [w, h] = npcInfo.size
     const [tw, th] = tileSize
-    const enemy = new NPCFactory(this.world, enemyInfo.type).create()
-    const enemyPosition = enemy.getComponent('Position')
-    enemyPosition.x = x * tw + w / 2
-    enemyPosition.y = y * th - h / 2
-    this.world.addEntity(enemy)
+    const npc = new NPCFactory(this.world, npcInfo.type).create()
+    const npcPosition = npc.getComponent('Position')
+    npcPosition.x = x * tw + w / 2
+    npcPosition.y = y * th - h / 2
+    this.world.addEntity(npc)
   }
 
   private buildPlayer(pos: number[], tileSize: number[], playerInfo: { size: number[] }): void {
