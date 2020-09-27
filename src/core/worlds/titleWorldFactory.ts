@@ -11,12 +11,19 @@ import { FamilyBuilder } from './../../core/ecs/family'
 import titleImg from './../../../res/title.png'
 import { Behaviour } from '../ai/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
-import { wait } from '../ai/action/wait'
+import { transition } from '../ai/action/transition'
 
-const titleWorldBehaviour = () =>
+const titleWorldBehaviour = (titleImage: Sprite) =>
   function*(): Behaviour<World> {
     while (!MouseController.isMousePressed('Left')) yield
-    yield* wait(30)
+    yield* transition(12, (time: number) => {
+      const rate = time / 12
+      titleImage.alpha = (Math.cos(rate * Math.PI * 4) + 1) / 2
+    })
+    yield* transition(16, (time: number) => {
+      const rate = time / 16
+      titleImage.alpha = Math.cos((rate * Math.PI) / 2)
+    })
 
     return new GameWorldFactory().create()
   }
@@ -38,10 +45,10 @@ export class TitleWorldFactory {
     const base = BaseTexture.from(titleImg)
     const title = new Sprite(new Texture(base))
     title.interactive = true
-    gameWorldContainer.addChild(title)
 
-    const world = new World(titleWorldBehaviour())
+    const world = new World(titleWorldBehaviour(title))
     world.stage.addChild(gameWorldContainer)
+    world.stage.addChild(title)
 
     const airSystem = new AirSystem(world, gameWorldContainer)
 
