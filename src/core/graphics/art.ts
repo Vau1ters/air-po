@@ -1,5 +1,7 @@
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
+import titleImg from './../../../res/title.png'
+
 import playerImg from '../../../res/player.png'
 import playerSetting from '../../../res/player.json'
 
@@ -77,6 +79,7 @@ async function buildSingleTexture(baseURL: string): Promise<Array<Texture>> {
 
 export const textureStore: { [key: string]: Array<Texture> } = {}
 export const init = async (): Promise<void> => {
+  textureStore.title = await buildSingleTexture(titleImg)
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)

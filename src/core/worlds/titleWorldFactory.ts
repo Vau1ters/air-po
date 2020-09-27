@@ -1,6 +1,6 @@
 import { World } from './../../core/ecs/world'
 import { application, windowSize } from './../../core/application'
-import { Container, Sprite, Texture, BaseTexture, Graphics } from 'pixi.js'
+import { Container, Sprite, Graphics } from 'pixi.js'
 import DrawSystem from './../../core/systems/drawSystem'
 import { AirSystem } from './../../core/systems/airSystem'
 import CameraSystem from './../../core/systems/cameraSystem'
@@ -8,10 +8,10 @@ import { ControlSystem, MouseController } from './../../core/systems/controlSyst
 import { MapBuilder } from './../../map/mapBuilder'
 import map from './../../../res/teststage.json'
 import { FamilyBuilder } from './../../core/ecs/family'
-import titleImg from './../../../res/title.png'
 import { Behaviour } from '../ai/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
 import { transition } from '../ai/action/transition'
+import { textureStore } from '../graphics/art'
 
 const titleWorldBehaviour = (titleImage: Sprite) =>
   function*(): Behaviour<World> {
@@ -42,8 +42,7 @@ export class TitleWorldFactory {
     background.endFill()
     drawContainer.addChild(background)
 
-    const base = BaseTexture.from(titleImg)
-    const title = new Sprite(new Texture(base))
+    const title = new Sprite(textureStore.title[0])
     title.interactive = true
 
     const world = new World(titleWorldBehaviour(title))
