@@ -33,12 +33,12 @@ export const addTag = (vine: Entity): void => {
 }
 
 const changeColliderLength = (colliderComponent: ColliderComponent, length: number): void => {
-  for (const collider of colliderComponent.colliders) {
+  for (const collider of colliderComponent.colliders as Array<AABBCollider>) {
     if (collider.tag.has('vine')) {
-      ;(collider as AABBCollider).aabb.size.y = (length / 3) * 16
+      collider.aabb.size.y = (length / 3) * 16
     }
     if (collider.tag.has('vineSensor') && collider.tag.has('wall')) {
-      ;(collider as AABBCollider).aabb.position.y = (length / 3) * 16 - 8
+      collider.aabb.position.y = (length / 3) * 16 - 8
     }
   }
 }
