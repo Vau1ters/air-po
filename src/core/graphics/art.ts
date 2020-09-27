@@ -21,6 +21,10 @@ import needleBulletSetting from '../../../res/needleBullet.json'
 import balloonvineImg from '../../../res/balloonvine.png'
 import balloonvineSetting from '../../../res/balloonvine.json'
 
+import dandelionHeadImg from '../../../res/dandelion_head.png'
+
+import dandelionFluffImg from '../../../res/dandelion_fluff.png'
+
 type Setting = {
   columns: number
   image: string
@@ -64,6 +68,13 @@ async function buildAnimationTexture(baseURL: string, setting: Setting): Promise
   return result
 }
 
+async function buildSingleTexture(baseURL: string): Promise<Array<Texture>> {
+  const base = await loadTexture(baseURL)
+  const result = new Array<Texture>()
+  result.push(new Texture(base))
+  return result
+}
+
 export const textureStore: { [key: string]: Array<Texture> } = {}
 export const init = async (): Promise<void> => {
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
@@ -73,4 +84,6 @@ export const init = async (): Promise<void> => {
   textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
+  textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
+  textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
 }
