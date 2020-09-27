@@ -6,8 +6,8 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
-import wallDefinition from '../../../res/entities/wall.json'
-import { parseSprite } from '../parser/spriteParser'
+import { textureStore } from '../graphics/art'
+import { Sprite } from 'pixi.js'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -41,7 +41,7 @@ export class WallFactory extends EntityFactory {
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
-    const sprite = parseSprite(wallDefinition.sprite)
+    const sprite = new Sprite(textureStore.wall[this.tileId])
     draw.addChild(sprite)
     return entity
   }
