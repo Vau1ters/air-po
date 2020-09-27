@@ -42,6 +42,7 @@ export class WallFactory extends EntityFactory {
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
     const sprite = new Sprite(textureStore.wall[this.tileId])
+    sprite.anchor.set(0.5)
     draw.addChild(sprite)
     return entity
   }
