@@ -51,12 +51,6 @@ type TileSet = {
 
 type Map = {
   compressionlevel: number
-  // editorsettings: {
-  //   export: {
-  //     format: string
-  //     target: string
-  //   }
-  // }
   height: number
   infinite: boolean
   layers: Array<TileLayer | ObjectLayer>

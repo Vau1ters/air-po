@@ -71,7 +71,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
     // 茎
     frame = 'Stalk'
   }
-  frame = frame + ((vine.length - 1) % 3)
+  frame = `${frame}${(vine.length - 1) % 3}`
 
   vine.sprites[vine.sprites.length - 1].changeTo(frame)
 }
