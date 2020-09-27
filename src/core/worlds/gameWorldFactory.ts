@@ -29,9 +29,9 @@ const gameWorldBehaviour = function*(world: World): Behaviour<World> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
   assert(playerFamily.entityArray.length === 1)
   const playerEntity = playerFamily.entityArray[0]
-  const alive = isAlive(playerEntity)
+  const isPlayerAlive = isAlive(playerEntity)
 
-  while (alive()) {
+  while (isPlayerAlive()) {
     yield
   }
   yield* wait(60)
