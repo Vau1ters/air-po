@@ -11,6 +11,10 @@ export class InvincibleComponent {
     this.invincibleTime -= delta
   }
 
+  public getTime(): number {
+    return this.invincibleTime
+  }
+
   public isInvincible(): boolean {
     return this.invincibleTime > 0
   }

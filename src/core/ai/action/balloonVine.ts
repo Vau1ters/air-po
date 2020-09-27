@@ -33,7 +33,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
       if (walls.length === 0) return
       return walls
         .map(wall => {
-          const p = wall.getComponent('Position').add(new Vec2(4, 4))
+          const p = wall.getComponent('Position')
           const v = p.sub(wallDetectionAABB.bound.center)
           return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
         })
@@ -105,7 +105,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
     rootAABB.bound.position.y = lp.y - rootAABB.bound.size.y
 
     wallDetectionAABB.bound.position.x = lp.x - wallDetectionAABB.bound.size.x / 2
-    wallDetectionAABB.bound.position.y = lp.y
+    wallDetectionAABB.bound.position.y = lp.y - wallDetectionAABB.bound.size.y / 2
 
     const rigidBody = entity.getComponent('RigidBody')
 
