@@ -21,9 +21,9 @@ export class VineFactory extends EntityFactory {
   readonly OFFSET_X = -8
   readonly OFFSET_Y = -8
 
-  readonly WALL_SENSOR_WIDTH = 16
+  readonly WALL_SENSOR_WIDTH = 14
   readonly WALL_SENSOR_HEIGHT = 5
-  readonly WALL_SENSOR_OFFSET_X = -8
+  readonly WALL_SENSOR_OFFSET_X = -7
   readonly WALL_SENSOR_OFFSET_Y = 0
 
   readonly AIR_SENSOR_WIDTH = 6
