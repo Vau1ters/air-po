@@ -30,11 +30,12 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
       if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
         airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      Sound.play('shot')
-      // 弾を打つ
-      bulletFactory.setShooter(entity, 'player')
-      bulletFactory.setDirection(mouseDirection())
-      world.addEntity(bulletFactory.create())
+        Sound.play('shot')
+        // 弾を打つ
+        bulletFactory.setShooter(entity, 'player')
+        bulletFactory.setDirection(mouseDirection())
+        world.addEntity(bulletFactory.create())
+      }
     }
     yield
   }
