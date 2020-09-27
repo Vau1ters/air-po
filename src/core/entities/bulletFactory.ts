@@ -96,7 +96,7 @@ export class BulletFactory extends EntityFactory {
 
     const sprite = parseSprite(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
-    const index = Math.floor(((radAngle + 180 + 180 / 16) / 360) * 16) % 16
+    const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
     const directions = [
       'Right',
       'RightDownUp',
