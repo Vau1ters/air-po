@@ -22,12 +22,10 @@ const shouldShrink = (me: Collider, other: Collider): void => {
 
 export const addTag = (vine: Entity): void => {
   for (const collider of vine.getComponent('Collider').colliders) {
-    if (collider.tag.has('vineSensor')) {
-      if (collider.tag.has('wall')) {
-        collider.callbacks.add(canExtend)
-      } else if (collider.tag.has('air')) {
-        collider.callbacks.add(shouldShrink)
-      }
+    if (collider.tag.has('vineWallSensor')) {
+      collider.callbacks.add(canExtend)
+    } else if (collider.tag.has('vineAirSensor')) {
+      collider.callbacks.add(shouldShrink)
     }
   }
 }
@@ -37,7 +35,7 @@ const changeColliderLength = (colliderComponent: ColliderComponent, length: numb
     if (collider.tag.has('vine')) {
       collider.aabb.size.y = (length / 3) * 16
     }
-    if (collider.tag.has('vineSensor') && collider.tag.has('wall')) {
+    if (collider.tag.has('vineWallSensor')) {
       collider.aabb.position.y = (length / 3) * 16 - 8
     }
   }

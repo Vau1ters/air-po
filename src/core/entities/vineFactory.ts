@@ -50,8 +50,7 @@ export class VineFactory extends EntityFactory {
 
     const wallSensor = new AABBDef(new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT))
     wallSensor.offset = new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y)
-    wallSensor.tag.add('vineSensor')
-    wallSensor.tag.add('wall')
+    wallSensor.tag.add('vineWallSensor')
     wallSensor.category = CategoryList.vine.category
     wallSensor.mask = CategoryList.vine.mask
     wallSensor.isSensor = true
@@ -59,8 +58,7 @@ export class VineFactory extends EntityFactory {
 
     const airSensor = new AABBDef(new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT))
     airSensor.offset = new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y)
-    airSensor.tag.add('vineSensor')
-    airSensor.tag.add('air')
+    airSensor.tag.add('vineAirSensor')
     airSensor.category = CategoryList.vine.category
     airSensor.mask = CategoryList.vine.mask
     airSensor.isSensor = true
