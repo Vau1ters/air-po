@@ -194,8 +194,8 @@ export class MapBuilder {
     factory.shouldCollide = cells.some(c => c === 0)
     const wall = factory.create()
     const p = wall.getComponent('Position')
-    p.x = tw * x
-    p.y = th * y
+    p.x = tw * x + tw / 2
+    p.y = th * y - th / 2
     this.world.addEntity(wall)
   }
 

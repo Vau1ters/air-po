@@ -33,7 +33,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
       if (walls.length === 0) return
       return walls
         .map(wall => {
-          const p = wall.getComponent('Position').add(new Vec2(4, 4))
+          const p = wall.getComponent('Position')
           const v = p.sub(wallDetectionAABB.bound.center)
           return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
         })

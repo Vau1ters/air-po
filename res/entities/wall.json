@@ -1,0 +1,9 @@
+{
+  "sprite": {
+    "name": "wall",
+    "state": {
+      "Wall": [0]
+    },
+    "default": "Wall"
+  }
+}
