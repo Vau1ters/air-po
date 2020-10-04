@@ -51,7 +51,8 @@ export default class DrawSystem extends System {
           const h = container.height
           const sw = windowSize.width
           const sh = windowSize.height
-          container.visible = -sw / 2 <= x + w && -sh / 2 <= y + h && x < sw / 2 && y < sh / 2
+          container.visible =
+            -sw / 2 <= x + w / 2 && -sh / 2 <= y + h / 2 && x - w / 2 < sw / 2 && y - h / 2 < sh / 2
           if (container.visible) {
             container.position.set(position.x, position.y)
           }
