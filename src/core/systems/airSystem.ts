@@ -15,6 +15,9 @@ export class AirSystem extends System {
 
   private entity: Entity
 
+  private static readonly AIR_SHRINK_QUANTITY_THRESHOLD = 10
+  private static readonly AIR_SHRINK_QUANTITY_SPEED = 0.3
+
   public constructor(world: World) {
     super(world)
 
@@ -34,6 +37,12 @@ export class AirSystem extends System {
   }
 
   public update(): void {
+    this.removeDeadAir()
+    this.shrinkSmallAir()
+    this.updateBounds()
+  }
+
+  removeDeadAir(): void {
     for (const entity of this.family.entityIterator) {
       const air = entity.getComponent('Air')
 
@@ -42,9 +51,19 @@ export class AirSystem extends System {
         continue
       }
     }
+  }
 
-    const collider = this.entity.getComponent('Collider')
-    const airCollider = collider.colliders[0]
+  shrinkSmallAir(): void {
+    for (const entity of this.family.entityIterator) {
+      const air = entity.getComponent('Air')
+      if (air.quantity < AirSystem.AIR_SHRINK_QUANTITY_THRESHOLD) {
+        air.decrease(AirSystem.AIR_SHRINK_QUANTITY_SPEED)
+      }
+    }
+  }
+
+  updateBounds(): void {
+    const airCollider = this.entity.getComponent('Collider').colliders[0]
     assert(airCollider instanceof AirCollider)
 
     const aabbBounds: AABB[] = airCollider.airFamily.entityArray.map((e: Entity) => {
