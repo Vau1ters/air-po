@@ -49,7 +49,7 @@ export class DamageSystem extends System {
       const invincible = entity.getComponent('Invincible')
       const attack = hitbox.component.entity.getComponent('Attack')
       if (!invincible.isInvincible() && attack.entity !== entity) {
-        hp.hp -= attack.damage
+        hp.hp = Math.max(0, hp.hp - attack.damage)
         invincible.setInvincible()
       }
     }
