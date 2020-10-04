@@ -39,6 +39,7 @@ export class AirSystem extends System {
   public update(): void {
     this.removeDeadAir()
     this.shrinkSmallAir()
+    this.actualizeAir()
     this.updateBounds()
   }
 
@@ -46,7 +47,7 @@ export class AirSystem extends System {
     for (const entity of this.family.entityIterator) {
       const air = entity.getComponent('Air')
 
-      if (air.quantity <= 0) {
+      if (!air.alive) {
         this.world.removeEntity(entity)
         continue
       }
@@ -59,6 +60,13 @@ export class AirSystem extends System {
       if (air.quantity < AirSystem.AIR_SHRINK_QUANTITY_THRESHOLD) {
         air.decrease(AirSystem.AIR_SHRINK_QUANTITY_SPEED)
       }
+    }
+  }
+
+  actualizeAir(): void {
+    for (const entity of this.family.entityIterator) {
+      const air = entity.getComponent('Air')
+      air.actualize()
     }
   }
 

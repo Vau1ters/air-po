@@ -1,20 +1,39 @@
 export class AirComponent {
+  private static readonly QUANTITY_ACTUALIZE_MIN_SPEED = 1
+  private static readonly QUANTITY_ACTUALIZE_RATE = 0.5
   private _quantity: number
+  private potentialQuantity: number
   public hit = false
 
   public constructor(initialQuantity: number) {
-    this._quantity = initialQuantity
+    this._quantity = 0
+    this.potentialQuantity = initialQuantity
   }
 
   public get quantity(): number {
     return this._quantity
   }
 
+  public get alive(): boolean {
+    return this.quantity > 0 || this.potentialQuantity > 0
+  }
+
   public decrease(quantity: number): void {
-    this._quantity = Math.max(0, this._quantity - quantity)
+    this.potentialQuantity -= Math.min(this.quantity, quantity)
   }
 
   public increase(quantity: number): void {
-    this._quantity = this._quantity + quantity
+    this.potentialQuantity += quantity
+  }
+
+  public actualize(): void {
+    const speed = Math.max(
+      Math.abs(this.potentialQuantity) * AirComponent.QUANTITY_ACTUALIZE_RATE,
+      AirComponent.QUANTITY_ACTUALIZE_MIN_SPEED
+    )
+    const delta =
+      Math.sign(this.potentialQuantity) * Math.min(speed, Math.abs(this.potentialQuantity))
+    this.potentialQuantity -= delta
+    this._quantity += delta
   }
 }
