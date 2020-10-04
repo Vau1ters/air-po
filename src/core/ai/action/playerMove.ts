@@ -12,7 +12,10 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
 
   const velocity = body.velocity
 
+  let isLandingPrevFrame = player.landing
+
   while (true) {
+
     if (KeyController.isActionPressing('MoveRight')) {
       if (velocity.x < 100) velocity.x += 10
       if (player.landing) animState.state = 'Walking'
@@ -27,6 +30,7 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
       if (player.landing) animState.state = 'Standing'
     }
     if (player.landing) {
+      if (!isLandingPrevFrame) Sound.play('foot')
       velocity.y = 0
     }
     if (KeyController.isActionPressing('Jump') && player.landing) {
@@ -34,7 +38,9 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
       animState.state = 'Jumping'
       Sound.play('jump')
     }
+    isLandingPrevFrame = player.landing
     player.landing = false
+
     yield
   }
 }
