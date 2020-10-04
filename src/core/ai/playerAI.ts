@@ -12,7 +12,6 @@ import { playerItemAction } from './action/playerItemAction'
 import { invincibleTime } from './action/invincibleTime'
 import { animate } from './action/animate'
 import { wait } from './action/wait'
-import { kill } from './action/kill'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
   yield* parallel([
@@ -29,5 +28,4 @@ export const playerAI = function*(entity: Entity, world: World): Behaviour<void>
   yield* suspendable(isAlive(entity), playerControl(entity, world))
   yield* animate(entity, 'Dying')
   yield* wait(60)
-  yield* kill(entity, world)
 }
