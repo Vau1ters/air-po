@@ -21,8 +21,8 @@ export class PlayerControlSystem extends System {
         if (c.tag.has('playerFoot')) {
           c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
-        if (c.tag.has('playerBody')) {
-          c.callbacks.add(PlayerControlSystem.bodyCollisionCallback)
+        if (c.tag.has('playerItemPicker')) {
+          c.callbacks.add(PlayerControlSystem.itemPickerCallback)
         }
       }
     }
@@ -39,7 +39,7 @@ export class PlayerControlSystem extends System {
     }
   }
 
-  private static bodyCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
+  private static itemPickerCallback(playerCollider: Collider, otherCollider: Collider): void {
     const player = playerCollider.component.entity.getComponent('Player')
     const other = otherCollider.component.entity
     if (other.hasComponent('PickupTarget')) {
