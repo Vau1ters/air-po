@@ -163,6 +163,7 @@ export default class PhysicsSystem extends System {
         const ratio = (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
 
         const sumMass = body1.invMass + body2.invMass
+        if (sumMass === 0) continue
         // 反発係数
         const rest = 1 + body1.restitution * body2.restitution
         // 中心座標の位置関係を見て押し出す向きを決める

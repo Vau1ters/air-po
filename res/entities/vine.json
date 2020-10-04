@@ -1,0 +1,14 @@
+{
+  "sprite": {
+    "name": "vine",
+    "state": {
+      "Root0": [0],
+      "Root1": [1],
+      "Root2": [2],
+      "Stalk0": [3],
+      "Stalk1": [4],
+      "Stalk2": [5]
+    },
+    "default": "Root0"
+  }
+}
