@@ -19,7 +19,7 @@ export class AirComponent {
   }
 
   public decrease(quantity: number): void {
-    this.potentialQuantity -= Math.min(this.quantity, quantity)
+    this.potentialQuantity -= Math.min(quantity, this.quantity + this.potentialQuantity)
   }
 
   public increase(quantity: number): void {
