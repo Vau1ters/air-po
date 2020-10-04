@@ -15,7 +15,6 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
   let isLandingPrevFrame = player.landing
 
   while (true) {
-
     if (KeyController.isActionPressing('MoveRight')) {
       if (velocity.x < 100) velocity.x += 10
       if (player.landing) animState.state = 'Walking'
