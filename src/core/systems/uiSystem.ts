@@ -3,6 +3,8 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Container, Graphics } from 'pixi.js'
 import { windowSize } from '../application'
+import { MouseController } from './controlSystem'
+import { Vec2 } from '../math/vec2'
 
 export default class UiSystem extends System {
   private playerFamily: Family
@@ -14,6 +16,7 @@ export default class UiSystem extends System {
   private hpGauge: Graphics = new Graphics()
   private playerHpGauge: Graphics = new Graphics()
   private playerAirGauge: Graphics = new Graphics()
+  private laserSight: Graphics = new Graphics()
 
   public constructor(world: World, uiContainer: Container, gameWorldUiContainer: Container) {
     super(world)
@@ -24,6 +27,8 @@ export default class UiSystem extends System {
     this.uiContainer.addChild(this.playerHpGauge)
     this.playerAirGauge.position.set(0, 16)
     this.uiContainer.addChild(this.playerAirGauge)
+    this.laserSight.position.set(0)
+    this.uiContainer.addChild(this.laserSight)
 
     uiContainer.addChild(this.uiContainer)
     gameWorldUiContainer.addChild(this.gameWorldUiContainer)
@@ -60,5 +65,31 @@ export default class UiSystem extends System {
       this.hpGauge.drawRect(position.x - 8, position.y - 12, (hp.hp / hp.maxHp) * 16, 2)
     }
     this.hpGauge.endFill()
+
+    const mousePosition = MouseController.position
+    const mouseX = mousePosition.x
+    const mouseY = mousePosition.y
+    const direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+    const terminal = direction
+      .normalize()
+      .mul(direction.length() - 8)
+      .add(new Vec2(windowSize.width / 2, windowSize.height / 2))
+    this.laserSight.clear()
+    this.laserSight.lineStyle(0.4, 0xff0000)
+    this.laserSight.moveTo(windowSize.width / 2, windowSize.height / 2)
+    this.laserSight.lineTo(terminal.x, terminal.y)
+    this.laserSight.drawCircle(mouseX, mouseY, 8)
+    this.laserSight.moveTo(mouseX - 2, mouseY)
+    this.laserSight.lineTo(mouseX + 2, mouseY)
+    this.laserSight.moveTo(mouseX, mouseY - 2)
+    this.laserSight.lineTo(mouseX, mouseY + 2)
+    this.laserSight.moveTo(mouseX - 8, mouseY)
+    this.laserSight.lineTo(mouseX - 5, mouseY)
+    this.laserSight.moveTo(mouseX + 5, mouseY)
+    this.laserSight.lineTo(mouseX + 8, mouseY)
+    this.laserSight.moveTo(mouseX, mouseY - 8)
+    this.laserSight.lineTo(mouseX, mouseY - 5)
+    this.laserSight.moveTo(mouseX, mouseY + 5)
+    this.laserSight.lineTo(mouseX, mouseY + 8)
   }
 }
