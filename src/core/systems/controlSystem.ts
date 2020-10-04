@@ -1,5 +1,7 @@
+import { application } from '../application'
 import { System } from '../ecs/system'
 import { World } from '../ecs/world'
+import { Vec2 } from '../math/vec2'
 
 export type KeyActionType = 'MoveLeft' | 'MoveRight' | 'MoveUp' | 'MoveDown' | 'Jump' | 'Jet'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
@@ -177,6 +179,12 @@ export class MouseController {
 
   public static isMousePressing(button: MouseButton): boolean {
     return !!this.mousePressingMap.get(button)
+  }
+
+  public static get position(): Vec2 {
+    const position = application.renderer.plugins.interaction.mouse.global
+    const scale = application.stage.scale
+    return new Vec2(position.x / scale.x, position.y / scale.y)
   }
 
   // 毎フレーム呼び出す
