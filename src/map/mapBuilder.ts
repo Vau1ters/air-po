@@ -94,7 +94,7 @@ export class MapBuilder {
   }
 
   private buildAir(airLayer: ObjectLayer): void {
-    assert(airLayer.objects)
+    assert(airLayer.objects.length > 0)
     for (const airData of airLayer.objects) {
       const radius = airData.width / 2
       const x = airData.x + radius
