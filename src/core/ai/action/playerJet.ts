@@ -4,7 +4,7 @@ import { KeyController } from '../../systems/controlSystem'
 import { Vec2 } from '../../math/vec2'
 
 const SETTING = {
-  CONSUME_SPEED: 10,
+  CONSUME_SPEED: 1,
   JET_SPEED: 180,
 }
 const calcPlayerAngle = (): Vec2 => {
