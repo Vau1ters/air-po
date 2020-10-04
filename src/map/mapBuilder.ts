@@ -5,6 +5,7 @@ import { AirFactory } from '../core/entities/airFactory'
 import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
+import { MossFactory } from '../core/entities/mossFactory'
 
 type MapObject = {
   ellipse: boolean
@@ -85,6 +86,9 @@ export class MapBuilder {
         case 'map':
           this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
           break
+        case 'moss':
+          this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
+          break
       }
     }
   }
@@ -145,6 +149,12 @@ export class MapBuilder {
             firstgid,
             builder: (pos: number[]) =>
               this.buildNPC(pos, tileSize, { type: content.name as NPCType, size }),
+          })
+          break
+        case 'moss':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) => this.buildMoss(pos, tileSize),
           })
           break
       }
@@ -218,6 +228,16 @@ export class MapBuilder {
     playerPosition.x = x * tw + w / 2
     playerPosition.y = y * th - h / 2
     this.world.addEntity(player)
+  }
+
+  private buildMoss(pos: number[], tileSize: number[]): void {
+    const [x, y] = pos
+    const [tw, th] = tileSize
+    const moss = new MossFactory(this.world).create()
+    const mossPosition = moss.getComponent('Position')
+    mossPosition.x = x * tw + tw / 2
+    mossPosition.y = y * th - th / 2
+    this.world.addEntity(moss)
   }
 
   private calcWallId(cell: number[]): number {

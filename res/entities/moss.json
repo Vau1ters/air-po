@@ -1,0 +1,9 @@
+{
+    "sprite": {
+      "name": "moss",
+      "state": {
+        "Default": [0]
+      },
+      "default": "Default"
+    }
+  }

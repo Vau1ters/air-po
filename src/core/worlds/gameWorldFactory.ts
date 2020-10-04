@@ -24,6 +24,8 @@ import { TitleWorldFactory } from './titleWorldFactory'
 import { isAlive } from '../ai/condition/isAlive'
 import { assert } from '../../utils/assertion'
 import { wait } from '../ai/action/wait'
+import { FilterSystem } from '../systems/filterSystem'
+import { LightSystem } from '../systems/lightSystem'
 
 const gameWorldBehaviour = function*(world: World): Behaviour<World> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -68,7 +70,6 @@ export class GameWorldFactory {
     uiContainer.zIndex = Infinity
     world.stage.addChild(uiContainer)
 
-    const airSystem = new AirSystem(world, drawContainer)
     world.addSystem(
       new AISystem(world),
       new PhysicsSystem(world),
@@ -77,7 +78,9 @@ export class GameWorldFactory {
       new BulletSystem(world),
       new InvincibleSystem(world),
       new DamageSystem(world),
-      airSystem,
+      new FilterSystem(world, gameWorldContainer),
+      new AirSystem(world),
+      new LightSystem(world),
       new AirHolderSystem(world),
       new DrawSystem(world, drawContainer),
       new UiSystem(world, uiContainer, gameWorldUiContainer),
@@ -88,11 +91,6 @@ export class GameWorldFactory {
 
     const mapBuilder = new MapBuilder(world)
     mapBuilder.build(map)
-
-    for (const player of new FamilyBuilder(world).include('Player').build().entityIterator) {
-      const position = player.getComponent('Position')
-      airSystem.offset = position
-    }
 
     return world
   }

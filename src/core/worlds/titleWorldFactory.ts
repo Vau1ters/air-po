@@ -2,12 +2,10 @@ import { World } from './../../core/ecs/world'
 import { application, windowSize } from './../../core/application'
 import { Container, Sprite, Graphics } from 'pixi.js'
 import DrawSystem from './../../core/systems/drawSystem'
-import { AirSystem } from './../../core/systems/airSystem'
 import CameraSystem from './../../core/systems/cameraSystem'
 import { ControlSystem, MouseController } from './../../core/systems/controlSystem'
 import { MapBuilder } from './../../map/mapBuilder'
 import map from './../../../res/teststage.json'
-import { FamilyBuilder } from './../../core/ecs/family'
 import { Behaviour } from '../ai/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
 import { transition } from '../ai/action/transition'
@@ -49,10 +47,7 @@ export class TitleWorldFactory {
     world.stage.addChild(gameWorldContainer)
     world.stage.addChild(title)
 
-    const airSystem = new AirSystem(world, gameWorldContainer)
-
     world.addSystem(
-      airSystem,
       new DrawSystem(world, drawContainer),
       new CameraSystem(world, drawContainer, background),
       new ControlSystem(world)
@@ -60,11 +55,6 @@ export class TitleWorldFactory {
 
     const mapBuilder = new MapBuilder(world)
     mapBuilder.build(map)
-
-    for (const player of new FamilyBuilder(world).include('Player').build().entityIterator) {
-      const position = player.getComponent('Position')
-      airSystem.offset = position
-    }
 
     return world
   }

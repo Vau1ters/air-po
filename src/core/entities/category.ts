@@ -8,6 +8,8 @@ export enum Category {
   BULLET,
   BALLOON_VINE,
   AIR,
+  SEARCH,
+  LIGHT,
   VINE,
 }
 
