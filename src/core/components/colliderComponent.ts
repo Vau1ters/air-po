@@ -111,7 +111,7 @@ export class AirDef implements ColliderDef {
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
   public category = Category.OTHER
-  public mask = new CategorySet(Category.PLAYER)
+  public mask = new CategorySet()
   public constructor(public airFamily: Family) {}
 }
 

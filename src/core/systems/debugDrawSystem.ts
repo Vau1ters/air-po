@@ -11,7 +11,7 @@ import { Vec2 } from '../math/vec2'
 
 export default class DebugDrawSystem extends System {
   private state = {
-    position: true,
+    position: false,
     collider: false,
     bvh: false,
   }

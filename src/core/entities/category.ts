@@ -4,9 +4,9 @@ export enum Category {
   STATIC_WALL,
   DYNAMIC_WALL,
   PHYSICS,
-  PLAYER,
+  PLAYER_HITBOX,
   ATTACK,
-  HIT_BOX,
+  HITBOX,
   ITEM,
   AIR,
   SENSOR,
@@ -52,10 +52,10 @@ export const CategoryList = {
   balloonVine: {
     grip: {
       category: Category.ITEM,
-      mask: new CategorySet(Category.PLAYER),
+      mask: new CategorySet(Category.SENSOR),
     },
     body: {
-      category: Category.HIT_BOX,
+      category: Category.HITBOX,
       mask: new CategorySet(Category.ATTACK),
     },
     root: {
@@ -77,7 +77,7 @@ export const CategoryList = {
   },
   dandelionFluff: {
     category: Category.ITEM,
-    mask: new CategorySet(Category.PLAYER),
+    mask: new CategorySet(Category.SENSOR),
   },
   enemy: {
     body: {
@@ -85,12 +85,12 @@ export const CategoryList = {
       mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
     },
     hitBox: {
-      category: Category.HIT_BOX,
+      category: Category.HITBOX,
       mask: new CategorySet(Category.ATTACK),
     },
     attack: {
       category: Category.ATTACK,
-      mask: new CategorySet(Category.PLAYER),
+      mask: new CategorySet(Category.PLAYER_HITBOX),
     },
   },
   moss: {
@@ -105,30 +105,34 @@ export const CategoryList = {
   },
   player: {
     body: {
-      category: Category.PLAYER,
-      mask: new CategorySet(
-        Category.STATIC_WALL,
-        Category.DYNAMIC_WALL,
-        Category.ATTACK,
-        Category.ITEM,
-        Category.AIR,
-        Category.SENSOR,
-        Category.OTHER
-      ),
+      category: Category.PHYSICS,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+    },
+    hitBox: {
+      category: Category.PLAYER_HITBOX,
+      mask: new CategorySet(Category.ATTACK),
+    },
+    itemSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.ITEM),
+    },
+    airSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.AIR),
     },
     foot: {
-      category: Category.PLAYER,
+      category: Category.PHYSICS,
       mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
     },
     attack: {
       category: Category.ATTACK,
-      mask: new CategorySet(Category.HIT_BOX),
+      mask: new CategorySet(Category.HITBOX),
     },
   },
   vine: {
     body: {
       category: Category.DYNAMIC_WALL,
-      mask: new CategorySet(Category.PLAYER, Category.PHYSICS),
+      mask: new CategorySet(Category.PHYSICS),
     },
     wallSensor: {
       category: Category.SENSOR,
@@ -141,18 +145,11 @@ export const CategoryList = {
   },
   wall: {
     category: Category.STATIC_WALL,
-    mask: new CategorySet(
-      Category.ATTACK,
-      Category.HIT_BOX,
-      Category.OTHER,
-      Category.PLAYER,
-      Category.SENSOR,
-      Category.PHYSICS
-    ),
+    mask: new CategorySet(Category.OTHER, Category.SENSOR, Category.PHYSICS),
   },
   air: {
     category: Category.AIR,
-    mask: new CategorySet(Category.PLAYER, Category.LIGHT, Category.SENSOR),
+    mask: new CategorySet(Category.SENSOR),
   },
   lightSearcher: {
     category: Category.SENSOR,

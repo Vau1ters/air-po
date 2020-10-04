@@ -65,21 +65,37 @@ export class PlayerFactory extends EntityFactory {
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
     applyCategory(aabbBody, CategoryList.player.body)
-    aabbBody.tag.add('playerBody')
-    aabbBody.tag.add('airHolderBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
-    const aabbFoot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
-    applyCategory(aabbFoot, CategoryList.player.foot)
-    aabbFoot.tag.add('playerFoot')
-    aabbFoot.offset = new Vec2(
-      this.OFFSET_X + this.FOOT_OFFSET_X,
-      this.OFFSET_Y + this.FOOT_OFFSET_Y
-    )
-    aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
-    collider.createCollider(aabbFoot)
+    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    applyCategory(hitBox, CategoryList.player.hitBox)
+    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(hitBox)
+
+    const itemSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    applyCategory(itemSensor, CategoryList.player.itemSensor)
+    itemSensor.tag.add('playerItemPicker')
+    itemSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    itemSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(itemSensor)
+
+    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    applyCategory(airSensor, CategoryList.player.airSensor)
+    airSensor.tag.add('airHolderBody')
+    airSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    airSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(airSensor)
+
+    const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
+    applyCategory(foot, CategoryList.player.foot)
+    foot.tag.add('playerFoot')
+    foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
+    foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
+    foot.isSensor = true
+    collider.createCollider(foot)
 
     const sprite = parseSprite(playerDefinition.sprite)
 
