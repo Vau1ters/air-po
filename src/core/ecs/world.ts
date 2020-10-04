@@ -1,18 +1,50 @@
 import { Entity } from './entity'
 import { System } from './system'
 import { EventNotifier } from '../eventNotifier'
+import { Container } from 'pixi.js'
+import { application } from '../application'
+import { Behaviour } from '../ai/behaviour'
+import { assert } from '../../utils/assertion'
 
 export class World {
   private readonly entities: Set<Entity>
   private readonly systems: Set<System>
+  public readonly stage: Container
   public readonly entityAddedEvent: EventNotifier<Entity>
   public readonly entityRemovedEvent: EventNotifier<Entity>
+  public readonly behaviour: Behaviour<World>
 
-  public constructor() {
+  private readonly _updateCallback = (): void => {
+    const { done, value: nextWorld } = this.behaviour.next()
+
+    this.systems.forEach(system => {
+      system.update(1 / 60)
+    })
+
+    if (!!done === true) {
+      assert(nextWorld)
+      nextWorld.start()
+      this.end()
+    }
+  }
+
+  public constructor(behaviour: (world: World) => Behaviour<World>) {
     this.entities = new Set()
     this.systems = new Set()
+    this.stage = new Container()
     this.entityAddedEvent = new EventNotifier()
     this.entityRemovedEvent = new EventNotifier()
+    this.behaviour = behaviour(this)
+  }
+
+  public start(): void {
+    application.stage.addChild(this.stage)
+    application.ticker.add(this._updateCallback)
+  }
+
+  public end(): void {
+    application.ticker.remove(this._updateCallback)
+    application.stage.removeChild(this.stage)
   }
 
   public get entitySet(): Set<Entity> {
@@ -65,12 +97,5 @@ export class World {
     for (const system of systems) {
       this.systems.delete(system)
     }
-  }
-
-  public update(delta: number): void {
-    delta = 1 / 60
-    this.systems.forEach(system => {
-      system.update(delta)
-    })
   }
 }

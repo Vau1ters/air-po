@@ -1,5 +1,7 @@
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
+import titleImg from './../../../res/title.png'
+
 import playerImg from '../../../res/player.png'
 import playerSetting from '../../../res/player.json'
 
@@ -8,6 +10,9 @@ import wallSetting from '../../../res/wall.json'
 
 import enemy1Img from '../../../res/enemy1.png'
 import enemy1Setting from '../../../res/enemy1.json'
+
+import vineImg from '../../../res/vine.png'
+import vineSetting from '../../../res/vine.json'
 
 import snibeeImg from '../../../res/snibee.png'
 import snibeeSetting from '../../../res/snibee.json'
@@ -79,9 +84,11 @@ async function buildSingleTexture(baseURL: string): Promise<Array<Texture>> {
 
 export const textureStore: { [key: string]: Array<Texture> } = {}
 export const init = async (): Promise<void> => {
+  textureStore.title = await buildSingleTexture(titleImg)
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
+  textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
   textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)

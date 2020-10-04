@@ -10,6 +10,7 @@ export enum Category {
   AIR,
   SEARCH,
   LIGHT,
+  VINE,
 }
 
 export class CategorySet extends Set<Category> {
@@ -79,6 +80,10 @@ export const CategoryList = {
   wall: {
     category: Category.WALL,
     mask: CategorySet.ALL.negate(Category.WALL),
+  },
+  vine: {
+    category: Category.VINE,
+    mask: CategorySet.ALL.negate(Category.VINE),
   },
   air: {
     category: Category.AIR,

@@ -3,13 +3,21 @@
     "name": "needleBullet",
     "state": {
       "RightDown": [0],
-      "Down": [1],
-      "LeftDown": [2],
-      "Left": [3],
-      "LeftUp": [4],
-      "Up": [5],
-      "RightUp": [6],
-      "Right": [7]
+      "RightDownDown": [1],
+      "Down": [2],
+      "LeftDownDown": [3],
+      "LeftDown": [4],
+      "LeftDownUp": [5],
+      "Left": [6],
+      "LeftUpDown": [7],
+      "LeftUp": [8],
+      "LeftUpUp": [9],
+      "Up": [10],
+      "RightUpUp": [11],
+      "RightUp": [12],
+      "RightUpDown": [13],
+      "Right": [14],
+      "RightDownUp": [15]
     },
     "default": "Right"
   }

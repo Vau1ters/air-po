@@ -1,7 +1,7 @@
 { "columns":2,
  "image":"ballBullet.png",
  "imageheight":8,
- "imagewidth":16,
+ "imagewidth":32,
  "margin":0,
  "name":"ballBullet",
  "spacing":0,

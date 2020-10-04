@@ -96,23 +96,27 @@ export class BulletFactory extends EntityFactory {
 
     const sprite = parseSprite(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
-    if (-157.5 <= radAngle && radAngle < -112.5) {
-      sprite.changeTo('LeftUp')
-    } else if (-112.5 <= radAngle && radAngle < -67.5) {
-      sprite.changeTo('Up')
-    } else if (-67.5 <= radAngle && radAngle < -22.5) {
-      sprite.changeTo('RightUp')
-    } else if (-22.5 <= radAngle && radAngle < 22.5) {
-      sprite.changeTo('Right')
-    } else if (22.5 <= radAngle && radAngle < 67.5) {
-      sprite.changeTo('RightDown')
-    } else if (67.5 <= radAngle && radAngle < 112.5) {
-      sprite.changeTo('Down')
-    } else if (112.5 <= radAngle && radAngle < 157.5) {
-      sprite.changeTo('LeftDown')
-    } else {
-      sprite.changeTo('Left')
-    }
+    const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
+    const directions = [
+      'Right',
+      'RightDownUp',
+      'RightDown',
+      'RightDownDown',
+      'Down',
+      'LeftDownDown',
+      'LeftDown',
+      'LeftDownUp',
+      'Left',
+      'LeftUpDown',
+      'LeftUp',
+      'LeftUpUp',
+      'Up',
+      'RightUpUp',
+      'RightUp',
+      'RightUpDown',
+    ]
+    sprite.changeTo(directions[index])
+
     draw.addChild(sprite)
 
     entity.addComponent('Position', position)

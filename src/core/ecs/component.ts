@@ -14,6 +14,7 @@ import { InvincibleComponent } from '../components/invincibleComponent'
 import { BVHComponent } from '../components/bvhComponent'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
+import { VineComponent } from '../components/vineComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { LightComponent } from '../components/lightComponent'
 
@@ -34,6 +35,7 @@ export interface ComponentMap {
   BVH: BVHComponent
   Camera: CameraComponent
   AnimationState: AnimationStateComponent
+  Vine: VineComponent
   PickupTarget: PickupTargetComponent
   Light: LightComponent
 }
