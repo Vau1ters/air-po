@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { CategorySet, Category, CategoryList } from './category'
+import { CategoryList, applyCategory } from './category'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
@@ -58,36 +58,39 @@ export class BalloonVineFactory extends EntityFactory {
 
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
 
-    const gripAABB = new AABBDef(new Vec2(0, 0))
-    gripAABB.tag.add('balloonVine')
-    gripAABB.category = Category.DEFAULT
-    gripAABB.mask = new CategorySet(Category.PLAYER)
-    gripAABB.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    gripAABB.isSensor = true
-    collider.createCollider(gripAABB)
+    const grip = new AABBDef(new Vec2(0, 0))
+    applyCategory(grip, CategoryList.balloonVine.grip)
+    grip.tag.add('balloonVine')
+    grip.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    grip.isSensor = true
+    collider.createCollider(grip)
 
-    const bodyAABB = new AABBDef(new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT))
-    bodyAABB.tag.add('balloonVine')
-    bodyAABB.tag.add('airHolderBody')
-    bodyAABB.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    bodyAABB.category = CategoryList.balloonVine.category
-    bodyAABB.mask = CategoryList.balloonVine.mask
-    bodyAABB.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    bodyAABB.isSensor = true
-    collider.createCollider(bodyAABB)
+    const hitBox = new AABBDef(new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT))
+    applyCategory(hitBox, CategoryList.balloonVine.body)
+    hitBox.tag.add('balloonVine')
+    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    hitBox.isSensor = true
+    collider.createCollider(hitBox)
+
+    const airSensor = new AABBDef(new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT))
+    applyCategory(airSensor, CategoryList.balloonVine.airSensor)
+    airSensor.tag.add('airHolderBody')
+    airSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    airSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    airSensor.isSensor = true
+    collider.createCollider(airSensor)
 
     const rootAABB = new AABBDef(new Vec2(this.ROOT_WIDTH, this.ROOT_HEIGHT))
+    applyCategory(rootAABB, CategoryList.balloonVine.root)
     rootAABB.tag.add('balloonVine')
-    rootAABB.category = Category.DEFAULT
-    rootAABB.mask = new CategorySet(Category.WALL)
     rootAABB.maxClipTolerance = new Vec2(0, 0)
     rootAABB.isSensor = false
     collider.createCollider(rootAABB)
 
     const wallAABB = new AABBDef(new Vec2(this.WALL_WIDTH, this.WALL_HEIGHT))
+    applyCategory(wallAABB, CategoryList.balloonVine.wallSensor)
     wallAABB.tag.add('balloonVine')
-    wallAABB.category = Category.DEFAULT
-    wallAABB.mask = new CategorySet(Category.WALL)
     wallAABB.maxClipTolerance = new Vec2(0, 0)
     wallAABB.isSensor = true
     collider.createCollider(wallAABB)

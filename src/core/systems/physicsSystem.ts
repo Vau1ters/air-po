@@ -45,7 +45,7 @@ export default class PhysicsSystem extends System {
     }
     for (const entity of this.bvhFamily.entityIterator) {
       const bvh = entity.getComponent('BVH')
-      if (bvh.category === Category.WALL && bvh.root) continue
+      if (bvh.category === Category.STATIC_WALL && bvh.root) continue
       const colliders = colliderMap.get(bvh.category)
       assert(colliders)
       bvh.build(colliders)
@@ -80,7 +80,7 @@ export default class PhysicsSystem extends System {
 
       const collidedEntityIdSet = new Set<number>()
       for (const c of collider1.colliders) {
-        if (c.category === Category.WALL) continue // for performance
+        if (c.category === Category.STATIC_WALL) continue // for performance
         for (const m of c.mask) {
           const bvh = bvhs[m]
           assert(bvh)

@@ -91,7 +91,7 @@ export class AABBDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
-  public category = Category.DEFAULT
+  public category = Category.OTHER
   public mask = CategorySet.ALL
   public constructor(public size: Vec2) {}
 }
@@ -101,7 +101,7 @@ export class CircleDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
-  public category = Category.DEFAULT
+  public category = Category.OTHER
   public mask = CategorySet.ALL
   public constructor(public radius: number) {}
 }
@@ -110,7 +110,7 @@ export class AirDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
-  public category = Category.DEFAULT
+  public category = Category.OTHER
   public mask = new CategorySet(Category.PLAYER)
   public constructor(public airFamily: Family) {}
 }

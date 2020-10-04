@@ -5,7 +5,7 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../math/vec2'
-import { CategoryList } from './category'
+import { applyCategory, CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import ballBulletDefinition from '../../../res/entities/ballBullet.json'
 import needleBulletDefinition from '../../../res/entities/needleBullet.json'
@@ -69,11 +69,10 @@ export class BulletFactory extends EntityFactory {
     const collider = new ColliderComponent(entity)
 
     const aabbBody = new AABBDef(new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT))
-    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    aabbBody.category = CategoryList.bulletBody.category
-    aabbBody.mask = CategoryList.bulletBody.mask
-    aabbBody.maxClipTolerance = new Vec2(0, 0)
+    applyCategory(aabbBody, CategoryList.bulletBody)
     aabbBody.tag.add('bulletBody')
+    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
+    aabbBody.maxClipTolerance = new Vec2(0, 0)
     collider.createCollider(aabbBody)
 
     // 攻撃判定
@@ -82,15 +81,13 @@ export class BulletFactory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
-    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    attackHitBox.tag.add('AttackHitBox')
     if (this.shooterType === 'enemy') {
-      attackHitBox.category = CategoryList.enemyAttack.category
-      attackHitBox.mask = CategoryList.enemyAttack.mask
+      applyCategory(attackHitBox, CategoryList.enemy.attack)
     } else if (this.shooterType === 'player') {
-      attackHitBox.category = CategoryList.playerAttack.category
-      attackHitBox.mask = CategoryList.playerAttack.mask
+      applyCategory(attackHitBox, CategoryList.player.attack)
     }
+    attackHitBox.tag.add('AttackHitBox')
+    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 

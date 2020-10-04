@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '../components/rigidBodyComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
-import { CategoryList } from './category'
+import { applyCategory, CategoryList } from './category'
 import { textureStore } from '../graphics/art'
 import { Sprite } from 'pixi.js'
 
@@ -26,10 +26,9 @@ export class WallFactory extends EntityFactory {
 
     if (this.shouldCollide) {
       const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+      applyCategory(aabb, CategoryList.wall)
       aabb.tag.add('wall')
       aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-      aabb.category = CategoryList.wall.category
-      aabb.mask = CategoryList.wall.mask
       const collider = new ColliderComponent(entity)
       collider.createCollider(aabb)
       entity.addComponent('Collider', collider)

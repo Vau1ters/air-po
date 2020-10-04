@@ -6,7 +6,7 @@ import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { CategoryList } from './category'
+import { applyCategory, CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
@@ -47,13 +47,19 @@ export class Enemy1Factory extends EntityFactory {
     const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    applyCategory(aabbBody, CategoryList.enemy.body)
     aabbBody.tag.add('enemy1Body')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.category = CategoryList.enemyBody.category
-    aabbBody.mask = CategoryList.enemyBody.mask
-
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
+
+    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+    applyCategory(hitBox, CategoryList.enemy.hitBox)
+    hitBox.tag.add('enemy1Body')
+    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    hitBox.isSensor = true
+    collider.createCollider(hitBox)
 
     // 攻撃判定
     const attack = new AttackComponent(1, entity)
@@ -61,10 +67,9 @@ export class Enemy1Factory extends EntityFactory {
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
     )
+    applyCategory(attackHitBox, CategoryList.enemy.attack)
     attackHitBox.tag.add('AttackHitBox')
     attackHitBox.offset = new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y)
-    attackHitBox.category = CategoryList.enemyAttack.category
-    attackHitBox.mask = CategoryList.enemyAttack.mask
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 

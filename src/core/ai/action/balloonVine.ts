@@ -18,7 +18,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
   himo.tint = 0x22ff22
   draw.addChild(himo)
 
-  const [gripAABB, _, rootAABB, wallDetectionAABB] = entity.getComponent('Collider')
+  const [gripAABB, _, __, rootAABB, wallDetectionAABB] = entity.getComponent('Collider')
     .colliders as Array<AABBCollider>
 
   const targetWall = ((): { update: () => void; get: () => PositionComponent | undefined } => {

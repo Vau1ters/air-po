@@ -1,20 +1,20 @@
+import { ColliderDef } from '../components/colliderComponent'
+
 export enum Category {
-  DEFAULT,
-  WALL,
+  STATIC_WALL,
+  DYNAMIC_WALL,
+  PHYSICS,
   PLAYER,
-  ENEMY,
-  PLAYER_ATTACK,
-  ENEMY_ATTACK,
-  BULLET,
-  BALLOON_VINE,
+  ATTACK,
+  HIT_BOX,
+  ITEM,
   AIR,
-  SEARCH,
+  SENSOR,
   LIGHT,
-  VINE,
+  OTHER,
 }
 
 export class CategorySet extends Set<Category> {
-  public static readonly MOVERS = new CategorySet(Category.PLAYER, Category.ENEMY)
   public static readonly ALL = new CategorySet(
     ...Object.entries(Category)
       .filter(t => typeof t[1] === 'number')
@@ -49,44 +49,121 @@ export class CategorySet extends Set<Category> {
 }
 
 export const CategoryList = {
-  bulletBody: {
-    category: Category.BULLET,
-    mask: new CategorySet(Category.WALL),
-  },
-  enemyBody: {
-    category: Category.ENEMY,
-    mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
-  },
-  enemyAttack: {
-    category: Category.ENEMY_ATTACK,
-    mask: new CategorySet(Category.PLAYER, Category.BALLOON_VINE),
-  },
-  playerBody: {
-    category: Category.PLAYER,
-    mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
-  },
-  playerFoot: {
-    category: Category.PLAYER,
-    mask: CategorySet.ALL.negateSet(CategorySet.MOVERS),
-  },
-  playerAttack: {
-    category: Category.PLAYER_ATTACK,
-    mask: new CategorySet(Category.ENEMY, Category.BALLOON_VINE),
-  },
   balloonVine: {
-    category: Category.BALLOON_VINE,
-    mask: new CategorySet(Category.AIR, Category.ENEMY_ATTACK, Category.PLAYER_ATTACK),
+    grip: {
+      category: Category.ITEM,
+      mask: new CategorySet(Category.PLAYER),
+    },
+    body: {
+      category: Category.HIT_BOX,
+      mask: new CategorySet(Category.ATTACK),
+    },
+    root: {
+      category: Category.PHYSICS,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.PHYSICS),
+    },
+    wallSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+    },
+    airSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.AIR),
+    },
   },
-  wall: {
-    category: Category.WALL,
-    mask: CategorySet.ALL.negate(Category.WALL),
+  bulletBody: {
+    category: Category.PHYSICS,
+    mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+  },
+  dandelionFluff: {
+    category: Category.ITEM,
+    mask: new CategorySet(Category.PLAYER),
+  },
+  enemy: {
+    body: {
+      category: Category.PHYSICS,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+    },
+    hitBox: {
+      category: Category.HIT_BOX,
+      mask: new CategorySet(Category.ATTACK),
+    },
+    attack: {
+      category: Category.ATTACK,
+      mask: new CategorySet(Category.PLAYER),
+    },
+  },
+  moss: {
+    light: {
+      category: Category.LIGHT,
+      mask: new CategorySet(Category.SENSOR),
+    },
+    airSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.AIR),
+    },
+  },
+  player: {
+    body: {
+      category: Category.PLAYER,
+      mask: new CategorySet(
+        Category.STATIC_WALL,
+        Category.DYNAMIC_WALL,
+        Category.ATTACK,
+        Category.ITEM,
+        Category.AIR,
+        Category.SENSOR,
+        Category.OTHER
+      ),
+    },
+    foot: {
+      category: Category.PLAYER,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+    },
+    attack: {
+      category: Category.ATTACK,
+      mask: new CategorySet(Category.HIT_BOX),
+    },
   },
   vine: {
-    category: Category.VINE,
-    mask: CategorySet.ALL.negate(Category.VINE),
+    body: {
+      category: Category.DYNAMIC_WALL,
+      mask: new CategorySet(Category.PLAYER, Category.PHYSICS),
+    },
+    wallSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+    },
+    airSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.AIR),
+    },
+  },
+  wall: {
+    category: Category.STATIC_WALL,
+    mask: new CategorySet(
+      Category.ATTACK,
+      Category.HIT_BOX,
+      Category.OTHER,
+      Category.PLAYER,
+      Category.SENSOR,
+      Category.PHYSICS
+    ),
   },
   air: {
     category: Category.AIR,
-    mask: CategorySet.ALL.negate(Category.WALL),
+    mask: new CategorySet(Category.PLAYER, Category.LIGHT, Category.SENSOR),
   },
+  lightSearcher: {
+    category: Category.SENSOR,
+    mask: new CategorySet(Category.LIGHT),
+  },
+}
+
+export const applyCategory = (
+  def: ColliderDef,
+  prop: { category: Category; mask: CategorySet }
+): void => {
+  def.category = prop.category
+  def.mask = prop.mask
 }

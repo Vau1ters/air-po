@@ -3,6 +3,7 @@ import { Entity } from '../ecs/entity'
 import { FamilyBuilder, Family } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Collider } from '../components/colliderComponent'
+import { Category } from '../entities/category'
 
 export class LightSystem extends System {
   private family: Family
@@ -13,10 +14,18 @@ export class LightSystem extends System {
     this.family = new FamilyBuilder(world).include('Light').build()
 
     this.family.entityAddedEvent.addObserver((e: Entity) => {
-      e.getComponent('Collider').colliders[0].callbacks.add(LightSystem.lightAirCollision)
+      for (const c of e
+        .getComponent('Collider')
+        .colliders.filter(c => c.category === Category.SENSOR)) {
+        c.callbacks.add(LightSystem.lightAirCollision)
+      }
     })
     this.family.entityAddedEvent.removeObserver((e: Entity) => {
-      e.getComponent('Collider').colliders[0].callbacks.delete(LightSystem.lightAirCollision)
+      for (const c of e
+        .getComponent('Collider')
+        .colliders.filter(c => c.category === Category.SENSOR)) {
+        c.callbacks.delete(LightSystem.lightAirCollision)
+      }
     })
   }
 
