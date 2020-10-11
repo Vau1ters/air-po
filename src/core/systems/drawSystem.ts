@@ -5,6 +5,7 @@ import { Container, Sprite } from 'pixi.js'
 import { Entity } from '../ecs/entity'
 import { windowSize } from '../../core/application'
 import { Animation } from '../../core/graphics/animation'
+import { assert } from '../../utils/assertion'
 
 export default class DrawSystem extends System {
   private family: Family
@@ -47,7 +48,8 @@ export default class DrawSystem extends System {
         const sprite = container.children.find(c => c.isSprite) as Sprite
         const animation = container.children.find(c => c instanceof Animation) as Animation
         const anchor = sprite ? sprite.anchor : animation ? animation.anchor : null
-        if (anchor && entity.hasComponent('Position')) {
+        assert(anchor)
+        if (entity.hasComponent('Position')) {
           const position = entity.getComponent('Position')
           const x = position.x - cpos.x
           const y = position.y - cpos.y
