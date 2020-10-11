@@ -160,14 +160,12 @@ export default class PhysicsSystem extends System {
           continue
         }
 
-        const ratio = (aabb1.size.y + aabb2.size.y) / (aabb1.size.x + aabb2.size.x)
-
         const sumMass = body1.invMass + body2.invMass
         if (sumMass === 0) continue
         // 反発係数
         const rest = 1 + body1.restitution * body2.restitution
-        // 中心座標の位置関係を見て押し出す向きを決める
-        if (Math.abs(pDiff.y / pDiff.x) > ratio) {
+        // 埋まってる距離が短い方向に押し出す
+        if (Math.abs(clip.x) > Math.abs(clip.y)) {
           // 縦方向
           // 離れようとしているときに押し出さないようにする
           if (vDiff.y * pDiff.y <= 0) {
