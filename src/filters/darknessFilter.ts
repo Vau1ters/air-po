@@ -10,11 +10,15 @@ export interface LightDefinition {
 }
 
 export class DarknessFilter extends Filter {
-  public constructor(displaySize: { x: number; y: number }) {
+  public constructor(
+    displaySize: { x: number; y: number },
+    setting: { defaultBrightness: number }
+  ) {
     super(undefined, shader, {
       displaySize: [displaySize.x, displaySize.y],
       points: [],
       pointNum: 0,
+      defaultBrightness: setting.defaultBrightness,
     })
   }
 
