@@ -2,6 +2,7 @@ import shader from '../../res/shaders/air.frag'
 import { Filter } from 'pixi.js'
 import { World } from '../core/ecs/world'
 import { Family, FamilyBuilder } from '../core/ecs/family'
+import { Vec2 } from '../core/math/vec2'
 
 export interface AirDefinition {
   center: {
@@ -20,27 +21,14 @@ export class AirFilter extends Filter {
     super(undefined, shader, {
       displaySize: [displaySize.x, displaySize.y],
       points: [],
+      camera: [0, 0],
       effectiveRadius: AirFilter.EFFECTIVE_RADIUS,
     })
     this.uniforms.inAirRate = 0
     this.family = new FamilyBuilder(world).include('Player').build()
   }
 
-  public get airs(): Array<AirDefinition> {
-    const airs = []
-    for (let i = 0; i < this.uniforms.points.length / 3; i++) {
-      airs.push({
-        center: {
-          x: this.uniforms.points[i * 3],
-          y: this.uniforms.points[i * 3 + 1],
-        },
-        radius: this.uniforms.points[i * 3 + 2],
-      })
-    }
-    return airs
-  }
-
-  public set airs(airs: Array<AirDefinition>) {
+  public updateUniforms(airs: Array<AirDefinition>, camera: Vec2): void {
     this.uniforms.points = []
     for (const air of airs) {
       this.uniforms.points.push(air.center.x)
@@ -54,5 +42,6 @@ export class AirFilter extends Filter {
       this.uniforms.inAirRate = Math.max(this.uniforms.inAirRate - 0.05, 0)
     }
     this.family.entityArray[0].getComponent('AirHolder').inAir = false
+    this.uniforms.camera = [camera.x, camera.y]
   }
 }
