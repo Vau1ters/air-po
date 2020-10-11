@@ -23,12 +23,13 @@ export default class UiSystem extends System {
 
     this.hpGauge.position.set(0)
     this.gameWorldUiContainer.addChild(this.hpGauge)
+
+    this.laserSight.position.set(0)
+    this.uiContainer.addChild(this.laserSight)
     this.playerHpGauge.position.set(0, 0)
     this.uiContainer.addChild(this.playerHpGauge)
     this.playerAirGauge.position.set(0, 16)
     this.uiContainer.addChild(this.playerAirGauge)
-    this.laserSight.position.set(0)
-    this.uiContainer.addChild(this.laserSight)
 
     uiContainer.addChild(this.uiContainer)
     gameWorldUiContainer.addChild(this.gameWorldUiContainer)
