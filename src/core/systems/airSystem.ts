@@ -8,7 +8,7 @@ import { AirDef, ColliderComponent, AirCollider } from '../components/colliderCo
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
 import { assert } from '../../utils/assertion'
-import { applyCategory, CategoryList } from '../entities/category'
+import { CategoryList } from '../entities/category'
 
 export class AirSystem extends System {
   private family: Family
@@ -25,8 +25,7 @@ export class AirSystem extends System {
 
     this.entity = new Entity()
     const collider = new ColliderComponent(this.entity)
-    const air = new AirDef(this.family)
-    applyCategory(air, CategoryList.air)
+    const air = new AirDef(this.family, CategoryList.air)
     air.tag.add('air')
     air.isSensor = true
     collider.createCollider(air)

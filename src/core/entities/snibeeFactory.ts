@@ -6,7 +6,7 @@ import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { applyCategory, CategoryList } from './category'
+import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
@@ -46,15 +46,13 @@ export class SnibeeFactory extends EntityFactory {
     const hp = new HPComponent(2, 2)
     const invincible = new InvincibleComponent()
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(aabbBody, CategoryList.enemy.body)
+    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.body)
     aabbBody.tag.add('snibeeBody')
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
-    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(hitBox, CategoryList.enemy.hitBox)
+    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.hitBox)
     hitBox.tag.add('snibeeBody')
     hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
@@ -65,9 +63,9 @@ export class SnibeeFactory extends EntityFactory {
     const attack = new AttackComponent(1, entity)
 
     const attackHitBox = new AABBDef(
-      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
+      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
+      CategoryList.enemy.attack
     )
-    applyCategory(attackHitBox, CategoryList.enemy.attack)
     attackHitBox.tag.add('AttackHitBox')
     attackHitBox.offset = new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y)
     attackHitBox.isSensor = true

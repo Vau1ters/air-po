@@ -1,5 +1,3 @@
-import { ColliderDef } from '../components/colliderComponent'
-
 export enum Category {
   STATIC_WALL,
   DYNAMIC_WALL,
@@ -11,7 +9,6 @@ export enum Category {
   AIR,
   SENSOR,
   LIGHT,
-  OTHER,
 }
 
 export class CategorySet extends Set<Category> {
@@ -145,7 +142,7 @@ export const CategoryList = {
   },
   wall: {
     category: Category.STATIC_WALL,
-    mask: new CategorySet(Category.OTHER, Category.SENSOR, Category.PHYSICS),
+    mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
   },
   air: {
     category: Category.AIR,
@@ -155,12 +152,4 @@ export const CategoryList = {
     category: Category.SENSOR,
     mask: new CategorySet(Category.LIGHT),
   },
-}
-
-export const applyCategory = (
-  def: ColliderDef,
-  prop: { category: Category; mask: CategorySet }
-): void => {
-  def.category = prop.category
-  def.mask = prop.mask
 }

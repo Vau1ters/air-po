@@ -6,7 +6,7 @@ import { parseSprite } from '../parser/spriteParser'
 import mossDefinition from '../../../res/entities/moss.json'
 import { World } from '../ecs/world'
 import { AABBDef, ColliderComponent } from '../components/colliderComponent'
-import { applyCategory, CategoryList } from './category'
+import { CategoryList } from './category'
 import { Vec2 } from '../math/vec2'
 import { LightComponent } from '../components/lightComponent'
 
@@ -24,14 +24,12 @@ export class MossFactory extends EntityFactory {
     const draw = new DrawComponent()
     const collider = new ColliderComponent(entity)
 
-    const light = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(light, CategoryList.moss.light)
+    const light = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.moss.light)
     light.tag.add('light')
     light.offset = new Vec2(-this.WIDTH / 2, -this.HEIGHT / 2)
     collider.createCollider(light)
 
-    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(airSensor, CategoryList.moss.airSensor)
+    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.moss.airSensor)
     airSensor.offset = new Vec2(-this.WIDTH / 2, -this.HEIGHT / 2)
     collider.createCollider(airSensor)
 

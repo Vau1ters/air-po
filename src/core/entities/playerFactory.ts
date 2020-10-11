@@ -6,7 +6,7 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { PlayerComponent } from '../components/playerComponent'
 import { Vec2 } from '../math/vec2'
-import { applyCategory, CategoryList } from './category'
+import { CategoryList } from './category'
 import { HorizontalDirectionComponent } from '../components/directionComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
@@ -63,34 +63,32 @@ export class PlayerFactory extends EntityFactory {
     // TODO: カメラをプレイヤーから分離する
     const camera = new CameraComponent()
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(aabbBody, CategoryList.player.body)
+    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.body)
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
-    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(hitBox, CategoryList.player.hitBox)
+    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.hitBox)
     hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(hitBox)
 
-    const itemSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(itemSensor, CategoryList.player.itemSensor)
+    const itemSensor = new AABBDef(
+      new Vec2(this.WIDTH, this.HEIGHT),
+      CategoryList.player.itemSensor
+    )
     itemSensor.tag.add('playerItemPicker')
     itemSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     itemSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(itemSensor)
 
-    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    applyCategory(airSensor, CategoryList.player.airSensor)
+    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.airSensor)
     airSensor.tag.add('airHolderBody')
     airSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     airSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(airSensor)
 
-    const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
-    applyCategory(foot, CategoryList.player.foot)
+    const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT), CategoryList.player.foot)
     foot.tag.add('playerFoot')
     foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
     foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)

@@ -4,7 +4,7 @@ import { PositionComponent } from '../components/positionComponent'
 import { Vec2 } from '../math/vec2'
 import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { applyCategory, CategoryList } from './category'
+import { CategoryList } from './category'
 import { AIComponent } from '../components/aiComponent'
 import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
@@ -25,8 +25,7 @@ export class DandelionFluffFactory extends EntityFactory {
     const collider = new ColliderComponent(entity)
     const pickup = new PickupTargetComponent(false)
 
-    const aabb = new AABBDef(new Vec2(16, 32))
-    applyCategory(aabb, CategoryList.dandelionFluff)
+    const aabb = new AABBDef(new Vec2(16, 32), CategoryList.dandelionFluff)
     aabb.tag.add('fluff')
     aabb.offset = new Vec2(-8, -16)
     aabb.isSensor = true
