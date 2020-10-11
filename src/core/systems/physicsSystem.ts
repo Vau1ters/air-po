@@ -164,7 +164,7 @@ export default class PhysicsSystem extends System {
         if (sumMass === 0) continue
         // 反発係数
         const rest = 1 + body1.restitution * body2.restitution
-        // 中心座標の位置関係を見て押し出す向きを決める
+        // 埋まってる距離が短い方向に押し出す
         if (Math.abs(clip.x) > Math.abs(clip.y)) {
           // 縦方向
           // 離れようとしているときに押し出さないようにする
