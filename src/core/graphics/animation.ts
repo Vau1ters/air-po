@@ -1,4 +1,4 @@
-import { AnimatedSprite, Container, Texture } from 'pixi.js'
+import { AnimatedSprite, Container, ObservablePoint, Texture } from 'pixi.js'
 
 export class Animation extends Container {
   private current: string
@@ -31,5 +31,9 @@ export class Animation extends Container {
       this.animatedSprites[animation].visible = true
       this.current = animation
     }
+  }
+
+  public get anchor(): ObservablePoint {
+    return this.animatedSprites[this.current].anchor
   }
 }
