@@ -4,10 +4,9 @@ import { World } from '../ecs/world'
 import { Container } from 'pixi.js'
 import { Entity } from '../ecs/entity'
 import { windowSize } from '../../core/application'
-import { BVHComponent } from '../components/bvhComponent'
-import { Category } from '../entities/category'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
+import { BVH } from '../physics/bvh'
 
 export default class DrawSystem extends System {
   private drawFamily: Family
@@ -17,8 +16,8 @@ export default class DrawSystem extends System {
 
   private preVisibleEntities: Entity[] = []
   private container: Container = new Container()
-  private dynamicBVH: BVHComponent
-  private staticBVH: BVHComponent
+  private dynamicBVH: BVH
+  private staticBVH: BVH
   private staticBVHInitialized = false
 
   public constructor(world: World, stage: Container) {
@@ -44,8 +43,8 @@ export default class DrawSystem extends System {
       .build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
-    this.dynamicBVH = new BVHComponent(Category.SENSOR)
-    this.staticBVH = new BVHComponent(Category.SENSOR)
+    this.dynamicBVH = new BVH()
+    this.staticBVH = new BVH()
   }
 
   public onContainerAdded(entity: Entity): void {
@@ -89,10 +88,11 @@ export default class DrawSystem extends System {
   private updateAllState(): void {
     for (const camera of this.cameraFamily.entityIterator) {
       const screen = this.createScreenAABB(camera)
-      for (const entity of [this.dynamicBVH, this.staticBVH]
+      const visibleEntities = [this.dynamicBVH, this.staticBVH]
         .map(bvh => bvh.query(screen))
         .reduce((a, b) => Array.prototype.concat(a, b))
-        .map(c => c.entity)) {
+        .map(c => c.entity)
+      for (const entity of visibleEntities) {
         const position = entity.getComponent('Position')
         const container = entity.getComponent('Draw')
         container.visible = true

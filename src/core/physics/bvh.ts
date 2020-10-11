@@ -1,7 +1,6 @@
 import { AABB } from '../math/aabb'
-import { Collider } from './colliderComponent'
 import { ReservedArray } from '../../utils/reservedArray'
-import { Category } from '../entities/category'
+import { Collider } from '../components/colliderComponent'
 
 type Axis = 'x' | 'y'
 
@@ -40,13 +39,8 @@ export class BVHNode {
   }
 }
 
-export class BVHComponent {
+export class BVH {
   public root?: BVHNode | BVHLeaf
-  public category: Category
-
-  constructor(category: Category) {
-    this.category = category
-  }
 
   public query(bound: AABB): Collider[] {
     const result = new ReservedArray<Collider>(100)
@@ -58,7 +52,7 @@ export class BVHComponent {
 
   public build(colliders: Collider[]): void {
     const leafList = colliders.map(c => new BVHLeaf(c))
-    const root = BVHComponent.fromBoundsImpl(leafList, 'x')
+    const root = BVH.fromBoundsImpl(leafList, 'x')
     this.root = root
   }
 
@@ -68,8 +62,8 @@ export class BVHComponent {
     leafList = leafList.sort((a, b) => a.bound.center[axis] - b.bound.center[axis])
 
     const other = (axis: Axis): Axis => (axis === 'x' ? 'y' : 'x')
-    const left = BVHComponent.fromBoundsImpl(leafList.slice(0, leafList.length >> 1), other(axis))
-    const right = BVHComponent.fromBoundsImpl(leafList.slice(leafList.length >> 1), other(axis))
+    const left = BVH.fromBoundsImpl(leafList.slice(0, leafList.length >> 1), other(axis))
+    const right = BVH.fromBoundsImpl(leafList.slice(leafList.length >> 1), other(axis))
     if (!left) {
       throw new Error('There are any bugs.')
     }
