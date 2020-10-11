@@ -54,7 +54,8 @@ export class FilterSystem extends System {
   }
 
   private updateAirFilter(): void {
-    const offset = this.cameraFamily.entityArray[0].getComponent('Position')
+    const camera = this.cameraFamily.entityArray[0].getComponent('Position')
+
     const airs = []
     for (const entity of this.airFamily.entityIterator) {
       const air = entity.getComponent('Air')
@@ -64,13 +65,14 @@ export class FilterSystem extends System {
 
       airs.push({
         center: new PositionComponent(
-          position.x - offset.x + windowSize.width / 2,
-          position.y - offset.y + windowSize.height / 2
+          position.x + windowSize.width / 2,
+          position.y + windowSize.height / 2
         ),
         radius,
       })
     }
-    this.airFilter.airs = airs
+
+    this.airFilter.updateUniforms(airs, camera)
   }
 
   private updateDarknessFilter(): void {
