@@ -85,15 +85,24 @@ export interface ColliderDef {
   mask: Set<Category>
 }
 
+export type CategoryMask = {
+  category: Category
+  mask: CategorySet
+}
+
 export class AABBDef implements ColliderDef {
   public offset = new Vec2()
   public maxClipTolerance = new Vec2()
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
-  public category = Category.DEFAULT
-  public mask = CategorySet.ALL
-  public constructor(public size: Vec2) {}
+  public category: Category
+  public mask: CategorySet
+
+  public constructor(public size: Vec2, categoryMask: CategoryMask) {
+    this.category = categoryMask.category
+    this.mask = categoryMask.mask
+  }
 }
 
 export class CircleDef implements ColliderDef {
@@ -101,18 +110,26 @@ export class CircleDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
-  public category = Category.DEFAULT
-  public mask = CategorySet.ALL
-  public constructor(public radius: number) {}
+  public category: Category
+  public mask: CategorySet
+
+  public constructor(public radius: number, categoryMask: CategoryMask) {
+    this.category = categoryMask.category
+    this.mask = categoryMask.mask
+  }
 }
 
 export class AirDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
   public tag: Set<string> = new Set()
-  public category = Category.DEFAULT
-  public mask = new CategorySet(Category.PLAYER)
-  public constructor(public airFamily: Family) {}
+  public category: Category
+  public mask: CategorySet
+
+  public constructor(public airFamily: Family, categoryMask: CategoryMask) {
+    this.category = categoryMask.category
+    this.mask = categoryMask.mask
+  }
 }
 
 export class ColliderComponent {

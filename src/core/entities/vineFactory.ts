@@ -40,27 +40,27 @@ export class VineFactory extends EntityFactory {
     const position = new PositionComponent()
     const draw = new DrawComponent()
 
-    const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.vine.body)
     aabb.tag.add('vine')
-    aabb.category = CategoryList.vine.category
-    aabb.mask = CategoryList.vine.mask
+    aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     const collider = new ColliderComponent(entity)
     collider.createCollider(aabb)
 
-    const wallSensor = new AABBDef(new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT))
-    wallSensor.offset = new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y)
+    const wallSensor = new AABBDef(
+      new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT),
+      CategoryList.vine.wallSensor
+    )
     wallSensor.tag.add('vineWallSensor')
-    wallSensor.category = CategoryList.vine.category
-    wallSensor.mask = CategoryList.vine.mask
+    wallSensor.offset = new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y)
     wallSensor.isSensor = true
     collider.createCollider(wallSensor)
 
-    const airSensor = new AABBDef(new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT))
-    airSensor.offset = new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y)
+    const airSensor = new AABBDef(
+      new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT),
+      CategoryList.vine.airSensor
+    )
     airSensor.tag.add('vineAirSensor')
-    airSensor.category = CategoryList.vine.category
-    airSensor.mask = CategoryList.vine.mask
+    airSensor.offset = new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y)
     airSensor.isSensor = true
     collider.createCollider(airSensor)
 

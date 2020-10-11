@@ -25,11 +25,9 @@ export class WallFactory extends EntityFactory {
     const draw = new DrawComponent()
 
     if (this.shouldCollide) {
-      const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
+      const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.wall)
       aabb.tag.add('wall')
       aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-      aabb.category = CategoryList.wall.category
-      aabb.mask = CategoryList.wall.mask
       const collider = new ColliderComponent(entity)
       collider.createCollider(aabb)
       entity.addComponent('Collider', collider)

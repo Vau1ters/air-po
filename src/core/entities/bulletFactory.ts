@@ -68,29 +68,24 @@ export class BulletFactory extends EntityFactory {
     )
     const collider = new ColliderComponent(entity)
 
-    const aabbBody = new AABBDef(new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT))
-    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    aabbBody.category = CategoryList.bulletBody.category
-    aabbBody.mask = CategoryList.bulletBody.mask
-    aabbBody.maxClipTolerance = new Vec2(0, 0)
+    const aabbBody = new AABBDef(
+      new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT),
+      CategoryList.bulletBody
+    )
     aabbBody.tag.add('bulletBody')
+    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
+    aabbBody.maxClipTolerance = new Vec2(0, 0)
     collider.createCollider(aabbBody)
 
     // 攻撃判定
     const attack = new AttackComponent(1, this.shooter)
 
     const attackHitBox = new AABBDef(
-      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT)
+      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
+      this.shooterType === 'player' ? CategoryList.player.attack : CategoryList.enemy.attack
     )
-    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     attackHitBox.tag.add('AttackHitBox')
-    if (this.shooterType === 'enemy') {
-      attackHitBox.category = CategoryList.enemyAttack.category
-      attackHitBox.mask = CategoryList.enemyAttack.mask
-    } else if (this.shooterType === 'player') {
-      attackHitBox.category = CategoryList.playerAttack.category
-      attackHitBox.mask = CategoryList.playerAttack.mask
-    }
+    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 

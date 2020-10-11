@@ -63,25 +63,37 @@ export class PlayerFactory extends EntityFactory {
     // TODO: カメラをプレイヤーから分離する
     const camera = new CameraComponent()
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT))
-    aabbBody.tag.add('playerBody')
-    aabbBody.tag.add('airHolderBody')
+    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.body)
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.category = CategoryList.playerBody.category
-    aabbBody.mask = CategoryList.playerBody.mask
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(aabbBody)
 
-    const aabbFoot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT))
-    aabbFoot.offset = new Vec2(
-      this.OFFSET_X + this.FOOT_OFFSET_X,
-      this.OFFSET_Y + this.FOOT_OFFSET_Y
+    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.hitBox)
+    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(hitBox)
+
+    const itemSensor = new AABBDef(
+      new Vec2(this.WIDTH, this.HEIGHT),
+      CategoryList.player.itemSensor
     )
-    aabbFoot.tag.add('playerFoot')
-    aabbFoot.category = CategoryList.playerFoot.category
-    aabbFoot.mask = CategoryList.playerFoot.mask
-    aabbFoot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
-    collider.createCollider(aabbFoot)
+    itemSensor.tag.add('playerItemPicker')
+    itemSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    itemSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(itemSensor)
+
+    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.airSensor)
+    airSensor.tag.add('airHolderBody')
+    airSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    airSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(airSensor)
+
+    const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT), CategoryList.player.foot)
+    foot.tag.add('playerFoot')
+    foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
+    foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
+    foot.isSensor = true
+    collider.createCollider(foot)
 
     const sprite = parseSprite(playerDefinition.sprite)
 

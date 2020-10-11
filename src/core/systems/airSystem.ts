@@ -25,11 +25,9 @@ export class AirSystem extends System {
 
     this.entity = new Entity()
     const collider = new ColliderComponent(this.entity)
-    const air = new AirDef(this.family)
+    const air = new AirDef(this.family, CategoryList.air)
     air.tag.add('air')
     air.isSensor = true
-    air.category = CategoryList.air.category
-    air.mask = CategoryList.air.mask
     collider.createCollider(air)
     this.entity.addComponent('Collider', collider)
     this.entity.addComponent('Position', new PositionComponent())

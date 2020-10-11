@@ -7,7 +7,7 @@ import { windowSize } from '../application'
 import { Entity } from '../ecs/entity'
 import { AABBDef, Collider, ColliderComponent } from '../components/colliderComponent'
 import { Vec2 } from '../math/vec2'
-import { Category, CategorySet } from '../entities/category'
+import { CategoryList } from '../entities/category'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { PositionComponent } from '../components/positionComponent'
 
@@ -29,10 +29,11 @@ export class FilterSystem extends System {
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.lightSearcher = new Entity()
-    const aabbBody = new AABBDef(new Vec2(windowSize.width, windowSize.height))
+    const aabbBody = new AABBDef(
+      new Vec2(windowSize.width, windowSize.height),
+      CategoryList.lightSearcher
+    )
     aabbBody.tag.add('screen')
-    aabbBody.category = Category.SEARCH
-    aabbBody.mask = new CategorySet(Category.LIGHT)
     aabbBody.isSensor = true
     const collider = new ColliderComponent(this.lightSearcher)
     collider.createCollider(aabbBody)
