@@ -51,8 +51,8 @@ export class AirHolderSystem extends System {
     if (otherCollider.tag.has('air')) {
       assert(otherCollider instanceof AirCollider)
 
-      const position = airHolderCollider.component.entity.getComponent('Position')
-      const airHolder = airHolderCollider.component.entity.getComponent('AirHolder')
+      const position = airHolderCollider.entity.getComponent('Position')
+      const airHolder = airHolderCollider.entity.getComponent('AirHolder')
 
       const hitAirs: Entity[] = otherCollider.airFamily.entityArray.filter(
         (a: Entity) => a.getComponent('Air').hit

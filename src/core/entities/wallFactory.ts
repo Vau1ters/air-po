@@ -8,6 +8,7 @@ import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
 import { textureStore } from '../graphics/art'
 import { Sprite } from 'pixi.js'
+import { StaticComponent } from '../components/staticComponent'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -40,8 +41,10 @@ export class WallFactory extends EntityFactory {
 
     const sprite = new Sprite(textureStore.wall[this.tileId])
     sprite.anchor.set(0.5)
-    const draw = new DrawComponent(sprite)
+    const draw = new DrawComponent(entity, sprite)
     entity.addComponent('Draw', draw)
+
+    entity.addComponent('Static', new StaticComponent())
 
     return entity
   }

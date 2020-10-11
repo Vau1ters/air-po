@@ -72,7 +72,7 @@ export class Enemy1Factory extends EntityFactory {
 
     const sprite = parseSprite(enemy1Definition.sprite)
 
-    const draw = new DrawComponent(sprite)
+    const draw = new DrawComponent(entity, sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1

@@ -7,7 +7,7 @@ import { assert } from '../../utils/assertion'
 import { Category, CategorySet } from '../entities/category'
 
 export interface Collider {
-  component: ColliderComponent
+  entity: Entity
   isSensor: boolean
   callbacks: Set<(me: Collider, other: Collider) => void>
   tag: Set<string>
@@ -20,7 +20,7 @@ export class AABBCollider implements Collider {
   public bound: AABB
 
   public constructor(
-    public component: ColliderComponent,
+    public entity: Entity,
     public aabb: AABB,
     public maxClipTolerance: Vec2,
     public isSensor: boolean,
@@ -37,7 +37,7 @@ export class CircleCollider implements Collider {
   public bound: AABB
 
   public constructor(
-    public component: ColliderComponent,
+    public entity: Entity,
     public circle: Circle,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
@@ -65,7 +65,7 @@ export class AirCollider implements Collider {
   public bound: AABB
 
   public constructor(
-    public component: ColliderComponent,
+    public entity: Entity,
     public airFamily: Family,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
@@ -139,7 +139,7 @@ export class ColliderComponent {
   public createCollider(def: ColliderDef): void {
     if (def instanceof AABBDef) {
       const collider = new AABBCollider(
-        this,
+        this.entity,
         new AABB(def.offset, def.size),
         def.maxClipTolerance,
         def.isSensor,
@@ -151,7 +151,7 @@ export class ColliderComponent {
       this.colliders.push(collider)
     } else if (def instanceof CircleDef) {
       const collider = new CircleCollider(
-        this,
+        this.entity,
         new Circle(def.offset, def.radius),
         def.isSensor,
         def.callbacks,
@@ -162,7 +162,7 @@ export class ColliderComponent {
       this.colliders.push(collider)
     } else if (def instanceof AirDef) {
       const collider = new AirCollider(
-        this,
+        this.entity,
         def.airFamily,
         def.isSensor,
         def.callbacks,

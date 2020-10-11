@@ -86,8 +86,8 @@ export default class PhysicsSystem extends System {
           assert(bvh)
           const rs = bvh.query(c.bound.add(position1))
           for (const r of rs) {
-            if (r.component.entity === entity1) continue
-            const entity2 = r.component.entity
+            if (r.entity === entity1) continue
+            const entity2 = r.entity
             if (collidedEntityIdSet.has(entity2.id)) continue
             this.collide(entity1, entity2)
             collidedEntityIdSet.add(entity2.id)
@@ -134,11 +134,11 @@ export default class PhysicsSystem extends System {
   private solve(collidedList: Array<[Collider, Collider]>): void {
     // 互いに押し合う
     for (const [c1, c2] of collidedList) {
-      const body1 = c1.component.entity.getComponent('RigidBody')
-      const body2 = c2.component.entity.getComponent('RigidBody')
+      const body1 = c1.entity.getComponent('RigidBody')
+      const body2 = c2.entity.getComponent('RigidBody')
 
-      const position1 = c1.component.entity.getComponent('Position')
-      const position2 = c2.component.entity.getComponent('Position')
+      const position1 = c1.entity.getComponent('Position')
+      const position2 = c2.entity.getComponent('Position')
       // TODO:別クラスに分ける
       if (c1 instanceof AABBCollider && c2 instanceof AABBCollider) {
         const aabb1 = c1.aabb.add(position1)

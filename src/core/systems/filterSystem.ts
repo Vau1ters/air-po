@@ -55,7 +55,7 @@ export class FilterSystem extends System {
     collider.createCollider(aabbBody)
     collider.colliders[0].callbacks.add((me: Collider, other: Collider) => {
       if (!other.tag.has('light')) return
-      this.lights.push(other.component.entity)
+      this.lights.push(other.entity)
     })
     this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())

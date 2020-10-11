@@ -95,7 +95,7 @@ export class PlayerFactory extends EntityFactory {
     collider.createCollider(foot)
 
     const sprite = parseSprite(playerDefinition.sprite)
-    const draw = new DrawComponent(sprite)
+    const draw = new DrawComponent(entity, sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1

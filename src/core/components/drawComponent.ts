@@ -1,14 +1,38 @@
 import { Container, Sprite } from 'pixi.js'
 import { Animation } from '../../core/graphics/animation'
+import { Entity } from '../ecs/entity'
+import { Category, CategorySet } from '../entities/category'
+import { AABB } from '../math/aabb'
+import { Vec2 } from '../math/vec2'
+import { AABBCollider, Collider } from './colliderComponent'
 
 export class DrawComponent extends Container {
-  readonly size: number[]
-  readonly center: number[]
+  /* to be used for specifying position */
+  private entity: Entity
+  private child: Sprite | Animation
 
-  constructor(child: Sprite | Animation) {
+  constructor(entity: Entity, child: Sprite | Animation) {
     super()
+    this.entity = entity
+    this.child = child
+    this.visible = false
+
     this.addChild(child)
-    this.size = [child.width, child.height]
-    this.center = [child.anchor.x, child.anchor.y]
+  }
+
+  createCollider(): Collider {
+    return new AABBCollider(
+      this.entity,
+      new AABB(
+        new Vec2(-this.child.width * this.child.anchor.x, -this.child.height * this.child.anchor.y),
+        new Vec2(this.child.width, this.child.height)
+      ),
+      new Vec2(),
+      true,
+      new Set(),
+      new Set<string>(),
+      Category.DRAW,
+      new CategorySet(Category.SENSOR)
+    )
   }
 }

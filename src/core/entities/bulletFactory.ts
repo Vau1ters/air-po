@@ -111,7 +111,7 @@ export class BulletFactory extends EntityFactory {
     ]
     sprite.changeTo(directions[index])
 
-    const draw = new DrawComponent(sprite)
+    const draw = new DrawComponent(entity, sprite)
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)

@@ -103,7 +103,7 @@ export class BalloonVineFactory extends EntityFactory {
 
     const sprite = parseSprite(balloonvineDefinition.sprite)
 
-    const draw = new DrawComponent(sprite)
+    const draw = new DrawComponent(entity, sprite)
 
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))

@@ -26,7 +26,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
     let targetWall: PositionComponent | undefined = undefined
 
     wallDetectionAABB.callbacks.add((_: Collider, other: Collider) => {
-      walls.push(other.component.entity)
+      walls.push(other.entity)
     })
 
     const findAppropriateWall = (): PositionComponent | undefined => {

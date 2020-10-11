@@ -76,7 +76,7 @@ export class VineFactory extends EntityFactory {
 
     const sprite = parseSprite(vineDefinition.sprite)
     sprite.changeTo('Root0')
-    const draw = new DrawComponent(sprite)
+    const draw = new DrawComponent(entity, sprite)
 
     entity.addComponent('AI', ai)
     entity.addComponent('RigidBody', body)

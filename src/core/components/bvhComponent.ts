@@ -18,7 +18,7 @@ export class BVHLeaf {
   }
 
   public get bound(): AABB {
-    const position = this.collider.component.entity.getComponent('Position')
+    const position = this.collider.entity.getComponent('Position')
     return this.collider.bound.add(position)
   }
 }
