@@ -47,7 +47,6 @@ export class PlayerFactory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
-    const draw = new DrawComponent()
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
@@ -96,8 +95,7 @@ export class PlayerFactory extends EntityFactory {
     collider.createCollider(foot)
 
     const sprite = parseSprite(playerDefinition.sprite)
-
-    draw.addChild(sprite)
+    const draw = new DrawComponent(sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1

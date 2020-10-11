@@ -21,7 +21,6 @@ export class DandelionFluffFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(0, 0).add(this.parent.getComponent('Position'))
-    const draw = new DrawComponent()
     const collider = new ColliderComponent(entity)
     const pickup = new PickupTargetComponent(false)
 
@@ -32,7 +31,7 @@ export class DandelionFluffFactory extends EntityFactory {
     collider.createCollider(aabb)
 
     const sprite = parseSprite(dandelionFluffDefinition.sprite)
-    draw.addChild(sprite)
+    const draw = new DrawComponent(sprite)
 
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))

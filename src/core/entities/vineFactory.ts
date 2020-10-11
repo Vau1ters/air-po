@@ -38,7 +38,6 @@ export class VineFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const draw = new DrawComponent()
 
     const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.vine.body)
     aabb.tag.add('vine')
@@ -75,16 +74,17 @@ export class VineFactory extends EntityFactory {
 
     const ai = new AIComponent(vineAI(entity))
 
+    const sprite = parseSprite(vineDefinition.sprite)
+    sprite.changeTo('Root0')
+    const draw = new DrawComponent(sprite)
+
     entity.addComponent('AI', ai)
     entity.addComponent('RigidBody', body)
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
     entity.addComponent('Vine', vine)
 
-    const sprite = parseSprite(vineDefinition.sprite)
-    sprite.changeTo('Root0')
     vine.sprites.push(sprite)
-    draw.addChild(sprite)
     return entity
   }
 }

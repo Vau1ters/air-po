@@ -44,7 +44,6 @@ export class BalloonVineFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(0, 0)
-    const draw = new DrawComponent()
     const collider = new ColliderComponent(entity)
     const hp = new HPComponent(1, 1)
     const invincible = new InvincibleComponent()
@@ -104,7 +103,7 @@ export class BalloonVineFactory extends EntityFactory {
 
     const sprite = parseSprite(balloonvineDefinition.sprite)
 
-    draw.addChild(sprite)
+    const draw = new DrawComponent(sprite)
 
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))

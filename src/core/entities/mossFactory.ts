@@ -21,7 +21,6 @@ export class MossFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
-    const draw = new DrawComponent()
     const collider = new ColliderComponent(entity)
 
     const light = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.moss.light)
@@ -34,8 +33,7 @@ export class MossFactory extends EntityFactory {
     collider.createCollider(airSensor)
 
     const sprite = parseSprite(mossDefinition.sprite)
-
-    draw.addChild(sprite)
+    const draw = new DrawComponent(sprite)
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
