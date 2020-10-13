@@ -75,6 +75,13 @@ export default class UiSystem extends System {
           candidatePoints.push(...result.map(item => item[1]))
         }
       }
+      // candidatePointsが空配列だとエラーになるので、遠いところに点を置く
+      const farPoint = position.add(
+        direction.mul(
+          Math.abs(Math.min(windowSize.width / direction.x, windowSize.height / direction.y))
+        )
+      )
+      candidatePoints.push(farPoint)
       const hitPoint = candidatePoints.reduce((pre: Vec2, next: Vec2) => {
         if (position.sub(next).length() < position.sub(pre).length()) return next
         return pre
