@@ -5,10 +5,13 @@ import { Container, Graphics } from 'pixi.js'
 import { windowSize } from '../application'
 import { MouseController } from './controlSystem'
 import { Vec2 } from '../math/vec2'
+import { Ray } from '../math/ray'
+import { CategoryList } from '../entities/category'
 
 export default class UiSystem extends System {
   private playerFamily: Family
   private hpFamily: Family
+  private bvhFamily: Family
 
   private uiContainer: Container = new Container()
   private gameWorldUiContainer: Container = new Container()
@@ -21,11 +24,11 @@ export default class UiSystem extends System {
   public constructor(world: World, uiContainer: Container, gameWorldUiContainer: Container) {
     super(world)
 
+    this.laserSight.position.set(0)
+    this.gameWorldUiContainer.addChild(this.laserSight)
     this.hpGauge.position.set(0)
     this.gameWorldUiContainer.addChild(this.hpGauge)
 
-    this.laserSight.position.set(0)
-    this.uiContainer.addChild(this.laserSight)
     this.playerHpGauge.position.set(0, 0)
     this.uiContainer.addChild(this.playerHpGauge)
     this.playerAirGauge.position.set(0, 16)
@@ -36,6 +39,7 @@ export default class UiSystem extends System {
 
     this.playerFamily = new FamilyBuilder(world).include('Player').build()
     this.hpFamily = new FamilyBuilder(world).include('HP', 'Position').build()
+    this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
   }
 
   public update(): void {
@@ -56,6 +60,31 @@ export default class UiSystem extends System {
         16
       )
       this.playerAirGauge.endFill()
+
+      const position = player.getComponent('Position')
+      const mousePosition = MouseController.position
+      const direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+      const candidatePoints: Vec2[] = []
+      for (const entity of this.bvhFamily.entityIterator) {
+        const bvh = entity.getComponent('BVH')
+        if (
+          CategoryList.bulletBody.mask.has(bvh.category) ||
+          CategoryList.playerAttack.mask.has(bvh.category)
+        ) {
+          const result = bvh.queryRayMarch(new Ray(position, direction))
+          candidatePoints.push(...result.map(item => item[1]))
+        }
+      }
+      const hitPoint = candidatePoints.reduce((pre: Vec2, next: Vec2) => {
+        if (position.sub(next).length() < position.sub(pre).length()) return next
+        return pre
+      })
+      this.laserSight.clear()
+      this.laserSight.lineStyle(0.4, 0xff0000)
+      this.laserSight.moveTo(position.x, position.y)
+      this.laserSight.lineTo(hitPoint.x, hitPoint.y)
+      this.laserSight.beginFill(0xff0000)
+      this.laserSight.drawCircle(hitPoint.x, hitPoint.y, 2)
     }
 
     this.hpGauge.clear()
@@ -66,31 +95,5 @@ export default class UiSystem extends System {
       this.hpGauge.drawRect(position.x - 8, position.y - 12, (hp.hp / hp.maxHp) * 16, 2)
     }
     this.hpGauge.endFill()
-
-    const mousePosition = MouseController.position
-    const mouseX = mousePosition.x
-    const mouseY = mousePosition.y
-    const direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
-    const terminal = direction
-      .normalize()
-      .mul(direction.length() - 8)
-      .add(new Vec2(windowSize.width / 2, windowSize.height / 2))
-    this.laserSight.clear()
-    this.laserSight.lineStyle(0.4, 0xff0000)
-    this.laserSight.moveTo(windowSize.width / 2, windowSize.height / 2)
-    this.laserSight.lineTo(terminal.x, terminal.y)
-    this.laserSight.drawCircle(mouseX, mouseY, 8)
-    this.laserSight.moveTo(mouseX - 2, mouseY)
-    this.laserSight.lineTo(mouseX + 2, mouseY)
-    this.laserSight.moveTo(mouseX, mouseY - 2)
-    this.laserSight.lineTo(mouseX, mouseY + 2)
-    this.laserSight.moveTo(mouseX - 8, mouseY)
-    this.laserSight.lineTo(mouseX - 5, mouseY)
-    this.laserSight.moveTo(mouseX + 5, mouseY)
-    this.laserSight.lineTo(mouseX + 8, mouseY)
-    this.laserSight.moveTo(mouseX, mouseY - 8)
-    this.laserSight.lineTo(mouseX, mouseY - 5)
-    this.laserSight.moveTo(mouseX, mouseY + 5)
-    this.laserSight.lineTo(mouseX, mouseY + 8)
   }
 }
