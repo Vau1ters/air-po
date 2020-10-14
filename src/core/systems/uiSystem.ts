@@ -69,7 +69,7 @@ export default class UiSystem extends System {
         const bvh = entity.getComponent('BVH')
         if (
           CategoryList.bulletBody.mask.has(bvh.category) ||
-          CategoryList.playerAttack.mask.has(bvh.category)
+          CategoryList.player.attack.mask.has(bvh.category)
         ) {
           const result = bvh.queryRayMarch(new Ray(position, direction))
           candidatePoints.push(...result.map(item => item[1]))
