@@ -84,7 +84,7 @@ export class GameWorldFactory {
       new LightSystem(world),
       new AirHolderSystem(world),
       new DrawSystem(world, drawContainer),
-      new UiSystem(world, uiContainer, gameWorldUiContainer),
+      new UiSystem(world, uiContainer, gameWorldUiContainer, physicsSystem),
       new DebugDrawSystem(world, debugContainer, physicsSystem),
       new CameraSystem(world, gameWorldContainer, background),
       new ControlSystem(world)
