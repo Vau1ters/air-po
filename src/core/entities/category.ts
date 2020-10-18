@@ -107,7 +107,7 @@ export const CategoryList = {
     },
     hitBox: {
       category: Category.PLAYER_HITBOX,
-      mask: new CategorySet(Category.ATTACK),
+      mask: new CategorySet(Category.ATTACK, Category.SENSOR),
     },
     itemSensor: {
       category: Category.SENSOR,
@@ -151,5 +151,9 @@ export const CategoryList = {
   lightSearcher: {
     category: Category.SENSOR,
     mask: new CategorySet(Category.LIGHT),
+  },
+  eventSensor: {
+    category: Category.SENSOR,
+    mask: new CategorySet(Category.PLAYER_HITBOX),
   },
 }

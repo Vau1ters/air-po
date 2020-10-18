@@ -26,6 +26,7 @@ import { assert } from '../../utils/assertion'
 import { wait } from '../ai/action/wait'
 import { FilterSystem } from '../systems/filterSystem'
 import { LightSystem } from '../systems/lightSystem'
+import { SensorSystem } from '../systems/sensorSystem'
 
 const gameWorldBehaviour = function*(world: World): Behaviour<World> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -86,7 +87,8 @@ export class GameWorldFactory {
       new UiSystem(world, uiContainer, gameWorldUiContainer),
       new DebugDrawSystem(world, debugContainer),
       new CameraSystem(world, gameWorldContainer, background),
-      new ControlSystem(world)
+      new ControlSystem(world),
+      new SensorSystem(world)
     )
 
     const mapBuilder = new MapBuilder(world)

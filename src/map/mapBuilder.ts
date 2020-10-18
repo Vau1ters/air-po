@@ -5,10 +5,16 @@ import { AirFactory } from '../core/entities/airFactory'
 import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
+import { SensorFactory } from '../core/entities/sensorFactory'
 import { MossFactory } from '../core/entities/mossFactory'
 
+type CustomProperty = {
+  name: string
+  type: string
+  value: boolean | number | string
+}
+
 type MapObject = {
-  ellipse: boolean
   height: number
   id: number
   name: string
@@ -18,6 +24,8 @@ type MapObject = {
   width: number
   x: number
   y: number
+  ellipse?: boolean
+  properties?: Array<CustomProperty>
 }
 
 type TileLayer = {
@@ -89,6 +97,9 @@ export class MapBuilder {
         case 'moss':
           this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
           break
+        case 'sensor':
+          this.buildSensor(layer as ObjectLayer)
+          break
       }
     }
   }
@@ -96,6 +107,7 @@ export class MapBuilder {
   private buildAir(airLayer: ObjectLayer): void {
     assert(airLayer.objects.length > 0)
     for (const airData of airLayer.objects) {
+      assert(airData.ellipse === true)
       const radius = airData.width / 2
       const x = airData.x + radius
       const y = airData.y + radius
@@ -238,6 +250,25 @@ export class MapBuilder {
     mossPosition.x = x * tw + tw / 2
     mossPosition.y = y * th - th / 2
     this.world.addEntity(moss)
+  }
+
+  private buildSensor(sensorLayer: ObjectLayer): void {
+    for (const { x, y, width, height, properties } of sensorLayer.objects) {
+      assert(properties)
+
+      const eventProperty = properties.find(prop => prop.name === 'event')
+      assert(eventProperty)
+      assert(eventProperty.type === 'string')
+
+      const eventName = eventProperty.value as string
+
+      const sensor = new SensorFactory()
+        .setPosition(x, y)
+        .setSize(width, height)
+        .setEventName(eventName)
+        .create()
+      this.world.addEntity(sensor)
+    }
   }
 
   private calcWallId(cell: number[]): number {
