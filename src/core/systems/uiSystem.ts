@@ -87,7 +87,7 @@ export default class UiSystem extends System {
         return pre
       })
       this.laserSight.clear()
-      this.laserSight.lineStyle(0.4, 0xff0000)
+      this.laserSight.lineStyle(0.5, 0xff0000)
       this.laserSight.moveTo(position.x, position.y)
       this.laserSight.lineTo(hitPoint.x, hitPoint.y)
       this.laserSight.beginFill(0xff0000)
