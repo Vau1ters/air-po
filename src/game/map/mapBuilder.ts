@@ -166,6 +166,12 @@ export class MapBuilder {
             builder: (pos: number[]) => this.buildMoss(pos, tileSize),
           })
           break
+        case 'airTotem':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) =>
+              this.buildNPC(pos, tileSize, { type: content.name as NPCType, size }),
+          })
       }
     }
 

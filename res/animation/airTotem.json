@@ -1,0 +1,9 @@
+{
+  "sprite": {
+    "name": "airTotem",
+    "state": {
+      "Default": [0]
+    },
+    "default": "Default"
+  }
+}

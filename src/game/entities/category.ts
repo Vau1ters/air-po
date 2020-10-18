@@ -101,6 +101,10 @@ export const CategoryList = {
       mask: new CategorySet(Category.AIR),
     },
   },
+  airTotem: {
+    category: Category.DYNAMIC_WALL,
+    mask: new CategorySet(Category.PHYSICS),
+  },
   player: {
     body: {
       category: Category.PHYSICS,
