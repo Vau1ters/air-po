@@ -1,6 +1,7 @@
 import { Behaviour } from '../behaviour'
 import { Entity } from '../../ecs/entity'
 import { KeyController } from '../../systems/controlSystem'
+import * as Sound from '../../sound/sound'
 
 export const playerMove = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
@@ -10,6 +11,8 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
   const body = entity.getComponent('RigidBody')
 
   const velocity = body.velocity
+
+  let isLandingPrevFrame = player.landing
 
   while (true) {
     if (KeyController.isActionPressing('MoveRight')) {
@@ -26,13 +29,17 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
       if (player.landing) animState.state = 'Standing'
     }
     if (player.landing) {
+      if (!isLandingPrevFrame) Sound.play('foot')
       velocity.y = 0
     }
     if (KeyController.isActionPressing('Jump') && player.landing) {
       velocity.y = -250
       animState.state = 'Jumping'
+      Sound.play('jump')
     }
+    isLandingPrevFrame = player.landing
     player.landing = false
+
     yield
   }
 }

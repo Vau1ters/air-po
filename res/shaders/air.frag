@@ -11,6 +11,7 @@ uniform vec2 displaySize;
 uniform float effectiveRadius;
 uniform float inAirRate;
 uniform vec2 camera;
+uniform bool enableAntiAlias;
 
 float air(vec2 coord) {
   float metaball = 0.0;
@@ -62,7 +63,11 @@ void main() {
   vec4 color = texture2D(uSampler, vTextureCoord);
   vec2 coord = vTextureCoord * displaySize;
   coord = floor(coord + fract(camera));
-  color *= shouldAntiAlias(coord) ? (1. + air(coord)) * .5 : air(coord);
+  if (enableAntiAlias) {
+    color *= shouldAntiAlias(coord) ? (1. + air(coord)) * .5 : air(coord);
+  } else {
+    color *= air(coord);
+  }
   gl_FragColor = color;
   gl_FragColor.rgb *= mix(pow(cos(0.7 * length(vTextureCoord - 0.5) * 3.141592 * .5), 4.), 1., inAirRate);
 }

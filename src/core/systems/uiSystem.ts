@@ -8,11 +8,13 @@ import { Vec2 } from '../math/vec2'
 import { Ray } from '../math/ray'
 import { CategoryList } from '../entities/category'
 import { Entity } from '../ecs/entity'
+import PhysicsSystem from './physicsSystem'
 
 export default class UiSystem extends System {
   private playerFamily: Family
   private hpFamily: Family
-  private bvhFamily: Family
+
+  private physicsSystem: PhysicsSystem
 
   private uiContainer: Container = new Container()
   private gameWorldUiContainer: Container = new Container()
@@ -22,8 +24,15 @@ export default class UiSystem extends System {
   private playerAirGauge: Graphics = new Graphics()
   private laserSight: Graphics = new Graphics()
 
-  public constructor(world: World, uiContainer: Container, gameWorldUiContainer: Container) {
+  public constructor(
+    world: World,
+    uiContainer: Container,
+    gameWorldUiContainer: Container,
+    physicsSystem: PhysicsSystem
+  ) {
     super(world)
+
+    this.physicsSystem = physicsSystem
 
     this.laserSight.position.set(0)
     this.gameWorldUiContainer.addChild(this.laserSight)
@@ -40,7 +49,6 @@ export default class UiSystem extends System {
 
     this.playerFamily = new FamilyBuilder(world).include('Player').build()
     this.hpFamily = new FamilyBuilder(world).include('HP', 'Position').build()
-    this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
   }
 
   public update(): void {
@@ -78,11 +86,10 @@ export default class UiSystem extends System {
     const mousePosition = MouseController.position
     const direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
     const candidatePoints: Vec2[] = []
-    for (const entity of this.bvhFamily.entityIterator) {
-      const bvh = entity.getComponent('BVH')
+    for (const [category, bvh] of this.physicsSystem.bvhs) {
       if (
-        CategoryList.bulletBody.mask.has(bvh.category) ||
-        CategoryList.player.attack.mask.has(bvh.category)
+        CategoryList.bulletBody.mask.has(category) ||
+        CategoryList.player.attack.mask.has(category)
       ) {
         const result = bvh.queryRayMarch(new Ray(position, direction))
         candidatePoints.push(...result.map(item => item[1]))

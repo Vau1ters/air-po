@@ -17,12 +17,17 @@ export class AirFilter extends Filter {
 
   private family: Family
 
-  public constructor(world: World, displaySize: { x: number; y: number }) {
+  public constructor(
+    world: World,
+    displaySize: { x: number; y: number },
+    setting: { antiAlias: boolean }
+  ) {
     super(undefined, shader, {
       displaySize: [displaySize.x, displaySize.y],
       points: [],
       camera: [0, 0],
       effectiveRadius: AirFilter.EFFECTIVE_RADIUS,
+      antiAlias: setting.antiAlias,
     })
     this.uniforms.inAirRate = 0
     this.family = new FamilyBuilder(world).include('Player').build()

@@ -42,12 +42,12 @@ export class DamageSystem extends System {
   private attackCollisionCallback = (hitbox: Collider, other: Collider): void => {
     // AttackComponent持ってるEntityのColliderComponentと
     // HPComponentとInvincibleComponent持ちEntityとの衝突を見てHPを減らす
-    const entity = other.component.entity
+    const entity = other.entity
 
     if (entity.hasComponent('HP') && entity.hasComponent('Invincible')) {
       const hp = entity.getComponent('HP')
       const invincible = entity.getComponent('Invincible')
-      const attack = hitbox.component.entity.getComponent('Attack')
+      const attack = hitbox.entity.getComponent('Attack')
       if (!invincible.isInvincible() && attack.entity !== entity) {
         hp.hp = Math.max(0, hp.hp - attack.damage)
         invincible.setInvincible()
