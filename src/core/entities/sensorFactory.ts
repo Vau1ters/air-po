@@ -11,7 +11,7 @@ export class SensorFactory extends EntityFactory {
   private y = 0
   private w = 0
   private h = 0
-  private eventName = ''
+  private event = ''
 
   public create(): Entity {
     const result = new Entity()
@@ -24,7 +24,7 @@ export class SensorFactory extends EntityFactory {
     collider.createCollider(aabb)
     result.addComponent('Collider', collider)
 
-    result.addComponent('Sensor', new SensorComponent(this.eventName))
+    result.addComponent('Sensor', new SensorComponent(this.event))
 
     return result
   }
@@ -41,8 +41,8 @@ export class SensorFactory extends EntityFactory {
     return this
   }
 
-  public setEventName(eventName: string): SensorFactory {
-    this.eventName = eventName
+  public setEvent(event: string): SensorFactory {
+    this.event = event
     return this
   }
 }

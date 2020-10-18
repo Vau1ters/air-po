@@ -58,7 +58,7 @@ type TileSet = {
   source: string
 }
 
-type Map = {
+export type Map = {
   compressionlevel: number
   height: number
   infinite: boolean
@@ -85,7 +85,7 @@ export class MapBuilder {
     this.rand = new Random()
   }
 
-  public build(map: Map): void {
+  public build(map: Map, playerSpawnerID: number): void {
     for (const layer of map.layers) {
       switch (layer.name) {
         case 'air':
@@ -99,6 +99,9 @@ export class MapBuilder {
           break
         case 'sensor':
           this.buildSensor(layer as ObjectLayer)
+          break
+        case 'player':
+          this.buildPlayer(layer as ObjectLayer, [map.tilewidth, map.tileheight], playerSpawnerID)
           break
       }
     }
@@ -138,12 +141,6 @@ export class MapBuilder {
           builders.push({
             firstgid,
             builder: (pos: number[]) => this.buildWall(pos, tileSize, { firstgid, getTileId }),
-          })
-          break
-        case 'player':
-          builders.push({
-            firstgid,
-            builder: (pos: number[]) => this.buildPlayer(pos, tileSize, { size }),
           })
           break
         case 'enemy1':
@@ -231,15 +228,20 @@ export class MapBuilder {
     this.world.addEntity(npc)
   }
 
-  private buildPlayer(pos: number[], tileSize: number[], playerInfo: { size: number[] }): void {
-    const [x, y] = pos
-    const [w, h] = playerInfo.size
-    const [tw, th] = tileSize
-    const player = new PlayerFactory(this.world).create()
-    const playerPosition = player.getComponent('Position')
-    playerPosition.x = x * tw + w / 2
-    playerPosition.y = y * th - h / 2
-    this.world.addEntity(player)
+  private buildPlayer(playerLayer: ObjectLayer, tileSize: number[], playerSpawnerID: number): void {
+    for (const { x, y, width, height, properties } of playerLayer.objects) {
+      assert(properties)
+      const idProperty = properties.find(property => property.name === 'id')
+      assert(idProperty)
+      assert(idProperty.type === 'int')
+      const spawnerID = idProperty.value as number
+      if (spawnerID !== playerSpawnerID) continue
+      const player = new PlayerFactory(this.world).create()
+      const playerPosition = player.getComponent('Position')
+      playerPosition.x = x + width / 2
+      playerPosition.y = y - height
+      this.world.addEntity(player)
+    }
   }
 
   private buildMoss(pos: number[], tileSize: number[]): void {
@@ -260,12 +262,12 @@ export class MapBuilder {
       assert(eventProperty)
       assert(eventProperty.type === 'string')
 
-      const eventName = eventProperty.value as string
+      const event = eventProperty.value as string
 
       const sensor = new SensorFactory()
         .setPosition(x, y)
         .setSize(width, height)
-        .setEventName(eventName)
+        .setEvent(event)
         .create()
       this.world.addEntity(sensor)
     }

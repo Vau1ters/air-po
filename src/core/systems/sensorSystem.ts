@@ -1,3 +1,4 @@
+import { MapChangeComponent } from '../components/mapChangeComponent'
 import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { System } from '../ecs/system'
@@ -15,13 +16,24 @@ export class SensorSystem extends System {
   public update(): void {}
 
   private onSensorAdded(entity: Entity): void {
-    const eventName = entity.getComponent('Sensor').eventName
+    const event = entity.getComponent('Sensor').event
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(() => this.fireEvent(eventName))
+      c.callbacks.add(() => this.fireEvent(event))
     }
   }
 
-  private fireEvent(eventName: string): void {
-    console.log(eventName)
+  private fireEvent(event: string): void {
+    const [eventName, ...options] = event.split(' ')
+    switch (eventName) {
+      case 'move':
+        this.moveEvent(options[0], Number(options[1]))
+        break
+    }
+  }
+
+  private moveEvent(newMapName: string, spawnerID: number): void {
+    const entity = new Entity()
+    entity.addComponent('MapChange', new MapChangeComponent(newMapName, spawnerID))
+    this.world.addEntity(entity)
   }
 }

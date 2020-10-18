@@ -1,3 +1,3 @@
 export class SensorComponent {
-  constructor(public eventName: string) {}
+  constructor(public event: string) {}
 }

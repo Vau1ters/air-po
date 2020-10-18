@@ -18,6 +18,7 @@ import { VineComponent } from '../components/vineComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { LightComponent } from '../components/lightComponent'
 import { SensorComponent } from '../components/sensorComponent'
+import { MapChangeComponent } from '../components/mapChangeComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -40,6 +41,7 @@ export interface ComponentMap {
   PickupTarget: PickupTargetComponent
   Light: LightComponent
   Sensor: SensorComponent
+  MapChange: MapChangeComponent
 }
 
 export type ComponentName = keyof ComponentMap

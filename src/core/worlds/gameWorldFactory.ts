@@ -11,15 +11,13 @@ import { ControlSystem } from './../../core/systems/controlSystem'
 import { PlayerControlSystem } from './../../core/systems/playerControlSystem'
 import { BulletSystem } from './../../core/systems/bulletSystem'
 import UiSystem from './../../core/systems/uiSystem'
-import { MapBuilder } from './../../map/mapBuilder'
+import { Map, MapBuilder } from './../../map/mapBuilder'
 import AISystem from './../../core/systems/aiSystem'
 import InvincibleSystem from './../../core/systems/invincibleSystem'
 import { DamageSystem } from './../../core/systems/damageSystem'
-import map from './../../../res/teststage.json'
 import { FamilyBuilder } from './../../core/ecs/family'
 import { AirHolderSystem } from './../../core/systems/airHolderSystem'
 import * as PIXI from 'pixi.js'
-import { Behaviour } from '../ai/behaviour'
 import { TitleWorldFactory } from './titleWorldFactory'
 import { isAlive } from '../ai/condition/isAlive'
 import { assert } from '../../utils/assertion'
@@ -28,22 +26,30 @@ import { FilterSystem } from '../systems/filterSystem'
 import { LightSystem } from '../systems/lightSystem'
 import { SensorSystem } from '../systems/sensorSystem'
 
-const gameWorldBehaviour = function*(world: World): Behaviour<World> {
+const gameWorldBehaviour = async function*(world: World): AsyncGenerator<void, World> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
   assert(playerFamily.entityArray.length === 1)
   const playerEntity = playerFamily.entityArray[0]
   const isPlayerAlive = isAlive(playerEntity)
 
-  while (isPlayerAlive()) {
+  const mapChangeFamily = new FamilyBuilder(world).include('MapChange').build()
+
+  while (true) {
+    if (!isPlayerAlive()) {
+      yield* wait(60)
+      return new TitleWorldFactory().create()
+    }
+    for (const mapChange of mapChangeFamily.entityIterator) {
+      const { newMap, spawnerID } = mapChange.getComponent('MapChange')
+      const map = (await import(`../../../res/${newMap}.json`)) as Map
+      return new GameWorldFactory().create(map, spawnerID) // eslint-disable-line  @typescript-eslint/no-use-before-define
+    }
     yield
   }
-  yield* wait(60)
-
-  return new TitleWorldFactory().create()
 }
 
 export class GameWorldFactory {
-  public create(): World {
+  public create(map: Map, playerSpanerID: number): World {
     const world = new World(gameWorldBehaviour)
 
     const gameWorldContainer = new Container()
@@ -92,7 +98,7 @@ export class GameWorldFactory {
     )
 
     const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map)
+    mapBuilder.build(map, playerSpanerID)
 
     return world
   }
