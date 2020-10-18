@@ -91,7 +91,7 @@ export default class UiSystem extends System {
         CategoryList.bulletBody.mask.has(category) ||
         CategoryList.player.attack.mask.has(category)
       ) {
-        const result = bvh.queryRayMarch(new Ray(position, direction))
+        const result = bvh.queryRaycast(new Ray(position, direction))
         candidatePoints.push(...result.map(item => item[1]))
       }
     }

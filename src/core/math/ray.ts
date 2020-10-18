@@ -5,7 +5,7 @@ type Axis = 'x' | 'y'
 // 微小量
 const delta = 0.0001
 
-export const rayMarchToAABB = (ray: Ray, aabb: AABB): Vec2 | undefined => {
+export const raycastToAABB = (ray: Ray, aabb: AABB): Vec2 | undefined => {
   // Rayの原点がすでにAABB内にある
   if (aabb.contains(ray.origin)) return ray.origin.copy()
 

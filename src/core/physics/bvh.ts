@@ -1,6 +1,6 @@
 import { AABB } from '../math/aabb'
 import { ReservedArray } from '../../utils/reservedArray'
-import { Ray, rayMarchToAABB } from '../math/ray'
+import { Ray, raycastToAABB } from '../math/ray'
 import { Vec2 } from '../math/vec2'
 import { Collider } from '../components/colliderComponent'
 
@@ -18,10 +18,10 @@ export class BVHLeaf {
     result.push(this.collider)
   }
 
-  public queryRayMarch(ray: Ray, result: ReservedArray<[Collider, Vec2]>): void {
-    const rayMarchResult = rayMarchToAABB(ray, this.bound)
-    if (!rayMarchResult) return
-    result.push([this.collider, rayMarchResult])
+  public queryRaycast(ray: Ray, result: ReservedArray<[Collider, Vec2]>): void {
+    const raycastResult = raycastToAABB(ray, this.bound)
+    if (!raycastResult) return
+    result.push([this.collider, raycastResult])
   }
 
   public get bound(): AABB {
@@ -46,11 +46,11 @@ export class BVHNode {
     }
   }
 
-  public queryRayMarch(ray: Ray, result: ReservedArray<[Collider, Vec2]>): void {
-    const rayMarchResult = rayMarchToAABB(ray, this.bound)
-    if (!rayMarchResult) return
+  public queryRaycast(ray: Ray, result: ReservedArray<[Collider, Vec2]>): void {
+    const raycastResult = raycastToAABB(ray, this.bound)
+    if (!raycastResult) return
     for (const c of this.child) {
-      c.queryRayMarch(ray, result)
+      c.queryRaycast(ray, result)
     }
   }
 }
@@ -66,10 +66,10 @@ export class BVH {
     return result.toArray()
   }
 
-  public queryRayMarch(ray: Ray): [Collider, Vec2][] {
+  public queryRaycast(ray: Ray): [Collider, Vec2][] {
     const result = new ReservedArray<[Collider, Vec2]>(100)
     if (this.root) {
-      this.root.queryRayMarch(ray, result)
+      this.root.queryRaycast(ray, result)
     }
     return result.toArray()
   }
