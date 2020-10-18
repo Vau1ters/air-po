@@ -33,7 +33,8 @@ export class MossFactory extends EntityFactory {
     collider.createCollider(airSensor)
 
     const sprite = parseSprite(mossDefinition.sprite)
-    const draw = new DrawComponent(entity, sprite)
+    const draw = new DrawComponent(entity)
+    draw.addChild(sprite)
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)

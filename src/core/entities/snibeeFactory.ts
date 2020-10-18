@@ -71,7 +71,8 @@ export class SnibeeFactory extends EntityFactory {
     collider.createCollider(attackHitBox)
 
     const sprite = parseSprite(snibeeDefinition.sprite)
-    const draw = new DrawComponent(entity, sprite)
+    const draw = new DrawComponent(entity)
+    draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1

@@ -31,7 +31,8 @@ export class DandelionFluffFactory extends EntityFactory {
     collider.createCollider(aabb)
 
     const sprite = parseSprite(dandelionFluffDefinition.sprite)
-    const draw = new DrawComponent(entity, sprite)
+    const draw = new DrawComponent(entity)
+    draw.addChild(sprite)
 
     const animState = new AnimationStateComponent()
     animState.changeState.addObserver(x => sprite.changeTo(x))
