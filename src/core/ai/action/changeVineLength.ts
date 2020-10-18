@@ -8,14 +8,14 @@ import { parseSprite } from '../../parser/spriteParser'
 
 const canExtend = (me: Collider, other: Collider): void => {
   if (!other.isSensor) {
-    const vine = me.component.entity.getComponent('Vine')
+    const vine = me.entity.getComponent('Vine')
     vine.canExtend = false
   }
 }
 
 const shouldShrink = (me: Collider, other: Collider): void => {
   if (other.tag.has('air')) {
-    const vine = me.component.entity.getComponent('Vine')
+    const vine = me.entity.getComponent('Vine')
     vine.shouldShrink = false
   }
 }

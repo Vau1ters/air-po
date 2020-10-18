@@ -1,31 +1,50 @@
 import { System } from '../ecs/system'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
-import { Container, Sprite } from 'pixi.js'
+import { Container } from 'pixi.js'
 import { Entity } from '../ecs/entity'
 import { windowSize } from '../../core/application'
-import { Animation } from '../../core/graphics/animation'
-import { assert } from '../../utils/assertion'
+import { AABB } from '../math/aabb'
+import { Vec2 } from '../math/vec2'
+import { BVH } from '../physics/bvh'
 
 export default class DrawSystem extends System {
-  private family: Family
+  private drawFamily: Family
+  private staticDrawFamily: Family
+  private dynamicDrawFamily: Family
   private cameraFamily: Family
 
+  private preVisibleEntities: Entity[] = []
   private container: Container = new Container()
+  private dynamicBVH: BVH
+  private staticBVH: BVH
+  private staticBVHInitialized = false
 
   public constructor(world: World, stage: Container) {
     super(world)
 
     stage.addChild(this.container)
 
-    this.family = new FamilyBuilder(world).include('Draw').build()
+    this.drawFamily = new FamilyBuilder(world).include('Draw').build()
 
-    for (const entity of this.family.entityIterator) {
+    for (const entity of this.drawFamily.entityIterator) {
       this.onContainerAdded(entity)
     }
-    this.family.entityAddedEvent.addObserver(entity => this.onContainerAdded(entity))
-    this.family.entityRemovedEvent.addObserver(entity => this.onContainerRemoved(entity))
+    this.drawFamily.entityAddedEvent.addObserver(entity => this.onContainerAdded(entity))
+    this.drawFamily.entityRemovedEvent.addObserver(entity => this.onContainerRemoved(entity))
+
+    this.staticDrawFamily = new FamilyBuilder(world)
+      .include('Draw')
+      .include('Static')
+      .build()
+    this.dynamicDrawFamily = new FamilyBuilder(world)
+      .include('Draw')
+      .exclude('Static')
+      .build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
+
+    this.dynamicBVH = new BVH()
+    this.staticBVH = new BVH()
   }
 
   public onContainerAdded(entity: Entity): void {
@@ -41,32 +60,52 @@ export default class DrawSystem extends System {
   }
 
   public update(): void {
+    this.resetVisibility()
+    this.updateBVH()
+    this.updateAllState()
+  }
+
+  private resetVisibility(): void {
+    for (const e of this.preVisibleEntities) {
+      e.getComponent('Draw').visible = false
+    }
+    this.preVisibleEntities = []
+  }
+
+  private updateBVH(): void {
+    if (!this.staticBVHInitialized) {
+      this.staticBVHInitialized = true
+      this.staticBVH.build(
+        this.staticDrawFamily.entityArray.map(e => e.getComponent('Draw').createCollider())
+      )
+    }
+
+    this.dynamicBVH.build(
+      this.dynamicDrawFamily.entityArray.map(e => e.getComponent('Draw').createCollider())
+    )
+  }
+
+  private updateAllState(): void {
     for (const camera of this.cameraFamily.entityIterator) {
-      const cpos = camera.getComponent('Position')
-      for (const entity of this.family.entityIterator) {
+      const screen = this.createScreenAABB(camera)
+      const visibleEntities = [this.dynamicBVH, this.staticBVH]
+        .map(bvh => bvh.query(screen))
+        .reduce((a, b) => Array.prototype.concat(a, b))
+        .map(c => c.entity)
+      for (const entity of visibleEntities) {
+        const position = entity.getComponent('Position')
         const container = entity.getComponent('Draw')
-        const sprite = container.children.find(c => c.isSprite) as Sprite
-        const animation = container.children.find(c => c instanceof Animation) as Animation
-        const anchor = sprite ? sprite.anchor : animation ? animation.anchor : null
-        assert(anchor)
-        if (entity.hasComponent('Position')) {
-          const position = entity.getComponent('Position')
-          const x = position.x - cpos.x
-          const y = position.y - cpos.y
-          const w = container.width
-          const h = container.height
-          const sw = windowSize.width
-          const sh = windowSize.height
-          const left = x - w * anchor.x
-          const right = x + w * (1 - anchor.x)
-          const top = y - h * anchor.y
-          const bottom = y + h * (1 - anchor.y)
-          container.visible = left < sw / 2 && top < sh / 2 && -sw / 2 < right && -sh / 2 < bottom
-          if (container.visible) {
-            container.position.set(position.x, position.y)
-          }
-        }
+        container.visible = true
+        container.position.set(position.x, position.y)
+        this.preVisibleEntities.push(entity)
       }
     }
+  }
+
+  private createScreenAABB(camera: Entity): AABB {
+    const sw = windowSize.width
+    const sh = windowSize.height
+    const cpos = camera.getComponent('Position')
+    return new AABB(new Vec2(-sw / 2, -sh / 2).add(cpos), new Vec2(sw, sh))
   }
 }

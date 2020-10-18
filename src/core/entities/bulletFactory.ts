@@ -61,7 +61,6 @@ export class BulletFactory extends EntityFactory {
       shooterPosition.x - (direction.x * this.offset.x) / 2,
       shooterPosition.y + this.offset.y
     )
-    const draw = new DrawComponent()
     const bullet = new BulletComponent(
       new Vec2(direction.x * this.speed, direction.y * this.speed),
       this.life
@@ -112,7 +111,7 @@ export class BulletFactory extends EntityFactory {
     ]
     sprite.changeTo(directions[index])
 
-    draw.addChild(sprite)
+    const draw = new DrawComponent(entity, sprite)
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)

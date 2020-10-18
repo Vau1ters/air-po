@@ -37,6 +37,6 @@ export class LightSystem extends System {
 
   private static lightAirCollision(me: Collider, other: Collider): void {
     if (!other.tag.has('air')) return
-    me.component.entity.getComponent('Light').intensity = 1
+    me.entity.getComponent('Light').intensity = 1
   }
 }
