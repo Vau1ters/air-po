@@ -4,14 +4,14 @@ import { Family, FamilyBuilder } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Collider, AABBCollider } from '../components/colliderComponent'
 import { collide } from '../physics/collision'
-import { BVHComponent } from '../components/bvhComponent'
 import { Category, CategorySet } from '../entities/category'
 import { assert } from '../../utils/assertion'
+import { BVH } from '../physics/bvh'
 
 export default class PhysicsSystem extends System {
   private colliderFamily: Family
   private rigidBodyFamily: Family
-  private bvhFamily: Family
+  public bvhs = new Map<Category, BVH>()
 
   private collidedList: Array<[Collider, Collider]> = []
 
@@ -20,13 +20,10 @@ export default class PhysicsSystem extends System {
 
     this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
     this.rigidBodyFamily = new FamilyBuilder(world).include('Position', 'RigidBody').build()
-    this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
 
     for (const c of CategorySet.ALL) {
-      const e = new Entity()
-      const bvh = new BVHComponent(c)
-      e.addComponent('BVH', bvh)
-      this.world.addEntity(e)
+      const bvh = new BVH()
+      this.bvhs.set(c, bvh)
     }
   }
 
@@ -43,10 +40,9 @@ export default class PhysicsSystem extends System {
         colliders.push(c)
       }
     }
-    for (const entity of this.bvhFamily.entityIterator) {
-      const bvh = entity.getComponent('BVH')
-      if (bvh.category === Category.STATIC_WALL && bvh.root) continue
-      const colliders = colliderMap.get(bvh.category)
+    for (const [category, bvh] of this.bvhs) {
+      if (category === Category.STATIC_WALL && bvh.root) continue
+      const colliders = colliderMap.get(category)
       assert(colliders)
       bvh.build(colliders)
     }
@@ -69,11 +65,6 @@ export default class PhysicsSystem extends System {
   }
 
   private broadPhase(): void {
-    const bvhs: { [key: string]: BVHComponent } = {}
-    for (const entity of this.bvhFamily.entityIterator) {
-      const bvh = entity.getComponent('BVH')
-      bvhs[bvh.category] = bvh
-    }
     for (const entity1 of this.colliderFamily.entityIterator) {
       const collider1 = entity1.getComponent('Collider')
       const position1 = entity1.getComponent('Position')
@@ -82,12 +73,12 @@ export default class PhysicsSystem extends System {
       for (const c of collider1.colliders) {
         if (c.category === Category.STATIC_WALL) continue // for performance
         for (const m of c.mask) {
-          const bvh = bvhs[m]
+          const bvh = this.bvhs.get(m)
           assert(bvh)
           const rs = bvh.query(c.bound.add(position1))
           for (const r of rs) {
-            if (r.component.entity === entity1) continue
-            const entity2 = r.component.entity
+            if (r.entity === entity1) continue
+            const entity2 = r.entity
             if (collidedEntityIdSet.has(entity2.id)) continue
             this.collide(entity1, entity2)
             collidedEntityIdSet.add(entity2.id)
@@ -134,11 +125,11 @@ export default class PhysicsSystem extends System {
   private solve(collidedList: Array<[Collider, Collider]>): void {
     // 互いに押し合う
     for (const [c1, c2] of collidedList) {
-      const body1 = c1.component.entity.getComponent('RigidBody')
-      const body2 = c2.component.entity.getComponent('RigidBody')
+      const body1 = c1.entity.getComponent('RigidBody')
+      const body2 = c2.entity.getComponent('RigidBody')
 
-      const position1 = c1.component.entity.getComponent('Position')
-      const position2 = c2.component.entity.getComponent('Position')
+      const position1 = c1.entity.getComponent('Position')
+      const position2 = c2.entity.getComponent('Position')
       // TODO:別クラスに分ける
       if (c1 instanceof AABBCollider && c2 instanceof AABBCollider) {
         const aabb1 = c1.aabb.add(position1)

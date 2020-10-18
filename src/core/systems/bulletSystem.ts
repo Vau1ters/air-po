@@ -39,8 +39,8 @@ export class BulletSystem extends System {
   }
 
   private bulletCollisionCallback(bullet: Collider): void {
-    if (bullet.component.entity.hasComponent('Bullet')) {
-      this.world.removeEntity(bullet.component.entity)
+    if (bullet.entity.hasComponent('Bullet')) {
+      this.world.removeEntity(bullet.entity)
     }
   }
 }

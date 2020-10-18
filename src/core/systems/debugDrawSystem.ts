@@ -3,11 +3,12 @@ import { FamilyBuilder, Family } from '../ecs/family'
 import { World } from '../ecs/world'
 import { Graphics, Container } from 'pixi.js'
 import { AABBCollider, CircleCollider } from '../components/colliderComponent'
-import { BVHLeaf, BVHNode } from '../components/bvhComponent'
 import { windowSize } from '../application'
 import { assert } from '../../utils/assertion'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
+import PhysicsSystem from './physicsSystem'
+import { BVHLeaf, BVHNode } from '../physics/bvh'
 
 export default class DebugDrawSystem extends System {
   private state = {
@@ -18,18 +19,19 @@ export default class DebugDrawSystem extends System {
 
   private positionFamily: Family
   private colliderFamily: Family
-  private bvhFamily: Family
   private cameraFamily: Family
 
+  private physicsSystem: PhysicsSystem
   private graphics: Graphics = new Graphics()
 
-  public constructor(world: World, container: Container) {
+  public constructor(world: World, container: Container, physicsSystem: PhysicsSystem) {
     super(world)
 
     this.positionFamily = new FamilyBuilder(world).include('Position').build()
     this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
-    this.bvhFamily = new FamilyBuilder(world).include('BVH').build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
+
+    this.physicsSystem = physicsSystem
 
     container.addChild(this.graphics)
   }
@@ -88,10 +90,9 @@ export default class DebugDrawSystem extends System {
     }
 
     if (this.state.bvh) {
-      for (const entity of this.bvhFamily.entityIterator) {
+      for (const [_, bvh] of this.physicsSystem.bvhs) {
         // webGLの頂点数上限に引っかからないようにnative: trueにしている
         this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)
-        const bvh = entity.getComponent('BVH')
 
         const draw = (n: BVHNode | BVHLeaf): void => {
           const b = n.bound

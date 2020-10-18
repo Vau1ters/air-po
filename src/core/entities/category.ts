@@ -9,6 +9,7 @@ export enum Category {
   AIR,
   SENSOR,
   LIGHT,
+  DRAW,
 }
 
 export class CategorySet extends Set<Category> {

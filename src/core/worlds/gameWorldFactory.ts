@@ -77,9 +77,10 @@ export class GameWorldFactory {
     uiContainer.zIndex = Infinity
     world.stage.addChild(uiContainer)
 
+    const physicsSystem = new PhysicsSystem(world)
     world.addSystem(
       new AISystem(world),
-      new PhysicsSystem(world),
+      physicsSystem,
       new GravitySystem(world),
       new PlayerControlSystem(world),
       new BulletSystem(world),
@@ -91,7 +92,7 @@ export class GameWorldFactory {
       new AirHolderSystem(world),
       new DrawSystem(world, drawContainer),
       new UiSystem(world, uiContainer, gameWorldUiContainer),
-      new DebugDrawSystem(world, debugContainer),
+      new DebugDrawSystem(world, debugContainer, physicsSystem),
       new CameraSystem(world, gameWorldContainer, background),
       new ControlSystem(world),
       new SensorSystem(world)

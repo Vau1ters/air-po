@@ -8,6 +8,7 @@ import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
 import { textureStore } from '../graphics/art'
 import { Sprite } from 'pixi.js'
+import { StaticComponent } from '../components/staticComponent'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -21,8 +22,6 @@ export class WallFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
-    const draw = new DrawComponent()
 
     if (this.shouldCollide) {
       const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.wall)
@@ -37,11 +36,16 @@ export class WallFactory extends EntityFactory {
       entity.addComponent('RigidBody', body)
     }
 
+    const position = new PositionComponent()
     entity.addComponent('Position', position)
-    entity.addComponent('Draw', draw)
+
     const sprite = new Sprite(textureStore.wall[this.tileId])
     sprite.anchor.set(0.5)
-    draw.addChild(sprite)
+    const draw = new DrawComponent(entity, sprite)
+    entity.addComponent('Draw', draw)
+
+    entity.addComponent('Static', new StaticComponent())
+
     return entity
   }
 }

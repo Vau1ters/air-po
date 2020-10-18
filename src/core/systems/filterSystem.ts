@@ -19,11 +19,27 @@ export class FilterSystem extends System {
   private cameraFamily: Family
   private lightSearcher: Entity
 
+  public static settings = {
+    air: {
+      antiAlias: false,
+    },
+    darkness: {
+      defaultBrightness: 0.8,
+    },
+  }
+
   public constructor(world: World, container: Container) {
     super(world)
 
-    this.airFilter = new AirFilter(world, { x: windowSize.width, y: windowSize.height })
-    this.darknessFilter = new DarknessFilter({ x: windowSize.width, y: windowSize.height })
+    this.airFilter = new AirFilter(
+      world,
+      { x: windowSize.width, y: windowSize.height },
+      FilterSystem.settings.air
+    )
+    this.darknessFilter = new DarknessFilter(
+      { x: windowSize.width, y: windowSize.height },
+      FilterSystem.settings.darkness
+    )
     this.lights = []
     this.airFamily = new FamilyBuilder(world).include('Air').build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
@@ -39,7 +55,7 @@ export class FilterSystem extends System {
     collider.createCollider(aabbBody)
     collider.colliders[0].callbacks.add((me: Collider, other: Collider) => {
       if (!other.tag.has('light')) return
-      this.lights.push(other.component.entity)
+      this.lights.push(other.entity)
     })
     this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())

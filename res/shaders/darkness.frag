@@ -7,6 +7,7 @@ const int MAX_POINT_NUM = 200;
 uniform vec3 points[MAX_POINT_NUM];
 uniform float pointNum;
 uniform vec2 displaySize;
+uniform float defaultBrightness;
 
 const vec2 lightPos = vec2(0.5, 0.5);
 
@@ -15,10 +16,10 @@ const float LIGHT_RADIUS = 10.;
 void main() {
   vec3 color = texture2D(uSampler, vTextureCoord).rgb;
   vec2 coord = vTextureCoord * displaySize;
-  float power = .1;
+  float power = defaultBrightness;
   for (int i = 0; i < MAX_POINT_NUM; i++) {
     if (i >= int(pointNum)) continue;
-    if (power > .1) continue;
+    if (power > defaultBrightness) continue;
     if (length(coord - points[i].xy) < LIGHT_RADIUS) {
       power += points[i].z;
     }

@@ -40,7 +40,6 @@ export class Enemy1Factory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    const draw = new DrawComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const hp = new HPComponent(2, 2)
@@ -73,7 +72,7 @@ export class Enemy1Factory extends EntityFactory {
 
     const sprite = parseSprite(enemy1Definition.sprite)
 
-    draw.addChild(sprite)
+    const draw = new DrawComponent(entity, sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {
         sprite.scale.x = -1

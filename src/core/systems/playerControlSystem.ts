@@ -33,15 +33,15 @@ export class PlayerControlSystem extends System {
   }
 
   private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
-    const player = playerCollider.component.entity.getComponent('Player')
+    const player = playerCollider.entity.getComponent('Player')
     if (!otherCollider.isSensor) {
       player.landing = true
     }
   }
 
   private static itemPickerCallback(playerCollider: Collider, otherCollider: Collider): void {
-    const player = playerCollider.component.entity.getComponent('Player')
-    const other = otherCollider.component.entity
+    const player = playerCollider.entity.getComponent('Player')
+    const other = otherCollider.entity
     if (other.hasComponent('PickupTarget')) {
       player.pickupTarget.add(other) // this target reference will be removed in playerPickup
     }
