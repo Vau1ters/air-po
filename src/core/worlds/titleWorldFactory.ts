@@ -9,9 +9,10 @@ import map from './../../../res/teststage.json'
 import { GameWorldFactory } from './gameWorldFactory'
 import { transition } from '../ai/action/transition'
 import { textureStore } from '../graphics/art'
+import { Behaviour } from '../ai/behaviour'
 
 const titleWorldBehaviour = (titleImage: Sprite) =>
-  async function*(): AsyncGenerator<void, World> {
+  function*(): Behaviour<World> {
     while (!MouseController.isMousePressed('Left')) yield
     yield* transition(12, (time: number) => {
       const rate = time / 12

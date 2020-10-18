@@ -1,4 +1,4 @@
-import { MapChangeComponent } from '../components/mapChangeComponent'
+import { Map, MapBuilder } from '../../map/mapBuilder'
 import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { System } from '../ecs/system'
@@ -18,22 +18,23 @@ export class SensorSystem extends System {
   private onSensorAdded(entity: Entity): void {
     const event = entity.getComponent('Sensor').event
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(() => this.fireEvent(event))
+      c.callbacks.add(async () => this.fireEvent(event))
     }
   }
 
-  private fireEvent(event: string): void {
+  private async fireEvent(event: string): Promise<void> {
     const [eventName, ...options] = event.split(' ')
     switch (eventName) {
       case 'move':
-        this.moveEvent(options[0], Number(options[1]))
+        await this.moveEvent(options[0], Number(options[1]))
         break
     }
   }
 
-  private moveEvent(newMapName: string, spawnerID: number): void {
-    const entity = new Entity()
-    entity.addComponent('MapChange', new MapChangeComponent(newMapName, spawnerID))
-    this.world.addEntity(entity)
+  private async moveEvent(newMapName: string, spawnerID: number): Promise<void> {
+    const map = (await import(`../../../res/${newMapName}.json`)) as Map
+    this.world.reset()
+    const mapBuilder = new MapBuilder(this.world)
+    mapBuilder.build(map, spawnerID)
   }
 }

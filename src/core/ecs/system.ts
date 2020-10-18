@@ -7,5 +7,6 @@ export abstract class System {
     this.world = world
   }
 
+  public init(): void {}
   public abstract update(delta: number): void
 }

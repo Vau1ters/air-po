@@ -4,7 +4,6 @@ import { World } from '../ecs/world'
 import { Graphics, Container } from 'pixi.js'
 import { AABBCollider, CircleCollider } from '../components/colliderComponent'
 import { windowSize } from '../application'
-import { assert } from '../../utils/assertion'
 import { AABB } from '../math/aabb'
 import { Vec2 } from '../math/vec2'
 import PhysicsSystem from './physicsSystem'
@@ -40,15 +39,9 @@ export default class DebugDrawSystem extends System {
     this.graphics.clear()
 
     // 表示領域のみ描画して最適化
-    let cameraPosition: { x: number; y: number } | undefined = undefined
-    for (const camera of this.cameraFamily.entityIterator) {
-      const position = camera.getComponent('Position')
-      cameraPosition = {
-        x: position.x,
-        y: position.y,
-      }
-    }
-    assert(cameraPosition != undefined)
+    if (this.cameraFamily.entityArray.length === 0) return
+    const [camera] = this.cameraFamily.entityArray
+    const cameraPosition = camera.getComponent('Position')
     const cameraX = cameraPosition.x - windowSize.width / 2
     const cameraY = cameraPosition.y - windowSize.height / 2
     const cameraW = windowSize.width

@@ -31,6 +31,9 @@ export class AirSystem extends System {
     collider.createCollider(air)
     this.entity.addComponent('Collider', collider)
     this.entity.addComponent('Position', new PositionComponent())
+  }
+
+  public init(): void {
     this.world.addEntity(this.entity)
   }
 
@@ -79,6 +82,7 @@ export class AirSystem extends System {
         new Vec2(AirFilter.EFFECTIVE_RADIUS * 2, AirFilter.EFFECTIVE_RADIUS * 2)
       )
     })
+    if (aabbBounds.length === 0) return
     airCollider.bound = aabbBounds.reduce((a, b) => a.merge(b))
   }
 }

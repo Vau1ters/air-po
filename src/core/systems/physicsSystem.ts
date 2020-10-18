@@ -20,14 +20,32 @@ export default class PhysicsSystem extends System {
 
     this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
     this.rigidBodyFamily = new FamilyBuilder(world).include('Position', 'RigidBody').build()
+  }
 
+  public init(): void {
     for (const c of CategorySet.ALL) {
       const bvh = new BVH()
       this.bvhs.set(c, bvh)
     }
   }
 
-  public buildBVH(): void {
+  public update(delta: number): void {
+    for (const entity of this.rigidBodyFamily.entityIterator) {
+      const position = entity.getComponent('Position')
+      const body = entity.getComponent('RigidBody')
+      body.velocity.x += body.acceleration.x * delta
+      body.velocity.y += body.acceleration.y * delta
+      position.x += body.velocity.x * delta
+      position.y += body.velocity.y * delta
+      body.acceleration.x = body.acceleration.y = 0
+    }
+    this.buildBVH()
+    this.collidedList.length = 0
+    this.broadPhase()
+    this.solve(this.collidedList)
+  }
+
+  private buildBVH(): void {
     const colliderMap = new Map<Category, Collider[]>()
     for (const c of CategorySet.ALL) {
       colliderMap.set(c, [])
@@ -46,22 +64,6 @@ export default class PhysicsSystem extends System {
       assert(colliders)
       bvh.build(colliders)
     }
-  }
-
-  public update(delta: number): void {
-    for (const entity of this.rigidBodyFamily.entityIterator) {
-      const position = entity.getComponent('Position')
-      const body = entity.getComponent('RigidBody')
-      body.velocity.x += body.acceleration.x * delta
-      body.velocity.y += body.acceleration.y * delta
-      position.x += body.velocity.x * delta
-      position.y += body.velocity.y * delta
-      body.acceleration.x = body.acceleration.y = 0
-    }
-    this.buildBVH()
-    this.collidedList.length = 0
-    this.broadPhase()
-    this.solve(this.collidedList)
   }
 
   private broadPhase(): void {

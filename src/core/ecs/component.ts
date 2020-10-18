@@ -17,7 +17,6 @@ import { VineComponent } from '../components/vineComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { LightComponent } from '../components/lightComponent'
 import { SensorComponent } from '../components/sensorComponent'
-import { MapChangeComponent } from '../components/mapChangeComponent'
 import { StaticComponent } from '../components/staticComponent'
 
 export interface ComponentMap {
@@ -40,7 +39,6 @@ export interface ComponentMap {
   PickupTarget: PickupTargetComponent
   Light: LightComponent
   Sensor: SensorComponent
-  MapChange: MapChangeComponent
   Static: StaticComponent
 }
 

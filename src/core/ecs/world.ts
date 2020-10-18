@@ -4,6 +4,7 @@ import { EventNotifier } from '../eventNotifier'
 import { Container } from 'pixi.js'
 import { application } from '../application'
 import { assert } from '../../utils/assertion'
+import { Behaviour } from '../ai/behaviour'
 
 export class World {
   private readonly entities: Set<Entity>
@@ -11,10 +12,10 @@ export class World {
   public readonly stage: Container
   public readonly entityAddedEvent: EventNotifier<Entity>
   public readonly entityRemovedEvent: EventNotifier<Entity>
-  public readonly behaviour: AsyncGenerator<void, World>
+  public readonly behaviour: Behaviour<World>
 
-  private readonly _updateCallback = async (): Promise<void> => {
-    const { done, value: nextWorld } = await this.behaviour.next()
+  private readonly _updateCallback = (): void => {
+    const { done, value: nextWorld } = this.behaviour.next()
 
     this.systems.forEach(system => {
       system.update(1 / 60)
@@ -27,7 +28,7 @@ export class World {
     }
   }
 
-  public constructor(behaviour: (world: World) => AsyncGenerator<void, World>) {
+  public constructor(behaviour: (world: World) => Behaviour<World>) {
     this.entities = new Set()
     this.systems = new Set()
     this.stage = new Container()
@@ -86,8 +87,20 @@ export class World {
     }
   }
 
+  public reset(): void {
+    const entities = new Set(this.entities) // to ensure the order of actual remove and callback
+    this.entities.clear()
+    for (const entity of entities) {
+      this.entityRemovedEvent.notify(entity)
+    }
+    for (const system of this.systems) {
+      system.init()
+    }
+  }
+
   public addSystem(...systems: System[]): void {
     for (const system of systems) {
+      system.init()
       this.systems.add(system)
     }
   }

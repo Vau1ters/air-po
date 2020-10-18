@@ -25,24 +25,18 @@ import { wait } from '../ai/action/wait'
 import { FilterSystem } from '../systems/filterSystem'
 import { LightSystem } from '../systems/lightSystem'
 import { SensorSystem } from '../systems/sensorSystem'
+import { Behaviour } from '../ai/behaviour'
 
-const gameWorldBehaviour = async function*(world: World): AsyncGenerator<void, World> {
+const gameWorldBehaviour = function*(world: World): Behaviour<World> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
   assert(playerFamily.entityArray.length === 1)
   const playerEntity = playerFamily.entityArray[0]
   const isPlayerAlive = isAlive(playerEntity)
 
-  const mapChangeFamily = new FamilyBuilder(world).include('MapChange').build()
-
   while (true) {
     if (!isPlayerAlive()) {
       yield* wait(60)
       return new TitleWorldFactory().create()
-    }
-    for (const mapChange of mapChangeFamily.entityIterator) {
-      const { newMap, spawnerID } = mapChange.getComponent('MapChange')
-      const map = (await import(`../../../res/${newMap}.json`)) as Map
-      return new GameWorldFactory().create(map, spawnerID) // eslint-disable-line  @typescript-eslint/no-use-before-define
     }
     yield
   }

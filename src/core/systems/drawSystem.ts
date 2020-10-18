@@ -47,6 +47,13 @@ export default class DrawSystem extends System {
     this.staticBVH = new BVH()
   }
 
+  public init(): void {
+    this.dynamicBVH = new BVH()
+    this.staticBVH = new BVH()
+    this.preVisibleEntities = []
+    this.staticBVHInitialized = false
+  }
+
   public onContainerAdded(entity: Entity): void {
     const container = entity.getComponent('Draw')
     this.container.addChild(container)
