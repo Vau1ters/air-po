@@ -1,30 +1,12 @@
 import { World } from '@core/ecs/world'
 import { application, windowSize } from '../../core/application'
-import { Container, Sprite, Graphics } from 'pixi.js'
+import { Container, Graphics } from 'pixi.js'
 import DrawSystem from '../systems/drawSystem'
 import CameraSystem from '../systems/cameraSystem'
-import { ControlSystem, MouseController } from '../systems/controlSystem'
+import { ControlSystem } from '../systems/controlSystem'
 import { MapBuilder } from '../map/mapBuilder'
 import map from '../../../res/map/teststage.json'
-import { Behaviour } from '../../core/behaviour/behaviour'
-import { GameWorldFactory } from './gameWorldFactory'
-import { transition } from '../../core/behaviour/easing/transition'
-import { textureStore } from '../../core/graphics/art'
-
-const titleWorldBehaviour = (titleImage: Sprite) =>
-  function*(): Behaviour<World> {
-    while (!MouseController.isMousePressed('Left')) yield
-    yield* transition(12, (time: number) => {
-      const rate = time / 12
-      titleImage.alpha = (Math.cos(rate * Math.PI * 4) + 1) / 2
-    })
-    yield* transition(16, (time: number) => {
-      const rate = time / 16
-      titleImage.alpha = Math.cos((rate * Math.PI) / 2)
-    })
-
-    return new GameWorldFactory().create()
-  }
+import { titleWorldAI } from '@game/ai/world/titleWorld'
 
 export class TitleWorldFactory {
   public create(): World {
@@ -40,12 +22,8 @@ export class TitleWorldFactory {
     background.endFill()
     drawContainer.addChild(background)
 
-    const title = new Sprite(textureStore.title[0])
-    title.interactive = true
-
-    const world = new World(titleWorldBehaviour(title))
+    const world = new World(titleWorldAI)
     world.stage.addChild(gameWorldContainer)
-    world.stage.addChild(title)
 
     world.addSystem(
       new DrawSystem(world, drawContainer),

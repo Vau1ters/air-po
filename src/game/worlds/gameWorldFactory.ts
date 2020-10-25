@@ -16,34 +16,15 @@ import AISystem from '../systems/aiSystem'
 import InvincibleSystem from '../systems/invincibleSystem'
 import { DamageSystem } from '../systems/damageSystem'
 import map from '../../../res/map/teststage.json'
-import { FamilyBuilder } from '@core/ecs/family'
 import { AirHolderSystem } from '../systems/airHolderSystem'
 import * as PIXI from 'pixi.js'
-import { Behaviour } from '../../core/behaviour/behaviour'
-import { TitleWorldFactory } from './titleWorldFactory'
-import { isAlive } from '../../game/ai/entity/common/condition/isAlive'
-import { assert } from '../../core/utils/assertion'
-import { wait } from '../../core/behaviour/wait'
 import { FilterSystem } from '../systems/filterSystem'
 import { LightSystem } from '../systems/lightSystem'
-
-const gameWorldBehaviour = function*(world: World): Behaviour<World> {
-  const playerFamily = new FamilyBuilder(world).include('Player').build()
-  assert(playerFamily.entityArray.length === 1)
-  const playerEntity = playerFamily.entityArray[0]
-  const isPlayerAlive = isAlive(playerEntity)
-
-  while (isPlayerAlive()) {
-    yield
-  }
-  yield* wait(60)
-
-  return new TitleWorldFactory().create()
-}
+import { gameWorldAI } from '@game/ai/world/gameWorld'
 
 export class GameWorldFactory {
   public create(): World {
-    const world = new World(gameWorldBehaviour)
+    const world = new World(gameWorldAI)
 
     const gameWorldContainer = new Container()
     world.stage.addChild(gameWorldContainer)
