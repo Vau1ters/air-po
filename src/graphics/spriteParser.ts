@@ -1,6 +1,6 @@
-import { Animation } from '../graphics/animation'
+import { Animation } from './animation'
 import { Texture } from 'pixi.js'
-import { textureStore } from '../graphics/art'
+import { textureStore } from './art'
 import { checkMembers } from '../utils/assertion'
 
 type SpriteSetting = {

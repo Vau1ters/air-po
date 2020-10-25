@@ -8,7 +8,7 @@ import {
 import { VineComponent } from '../../../ecs/components/vineComponent'
 import vineDefinition from '../../../../res/entities/vine.json'
 import { DrawComponent } from '../../../ecs/components/drawComponent'
-import { parseSprite } from '../../../parser/spriteParser'
+import { parseSprite } from '../../../graphics/spriteParser'
 
 const canExtend = (me: Collider, other: Collider): void => {
   if (!other.isSensor) {

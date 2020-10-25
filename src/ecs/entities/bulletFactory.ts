@@ -9,7 +9,7 @@ import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
 import ballBulletDefinition from '../../../res/entities/ballBullet.json'
 import needleBulletDefinition from '../../../res/entities/needleBullet.json'
-import { parseSprite } from '../../parser/spriteParser'
+import { parseSprite } from '../../graphics/spriteParser'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,

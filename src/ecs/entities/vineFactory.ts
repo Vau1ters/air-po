@@ -10,7 +10,7 @@ import vineDefinition from '../../../res/entities/vine.json'
 import { VineComponent } from '../components/vineComponent'
 import { AIComponent } from '../components/aiComponent'
 import { vineAI } from '../../behaviour/entityAI/vine/vineAI'
-import { parseSprite } from '../../parser/spriteParser'
+import { parseSprite } from '../../graphics/spriteParser'
 import { addTag } from '../../behaviour/entityAI/vine/changeVineLength'
 
 export class VineFactory extends EntityFactory {
