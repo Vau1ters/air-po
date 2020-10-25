@@ -15,7 +15,7 @@ import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
 import balloonvineDefinition from '../../../res/entities/balloonvine.json'
 import { World } from '../ecs/world'
-import { balloonvineAI } from '../ai/balloonvineAI'
+import { balloonvineAI } from '../behaviour/entityAI/balloonVine/balloonVineAI'
 
 export class BalloonVineFactory extends EntityFactory {
   private readonly BODY_WIDTH = 10

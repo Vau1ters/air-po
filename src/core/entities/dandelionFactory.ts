@@ -7,7 +7,7 @@ import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import dandelionDefinition from '../../../res/entities/dandelion.json'
 import { World } from '../ecs/world'
-import { dandelionAI } from '../ai/dandelionAI'
+import { dandelionAI } from '../behaviour/entityAI/dandelion/dandelionAI'
 
 export class DandelionFactory extends EntityFactory {
   constructor(private world: World) {

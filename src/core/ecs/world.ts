@@ -3,7 +3,7 @@ import { System } from './system'
 import { EventNotifier } from '../eventNotifier'
 import { Container } from 'pixi.js'
 import { application } from '../application'
-import { Behaviour } from '../ai/behaviour'
+import { Behaviour } from '../behaviour/behaviour'
 import { assert } from '../../utils/assertion'
 
 export class World {

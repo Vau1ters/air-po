@@ -17,7 +17,7 @@ import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import playerDefinition from '../../../res/entities/player.json'
 import { World } from '../ecs/world'
-import { playerAI } from '../ai/playerAI'
+import { playerAI } from '../behaviour/entityAI/player/playerAI'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10

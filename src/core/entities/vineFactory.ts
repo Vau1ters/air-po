@@ -9,9 +9,9 @@ import { CategoryList } from './category'
 import vineDefinition from '../../../res/entities/vine.json'
 import { VineComponent } from '../components/vineComponent'
 import { AIComponent } from '../components/aiComponent'
-import { vineAI } from '../ai/vineAI'
+import { vineAI } from '../behaviour/entityAI/vine/vineAI'
 import { parseSprite } from '../parser/spriteParser'
-import { addTag } from '../ai/action/changeVineLength'
+import { addTag } from '../behaviour/entityAI/vine/changeVineLength'
 
 export class VineFactory extends EntityFactory {
   readonly INV_MASS = 0

@@ -11,7 +11,7 @@ import { AnimationStateComponent } from '../components/animationStateComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import dandelionFluffDefinition from '../../../res/entities/dandelion_fluff.json'
 import { World } from '../ecs/world'
-import { dandelionFluffAI } from '../ai/dandelionFluffAI'
+import { dandelionFluffAI } from '../behaviour/entityAI/dandelion/dandelionFluffAI'
 
 export class DandelionFluffFactory extends EntityFactory {
   constructor(private world: World, private parent: Entity) {

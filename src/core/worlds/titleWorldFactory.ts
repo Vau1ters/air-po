@@ -6,9 +6,9 @@ import CameraSystem from './../../core/systems/cameraSystem'
 import { ControlSystem, MouseController } from './../../core/systems/controlSystem'
 import { MapBuilder } from './../../map/mapBuilder'
 import map from './../../../res/teststage.json'
-import { Behaviour } from '../ai/behaviour'
+import { Behaviour } from '../behaviour/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
-import { transition } from '../ai/action/transition'
+import { transition } from '../behaviour/easing/transition'
 import { textureStore } from '../graphics/art'
 
 const titleWorldBehaviour = (titleImage: Sprite) =>

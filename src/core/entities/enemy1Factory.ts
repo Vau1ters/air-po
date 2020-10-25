@@ -15,7 +15,7 @@ import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import enemy1Definition from '../../../res/entities/enemy1.json'
 import { World } from '../ecs/world'
-import { enemy1AI } from '../ai/enemy1AI'
+import { enemy1AI } from '../behaviour/entityAI/enemy1/enemy1AI'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10

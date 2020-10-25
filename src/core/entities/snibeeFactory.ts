@@ -15,7 +15,7 @@ import { parseSprite } from '../parser/spriteParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import snibeeDefinition from '../../../res/entities/snibee.json'
 import { World } from '../ecs/world'
-import { snibeeAI, SnibeeSetting } from '../ai/snibeeAI'
+import { snibeeAI, SnibeeSetting } from '../behaviour/entityAI/snibee/snibeeAI'
 
 export class SnibeeFactory extends EntityFactory {
   readonly MASS = 10
