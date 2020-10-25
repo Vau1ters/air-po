@@ -15,13 +15,9 @@
     "paths": {
       "@res/*": ["res/*"],
       "@src/*": ["src/*"],
-      "@behaviour/*": ["src/behaviour/*"],
-      "@ecs/*": ["src/ecs/*"],
-      "@graphics/*": ["src/graphics/*"],
-      "@math/*": ["src/math/*"],
-      "@physics/*": ["src/physics/*"],
-      "@sound/*": ["src/sound/*"],
-      "@utils/*": ["src/utils/*"],
+      "@core/*": ["src/core/*"],
+      "@game/*": ["src/game/*"],
+      "@utils/*": ["src/core/utils/*"],
     }
   }
 }
