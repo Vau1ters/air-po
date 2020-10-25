@@ -14,10 +14,9 @@
     "baseUrl": "./",
     "paths": {
       "@res/*": ["res/*"],
-      "@src/*": ["src/*"],
+      "@utils/*": ["src/core/utils/*"],
       "@core/*": ["src/core/*"],
       "@game/*": ["src/game/*"],
-      "@utils/*": ["src/core/utils/*"],
     }
   }
 }
