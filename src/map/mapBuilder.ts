@@ -1,11 +1,11 @@
-import { World } from '../core/ecs/world'
-import { WallFactory } from '../core/entities/wallFactory'
+import { World } from '../ecs/world'
+import { WallFactory } from '../ecs/entities/wallFactory'
 import { Random } from '../utils/random'
-import { AirFactory } from '../core/entities/airFactory'
-import { NPCFactory, NPCType } from '../core/entities/npcFactory'
-import { PlayerFactory } from '../core/entities/playerFactory'
+import { AirFactory } from '../ecs/entities/airFactory'
+import { NPCFactory, NPCType } from '../ecs/entities/npcFactory'
+import { PlayerFactory } from '../ecs/entities/playerFactory'
 import { assert } from '../utils/assertion'
-import { MossFactory } from '../core/entities/mossFactory'
+import { MossFactory } from '../ecs/entities/mossFactory'
 
 type MapObject = {
   ellipse: boolean
