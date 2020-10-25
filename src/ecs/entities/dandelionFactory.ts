@@ -3,9 +3,9 @@ import { Entity } from '../entity'
 import { PositionComponent } from '../components/positionComponent'
 import { DrawComponent } from '../components/drawComponent'
 import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../../graphics/spriteParser'
+import { parseAnimation } from '../../graphics/animationParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import dandelionDefinition from '../../../res/entities/dandelion.json'
+import dandelionDefinition from '../../../res/animation/dandelion.json'
 import { World } from '../world'
 import { dandelionAI } from '../../behaviour/entityAI/dandelion/dandelionAI'
 
@@ -18,7 +18,7 @@ export class DandelionFactory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent(0, 0)
 
-    const sprite = parseSprite(dandelionDefinition.sprite)
+    const sprite = parseAnimation(dandelionDefinition.sprite)
     const draw = new DrawComponent(entity, sprite)
 
     const animState = new AnimationStateComponent()

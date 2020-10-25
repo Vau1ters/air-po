@@ -6,9 +6,9 @@ import {
   AABBCollider,
 } from '../../../ecs/components/colliderComponent'
 import { VineComponent } from '../../../ecs/components/vineComponent'
-import vineDefinition from '../../../../res/entities/vine.json'
+import vineDefinition from '../../../../res/animation/vine.json'
 import { DrawComponent } from '../../../ecs/components/drawComponent'
-import { parseSprite } from '../../../graphics/spriteParser'
+import { parseAnimation } from '../../../graphics/animationParser'
 
 const canExtend = (me: Collider, other: Collider): void => {
   if (!other.isSensor) {
@@ -58,7 +58,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
   if (diff < 0) {
     // 短いので長くする
     for (let i = 0; i < -diff; i++) {
-      const anim = parseSprite(vineDefinition.sprite)
+      const anim = parseAnimation(vineDefinition.sprite)
       anim.y = vine.sprites[vine.sprites.length - 1].y + 16
       draw.addChild(anim)
       vine.sprites.push(anim)

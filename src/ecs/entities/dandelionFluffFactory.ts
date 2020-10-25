@@ -6,10 +6,10 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { CategoryList } from './category'
 import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../../graphics/spriteParser'
+import { parseAnimation } from '../../graphics/animationParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
-import dandelionFluffDefinition from '../../../res/entities/dandelion_fluff.json'
+import dandelionFluffDefinition from '../../../res/animation/dandelion_fluff.json'
 import { World } from '../world'
 import { dandelionFluffAI } from '../../behaviour/entityAI/dandelion/dandelionFluffAI'
 
@@ -30,7 +30,7 @@ export class DandelionFluffFactory extends EntityFactory {
     aabb.isSensor = true
     collider.createCollider(aabb)
 
-    const sprite = parseSprite(dandelionFluffDefinition.sprite)
+    const sprite = parseAnimation(dandelionFluffDefinition.sprite)
     const draw = new DrawComponent(entity, sprite)
 
     const animState = new AnimationStateComponent()

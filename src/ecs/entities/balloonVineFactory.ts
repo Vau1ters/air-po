@@ -9,11 +9,11 @@ import { CategoryList } from './category'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../../graphics/spriteParser'
+import { parseAnimation } from '../../graphics/animationParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { AirHolderComponent } from '../components/airHolderComponent'
-import balloonvineDefinition from '../../../res/entities/balloonvine.json'
+import balloonvineDefinition from '../../../res/animation/balloonvine.json'
 import { World } from '../world'
 import { balloonvineAI } from '../../behaviour/entityAI/balloonVine/balloonVineAI'
 
@@ -101,7 +101,7 @@ export class BalloonVineFactory extends EntityFactory {
     wallAABB.isSensor = true
     collider.createCollider(wallAABB)
 
-    const sprite = parseSprite(balloonvineDefinition.sprite)
+    const sprite = parseAnimation(balloonvineDefinition.sprite)
 
     const draw = new DrawComponent(entity, sprite)
 

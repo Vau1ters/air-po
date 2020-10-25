@@ -12,10 +12,10 @@ import { AirHolderComponent } from '../components/airHolderComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../../graphics/spriteParser'
+import { parseAnimation } from '../../graphics/animationParser'
 import { CameraComponent } from '../components/cameraComponent'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import playerDefinition from '../../../res/entities/player.json'
+import playerDefinition from '../../../res/animation/player.json'
 import { World } from '../world'
 import { playerAI } from '../../behaviour/entityAI/player/playerAI'
 
@@ -94,7 +94,7 @@ export class PlayerFactory extends EntityFactory {
     foot.isSensor = true
     collider.createCollider(foot)
 
-    const sprite = parseSprite(playerDefinition.sprite)
+    const sprite = parseAnimation(playerDefinition.sprite)
     const draw = new DrawComponent(entity, sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {

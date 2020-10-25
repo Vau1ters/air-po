@@ -7,9 +7,9 @@ import { BulletComponent } from '../components/bulletComponent'
 import { Vec2 } from '../../math/vec2'
 import { CategoryList } from './category'
 import { AttackComponent } from '../components/attackComponent'
-import ballBulletDefinition from '../../../res/entities/ballBullet.json'
-import needleBulletDefinition from '../../../res/entities/needleBullet.json'
-import { parseSprite } from '../../graphics/spriteParser'
+import ballBulletDefinition from '../../../res/animation/ballBullet.json'
+import needleBulletDefinition from '../../../res/animation/needleBullet.json'
+import { parseAnimation } from '../../graphics/animationParser'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,
@@ -88,7 +88,7 @@ export class BulletFactory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    const sprite = parseSprite(bulletDefinition[this.type].sprite)
+    const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
     const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
     const directions = [

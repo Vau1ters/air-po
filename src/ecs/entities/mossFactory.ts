@@ -2,8 +2,8 @@ import { Entity } from '../entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '../components/positionComponent'
 import { DrawComponent } from '../components/drawComponent'
-import { parseSprite } from '../../graphics/spriteParser'
-import mossDefinition from '../../../res/entities/moss.json'
+import { parseAnimation } from '../../graphics/animationParser'
+import mossDefinition from '../../../res/animation/moss.json'
 import { World } from '../world'
 import { AABBDef, ColliderComponent } from '../components/colliderComponent'
 import { CategoryList } from './category'
@@ -32,7 +32,7 @@ export class MossFactory extends EntityFactory {
     airSensor.offset = new Vec2(-this.WIDTH / 2, -this.HEIGHT / 2)
     collider.createCollider(airSensor)
 
-    const sprite = parseSprite(mossDefinition.sprite)
+    const sprite = parseAnimation(mossDefinition.sprite)
     const draw = new DrawComponent(entity, sprite)
 
     entity.addComponent('Position', position)

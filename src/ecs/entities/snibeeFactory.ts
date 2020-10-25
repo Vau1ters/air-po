@@ -11,9 +11,9 @@ import { AttackComponent } from '../components/attackComponent'
 import { HPComponent } from '../components/hpComponent'
 import { InvincibleComponent } from '../components/invincibleComponent'
 import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../../graphics/spriteParser'
+import { parseAnimation } from '../../graphics/animationParser'
 import { AnimationStateComponent } from '../components/animationStateComponent'
-import snibeeDefinition from '../../../res/entities/snibee.json'
+import snibeeDefinition from '../../../res/animation/snibee.json'
 import { World } from '../world'
 import { snibeeAI, SnibeeSetting } from '../../behaviour/entityAI/snibee/snibeeAI'
 
@@ -70,7 +70,7 @@ export class SnibeeFactory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    const sprite = parseSprite(snibeeDefinition.sprite)
+    const sprite = parseAnimation(snibeeDefinition.sprite)
     const draw = new DrawComponent(entity, sprite)
     direction.changeDirection.addObserver(x => {
       if (x === 'Left') {

@@ -1,4 +1,4 @@
-import shader from '../../../res/shaders/darkness.frag'
+import shader from '../../../res/shader/darkness.frag'
 import { Filter } from 'pixi.js'
 
 export interface LightDefinition {

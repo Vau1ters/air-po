@@ -6,11 +6,11 @@ import { DrawComponent } from '../components/drawComponent'
 import { ColliderComponent, AABBDef } from '../components/colliderComponent'
 import { Vec2 } from '../../math/vec2'
 import { CategoryList } from './category'
-import vineDefinition from '../../../res/entities/vine.json'
+import vineDefinition from '../../../res/animation/vine.json'
 import { VineComponent } from '../components/vineComponent'
 import { AIComponent } from '../components/aiComponent'
 import { vineAI } from '../../behaviour/entityAI/vine/vineAI'
-import { parseSprite } from '../../graphics/spriteParser'
+import { parseAnimation } from '../../graphics/animationParser'
 import { addTag } from '../../behaviour/entityAI/vine/changeVineLength'
 
 export class VineFactory extends EntityFactory {
@@ -74,7 +74,7 @@ export class VineFactory extends EntityFactory {
 
     const ai = new AIComponent(vineAI(entity))
 
-    const sprite = parseSprite(vineDefinition.sprite)
+    const sprite = parseAnimation(vineDefinition.sprite)
     sprite.changeTo('Root0')
     const draw = new DrawComponent(entity, sprite)
 
