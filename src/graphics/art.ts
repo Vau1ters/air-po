@@ -1,36 +1,36 @@
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
-import titleImg from './../../../res/title.png'
+import titleImg from '../../res/title.png'
 
-import playerImg from '../../../res/player.png'
+import playerImg from '../../res/player.png'
 import playerSetting from '../../res/player.json'
 
-import wallImg from '../../../res/wall.png'
+import wallImg from '../../res/wall.png'
 import wallSetting from '../../res/wall.json'
 
-import enemy1Img from '../../../res/enemy1.png'
+import enemy1Img from '../../res/enemy1.png'
 import enemy1Setting from '../../res/enemy1.json'
 
-import vineImg from '../../../res/vine.png'
+import vineImg from '../../res/vine.png'
 import vineSetting from '../../res/vine.json'
 
-import snibeeImg from '../../../res/snibee.png'
+import snibeeImg from '../../res/snibee.png'
 import snibeeSetting from '../../res/snibee.json'
 
-import ballBulletImg from '../../../res/ballBullet.png'
+import ballBulletImg from '../../res/ballBullet.png'
 import ballBulletSetting from '../../res/ballBullet.json'
 
-import needleBulletImg from '../../../res/needleBullet.png'
+import needleBulletImg from '../../res/needleBullet.png'
 import needleBulletSetting from '../../res/needleBullet.json'
 
-import balloonvineImg from '../../../res/balloonvine.png'
+import balloonvineImg from '../../res/balloonvine.png'
 import balloonvineSetting from '../../res/balloonvine.json'
 
-import mossImg from '../../../res/moss.png'
+import mossImg from '../../res/moss.png'
 import mossSetting from '../../res/moss.json'
 
-import dandelionHeadImg from '../../../res/dandelion_head.png'
-import dandelionFluffImg from '../../../res/dandelion_fluff.png'
+import dandelionHeadImg from '../../res/dandelion_head.png'
+import dandelionFluffImg from '../../res/dandelion_fluff.png'
 
 type Setting = {
   columns: number

@@ -1,4 +1,4 @@
-import shader from '../../res/shaders/air.frag'
+import shader from '../../../res/shaders/air.frag'
 import { Filter } from 'pixi.js'
 import { World } from '../../ecs/world'
 import { Family, FamilyBuilder } from '../../ecs/family'
