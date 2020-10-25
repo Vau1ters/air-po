@@ -119,7 +119,7 @@ export class MapBuilder {
     type Builder = { firstgid: number; builder: (pos: number[]) => void }
     const builders = new Array<Builder>()
     for (const { firstgid, source } of tileSets) {
-      const content = require(`../../res/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
+      const content = require(`../../res/map/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
       const size = [content.tilewidth, content.tileheight]
       switch (content.name) {
         case 'wall':

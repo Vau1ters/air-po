@@ -1,5 +1,5 @@
 { "columns":2,
- "image":"enemy1.png",
+ "image":"../image/enemy1.png",
  "imageheight":16,
  "imagewidth":32,
  "margin":0,
