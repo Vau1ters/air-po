@@ -101,11 +101,10 @@ export default class UiSystem extends System {
         Math.abs(Math.min(windowSize.width / direction.x, windowSize.height / direction.y))
       )
     )
-    candidatePoints.push(farPoint)
     const hitPoint = candidatePoints.reduce((pre: Vec2, next: Vec2) => {
       if (position.sub(next).length() < position.sub(pre).length()) return next
       return pre
-    })
+    }, farPoint)
     this.laserSight.clear()
     this.laserSight.lineStyle(0.5, 0xff0000)
     this.laserSight.moveTo(position.x, position.y)
