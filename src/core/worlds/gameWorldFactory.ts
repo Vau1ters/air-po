@@ -11,21 +11,21 @@ import { ControlSystem } from './../../core/systems/controlSystem'
 import { PlayerControlSystem } from './../../core/systems/playerControlSystem'
 import { BulletSystem } from './../../core/systems/bulletSystem'
 import UiSystem from './../../core/systems/uiSystem'
-import { MapBuilder } from './../../map/mapBuilder'
+import { Map, MapBuilder } from './../../map/mapBuilder'
 import AISystem from './../../core/systems/aiSystem'
 import InvincibleSystem from './../../core/systems/invincibleSystem'
 import { DamageSystem } from './../../core/systems/damageSystem'
-import map from './../../../res/teststage.json'
 import { FamilyBuilder } from './../../core/ecs/family'
 import { AirHolderSystem } from './../../core/systems/airHolderSystem'
 import * as PIXI from 'pixi.js'
-import { Behaviour } from '../ai/behaviour'
 import { TitleWorldFactory } from './titleWorldFactory'
 import { isAlive } from '../ai/condition/isAlive'
 import { assert } from '../../utils/assertion'
 import { wait } from '../ai/action/wait'
 import { FilterSystem } from '../systems/filterSystem'
 import { LightSystem } from '../systems/lightSystem'
+import { EventSensorSystem } from '../systems/eventSensorSystem'
+import { Behaviour } from '../ai/behaviour'
 
 const gameWorldBehaviour = function*(world: World): Behaviour<World> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -37,12 +37,11 @@ const gameWorldBehaviour = function*(world: World): Behaviour<World> {
     yield
   }
   yield* wait(60)
-
   return new TitleWorldFactory().create()
 }
 
 export class GameWorldFactory {
-  public create(): World {
+  public create(map: Map, playerSpawnerID: number): World {
     const world = new World(gameWorldBehaviour)
 
     const gameWorldContainer = new Container()
@@ -87,11 +86,12 @@ export class GameWorldFactory {
       new UiSystem(world, uiContainer, gameWorldUiContainer, physicsSystem),
       new DebugDrawSystem(world, debugContainer, physicsSystem),
       new CameraSystem(world, gameWorldContainer, background),
-      new ControlSystem(world)
+      new ControlSystem(world),
+      new EventSensorSystem(world)
     )
 
     const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map)
+    mapBuilder.build(map, playerSpawnerID)
 
     return world
   }

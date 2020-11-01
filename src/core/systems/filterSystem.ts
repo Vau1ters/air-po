@@ -59,19 +59,25 @@ export class FilterSystem extends System {
     })
     this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())
-    world.addEntity(this.lightSearcher)
 
     container.filters = [this.airFilter, this.darknessFilter]
   }
 
-  public update(): void {
-    this.updateAirFilter()
-    this.updateDarknessFilter()
-    this.updateSearcher()
+  public init(): void {
+    this.lights = []
+    this.world.addEntity(this.lightSearcher)
   }
 
-  private updateAirFilter(): void {
-    const camera = this.cameraFamily.entityArray[0].getComponent('Position')
+  public update(): void {
+    if (this.cameraFamily.entityArray.length === 0) return
+    const [camera] = this.cameraFamily.entityArray
+    this.updateAirFilter(camera)
+    this.updateDarknessFilter(camera)
+    this.updateSearcher(camera)
+  }
+
+  private updateAirFilter(camera: Entity): void {
+    const cameraPos = camera.getComponent('Position')
 
     const airs = []
     for (const entity of this.airFamily.entityIterator) {
@@ -89,11 +95,11 @@ export class FilterSystem extends System {
       })
     }
 
-    this.airFilter.updateUniforms(airs, camera)
+    this.airFilter.updateUniforms(airs, cameraPos)
   }
 
-  private updateDarknessFilter(): void {
-    const offset = this.cameraFamily.entityArray[0].getComponent('Position')
+  private updateDarknessFilter(camera: Entity): void {
+    const offset = camera.getComponent('Position')
     this.darknessFilter.lights = this.lights.map(e => {
       const pos = e.getComponent('Position')
       const light = e.getComponent('Light')
@@ -108,12 +114,10 @@ export class FilterSystem extends System {
     this.lights = []
   }
 
-  private updateSearcher(): void {
-    for (const camera of this.cameraFamily.entityIterator) {
-      const cameraPos = camera.getComponent('Position')
-      const searcherPos = this.lightSearcher.getComponent('Position')
-      searcherPos.x = cameraPos.x - windowSize.width / 2
-      searcherPos.y = cameraPos.y - windowSize.height / 2
-    }
+  private updateSearcher(camera: Entity): void {
+    const cameraPos = camera.getComponent('Position')
+    const searcherPos = this.lightSearcher.getComponent('Position')
+    searcherPos.x = cameraPos.x - windowSize.width / 2
+    searcherPos.y = cameraPos.y - windowSize.height / 2
   }
 }

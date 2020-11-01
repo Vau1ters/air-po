@@ -3,8 +3,8 @@ import { System } from './system'
 import { EventNotifier } from '../eventNotifier'
 import { Container } from 'pixi.js'
 import { application } from '../application'
-import { Behaviour } from '../ai/behaviour'
 import { assert } from '../../utils/assertion'
+import { Behaviour } from '../ai/behaviour'
 
 export class World {
   private readonly entities: Set<Entity>
@@ -87,8 +87,20 @@ export class World {
     }
   }
 
+  public reset(): void {
+    const entities = new Set(this.entities) // to ensure the order of actual remove and callback
+    this.entities.clear()
+    for (const entity of entities) {
+      this.entityRemovedEvent.notify(entity)
+    }
+    for (const system of this.systems) {
+      system.init()
+    }
+  }
+
   public addSystem(...systems: System[]): void {
     for (const system of systems) {
+      system.init()
       this.systems.add(system)
     }
   }

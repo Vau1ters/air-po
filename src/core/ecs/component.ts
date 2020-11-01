@@ -16,6 +16,7 @@ import { AnimationStateComponent } from '../components/animationStateComponent'
 import { VineComponent } from '../components/vineComponent'
 import { PickupTargetComponent } from '../components/pickupTargetComponent'
 import { LightComponent } from '../components/lightComponent'
+import { SensorComponent } from '../components/sensorComponent'
 import { StaticComponent } from '../components/staticComponent'
 
 export interface ComponentMap {
@@ -37,6 +38,7 @@ export interface ComponentMap {
   Vine: VineComponent
   PickupTarget: PickupTargetComponent
   Light: LightComponent
+  Sensor: SensorComponent
   Static: StaticComponent
 }
 

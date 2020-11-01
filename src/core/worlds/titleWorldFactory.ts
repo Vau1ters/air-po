@@ -6,10 +6,10 @@ import CameraSystem from './../../core/systems/cameraSystem'
 import { ControlSystem, MouseController } from './../../core/systems/controlSystem'
 import { MapBuilder } from './../../map/mapBuilder'
 import map from './../../../res/teststage.json'
-import { Behaviour } from '../ai/behaviour'
 import { GameWorldFactory } from './gameWorldFactory'
 import { transition } from '../ai/action/transition'
 import { textureStore } from '../graphics/art'
+import { Behaviour } from '../ai/behaviour'
 
 const titleWorldBehaviour = (titleImage: Sprite) =>
   function*(): Behaviour<World> {
@@ -23,7 +23,7 @@ const titleWorldBehaviour = (titleImage: Sprite) =>
       titleImage.alpha = Math.cos((rate * Math.PI) / 2)
     })
 
-    return new GameWorldFactory().create()
+    return new GameWorldFactory().create(map, 0)
   }
 
 export class TitleWorldFactory {
@@ -54,7 +54,7 @@ export class TitleWorldFactory {
     )
 
     const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map)
+    mapBuilder.build(map, 0)
 
     return world
   }

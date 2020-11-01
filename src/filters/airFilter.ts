@@ -25,11 +25,12 @@ export class AirFilter extends Filter {
     super(undefined, shader, {
       displaySize: [displaySize.x, displaySize.y],
       points: [],
+      pointNum: 0,
       camera: [0, 0],
       effectiveRadius: AirFilter.EFFECTIVE_RADIUS,
       antiAlias: setting.antiAlias,
+      inAirRate: 0,
     })
-    this.uniforms.inAirRate = 0
     this.family = new FamilyBuilder(world).include('Player').build()
   }
 

@@ -72,20 +72,12 @@ export class PlayerFactory extends EntityFactory {
     hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
     collider.createCollider(hitBox)
 
-    const itemSensor = new AABBDef(
-      new Vec2(this.WIDTH, this.HEIGHT),
-      CategoryList.player.itemSensor
-    )
-    itemSensor.tag.add('playerItemPicker')
-    itemSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    itemSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(itemSensor)
-
-    const airSensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.airSensor)
-    airSensor.tag.add('airHolderBody')
-    airSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    airSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(airSensor)
+    const sensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.sensor)
+    sensor.tag.add('airHolderBody')
+    sensor.tag.add('playerSensor')
+    sensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
+    sensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    collider.createCollider(sensor)
 
     const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT), CategoryList.player.foot)
     foot.tag.add('playerFoot')

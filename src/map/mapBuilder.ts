@@ -5,10 +5,16 @@ import { AirFactory } from '../core/entities/airFactory'
 import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
+import { EventSensorFactory } from '../core/entities/eventSensorFactory'
 import { MossFactory } from '../core/entities/mossFactory'
 
+type CustomProperty = {
+  name: string
+  type: string
+  value: boolean | number | string
+}
+
 type MapObject = {
-  ellipse: boolean
   height: number
   id: number
   name: string
@@ -18,6 +24,8 @@ type MapObject = {
   width: number
   x: number
   y: number
+  ellipse?: boolean
+  properties?: Array<CustomProperty>
 }
 
 type TileLayer = {
@@ -50,7 +58,7 @@ type TileSet = {
   source: string
 }
 
-type Map = {
+export type Map = {
   compressionlevel: number
   height: number
   infinite: boolean
@@ -77,7 +85,7 @@ export class MapBuilder {
     this.rand = new Random()
   }
 
-  public build(map: Map): void {
+  public build(map: Map, playerSpawnerID: number): void {
     for (const layer of map.layers) {
       switch (layer.name) {
         case 'air':
@@ -89,6 +97,12 @@ export class MapBuilder {
         case 'moss':
           this.buildMap(layer as TileLayer, map.tilesets, [map.tilewidth, map.tileheight])
           break
+        case 'sensor':
+          this.buildSensor(layer as ObjectLayer)
+          break
+        case 'player':
+          this.buildPlayer(layer as ObjectLayer, [map.tilewidth, map.tileheight], playerSpawnerID)
+          break
       }
     }
   }
@@ -96,6 +110,7 @@ export class MapBuilder {
   private buildAir(airLayer: ObjectLayer): void {
     assert(airLayer.objects.length > 0)
     for (const airData of airLayer.objects) {
+      assert(airData.ellipse === true)
       const radius = airData.width / 2
       const x = airData.x + radius
       const y = airData.y + radius
@@ -126,12 +141,6 @@ export class MapBuilder {
           builders.push({
             firstgid,
             builder: (pos: number[]) => this.buildWall(pos, tileSize, { firstgid, getTileId }),
-          })
-          break
-        case 'player':
-          builders.push({
-            firstgid,
-            builder: (pos: number[]) => this.buildPlayer(pos, tileSize, { size }),
           })
           break
         case 'enemy1':
@@ -219,14 +228,17 @@ export class MapBuilder {
     this.world.addEntity(npc)
   }
 
-  private buildPlayer(pos: number[], tileSize: number[], playerInfo: { size: number[] }): void {
-    const [x, y] = pos
-    const [w, h] = playerInfo.size
-    const [tw, th] = tileSize
+  private buildPlayer(playerLayer: ObjectLayer, tileSize: number[], playerSpawnerID: number): void {
+    const playerInfo = playerLayer.objects.find(
+      (player: MapObject) =>
+        player.properties?.find(prop => prop.name === 'id')?.value === playerSpawnerID
+    )
+    assert(playerInfo)
+    const { x, y, width, height } = playerInfo
     const player = new PlayerFactory(this.world).create()
     const playerPosition = player.getComponent('Position')
-    playerPosition.x = x * tw + w / 2
-    playerPosition.y = y * th - h / 2
+    playerPosition.x = x + width / 2
+    playerPosition.y = y - height
     this.world.addEntity(player)
   }
 
@@ -238,6 +250,25 @@ export class MapBuilder {
     mossPosition.x = x * tw + tw / 2
     mossPosition.y = y * th - th / 2
     this.world.addEntity(moss)
+  }
+
+  private buildSensor(sensorLayer: ObjectLayer): void {
+    for (const { x, y, width, height, properties } of sensorLayer.objects) {
+      assert(properties)
+
+      const eventProperty = properties.find(prop => prop.name === 'event')
+      assert(eventProperty)
+      assert(eventProperty.type === 'string')
+
+      const event = eventProperty.value as string
+
+      const sensor = new EventSensorFactory()
+        .setPosition(x, y)
+        .setSize(width, height)
+        .setEvent(event)
+        .create()
+      this.world.addEntity(sensor)
+    }
   }
 
   private calcWallId(cell: number[]): number {
