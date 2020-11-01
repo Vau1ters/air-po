@@ -8,4 +8,5 @@ export const transition = function*(
     callback(time)
     yield
   }
+  callback(duration)
 }
