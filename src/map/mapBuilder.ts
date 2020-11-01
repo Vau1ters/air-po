@@ -229,19 +229,17 @@ export class MapBuilder {
   }
 
   private buildPlayer(playerLayer: ObjectLayer, tileSize: number[], playerSpawnerID: number): void {
-    for (const { x, y, width, height, properties } of playerLayer.objects) {
-      assert(properties)
-      const idProperty = properties.find(property => property.name === 'id')
-      assert(idProperty)
-      assert(idProperty.type === 'int')
-      const spawnerID = idProperty.value as number
-      if (spawnerID !== playerSpawnerID) continue
-      const player = new PlayerFactory(this.world).create()
-      const playerPosition = player.getComponent('Position')
-      playerPosition.x = x + width / 2
-      playerPosition.y = y - height
-      this.world.addEntity(player)
-    }
+    const playerInfo = playerLayer.objects.find(
+      (player: MapObject) =>
+        player.properties?.find(prop => prop.name === 'id')?.value === playerSpawnerID
+    )
+    assert(playerInfo)
+    const { x, y, width, height } = playerInfo
+    const player = new PlayerFactory(this.world).create()
+    const playerPosition = player.getComponent('Position')
+    playerPosition.x = x + width / 2
+    playerPosition.y = y - height
+    this.world.addEntity(player)
   }
 
   private buildMoss(pos: number[], tileSize: number[]): void {

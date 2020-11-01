@@ -7,20 +7,21 @@ import { CategoryList } from './category'
 import { EntityFactory } from './entityFactory'
 
 export class EventSensorFactory extends EntityFactory {
-  private x = 0
-  private y = 0
-  private w = 0
-  private h = 0
+  private position = new Vec2(0, 0)
+  private size = new Vec2(0, 0)
   private event = ''
 
   public create(): Entity {
     const result = new Entity()
 
-    result.addComponent('Position', new PositionComponent(this.x + this.w / 2, this.y - this.h / 2))
+    result.addComponent(
+      'Position',
+      new PositionComponent(this.position.x + this.size.x / 2, this.position.y - this.size.y / 2)
+    )
 
     const collider = new ColliderComponent(result)
-    const aabb = new AABBDef(new Vec2(this.w, this.h), CategoryList.eventSensor)
-    aabb.offset = new Vec2(-this.w / 2, -this.h / 2)
+    const aabb = new AABBDef(new Vec2(this.size.x, this.size.y), CategoryList.eventSensor)
+    aabb.offset = new Vec2(-this.size.x / 2, -this.size.y / 2)
     collider.createCollider(aabb)
     result.addComponent('Collider', collider)
 
@@ -30,14 +31,12 @@ export class EventSensorFactory extends EntityFactory {
   }
 
   public setPosition(x: number, y: number): EventSensorFactory {
-    this.x = x
-    this.y = y
+    this.position = new Vec2(x, y)
     return this
   }
 
   public setSize(w: number, h: number): EventSensorFactory {
-    this.w = w
-    this.h = h
+    this.size = new Vec2(w, h)
     return this
   }
 

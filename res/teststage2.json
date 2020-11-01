@@ -24,7 +24,7 @@
                         {
                          "name":"event",
                          "type":"string",
-                         "value":"move teststage 1"
+                         "value":"changeMap teststage 1"
                         }],
                  "rotation":0,
                  "type":"",

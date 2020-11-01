@@ -29,7 +29,7 @@ export class EventSensorSystem extends System {
   private async fireEvent(event: string): Promise<void> {
     const [eventName, ...options] = event.split(' ')
     switch (eventName) {
-      case 'move':
+      case 'changeMap':
         await this.moveEvent(options[0], Number(options[1]))
         break
     }
