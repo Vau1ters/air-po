@@ -1,10 +1,11 @@
 import { Map, MapBuilder } from '../../map/mapBuilder'
+import { Collider } from '../components/colliderComponent'
 import { Entity } from '../ecs/entity'
 import { Family, FamilyBuilder } from '../ecs/family'
 import { System } from '../ecs/system'
 import { World } from '../ecs/world'
 
-export class SensorSystem extends System {
+export class EventSensorSystem extends System {
   private sensorFamily: Family
 
   constructor(world: World) {
@@ -18,7 +19,10 @@ export class SensorSystem extends System {
   private onSensorAdded(entity: Entity): void {
     const event = entity.getComponent('Sensor').event
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(async () => this.fireEvent(event))
+      c.callbacks.add(async (_, other: Collider) => {
+        if (!other.tag.has('playerSensor')) return
+        await this.fireEvent(event)
+      })
     }
   }
 

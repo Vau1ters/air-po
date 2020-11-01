@@ -6,7 +6,7 @@ import { Vec2 } from '../math/vec2'
 import { CategoryList } from './category'
 import { EntityFactory } from './entityFactory'
 
-export class SensorFactory extends EntityFactory {
+export class EventSensorFactory extends EntityFactory {
   private x = 0
   private y = 0
   private w = 0
@@ -29,19 +29,19 @@ export class SensorFactory extends EntityFactory {
     return result
   }
 
-  public setPosition(x: number, y: number): SensorFactory {
+  public setPosition(x: number, y: number): EventSensorFactory {
     this.x = x
     this.y = y
     return this
   }
 
-  public setSize(w: number, h: number): SensorFactory {
+  public setSize(w: number, h: number): EventSensorFactory {
     this.w = w
     this.h = h
     return this
   }
 
-  public setEvent(event: string): SensorFactory {
+  public setEvent(event: string): EventSensorFactory {
     this.event = event
     return this
   }

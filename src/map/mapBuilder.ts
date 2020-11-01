@@ -5,7 +5,7 @@ import { AirFactory } from '../core/entities/airFactory'
 import { NPCFactory, NPCType } from '../core/entities/npcFactory'
 import { PlayerFactory } from '../core/entities/playerFactory'
 import { assert } from '../utils/assertion'
-import { SensorFactory } from '../core/entities/sensorFactory'
+import { EventSensorFactory } from '../core/entities/eventSensorFactory'
 import { MossFactory } from '../core/entities/mossFactory'
 
 type CustomProperty = {
@@ -264,7 +264,7 @@ export class MapBuilder {
 
       const event = eventProperty.value as string
 
-      const sensor = new SensorFactory()
+      const sensor = new EventSensorFactory()
         .setPosition(x, y)
         .setSize(width, height)
         .setEvent(event)

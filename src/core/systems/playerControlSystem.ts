@@ -21,7 +21,7 @@ export class PlayerControlSystem extends System {
         if (c.tag.has('playerFoot')) {
           c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
-        if (c.tag.has('playerItemPicker')) {
+        if (c.tag.has('playerSensor')) {
           c.callbacks.add(PlayerControlSystem.itemPickerCallback)
         }
       }

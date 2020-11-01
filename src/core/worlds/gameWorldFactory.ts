@@ -24,7 +24,7 @@ import { assert } from '../../utils/assertion'
 import { wait } from '../ai/action/wait'
 import { FilterSystem } from '../systems/filterSystem'
 import { LightSystem } from '../systems/lightSystem'
-import { SensorSystem } from '../systems/sensorSystem'
+import { EventSensorSystem } from '../systems/eventSensorSystem'
 import { Behaviour } from '../ai/behaviour'
 
 const gameWorldBehaviour = function*(world: World): Behaviour<World> {
@@ -33,17 +33,15 @@ const gameWorldBehaviour = function*(world: World): Behaviour<World> {
   const playerEntity = playerFamily.entityArray[0]
   const isPlayerAlive = isAlive(playerEntity)
 
-  while (true) {
-    if (!isPlayerAlive()) {
-      yield* wait(60)
-      return new TitleWorldFactory().create()
-    }
+  while (isPlayerAlive()) {
     yield
   }
+  yield* wait(60)
+  return new TitleWorldFactory().create()
 }
 
 export class GameWorldFactory {
-  public create(map: Map, playerSpanerID: number): World {
+  public create(map: Map, playerSpawnerID: number): World {
     const world = new World(gameWorldBehaviour)
 
     const gameWorldContainer = new Container()
@@ -89,11 +87,11 @@ export class GameWorldFactory {
       new DebugDrawSystem(world, debugContainer, physicsSystem),
       new CameraSystem(world, gameWorldContainer, background),
       new ControlSystem(world),
-      new SensorSystem(world)
+      new EventSensorSystem(world)
     )
 
     const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map, playerSpanerID)
+    mapBuilder.build(map, playerSpawnerID)
 
     return world
   }
