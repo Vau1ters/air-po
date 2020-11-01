@@ -1,5 +1,7 @@
 import { AABB } from '../math/aabb'
 import { ReservedArray } from '../../utils/reservedArray'
+import { Ray, raycastToAABB } from '../math/ray'
+import { Vec2 } from '../math/vec2'
 import { Collider } from '../components/colliderComponent'
 
 type Axis = 'x' | 'y'
@@ -14,6 +16,12 @@ export class BVHLeaf {
   public query(bound: AABB, result: ReservedArray<Collider>): void {
     if (!this.bound.overlap(bound)) return
     result.push(this.collider)
+  }
+
+  public queryRaycast(ray: Ray, result: ReservedArray<[Collider, Vec2]>): void {
+    const raycastResult = raycastToAABB(ray, this.bound)
+    if (!raycastResult) return
+    result.push([this.collider, raycastResult])
   }
 
   public get bound(): AABB {
@@ -37,6 +45,14 @@ export class BVHNode {
       c.query(bound, result)
     }
   }
+
+  public queryRaycast(ray: Ray, result: ReservedArray<[Collider, Vec2]>): void {
+    const raycastResult = raycastToAABB(ray, this.bound)
+    if (!raycastResult) return
+    for (const c of this.child) {
+      c.queryRaycast(ray, result)
+    }
+  }
 }
 
 export class BVH {
@@ -46,6 +62,14 @@ export class BVH {
     const result = new ReservedArray<Collider>(100)
     if (this.root) {
       this.root.query(bound, result)
+    }
+    return result.toArray()
+  }
+
+  public queryRaycast(ray: Ray): [Collider, Vec2][] {
+    const result = new ReservedArray<[Collider, Vec2]>(100)
+    if (this.root) {
+      this.root.queryRaycast(ray, result)
     }
     return result.toArray()
   }
