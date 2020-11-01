@@ -1,4 +1,4 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 
 export class PlayerComponent {
   public landing = false

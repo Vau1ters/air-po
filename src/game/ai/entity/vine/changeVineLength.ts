@@ -1,10 +1,10 @@
-import { Behaviour } from '../../behaviour/behaviour'
-import { Entity } from '../../ecs/entity'
-import { Collider, ColliderComponent, AABBCollider } from '../../components/colliderComponent'
-import { VineComponent } from '../../components/vineComponent'
-import vineDefinition from '../../../../res/entities/vine.json'
-import { DrawComponent } from '../../components/drawComponent'
-import { parseSprite } from '../../parser/spriteParser'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
+import { Collider, ColliderComponent, AABBCollider } from '@game/components/colliderComponent'
+import { VineComponent } from '@game/components/vineComponent'
+import vineDefinition from '@res/animation/vine.json'
+import { DrawComponent } from '@game/components/drawComponent'
+import { parseAnimation } from '@core/graphics/animationParser'
 
 const canExtend = (me: Collider, other: Collider): void => {
   if (!other.isSensor) {
@@ -54,7 +54,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
   if (diff < 0) {
     // 短いので長くする
     for (let i = 0; i < -diff; i++) {
-      const anim = parseSprite(vineDefinition.sprite)
+      const anim = parseAnimation(vineDefinition.sprite)
       anim.y = vine.sprites[vine.sprites.length - 1].y + 16
       draw.addChild(anim)
       vine.sprites.push(anim)

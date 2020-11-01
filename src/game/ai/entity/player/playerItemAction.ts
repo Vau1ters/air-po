@@ -1,6 +1,6 @@
-import { Behaviour } from '../../behaviour/behaviour'
-import { Entity } from '../../ecs/entity'
-import { Vec2 } from '../../math/vec2'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
+import { Vec2 } from '@core/math/vec2'
 
 const FLUFF_GRUB_POSITION = new Vec2(0, 0.8)
 const PLAYER_TO_FLUFF_VELOCITY_CONTRIBUTION = 0.003

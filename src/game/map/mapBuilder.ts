@@ -1,12 +1,12 @@
-import { World } from '../core/ecs/world'
-import { WallFactory } from '../core/entities/wallFactory'
-import { Random } from '../utils/random'
-import { AirFactory } from '../core/entities/airFactory'
-import { NPCFactory, NPCType } from '../core/entities/npcFactory'
-import { PlayerFactory } from '../core/entities/playerFactory'
-import { assert } from '../utils/assertion'
-import { EventSensorFactory } from '../core/entities/eventSensorFactory'
-import { MossFactory } from '../core/entities/mossFactory'
+import { World } from '@core/ecs/world'
+import { WallFactory } from '@game/entities/wallFactory'
+import { Random } from '@utils/random'
+import { AirFactory } from '@game/entities/airFactory'
+import { NPCFactory, NPCType } from '@game/entities/npcFactory'
+import { PlayerFactory } from '@game/entities/playerFactory'
+import { assert } from '@utils/assertion'
+import { EventSensorFactory } from '@game/entities/eventSensorFactory'
+import { MossFactory } from '@game/entities/mossFactory'
 
 type CustomProperty = {
   name: string
@@ -134,7 +134,7 @@ export class MapBuilder {
     type Builder = { firstgid: number; builder: (pos: number[]) => void }
     const builders = new Array<Builder>()
     for (const { firstgid, source } of tileSets) {
-      const content = require(`../../res/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
+      const content = require(`../../../res/map/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
       const size = [content.tilewidth, content.tileheight]
       switch (content.name) {
         case 'wall':

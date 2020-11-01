@@ -1,5 +1,5 @@
-import { Entity } from '../../ecs/entity'
-import { Behaviour } from '../../behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
+import { Behaviour } from '@core/behaviour/behaviour'
 
 const duration = 0.15
 

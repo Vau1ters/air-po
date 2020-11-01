@@ -1,17 +1,17 @@
 import { EntityFactory } from './entityFactory'
-import { Entity } from '../ecs/entity'
-import { PositionComponent } from '../components/positionComponent'
-import { Vec2 } from '../math/vec2'
-import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent, AABBDef } from '../components/colliderComponent'
+import { Entity } from '@core/ecs/entity'
+import { PositionComponent } from '@game/components/positionComponent'
+import { Vec2 } from '@core/math/vec2'
+import { DrawComponent } from '@game/components/drawComponent'
+import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
-import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../parser/spriteParser'
-import { AnimationStateComponent } from '../components/animationStateComponent'
-import { PickupTargetComponent } from '../components/pickupTargetComponent'
-import dandelionFluffDefinition from '../../../res/entities/dandelion_fluff.json'
-import { World } from '../ecs/world'
-import { dandelionFluffAI } from '../ai/dandelionFluffAI'
+import { AIComponent } from '@game/components/aiComponent'
+import { parseAnimation } from '@core/graphics/animationParser'
+import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
+import dandelionFluffDefinition from '@res/animation/dandelion_fluff.json'
+import { World } from '@core/ecs/world'
+import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 
 export class DandelionFluffFactory extends EntityFactory {
   constructor(private world: World, private parent: Entity) {
@@ -30,7 +30,7 @@ export class DandelionFluffFactory extends EntityFactory {
     aabb.isSensor = true
     collider.createCollider(aabb)
 
-    const sprite = parseSprite(dandelionFluffDefinition.sprite)
+    const sprite = parseAnimation(dandelionFluffDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 

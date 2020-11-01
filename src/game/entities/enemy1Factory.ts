@@ -1,21 +1,21 @@
 import { EntityFactory } from './entityFactory'
-import { Entity } from '../ecs/entity'
-import { PositionComponent } from '../components/positionComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { Vec2 } from '../math/vec2'
-import { DrawComponent } from '../components/drawComponent'
-import { HorizontalDirectionComponent } from '../components/directionComponent'
-import { ColliderComponent, AABBDef } from '../components/colliderComponent'
+import { Entity } from '@core/ecs/entity'
+import { PositionComponent } from '@game/components/positionComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { Vec2 } from '@core/math/vec2'
+import { DrawComponent } from '@game/components/drawComponent'
+import { HorizontalDirectionComponent } from '@game/components/directionComponent'
+import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
-import { AttackComponent } from '../components/attackComponent'
-import { HPComponent } from '../components/hpComponent'
-import { InvincibleComponent } from '../components/invincibleComponent'
-import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../parser/spriteParser'
-import { AnimationStateComponent } from '../components/animationStateComponent'
-import enemy1Definition from '../../../res/entities/enemy1.json'
-import { World } from '../ecs/world'
-import { enemy1AI } from '../../game/ai/entity/vine/enemy1AI'
+import { AttackComponent } from '@game/components/attackComponent'
+import { HPComponent } from '@game/components/hpComponent'
+import { InvincibleComponent } from '@game/components/invincibleComponent'
+import { AIComponent } from '@game/components/aiComponent'
+import { parseAnimation } from '@core/graphics/animationParser'
+import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import enemy1Definition from '@res/animation/enemy1.json'
+import { World } from '@core/ecs/world'
+import { enemy1AI } from '@game/ai/entity/enemy1/enemy1AI'
 
 export class Enemy1Factory extends EntityFactory {
   readonly MASS = 10
@@ -70,7 +70,7 @@ export class Enemy1Factory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    const sprite = parseSprite(enemy1Definition.sprite)
+    const sprite = parseAnimation(enemy1Definition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 

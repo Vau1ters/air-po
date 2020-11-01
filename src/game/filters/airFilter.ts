@@ -1,8 +1,8 @@
-import shader from '../../res/shaders/air.frag'
+import shader from '@res/shaders/air.frag'
 import { Filter } from 'pixi.js'
-import { World } from '../core/ecs/world'
-import { Family, FamilyBuilder } from '../core/ecs/family'
-import { Vec2 } from '../core/math/vec2'
+import { World } from '@core/ecs/world'
+import { Family, FamilyBuilder } from '@core/ecs/family'
+import { Vec2 } from '@core/math/vec2'
 
 export interface AirDefinition {
   center: {

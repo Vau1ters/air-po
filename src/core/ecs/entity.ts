@@ -1,6 +1,6 @@
 import { ComponentName, ComponentMap } from './component'
-import { EventNotifier } from '../eventNotifier'
-import { assert } from '../../utils/assertion'
+import { EventNotifier } from '@utils/eventNotifier'
+import { assert } from '@utils/assertion'
 
 export class Entity {
   private static id = 0

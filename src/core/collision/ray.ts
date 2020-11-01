@@ -1,5 +1,5 @@
 import { AABB } from './aabb'
-import { Vec2 } from './vec2'
+import { Vec2 } from '@core/math/vec2'
 
 type Axis = 'x' | 'y'
 // 微小量

@@ -1,14 +1,14 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '../components/positionComponent'
-import { DrawComponent } from '../components/drawComponent'
-import { parseSprite } from '../parser/spriteParser'
-import mossDefinition from '../../../res/entities/moss.json'
-import { World } from '../ecs/world'
-import { AABBDef, ColliderComponent } from '../components/colliderComponent'
+import { PositionComponent } from '@game/components/positionComponent'
+import { DrawComponent } from '@game/components/drawComponent'
+import { parseAnimation } from '@core/graphics/animationParser'
+import mossDefinition from '@res/animation/moss.json'
+import { World } from '@core/ecs/world'
+import { AABBDef, ColliderComponent } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
-import { Vec2 } from '../math/vec2'
-import { LightComponent } from '../components/lightComponent'
+import { Vec2 } from '@core/math/vec2'
+import { LightComponent } from '@game/components/lightComponent'
 
 export class MossFactory extends EntityFactory {
   readonly WIDTH = 8
@@ -32,7 +32,7 @@ export class MossFactory extends EntityFactory {
     airSensor.offset = new Vec2(-this.WIDTH / 2, -this.HEIGHT / 2)
     collider.createCollider(airSensor)
 
-    const sprite = parseSprite(mossDefinition.sprite)
+    const sprite = parseAnimation(mossDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 

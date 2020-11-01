@@ -1,23 +1,23 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '../components/positionComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { PlayerComponent } from '../components/playerComponent'
-import { Vec2 } from '../math/vec2'
+import { PositionComponent } from '@game/components/positionComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { DrawComponent } from '@game/components/drawComponent'
+import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { PlayerComponent } from '@game/components/playerComponent'
+import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
-import { HorizontalDirectionComponent } from '../components/directionComponent'
-import { AirHolderComponent } from '../components/airHolderComponent'
-import { HPComponent } from '../components/hpComponent'
-import { InvincibleComponent } from '../components/invincibleComponent'
-import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../parser/spriteParser'
-import { CameraComponent } from '../components/cameraComponent'
-import { AnimationStateComponent } from '../components/animationStateComponent'
-import playerDefinition from '../../../res/entities/player.json'
-import { World } from '../ecs/world'
-import { playerAI } from '../ai/playerAI'
+import { HorizontalDirectionComponent } from '@game/components/directionComponent'
+import { AirHolderComponent } from '@game/components/airHolderComponent'
+import { HPComponent } from '@game/components/hpComponent'
+import { InvincibleComponent } from '@game/components/invincibleComponent'
+import { AIComponent } from '@game/components/aiComponent'
+import { parseAnimation } from '@core/graphics/animationParser'
+import { CameraComponent } from '@game/components/cameraComponent'
+import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import playerDefinition from '@res/animation/player.json'
+import { World } from '@core/ecs/world'
+import { playerAI } from '@game/ai/entity/player/playerAI'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -86,7 +86,7 @@ export class PlayerFactory extends EntityFactory {
     foot.isSensor = true
     collider.createCollider(foot)
 
-    const sprite = parseSprite(playerDefinition.sprite)
+    const sprite = parseAnimation(playerDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
     direction.changeDirection.addObserver(x => {

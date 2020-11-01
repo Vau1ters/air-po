@@ -1,4 +1,4 @@
-import { Behaviour } from '../behaviour/behaviour'
+import { Behaviour } from '@core/behaviour/behaviour'
 
 export class AIComponent {
   private root: Behaviour<void>

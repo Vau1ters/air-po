@@ -1,6 +1,6 @@
-import { System } from '../ecs/system'
-import { Family, FamilyBuilder } from '../ecs/family'
-import { World } from '../ecs/world'
+import { System } from '@core/ecs/system'
+import { Family, FamilyBuilder } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
 
 export default class GravitySystem extends System {
   private family: Family

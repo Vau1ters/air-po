@@ -1,4 +1,4 @@
-import { Animation } from '../graphics/animation'
+import { Animation } from '@core/graphics/animation'
 
 export class VineComponent {
   public sprites: Array<Animation> = []

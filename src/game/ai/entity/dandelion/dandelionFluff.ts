@@ -1,8 +1,8 @@
-import { Entity } from '../../ecs/entity'
-import { FamilyBuilder } from '../../ecs/family'
-import { World } from '../../ecs/world'
-import { Behaviour } from '../../behaviour/behaviour'
-import { Vec2 } from '../../math/vec2'
+import { Entity } from '@core/ecs/entity'
+import { FamilyBuilder } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Vec2 } from '@core/math/vec2'
 
 const INITIAL_VELOCITY = new Vec2(1, 2)
 const BUOYANCY = 0.005

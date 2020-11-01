@@ -1,8 +1,8 @@
 import { Container } from 'pixi.js'
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { Category, CategorySet } from '../entities/category'
-import { AABB } from '../math/aabb'
-import { Vec2 } from '../math/vec2'
+import { AABB } from '@core/collision/aabb'
+import { Vec2 } from '@core/math/vec2'
 import { AABBCollider, Collider } from './colliderComponent'
 
 export class DrawComponent extends Container {

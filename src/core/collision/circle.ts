@@ -1,4 +1,4 @@
-import { Vec2 } from '../math/vec2'
+import { Vec2 } from '@core/math/vec2'
 
 export class Circle {
   public constructor(public position = new Vec2(), public radius = 0) {}

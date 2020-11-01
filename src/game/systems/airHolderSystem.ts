@@ -1,9 +1,9 @@
-import { System } from '../ecs/system'
-import { Family, FamilyBuilder } from '../ecs/family'
-import { World } from '../ecs/world'
-import { Entity } from '../ecs/entity'
-import { Collider, AirCollider } from '../components/colliderComponent'
-import { assert } from '../../utils/assertion'
+import { System } from '@core/ecs/system'
+import { Family, FamilyBuilder } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
+import { Entity } from '@core/ecs/entity'
+import { Collider, AirCollider } from '@game/components/colliderComponent'
+import { assert } from '@utils/assertion'
 
 export class AirHolderSystem extends System {
   private family: Family

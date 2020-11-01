@@ -1,8 +1,8 @@
-import { AABB } from '../math/aabb'
-import { ReservedArray } from '../../utils/reservedArray'
-import { Ray, raycastToAABB } from '../math/ray'
-import { Vec2 } from '../math/vec2'
-import { Collider } from '../components/colliderComponent'
+import { AABB } from './aabb'
+import { ReservedArray } from '@utils/reservedArray'
+import { Ray, raycastToAABB } from './ray'
+import { Vec2 } from '@core/math/vec2'
+import { Collider } from '@game/components/colliderComponent'
 
 type Axis = 'x' | 'y'
 

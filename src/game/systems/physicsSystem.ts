@@ -1,12 +1,12 @@
-import { System } from '../ecs/system'
-import { Entity } from '../ecs/entity'
-import { Family, FamilyBuilder } from '../ecs/family'
-import { World } from '../ecs/world'
-import { Collider, AABBCollider } from '../components/colliderComponent'
-import { collide } from '../physics/collision'
-import { Category, CategorySet } from '../entities/category'
-import { assert } from '../../utils/assertion'
-import { BVH } from '../physics/bvh'
+import { System } from '@core/ecs/system'
+import { Entity } from '@core/ecs/entity'
+import { Family, FamilyBuilder } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
+import { Collider, AABBCollider } from '@game/components/colliderComponent'
+import { collide } from '@core/collision/collision'
+import { Category, CategorySet } from '@game/entities/category'
+import { assert } from '@utils/assertion'
+import { BVH } from '@core/collision/bvh'
 
 export default class PhysicsSystem extends System {
   private colliderFamily: Family

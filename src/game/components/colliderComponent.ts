@@ -1,9 +1,9 @@
-import { Entity } from '../ecs/entity'
-import { Family } from '../ecs/family'
-import { AABB } from '../math/aabb'
-import { Vec2 } from '../math/vec2'
-import { Circle } from '../math/circle'
-import { assert } from '../../utils/assertion'
+import { Entity } from '@core/ecs/entity'
+import { Family } from '@core/ecs/family'
+import { AABB } from '@core/collision/aabb'
+import { Vec2 } from '@core/math/vec2'
+import { Circle } from '@core/collision/circle'
+import { assert } from '@utils/assertion'
 import { Category, CategorySet } from '../entities/category'
 
 export interface Collider {

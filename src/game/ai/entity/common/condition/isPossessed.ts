@@ -1,4 +1,4 @@
-import { Entity } from '../../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 
 export const isPossessed = (entity: Entity) => (): boolean => {
   const target = entity.getComponent('PickupTarget')

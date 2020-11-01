@@ -1,13 +1,13 @@
-import { System } from '../ecs/system'
-import { FamilyBuilder, Family } from '../ecs/family'
-import { World } from '../ecs/world'
+import { System } from '@core/ecs/system'
+import { FamilyBuilder, Family } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
 import { Graphics, Container } from 'pixi.js'
-import { AABBCollider, CircleCollider } from '../components/colliderComponent'
-import { windowSize } from '../application'
-import { AABB } from '../math/aabb'
-import { Vec2 } from '../math/vec2'
+import { AABBCollider, CircleCollider } from '@game/components/colliderComponent'
+import { windowSize } from '@core/application'
+import { AABB } from '@core/collision/aabb'
+import { Vec2 } from '@core/math/vec2'
 import PhysicsSystem from './physicsSystem'
-import { BVHLeaf, BVHNode } from '../physics/bvh'
+import { BVHLeaf, BVHNode } from '@core/collision/bvh'
 
 export default class DebugDrawSystem extends System {
   private state = {

@@ -1,6 +1,6 @@
-import { Behaviour } from '../../behaviour/behaviour'
-import { Entity } from '../../ecs/entity'
-import { KeyController } from '../../systems/controlSystem'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
+import { KeyController } from '@game/systems/controlSystem'
 
 export const playerPickup = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')

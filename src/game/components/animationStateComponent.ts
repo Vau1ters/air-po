@@ -1,4 +1,4 @@
-import { EventNotifier } from '../eventNotifier'
+import { EventNotifier } from '@utils/eventNotifier'
 
 export class AnimationStateComponent {
   private _state = ''

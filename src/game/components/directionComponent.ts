@@ -1,4 +1,4 @@
-import { EventNotifier } from '../eventNotifier'
+import { EventNotifier } from '@utils/eventNotifier'
 
 export class HorizontalDirectionComponent {
   private _looking: HorizontalDirection

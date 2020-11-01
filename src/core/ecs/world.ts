@@ -1,9 +1,9 @@
 import { Entity } from './entity'
 import { System } from './system'
-import { EventNotifier } from '../eventNotifier'
+import { EventNotifier } from '@utils/eventNotifier'
 import { Container } from 'pixi.js'
 import { application } from '../application'
-import { assert } from '../../utils/assertion'
+import { assert } from '@utils/assertion'
 import { Behaviour } from '../behaviour/behaviour'
 
 export class World {

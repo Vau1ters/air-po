@@ -1,9 +1,9 @@
-import { Map, MapBuilder } from '../../map/mapBuilder'
-import { Collider } from '../components/colliderComponent'
-import { Entity } from '../ecs/entity'
-import { Family, FamilyBuilder } from '../ecs/family'
-import { System } from '../ecs/system'
-import { World } from '../ecs/world'
+import { Map, MapBuilder } from '@game/map/mapBuilder'
+import { Collider } from '@game/components/colliderComponent'
+import { Entity } from '@core/ecs/entity'
+import { Family, FamilyBuilder } from '@core/ecs/family'
+import { System } from '@core/ecs/system'
+import { World } from '@core/ecs/world'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
@@ -36,7 +36,7 @@ export class EventSensorSystem extends System {
   }
 
   private async moveEvent(newMapName: string, spawnerID: number): Promise<void> {
-    const map = (await import(`../../../res/${newMapName}.json`)) as Map
+    const map = (await import(`../../../res/map/${newMapName}.json`)) as Map
     this.world.reset()
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map, spawnerID)

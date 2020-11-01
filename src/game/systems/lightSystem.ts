@@ -1,9 +1,9 @@
-import { System } from '../ecs/system'
-import { Entity } from '../ecs/entity'
-import { FamilyBuilder, Family } from '../ecs/family'
-import { World } from '../ecs/world'
-import { Collider } from '../components/colliderComponent'
-import { Category } from '../entities/category'
+import { System } from '@core/ecs/system'
+import { Entity } from '@core/ecs/entity'
+import { FamilyBuilder, Family } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
+import { Collider } from '@game/components/colliderComponent'
+import { Category } from '@game/entities/category'
 
 export class LightSystem extends System {
   private family: Family

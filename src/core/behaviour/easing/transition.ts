@@ -1,4 +1,4 @@
-import { Behaviour } from '../../behaviour/behaviour'
+import { Behaviour } from '..//behaviour'
 
 export const transition = function*(
   duration: number,

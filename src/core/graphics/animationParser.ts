@@ -1,7 +1,7 @@
 import { Animation } from './animation'
 import { Texture } from 'pixi.js'
 import { textureStore } from './art'
-import { checkMembers } from '../../utils/assertion'
+import { checkMembers } from '@utils/assertion'
 
 type SpriteSetting = {
   name: string
@@ -9,7 +9,7 @@ type SpriteSetting = {
   default: string
 }
 
-export function parseSprite(json: SpriteSetting): Animation {
+export function parseAnimation(json: SpriteSetting): Animation {
   checkMembers(json, { name: 'string', state: 'any', default: 'string' }, 'sprite')
 
   const name = json.name

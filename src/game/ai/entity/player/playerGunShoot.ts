@@ -1,12 +1,12 @@
-import { Behaviour } from '../../behaviour/behaviour'
-import { World } from '../../ecs/world'
-import { Entity } from '../../ecs/entity'
-import { MouseController } from '../../systems/controlSystem'
-import { BulletFactory } from '../../entities/bulletFactory'
-import * as Sound from '../../sound/sound'
-import { wait } from './wait'
-import { Vec2 } from '../../math/vec2'
-import { windowSize } from '../../application'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { World } from '@core/ecs/world'
+import { Entity } from '@core/ecs/entity'
+import { MouseController } from '@game/systems/controlSystem'
+import { BulletFactory } from '@game/entities/bulletFactory'
+import * as Sound from '@core/sound/sound'
+import { wait } from '@core/behaviour/wait'
+import { Vec2 } from '@core/math/vec2'
+import { windowSize } from '@core/application'
 
 const SETTING = {
   CONSUME_SPEED: 2,

@@ -1,4 +1,4 @@
-import { Vec2 } from './vec2'
+import { Vec2 } from '@core/math/vec2'
 
 export class AABB {
   public constructor(public position = new Vec2(), public size = new Vec2()) {}

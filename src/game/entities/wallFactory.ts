@@ -1,14 +1,14 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '../components/positionComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { Vec2 } from '../math/vec2'
+import { PositionComponent } from '@game/components/positionComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { DrawComponent } from '@game/components/drawComponent'
+import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
-import { textureStore } from '../graphics/art'
+import { textureStore } from '@core/graphics/art'
 import { Sprite } from 'pixi.js'
-import { StaticComponent } from '../components/staticComponent'
+import { StaticComponent } from '@game/components/staticComponent'
 
 export class WallFactory extends EntityFactory {
   readonly INV_MASS = 0

@@ -1,21 +1,21 @@
 import { EntityFactory } from './entityFactory'
-import { Entity } from '../ecs/entity'
-import { PositionComponent } from '../components/positionComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { Vec2 } from '../math/vec2'
-import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent, AABBDef } from '../components/colliderComponent'
+import { Entity } from '@core/ecs/entity'
+import { PositionComponent } from '@game/components/positionComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { Vec2 } from '@core/math/vec2'
+import { DrawComponent } from '@game/components/drawComponent'
+import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
-import { HPComponent } from '../components/hpComponent'
-import { InvincibleComponent } from '../components/invincibleComponent'
-import { AIComponent } from '../components/aiComponent'
-import { parseSprite } from '../parser/spriteParser'
-import { AnimationStateComponent } from '../components/animationStateComponent'
-import { PickupTargetComponent } from '../components/pickupTargetComponent'
-import { AirHolderComponent } from '../components/airHolderComponent'
-import balloonvineDefinition from '../../../res/entities/balloonvine.json'
-import { World } from '../ecs/world'
-import { balloonvineAI } from '../../game/ai/entity/balloonVine/balloonVineAI'
+import { HPComponent } from '@game/components/hpComponent'
+import { InvincibleComponent } from '@game/components/invincibleComponent'
+import { AIComponent } from '@game/components/aiComponent'
+import { parseAnimation } from '@core/graphics/animationParser'
+import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
+import { AirHolderComponent } from '@game/components/airHolderComponent'
+import balloonvineDefinition from '@res/animation/balloonvine.json'
+import { World } from '@core/ecs/world'
+import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
 
 export class BalloonVineFactory extends EntityFactory {
   private readonly BODY_WIDTH = 10
@@ -101,7 +101,7 @@ export class BalloonVineFactory extends EntityFactory {
     wallAABB.isSensor = true
     collider.createCollider(wallAABB)
 
-    const sprite = parseSprite(balloonvineDefinition.sprite)
+    const sprite = parseAnimation(balloonvineDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 

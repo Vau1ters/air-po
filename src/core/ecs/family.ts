@@ -1,7 +1,7 @@
 import { Entity } from './entity'
 import { ComponentName } from './component'
 import { World } from './world'
-import { EventNotifier } from '../eventNotifier'
+import { EventNotifier } from '@utils/eventNotifier'
 
 export class Family {
   private readonly world: World

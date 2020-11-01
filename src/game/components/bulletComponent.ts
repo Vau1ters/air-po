@@ -1,4 +1,4 @@
-import { Vec2 } from '../math/vec2'
+import { Vec2 } from '@core/math/vec2'
 
 export class BulletComponent {
   private static readonly INITIAL_LIFE = 20

@@ -1,8 +1,8 @@
-import { AABBDef, ColliderComponent } from '../components/colliderComponent'
-import { PositionComponent } from '../components/positionComponent'
-import { SensorComponent } from '../components/sensorComponent'
-import { Entity } from '../ecs/entity'
-import { Vec2 } from '../math/vec2'
+import { AABBDef, ColliderComponent } from '@game/components/colliderComponent'
+import { PositionComponent } from '@game/components/positionComponent'
+import { SensorComponent } from '@game/components/sensorComponent'
+import { Entity } from '@core/ecs/entity'
+import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
 import { EntityFactory } from './entityFactory'
 

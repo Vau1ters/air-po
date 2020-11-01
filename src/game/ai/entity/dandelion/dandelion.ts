@@ -1,8 +1,8 @@
-import { Entity } from '../../ecs/entity'
-import { DandelionFluffFactory } from '../../entities/dandelionFluffFactory'
-import { World } from '../../ecs/world'
-import { Behaviour } from '../../behaviour/behaviour'
-import { Vec2 } from '../../math/vec2'
+import { Entity } from '@core/ecs/entity'
+import { DandelionFluffFactory } from '@game/entities/dandelionFluffFactory'
+import { World } from '@core/ecs/world'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 
 const FLUFF_EMIT_INTERVAL = 200

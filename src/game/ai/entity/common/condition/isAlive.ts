@@ -1,4 +1,4 @@
-import { Entity } from '../../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 
 export const isAlive = (entity: Entity) => (): boolean => {
   const hpComponent = entity.getComponent('HP')

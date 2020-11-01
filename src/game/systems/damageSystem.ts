@@ -1,8 +1,8 @@
-import { System } from '../ecs/system'
-import { Entity } from '../ecs/entity'
-import { Collider } from '../components/colliderComponent'
-import { Family, FamilyBuilder } from '../ecs/family'
-import { World } from '../ecs/world'
+import { System } from '@core/ecs/system'
+import { Entity } from '@core/ecs/entity'
+import { Collider } from '@game/components/colliderComponent'
+import { Family, FamilyBuilder } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
 
 export class DamageSystem extends System {
   private family: Family

@@ -1,7 +1,7 @@
-import { Behaviour } from '../../behaviour/behaviour'
-import { Entity } from '../../ecs/entity'
-import { KeyController } from '../../systems/controlSystem'
-import { Vec2 } from '../../math/vec2'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
+import { KeyController } from '@game/systems/controlSystem'
+import { Vec2 } from '@core/math/vec2'
 
 const SETTING = {
   CONSUME_SPEED: 1,

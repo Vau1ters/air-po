@@ -1,8 +1,8 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '../components/positionComponent'
-import { AirComponent } from '../components/airComponent'
-import { Vec2 } from '../math/vec2'
+import { PositionComponent } from '@game/components/positionComponent'
+import { AirComponent } from '@game/components/airComponent'
+import { Vec2 } from '@core/math/vec2'
 
 export class AirFactory extends EntityFactory {
   private quantity = 10000

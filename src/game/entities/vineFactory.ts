@@ -1,17 +1,17 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '../components/positionComponent'
-import { RigidBodyComponent } from '../components/rigidBodyComponent'
-import { DrawComponent } from '../components/drawComponent'
-import { ColliderComponent, AABBDef } from '../components/colliderComponent'
-import { Vec2 } from '../math/vec2'
+import { PositionComponent } from '@game/components/positionComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { DrawComponent } from '@game/components/drawComponent'
+import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
-import vineDefinition from '../../../res/entities/vine.json'
-import { VineComponent } from '../components/vineComponent'
-import { AIComponent } from '../components/aiComponent'
-import { vineAI } from '../ai/vineAI'
-import { parseSprite } from '../parser/spriteParser'
-import { addTag } from '../ai/action/changeVineLength'
+import vineDefinition from '@res/animation/vine.json'
+import { VineComponent } from '@game/components/vineComponent'
+import { AIComponent } from '@game/components/aiComponent'
+import { vineAI } from '@game/ai/entity/vine/vineAI'
+import { parseAnimation } from '@core/graphics/animationParser'
+import { addTag } from '@game/ai/entity/vine/changeVineLength'
 
 export class VineFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -74,7 +74,7 @@ export class VineFactory extends EntityFactory {
 
     const ai = new AIComponent(vineAI(entity))
 
-    const sprite = parseSprite(vineDefinition.sprite)
+    const sprite = parseAnimation(vineDefinition.sprite)
     sprite.changeTo('Root0')
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)

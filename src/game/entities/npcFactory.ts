@@ -1,12 +1,12 @@
-import { Entity } from '../ecs/entity'
+import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { BalloonVineFactory } from './balloonVineFactory'
 import { VineFactory } from './vineFactory'
 import { DandelionFactory } from './dandelionFactory'
 import { Enemy1Factory } from './enemy1Factory'
 import { SnibeeFactory } from './snibeeFactory'
-import { World } from '../ecs/world'
-import { assert } from '../../utils/assertion'
+import { World } from '@core/ecs/world'
+import { assert } from '@utils/assertion'
 
 export type NPCType = 'enemy1' | 'snibee' | 'balloonvine' | 'dandelion' | 'vine'
 

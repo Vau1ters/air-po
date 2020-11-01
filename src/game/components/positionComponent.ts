@@ -1,3 +1,3 @@
-import { Vec2 } from '../math/vec2'
+import { Vec2 } from '@core/math/vec2'
 
 export class PositionComponent extends Vec2 {}

@@ -3,13 +3,13 @@ import {
   Collider,
   CircleCollider,
   AirCollider,
-} from '../components/colliderComponent'
-import { PositionComponent } from '../components/positionComponent'
-import { Circle } from '../math/circle'
-import { AABB } from '../math/aabb'
-import { AirFilter } from '../../filters/airFilter'
-import { Entity } from '../ecs/entity'
-import { assert } from '../../utils/assertion'
+} from '@game/components/colliderComponent'
+import { PositionComponent } from '@game/components/positionComponent'
+import { Circle } from './circle'
+import { AABB } from './aabb'
+import { AirFilter } from '@game/filters/airFilter'
+import { Entity } from '@core/ecs/entity'
+import { assert } from '@utils/assertion'
 
 const collideCircleAndAABB = (circle: Circle, aabb: AABB): boolean => {
   const distX = Math.max(0, aabb.left - circle.center.x, circle.center.x - aabb.right)

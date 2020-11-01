@@ -1,6 +1,6 @@
-import { Behaviour } from '../../behaviour/behaviour'
-import { Entity } from '../../ecs/entity'
-import { ComponentName } from '../../ecs/component'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
+import { ComponentName } from '@core/ecs/component'
 
 export const removeComponentNode = function*(
   entity: Entity,

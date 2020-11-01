@@ -1,8 +1,8 @@
-import { System } from '../ecs/system'
-import { World } from '../ecs/world'
-import { windowSize } from '../../core/application'
+import { System } from '@core/ecs/system'
+import { World } from '@core/ecs/world'
+import { windowSize } from '@core/application'
 import { Container } from 'pixi.js'
-import { Family, FamilyBuilder } from '../ecs/family'
+import { Family, FamilyBuilder } from '@core/ecs/family'
 
 export default class CameraSystem extends System {
   private target: Container

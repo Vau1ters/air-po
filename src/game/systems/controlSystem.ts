@@ -1,7 +1,7 @@
-import { application } from '../application'
-import { System } from '../ecs/system'
-import { World } from '../ecs/world'
-import { Vec2 } from '../math/vec2'
+import { application } from '@core/application'
+import { System } from '@core/ecs/system'
+import { World } from '@core/ecs/world'
+import { Vec2 } from '@core/math/vec2'
 
 export type KeyActionType = 'MoveLeft' | 'MoveRight' | 'MoveUp' | 'MoveDown' | 'Jump' | 'Jet'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {

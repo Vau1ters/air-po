@@ -1,11 +1,11 @@
-import { Entity } from '../../ecs/entity'
-import { FamilyBuilder } from '../../ecs/family'
-import { World } from '../../ecs/world'
-import { Behaviour } from '../../behaviour/behaviour'
-import { Vec2 } from '../../math/vec2'
+import { Entity } from '@core/ecs/entity'
+import { FamilyBuilder } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
-import { AABBCollider, Collider } from '../../components/colliderComponent'
-import { PositionComponent } from '../../components/positionComponent'
+import { AABBCollider, Collider } from '@game/components/colliderComponent'
+import { PositionComponent } from '@game/components/positionComponent'
 
 export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   const player = new FamilyBuilder(world).include('Player').build().entityArray[0]
