@@ -10,6 +10,7 @@ import { BulletFactory } from '@game/entities/bulletFactory'
 import { wait } from '@core/behaviour/wait'
 import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
+import { animateLoop } from '../common/action/animate'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -83,7 +84,11 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
 
 const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   const playerEntity = new FamilyBuilder(world).include('Player').build().entityArray[0]
-  yield* parallelAll([moveAI(entity, playerEntity), shootAI(entity, world, playerEntity)])
+  yield* parallelAll([
+    moveAI(entity, playerEntity),
+    shootAI(entity, world, playerEntity),
+    animateLoop(entity, 'Alive'),
+  ])
 }
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {

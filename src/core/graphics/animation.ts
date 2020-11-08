@@ -27,6 +27,7 @@ export class Animation extends Container {
   }
 
   public changeTo(animation: string): void {
+    if (animation === this.current && this.playing) return
     this.animatedSprites[this.current].visible = false
     this.animatedSprites[this.current].stop()
     this.animatedSprites[animation].visible = true

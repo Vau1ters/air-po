@@ -11,7 +11,9 @@ export const animate = function*(entity: Entity, animationName: string): Behavio
 }
 
 export const animateLoop = function*(entity: Entity, animationName: string): Behaviour<void> {
+  entity.getComponent('AnimationState').state = animationName
   while (true) {
+    animationName = entity.getComponent('AnimationState').state
     yield* animate(entity, animationName)
   }
 }

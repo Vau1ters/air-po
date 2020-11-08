@@ -10,7 +10,7 @@ import { playerJet } from './playerJet'
 import { playerPickup } from './playerPickup'
 import { playerItemAction } from './playerItemAction'
 import { invincibleTime } from '../common/action/invincibleTime'
-import { animate } from '../common/action/animate'
+import { animate, animateLoop } from '../common/action/animate'
 import { wait } from '@core/behaviour/wait'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
@@ -20,6 +20,7 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
     playerJet(entity),
     playerPickup(entity),
     playerItemAction(entity),
+    animateLoop(entity, 'Standing'),
     invincibleTime(entity),
   ])
 }
