@@ -31,6 +31,12 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
     if (player.landing) {
       if (!isLandingPrevFrame) Sound.play('foot')
       velocity.y = 0
+      if (KeyController.isActionPressing('MoveDown')) {
+        player.throughFloorIgnoreCount = 20
+      }
+    }
+    if (player.throughFloorIgnoreCount > 0) {
+      player.throughFloorIgnoreCount--
     }
     if (KeyController.isActionPressing('Jump') && player.landing) {
       velocity.y = -250

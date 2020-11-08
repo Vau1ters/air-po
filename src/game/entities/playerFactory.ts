@@ -3,7 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { ColliderComponent, AABBDef, Collider } from '@game/components/colliderComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
@@ -62,9 +62,15 @@ export class PlayerFactory extends EntityFactory {
     // TODO: カメラをプレイヤーから分離する
     const camera = new CameraComponent()
 
+    const shouldCollide = (me: Collider, other: Collider): boolean => {
+      if (player.throughFloorIgnoreCount > 0 && other.tag.has('throughFloor')) return false
+      return true
+    }
+
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.body)
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    aabbBody.shouldCollide = shouldCollide
     collider.createCollider(aabbBody)
 
     const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.hitBox)
@@ -84,6 +90,7 @@ export class PlayerFactory extends EntityFactory {
     foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
     foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     foot.isSensor = true
+    foot.shouldCollide = shouldCollide
     collider.createCollider(foot)
 
     const sprite = parseAnimation(playerDefinition.sprite)

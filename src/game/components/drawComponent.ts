@@ -26,6 +26,7 @@ export class DrawComponent extends Container {
       new Vec2(),
       true,
       new Set(),
+      (_: Collider, __: Collider) => true,
       new Set<string>(),
       Category.DRAW,
       new CategorySet(Category.SENSOR)

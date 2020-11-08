@@ -57,7 +57,7 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
 }
 
 const bulletFactory = new BulletFactory()
-bulletFactory.speed = 2
+bulletFactory.speed = 120
 bulletFactory.setRange(SnibeeSetting.exteriorDistance + 10)
 bulletFactory.offset.y = 4
 

@@ -7,6 +7,7 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { assert } from '@utils/assertion'
 import { EventSensorFactory } from '@game/entities/eventSensorFactory'
 import { MossFactory } from '@game/entities/mossFactory'
+import { ThroughFloorFactory } from '@game/entities/throughFloorFactory'
 
 type CustomProperty = {
   name: string
@@ -143,6 +144,12 @@ export class MapBuilder {
             builder: (pos: number[]) => this.buildWall(pos, tileSize, { firstgid, getTileId }),
           })
           break
+        case 'throughFloor':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) => this.buildThroughFloor(pos, tileSize),
+          })
+          break
         case 'enemy1':
         case 'balloonvine':
         case 'dandelion':
@@ -211,6 +218,16 @@ export class MapBuilder {
     p.x = tw * x + tw / 2
     p.y = th * y - th / 2
     this.world.addEntity(wall)
+  }
+
+  private buildThroughFloor(pos: number[], tileSize: number[]): void {
+    const [x, y] = pos
+    const [tw, th] = tileSize
+    const throughFloor = new ThroughFloorFactory().create()
+    const throughFloorPosition = throughFloor.getComponent('Position')
+    throughFloorPosition.x = x * tw + tw / 2
+    throughFloorPosition.y = y * th - th / 2
+    this.world.addEntity(throughFloor)
   }
 
   private buildNPC(
