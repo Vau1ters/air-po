@@ -8,6 +8,9 @@ import { AABBDef, ColliderComponent } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
 import { Vec2 } from '@core/math/vec2'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { AIComponent } from '@game/components/aiComponent'
+import { airTotemAI } from '@game/ai/entity/airTotem/airTotemAI'
+import { World } from '@core/ecs/world'
 
 export class AirTotemFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -16,6 +19,10 @@ export class AirTotemFactory extends EntityFactory {
   readonly HEIGHT = 28
   readonly OFFSET_X = -5
   readonly OFFSET_Y = -14
+
+  public constructor(private world: World) {
+    super()
+  }
 
   public create(): Entity {
     const entity = new Entity()
@@ -34,10 +41,13 @@ export class AirTotemFactory extends EntityFactory {
 
     draw.addChild(sprite)
 
+    const ai = new AIComponent(airTotemAI(entity, this.world))
+
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('RigidBody', rigidBody)
+    entity.addComponent('AI', ai)
     return entity
   }
 }

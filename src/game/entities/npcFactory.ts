@@ -29,7 +29,7 @@ export class NPCFactory extends EntityFactory {
       case 'dandelion':
         return new DandelionFactory(this.world).create()
       case 'airTotem':
-        return new AirTotemFactory().create()
+        return new AirTotemFactory(this.world).create()
       default:
         assert(false)
     }
