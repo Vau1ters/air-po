@@ -1,7 +1,7 @@
-import shot from '../../../res/sound/shot.wav'
-import snibee from '../../../res/sound/snibee.wav'
-import foot from '../../../res/sound/foot.wav'
-import jump from '../../../res/sound/jump.wav'
+import shot from '@res/sound/shot.wav'
+import snibee from '@res/sound/snibee.wav'
+import foot from '@res/sound/foot.wav'
+import jump from '@res/sound/jump.wav'
 import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}

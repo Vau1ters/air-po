@@ -1,7 +1,7 @@
-import { application, initializeApplication } from './core/application'
-import * as Art from './core/graphics/art'
-import * as Sound from './core/sound/sound'
-import { TitleWorldFactory } from './core/worlds/titleWorldFactory'
+import { application, initializeApplication } from '@core/application'
+import * as Art from '@core/graphics/art'
+import * as Sound from '@core/sound/sound'
+import { TitleWorldFactory } from '@game/worlds/titleWorldFactory'
 
 export class Main {
   /*+.† INITIALIZATION †.+*/

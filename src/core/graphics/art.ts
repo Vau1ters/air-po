@@ -1,36 +1,36 @@
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
-import titleImg from './../../../res/title.png'
+import titleImg from '@res/image/title.png'
 
-import playerImg from '../../../res/player.png'
-import playerSetting from '../../../res/player.json'
+import playerImg from '@res/image/player.png'
+import playerSetting from '@res/map/player.json'
 
-import wallImg from '../../../res/wall.png'
-import wallSetting from '../../../res/wall.json'
+import wallImg from '@res/image/wall.png'
+import wallSetting from '@res/map/wall.json'
 
-import enemy1Img from '../../../res/enemy1.png'
-import enemy1Setting from '../../../res/enemy1.json'
+import enemy1Img from '@res/image/enemy1.png'
+import enemy1Setting from '@res/map/enemy1.json'
 
-import vineImg from '../../../res/vine.png'
-import vineSetting from '../../../res/vine.json'
+import vineImg from '@res/image/vine.png'
+import vineSetting from '@res/map/vine.json'
 
-import snibeeImg from '../../../res/snibee.png'
-import snibeeSetting from '../../../res/snibee.json'
+import snibeeImg from '@res/image/snibee.png'
+import snibeeSetting from '@res/map/snibee.json'
 
-import ballBulletImg from '../../../res/ballBullet.png'
-import ballBulletSetting from '../../../res/ballBullet.json'
+import ballBulletImg from '@res/image/ballBullet.png'
+import ballBulletSetting from '@res/map/ballBullet.json'
 
-import needleBulletImg from '../../../res/needleBullet.png'
-import needleBulletSetting from '../../../res/needleBullet.json'
+import needleBulletImg from '@res/image/needleBullet.png'
+import needleBulletSetting from '@res/map/needleBullet.json'
 
-import balloonvineImg from '../../../res/balloonvine.png'
-import balloonvineSetting from '../../../res/balloonvine.json'
+import balloonvineImg from '@res/image/balloonvine.png'
+import balloonvineSetting from '@res/map/balloonvine.json'
 
-import mossImg from '../../../res/moss.png'
-import mossSetting from '../../../res/moss.json'
+import mossImg from '@res/image/moss.png'
+import mossSetting from '@res/map/moss.json'
 
-import dandelionHeadImg from '../../../res/dandelion_head.png'
-import dandelionFluffImg from '../../../res/dandelion_fluff.png'
+import dandelionHeadImg from '@res/image/dandelion_head.png'
+import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 
 type Setting = {
   columns: number

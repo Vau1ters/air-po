@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -48,6 +50,11 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    plugins: [
+      new TsconfigPathsWebpackPlugin({
+        configFile: 'tsconfig.json',
+      }),
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
