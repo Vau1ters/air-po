@@ -11,9 +11,9 @@ import { parallelAny } from '@core/behaviour/composite'
 
 const enemy1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
-    for (let i = 0; i < 3; i++) yield* animate(entity, 'Idle')
+    for (let i = 0; i < 3; i++) yield* animate(entity, 'Idle', 0.15)
     yield* parallelAny([animateLoop(entity, 'Walk'), move(entity, Direction.Right, 0.3, 200)])
-    for (let i = 0; i < 3; i++) yield* animate(entity, 'Idle')
+    for (let i = 0; i < 3; i++) yield* animate(entity, 'Idle', 0.15)
     yield* parallelAny([animateLoop(entity, 'Walk'), move(entity, Direction.Left, 0.3, 200)])
   }
 }

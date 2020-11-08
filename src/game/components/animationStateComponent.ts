@@ -1,3 +1,4 @@
+import { Animation } from '@core/graphics/animation'
 import { EventNotifier } from '@utils/eventNotifier'
 
 export class AnimationStateComponent {
@@ -6,6 +7,11 @@ export class AnimationStateComponent {
 
   public readonly changeState = new EventNotifier<string>()
   public readonly changeIsVisible = new EventNotifier<boolean>()
+
+  constructor(public animation: Animation) {
+    this.changeState.addObserver(x => animation.changeTo(x))
+    this.changeIsVisible.addObserver(x => animation.setVisible(x))
+  }
 
   set isVisible(value: boolean) {
     if (value != this._isVisible) {

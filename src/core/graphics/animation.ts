@@ -10,7 +10,6 @@ export class Animation extends Container {
     super()
     for (const [key, textures] of Object.entries(animatedTextures)) {
       const sprite = new AnimatedSprite(textures)
-      sprite.animationSpeed = 0.1
       sprite.visible = false
       sprite.anchor.set(0.5)
       sprite.loop = false
@@ -46,6 +45,12 @@ export class Animation extends Container {
   public set loop(loop: boolean) {
     for (const sprite of Object.values(this.animatedSprites)) {
       sprite.loop = loop
+    }
+  }
+
+  public set animationSpeed(animationSpeed: number) {
+    for (const sprite of Object.values(this.animatedSprites)) {
+      sprite.animationSpeed = animationSpeed
     }
   }
 }

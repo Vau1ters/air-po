@@ -82,8 +82,7 @@ export class Enemy1Factory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent()
-    animState.changeState.addObserver(x => sprite.changeTo(x))
+    const animState = new AnimationStateComponent(sprite)
 
     const ai = new AIComponent(enemy1AI(entity, this.world))
 

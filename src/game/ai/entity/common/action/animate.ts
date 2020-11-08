@@ -1,19 +1,27 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
-import { Animation } from '@core/graphics/animation'
 
-export const animate = function*(entity: Entity, animationName: string): Behaviour<void> {
-  entity.getComponent('AnimationState').state = animationName
-  const [child] = entity.getComponent('Draw').children
-  const animation = child as Animation
-  while (!animation.playing) yield
-  while (animation.playing) yield
+export const animate = function*(
+  entity: Entity,
+  animationName: string,
+  animationSpeed = 0.1
+): Behaviour<void> {
+  const animationState = entity.getComponent('AnimationState')
+  animationState.state = animationName
+  const animation = animationState.animation
+  animation.animationSpeed = animationSpeed
+  while (!animation.playing) yield // wait for starting animation
+  while (animation.playing) yield // wait for finishing animation
 }
 
-export const animateLoop = function*(entity: Entity, animationName: string): Behaviour<void> {
+export const animateLoop = function*(
+  entity: Entity,
+  animationName: string,
+  animationSpeed = 0.1
+): Behaviour<void> {
   entity.getComponent('AnimationState').state = animationName
   while (true) {
     animationName = entity.getComponent('AnimationState').state
-    yield* animate(entity, animationName)
+    yield* animate(entity, animationName, animationSpeed)
   }
 }

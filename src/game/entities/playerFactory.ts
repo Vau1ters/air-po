@@ -97,9 +97,7 @@ export class PlayerFactory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent()
-    animState.changeState.addObserver(x => sprite.changeTo(x))
-    animState.changeIsVisible.addObserver(x => sprite.setVisible(x))
+    const animState = new AnimationStateComponent(sprite)
 
     const ai = new AIComponent(playerAI(entity, this.world))
 
