@@ -11,8 +11,14 @@ import { emitAir } from '../common/action/emitAir'
 
 const enemy1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
-    yield* move(entity, Direction.Right, 2, 60)
-    yield* move(entity, Direction.Left, 2, 60)
+    yield* animate(entity, 'Idle')
+    yield* wait(200)
+    yield* animate(entity, 'Walk')
+    yield* move(entity, Direction.Right, 0.3, 200)
+    yield* animate(entity, 'Idle')
+    yield* wait(200)
+    yield* animate(entity, 'Walk')
+    yield* move(entity, Direction.Left, 0.3, 200)
   }
 }
 

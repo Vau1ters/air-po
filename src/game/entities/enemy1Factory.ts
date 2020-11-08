@@ -39,7 +39,7 @@ export class Enemy1Factory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 0)
+    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 1)
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const hp = new HPComponent(2, 2)
