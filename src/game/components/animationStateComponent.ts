@@ -19,10 +19,8 @@ export class AnimationStateComponent {
   }
 
   set state(value: string) {
-    if (value != this._state) {
-      this._state = value
-      this.changeState.notify(value)
-    }
+    this._state = value
+    this.changeState.notify(value)
   }
 
   get state(): string {

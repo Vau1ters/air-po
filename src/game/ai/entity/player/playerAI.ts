@@ -3,7 +3,7 @@ import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
 import { isAlive } from '../common/condition/isAlive'
-import { parallel } from '@core/behaviour/composite'
+import { parallelAll } from '@core/behaviour/composite'
 import { playerGunShoot } from './playerGunShoot'
 import { playerMove } from './playerMove'
 import { playerJet } from './playerJet'
@@ -14,7 +14,7 @@ import { animate } from '../common/action/animate'
 import { wait } from '@core/behaviour/wait'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* parallel([
+  yield* parallelAll([
     playerGunShoot(entity, world),
     playerMove(entity),
     playerJet(entity),
