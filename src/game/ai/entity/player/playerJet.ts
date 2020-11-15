@@ -36,7 +36,7 @@ export const playerJet = function*(entity: Entity): Behaviour<void> {
     if (
       KeyController.isActionPressing('Jet') &&
       playerAngle.lengthSq() > 0 &&
-      airHolder.currentQuantity >= SETTING.CONSUME_SPEED
+      airHolder.quantity >= SETTING.CONSUME_SPEED
     ) {
       velocity.x = playerAngle.x * SETTING.JET_SPEED
       velocity.y = playerAngle.y * SETTING.JET_SPEED

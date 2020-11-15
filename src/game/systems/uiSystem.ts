@@ -70,15 +70,25 @@ export default class UiSystem extends System {
 
   private renderPlayerAir(player: Entity): void {
     const holder = player.getComponent('AirHolder')
+    const airTank = player.getComponent('Equipment').airTank
+
     this.playerAirGauge.clear()
-    this.playerAirGauge.beginFill(0x3080ff)
-    this.playerAirGauge.drawRect(
-      0,
-      0,
-      (holder.currentQuantity / holder.maxQuantity) * windowSize.width,
-      16
-    )
-    this.playerAirGauge.endFill()
+    for (let i = 0; i < airTank.count; i++) {
+      // 枠
+      this.playerAirGauge.lineStyle(1, 0xffffff, 1, 1)
+      this.playerAirGauge.drawRect(4 + 14 * i, 4, 8, 16)
+
+      // 割合計算
+      const rate = Math.max(
+        0,
+        Math.min(1, (holder.quantity - airTank.quantity * i) / airTank.quantity)
+      )
+      // ゲージ
+      this.playerAirGauge.lineStyle()
+      this.playerAirGauge.beginFill(0x3080ff)
+      this.playerAirGauge.drawRect(4 + 14 * i, 4 + (1 - rate) * 16, 8, rate * 16)
+      this.playerAirGauge.endFill()
+    }
   }
 
   private renderLaserSight(player: Entity): void {

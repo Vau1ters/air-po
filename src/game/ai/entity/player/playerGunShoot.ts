@@ -21,7 +21,7 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
 
     // 空気の消費
     const airHolder = entity.getComponent('AirHolder')
-    if (airHolder.currentQuantity >= SETTING.CONSUME_SPEED) {
+    if (airHolder.quantity >= SETTING.CONSUME_SPEED) {
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
       Sound.play('shot')
