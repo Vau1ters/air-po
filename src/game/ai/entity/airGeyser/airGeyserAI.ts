@@ -4,7 +4,7 @@ import { World } from '@core/ecs/world'
 import { AirFactory } from '@game/entities/airFactory'
 import { AirSystem } from '@game/systems/airSystem'
 
-export const airTotemAI = function*(
+export const airGeyserAI = function*(
   entity: Entity,
   world: World,
   options: {

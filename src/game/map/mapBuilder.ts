@@ -7,7 +7,7 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { assert } from '@utils/assertion'
 import { EventSensorFactory } from '@game/entities/eventSensorFactory'
 import { MossFactory } from '@game/entities/mossFactory'
-import { AirTotemFactory } from '@game/entities/airTotemFactory'
+import { AirGeyserFactory } from '@game/entities/airGeyserFactory'
 
 type CustomProperty = {
   name: string
@@ -129,7 +129,7 @@ export class MapBuilder {
     const [_, th] = tileSize
 
     for (const airGeyserData of airGeyserLayer.objects) {
-      const airGeyserFactory = new AirTotemFactory(this.world)
+      const airGeyserFactory = new AirGeyserFactory(this.world)
       const maxQuantity = airGeyserData.properties?.find(
         property => property.name === 'maxQuantity'
       )?.value

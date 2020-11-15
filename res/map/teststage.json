@@ -272,7 +272,7 @@
         }, 
         {
          "firstgid":52,
-         "source":"airTotem.json"
+         "source":"airGeyser.json"
         }],
  "tilewidth":8,
  "type":"map",

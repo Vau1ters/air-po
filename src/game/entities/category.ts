@@ -101,7 +101,7 @@ export const CategoryList = {
       mask: new CategorySet(Category.AIR),
     },
   },
-  airTotem: {
+  airGeyser: {
     category: Category.DYNAMIC_WALL,
     mask: new CategorySet(Category.PHYSICS),
   },
