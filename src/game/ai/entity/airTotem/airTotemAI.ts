@@ -3,7 +3,14 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { AirFactory } from '@game/entities/airFactory'
 
-export const airTotemAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const airTotemAI = function*(
+  entity: Entity,
+  world: World,
+  options: {
+    maxQuantity: number
+    increaseRate: number
+  }
+): Behaviour<void> {
   const position = entity.getComponent('Position')
   const airEntity = new AirFactory()
     .setQuantity(100)
@@ -12,8 +19,8 @@ export const airTotemAI = function*(entity: Entity, world: World): Behaviour<voi
   world.addEntity(airEntity)
   while (true) {
     const airComponent = airEntity.getComponent('Air')
-    if (airComponent.quantity < 160) {
-      airComponent.increase(0.2)
+    if (airComponent.quantity < options.maxQuantity) {
+      airComponent.increase(options.increaseRate)
     }
     yield
   }

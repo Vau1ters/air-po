@@ -20,13 +20,30 @@ export class AirTotemFactory extends EntityFactory {
   readonly OFFSET_X = -5
   readonly OFFSET_Y = -14
 
+  private position: Vec2 = new Vec2()
+  private maxQuantity = 120
+  private increaseRate = 0.2
+
   public constructor(private world: World) {
     super()
   }
 
+  public setPosition(x: number, y: number): void {
+    this.position.x = x
+    this.position.y = y
+  }
+
+  public setMaxQuantity(maxQuantity: number): void {
+    this.maxQuantity = maxQuantity
+  }
+
+  public setIncreaseRate(increaseRate: number): void {
+    this.increaseRate = increaseRate
+  }
+
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
+    const position = new PositionComponent(this.position.x, this.position.y)
     const draw = new DrawComponent(entity)
     const collider = new ColliderComponent(entity)
 
@@ -41,7 +58,12 @@ export class AirTotemFactory extends EntityFactory {
 
     draw.addChild(sprite)
 
-    const ai = new AIComponent(airTotemAI(entity, this.world))
+    const ai = new AIComponent(
+      airTotemAI(entity, this.world, {
+        maxQuantity: this.maxQuantity,
+        increaseRate: this.increaseRate,
+      })
+    )
 
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
