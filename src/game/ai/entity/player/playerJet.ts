@@ -33,6 +33,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
   const airHolder = entity.getComponent('AirHolder')
   const velocity = body.velocity
 
+  let frame = 0
   while (true) {
     const playerAngle = calcPlayerAngle()
     if (
@@ -44,13 +45,15 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
       velocity.y = playerAngle.y * SETTING.JET_SPEED
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      const airEffectFactory = new AirEffectFactory()
-      airEffectFactory.setShooter(entity, 'player')
-      const airEffect = airEffectFactory.create()
-
-      world.addEntity(airEffect)
+      if (Math.random() < 0.5) {
+        const airEffectFactory = new AirEffectFactory(world)
+        airEffectFactory.setShooter(entity, 'player')
+        const airEffect = airEffectFactory.create()
+        world.addEntity(airEffect)
+      }
     }
 
+    frame++
     yield
   }
 }

@@ -6,13 +6,15 @@ import { parseAnimation } from '@core/graphics/animationParser'
 import airEffectDefinition from '@res/animation/airEffect.json'
 import { airEffectAI } from '@game/ai/entity/airEffect/airEffectAI'
 import { PositionComponent } from '@game/components/positionComponent'
+import { World } from '@core/ecs/world'
 
 type ShooterType = 'player' | 'enemy'
 
 export class AirEffectFactory extends EntityFactory {
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
-  public constructor() {
+
+  public constructor(private world: World) {
     super()
   }
 
@@ -32,9 +34,10 @@ export class AirEffectFactory extends EntityFactory {
     draw.addChild(sprite)
 
     const shooterPosition = this.shooter.getComponent('Position')
-    const position = new PositionComponent(shooterPosition.x, shooterPosition.y)
+    const dy = 4
+    const position = new PositionComponent(shooterPosition.x, shooterPosition.y + dy)
 
-    const ai = new AIComponent(airEffectAI(entity))
+    const ai = new AIComponent(airEffectAI(entity, this.world))
     entity.addComponent('Draw', draw)
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)
