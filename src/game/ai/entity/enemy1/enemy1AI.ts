@@ -22,6 +22,6 @@ export const enemy1AI = function*(entity: Entity, world: World): Behaviour<void>
   yield* suspendable(isAlive(entity), enemy1Move(entity))
   entity.getComponent('Collider').removeByTag('AttackHitBox')
   yield* emitAir(entity, world, 50)
-  yield* animate(entity, 'Dying')
+  yield* animate(entity, 'Dying', 0.2)
   yield* kill(entity, world)
 }
