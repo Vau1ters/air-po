@@ -25,7 +25,7 @@ export class ThroughFloorFactory extends EntityFactory {
     aabb.tag.add('throughFloor')
     aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabb.shouldCollide = (me: Collider, other: Collider): boolean => {
-      if (!other.entity.hasComponent('RigidBody')) return true
+      if (!other.entity.hasComponent('RigidBody')) return false
       return other.entity.getComponent('RigidBody').velocity.y >= 0
     }
     const collider = new ColliderComponent(entity)

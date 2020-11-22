@@ -1,9 +1,11 @@
 {
-    "sprite": {
-      "name": "throughFloor",
-      "state": {
-        "Default": [0]
-      },
-      "default": "Default"
-    }
+  "sprite": {
+    "name": "throughFloor",
+    "state": {
+      "Default": [
+        0
+      ]
+    },
+    "default": "Default"
   }
+}

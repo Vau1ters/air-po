@@ -114,7 +114,7 @@ export class CircleDef implements ColliderDef {
   public offset = new Vec2()
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide = (_: Collider, __: Collider): boolean => true
+  public shouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
@@ -128,7 +128,7 @@ export class CircleDef implements ColliderDef {
 export class AirDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide = (_: Collider, __: Collider): boolean => true
+  public shouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
