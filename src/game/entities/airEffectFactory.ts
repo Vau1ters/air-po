@@ -30,13 +30,14 @@ export class AirEffectFactory extends EntityFactory {
     const sprite = parseAnimation(airEffectDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
-    const ai = new AIComponent(airEffectAI())
 
     const shooterPosition = this.shooter.getComponent('Position')
+    const position = new PositionComponent(shooterPosition.x, shooterPosition.y)
 
+    const ai = new AIComponent(airEffectAI(entity))
     entity.addComponent('Draw', draw)
     entity.addComponent('AI', ai)
-    entity.addComponent('Position', shooterPosition)
+    entity.addComponent('Position', position)
 
     return entity
   }
