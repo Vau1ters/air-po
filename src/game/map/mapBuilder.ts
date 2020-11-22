@@ -7,6 +7,8 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { assert } from '@utils/assertion'
 import { EventSensorFactory } from '@game/entities/eventSensorFactory'
 import { MossFactory } from '@game/entities/mossFactory'
+import { EquipmentTileFactory } from '@game/entities/equipmentTileFactory'
+import { EquipmentTypes } from '@game/components/equipmentComponent'
 
 type CustomProperty = {
   name: string
@@ -103,6 +105,8 @@ export class MapBuilder {
         case 'player':
           this.buildPlayer(layer as ObjectLayer, [map.tilewidth, map.tileheight], playerSpawnerID)
           break
+        case 'equipment':
+          this.buildEquipment(layer as ObjectLayer)
       }
     }
   }
@@ -268,6 +272,25 @@ export class MapBuilder {
         .setEvent(event)
         .create()
       this.world.addEntity(sensor)
+    }
+  }
+
+  private buildEquipment(equipmentLayer: ObjectLayer): void {
+    for (const { x, y, width, height, properties } of equipmentLayer.objects) {
+      assert(properties)
+
+      const typeProperty = properties.find(prop => prop.name === 'type')
+      assert(typeProperty)
+      assert(typeProperty.type === 'string')
+
+      const equipmentType = typeProperty.value as EquipmentTypes
+
+      const equipment = new EquipmentTileFactory()
+        .setPosition(x, y)
+        .setSize(width, height)
+        .setEquipmentType(equipmentType)
+        .create()
+      this.world.addEntity(equipment)
     }
   }
 

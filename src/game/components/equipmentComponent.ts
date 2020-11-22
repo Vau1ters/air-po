@@ -7,5 +7,5 @@ export class EquipmentComponent {
     count: 0,
     quantity: 40,
   }
-  public getEvent = new EventNotifier<EquipmentTypes>()
+  public equipEvent = new EventNotifier<EquipmentTypes>()
 }

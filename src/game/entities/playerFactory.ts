@@ -59,7 +59,7 @@ export class PlayerFactory extends EntityFactory {
     const invincible = new InvincibleComponent()
 
     const equipment = new EquipmentComponent()
-    equipment.getEvent.addObserver(type => {
+    equipment.equipEvent.addObserver(type => {
       if (type === 'AirTank') {
         equipment.airTank.count += 1
         airHolder.maxQuantity += equipment.airTank.quantity
@@ -67,8 +67,8 @@ export class PlayerFactory extends EntityFactory {
       }
     })
     // 初期状態で空気タンクを2つ追加しておく
-    equipment.getEvent.notify('AirTank')
-    equipment.getEvent.notify('AirTank')
+    equipment.equipEvent.notify('AirTank')
+    equipment.equipEvent.notify('AirTank')
 
     // TODO: カメラをプレイヤーから分離する
     const camera = new CameraComponent()
