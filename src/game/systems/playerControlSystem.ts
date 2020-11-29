@@ -34,10 +34,11 @@ export class PlayerControlSystem extends System {
 
   private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
     const player = playerCollider.entity.getComponent('Player')
-    if (!otherCollider.isSensor) {
-      if (playerCollider.entity.getComponent('RigidBody').velocity.y > -1e-2) {
-        player.landing = true
-      }
+    if (
+      !otherCollider.isSensor &&
+      playerCollider.entity.getComponent('RigidBody').velocity.y > -1e-2
+    ) {
+      player.landing = true
     }
   }
 
