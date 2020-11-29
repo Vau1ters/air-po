@@ -29,7 +29,7 @@ function genTextureStoreLine(file, isSingleImage) {
   //like this↓
   //textureStore.title = await buildSingleTexture(titleImg)
   //textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
-  return "textureStore." + filename + "= await " + f + "(" + a + ")";
+  return "  textureStore." + filename + " = await " + f + "(" + a + ")";
 }
 function genImportLine(file) {
   const filename = file.split(".")[0];
@@ -51,23 +51,29 @@ fs.readFile(arttsPath, "utf-8", (err, fileData) => {
   let r = fileDataLinesExceptTextureStore;
   // entry
   fs.readdir("./res/image", (err, imgs) => {
+    const maps = fs.readdirSync("./res/map");
     imgs.forEach((img) => {
       r = [genImportLine(img)].concat(r);
     });
-    const maps = fs.readdirSync("./res/map");
+    maps.forEach((m) => {
+      r = [genImportLine(m)].concat(r);
+    });
     const mapFileNames = maps.map((e) => {
       return e.split(".")[0];
     });
     const SingleTextures = imgs.filter((img) => {
       const imgFileName = img.split(".")[0];
-      return mapFileNames.indexOf(imgFileName) !== -1;
+      return mapFileNames.indexOf(imgFileName) == -1;
     });
+    r[r.length - 2] = "";
     imgs.forEach((img) => {
-      isSingleImage = SingleTextures.indexOf(img);
+      isSingleImage = SingleTextures.indexOf(img) !== -1;
       r = r.concat([genTextureStoreLine(img, isSingleImage)]);
     });
-    console.log(r);
-
+    r = r.concat(["}"]);
+    r = r.filter((e) => {
+      return e != "";
+    });
     const fileString = r.reduce((a, c) => {
       return a + c + "\n";
     }, "");
