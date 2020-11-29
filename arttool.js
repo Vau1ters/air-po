@@ -1,7 +1,13 @@
 const fs = require("fs");
 
 const arttsPath = "./src/core/graphics/art.ts";
-const arttsPath2 = "./src/core/graphics/output.ts";
+
+function snakeToCamel(p) {
+  //_+小文字を大文字にする(例:_a を A)
+  return p.replace(/_./g, function(s) {
+    return s.charAt(1).toUpperCase();
+  });
+}
 
 function deleteImportLine(lines) {
   return lines.filter((line) => {
@@ -20,7 +26,7 @@ function deleteTextureStoreLine(lines) {
 }
 
 function genTextureStoreLine(file, isSingleImage) {
-  const filename = file.split(".")[0];
+  const filename = snakeToCamel(file.split(".")[0]);
   const a = isSingleImage
     ? filename + "Img"
     : filename + "Img, " + filename + "Setting";
@@ -32,7 +38,7 @@ function genTextureStoreLine(file, isSingleImage) {
   return "  textureStore." + filename + " = await " + f + "(" + a + ")";
 }
 function genImportLine(file) {
-  const filename = file.split(".")[0];
+  const filename = snakeToCamel(file.split(".")[0]);
   const ext = file.split(".")[1];
   const prefix = ext == "png" ? "Img" : "Setting";
 
@@ -77,6 +83,6 @@ fs.readFile(arttsPath, "utf-8", (err, fileData) => {
     const fileString = r.reduce((a, c) => {
       return a + c + "\n";
     }, "");
-    fs.writeFileSync(arttsPath2, fileString);
+    fs.writeFileSync(arttsPath, fileString);
   });
 });
