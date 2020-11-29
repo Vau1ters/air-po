@@ -64,6 +64,8 @@ export class PlayerFactory extends EntityFactory {
         equipment.airTank.count += 1
         airHolder.maxQuantity += equipment.airTank.quantity
         airHolder.quantity += equipment.airTank.quantity
+      } else if (type === 'Flamethrower') {
+        equipment.weapons.flamethrower = true
       }
     })
     // 初期状態で空気タンクを2つ追加しておく

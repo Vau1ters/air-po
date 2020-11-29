@@ -17,7 +17,7 @@ const bulletDefinition = {
   needle: needleBulletDefinition,
 }
 
-type ShooterType = 'player' | 'enemy'
+export type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
 
 export class BulletFactory extends EntityFactory {

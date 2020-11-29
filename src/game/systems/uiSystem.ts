@@ -14,6 +14,8 @@ export default class UiSystem extends System {
   private playerFamily: Family
   private hpFamily: Family
 
+  private flameFamily: Family
+
   private physicsSystem: PhysicsSystem
 
   private uiContainer: Container = new Container()
@@ -23,6 +25,8 @@ export default class UiSystem extends System {
   private playerHpGauge: Graphics = new Graphics()
   private playerAirGauge: Graphics = new Graphics()
   private laserSight: Graphics = new Graphics()
+
+  private flame: Graphics = new Graphics()
 
   public constructor(
     world: World,
@@ -38,6 +42,8 @@ export default class UiSystem extends System {
     this.gameWorldUiContainer.addChild(this.laserSight)
     this.hpGauge.position.set(0)
     this.gameWorldUiContainer.addChild(this.hpGauge)
+    this.flame.position.set(0)
+    this.gameWorldUiContainer.addChild(this.flame)
 
     this.playerHpGauge.position.set(0, 0)
     this.uiContainer.addChild(this.playerHpGauge)
@@ -49,6 +55,7 @@ export default class UiSystem extends System {
 
     this.playerFamily = new FamilyBuilder(world).include('Player').build()
     this.hpFamily = new FamilyBuilder(world).include('HP', 'Position').build()
+    this.flameFamily = new FamilyBuilder(world).include('Flame').build()
   }
 
   public update(): void {
@@ -58,6 +65,7 @@ export default class UiSystem extends System {
       this.renderLaserSight(player)
     }
     this.renderNpcHp()
+    this.renderFlame()
   }
 
   private renderPlayerHp(player: Entity): void {
@@ -149,5 +157,15 @@ export default class UiSystem extends System {
       this.hpGauge.drawRect(position.x - 8, position.y - 12, hp.ratio * 16, 2)
     }
     this.hpGauge.endFill()
+  }
+
+  private renderFlame(): void {
+    this.flame.clear()
+    this.flame.beginFill(0xff0000)
+    for (const entity of this.flameFamily.entityIterator) {
+      const { size } = entity.getComponent('Flame')
+      const position = entity.getComponent('Position')
+      this.flame.drawRect(position.x - size / 2, position.y - size / 2, size, size)
+    }
   }
 }

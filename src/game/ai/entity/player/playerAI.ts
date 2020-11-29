@@ -12,10 +12,12 @@ import { playerItemAction } from './playerItemAction'
 import { invincibleTime } from '../common/action/invincibleTime'
 import { animate, animateLoop } from '../common/action/animate'
 import { wait } from '@core/behaviour/wait'
+import { playerFlameShoot } from './playerFlameShoot'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
   yield* parallelAll([
     playerGunShoot(entity, world),
+    playerFlameShoot(entity, world),
     playerMove(entity),
     playerJet(entity, world),
     playerPickup(entity),
