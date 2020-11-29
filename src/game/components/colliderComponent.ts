@@ -17,6 +17,8 @@ export interface Collider {
   bound: AABB
 }
 
+type ShouldCollide = (me: Collider, other: Collider) => boolean
+
 export class AABBCollider implements Collider {
   public bound: AABB
 
@@ -26,7 +28,7 @@ export class AABBCollider implements Collider {
     public maxClipTolerance: Vec2,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
-    public shouldCollide: (me: Collider, other: Collider) => boolean,
+    public shouldCollide: ShouldCollide,
     public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
@@ -43,7 +45,7 @@ export class CircleCollider implements Collider {
     public circle: Circle,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
-    public shouldCollide: (me: Collider, other: Collider) => boolean,
+    public shouldCollide: ShouldCollide,
     public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
@@ -72,7 +74,7 @@ export class AirCollider implements Collider {
     public airFamily: Family,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
-    public shouldCollide: (me: Collider, other: Collider) => boolean,
+    public shouldCollide: ShouldCollide,
     public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
@@ -99,7 +101,7 @@ export class AABBDef implements ColliderDef {
   public maxClipTolerance = new Vec2()
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide = (_: Collider, __: Collider): boolean => true
+  public shouldCollide: ShouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
@@ -114,7 +116,7 @@ export class CircleDef implements ColliderDef {
   public offset = new Vec2()
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide = (): boolean => true
+  public shouldCollide: ShouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
@@ -128,7 +130,7 @@ export class CircleDef implements ColliderDef {
 export class AirDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide = (): boolean => true
+  public shouldCollide: ShouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
