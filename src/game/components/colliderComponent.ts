@@ -175,4 +175,12 @@ export class ColliderComponent {
       assert(false)
     }
   }
+
+  public removeByTag(tag: string): void {
+    while (true) {
+      const idx = this.colliders.findIndex(c => c.tag.has(tag))
+      if (idx === -1) return
+      this.colliders.splice(idx, 1)
+    }
+  }
 }
