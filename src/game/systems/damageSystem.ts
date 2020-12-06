@@ -48,8 +48,6 @@ export class DamageSystem extends System {
 
     const attack = attacker.getComponent('Attack')
 
-    if (attack.ignoreList.includes(target)) return
-
     if (target.hasComponent('HP') === false) return
     const targetHP = target.getComponent('HP')
 
@@ -57,8 +55,6 @@ export class DamageSystem extends System {
       const invincible = target.getComponent('Invincible')
       if (invincible.isInvincible()) return
       invincible.setInvincible()
-    } else {
-      attack.ignoreList.push(target) // prevent double attack to non-invincible entity
     }
     targetHP.decrease(attack.damage)
 
