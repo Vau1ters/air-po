@@ -3,14 +3,14 @@ import { EntityFactory } from './entityFactory'
 import { DrawComponent } from '@game/components/drawComponent'
 import { AIComponent } from '@game/components/aiComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
-import airEffectDefinition from '@res/animation/airEffect.json'
-import { airEffectAI } from '@game/ai/entity/airEffect/airEffectAI'
+import jetEffectDefinition from '@res/animation/jetEffect.json'
+import { JetEffectAI } from '@game/ai/entity/jetEffect/jetEffectAI'
 import { PositionComponent } from '@game/components/positionComponent'
 import { World } from '@core/ecs/world'
 
 type ShooterType = 'player' | 'enemy'
 
-export class AirEffectFactory extends EntityFactory {
+export class JetEffectFactory extends EntityFactory {
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
 
@@ -29,7 +29,7 @@ export class AirEffectFactory extends EntityFactory {
     }
 
     const entity = new Entity()
-    const sprite = parseAnimation(airEffectDefinition.sprite)
+    const sprite = parseAnimation(jetEffectDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
@@ -37,7 +37,7 @@ export class AirEffectFactory extends EntityFactory {
     const dy = 4
     const position = new PositionComponent(shooterPosition.x, shooterPosition.y + dy)
 
-    const ai = new AIComponent(airEffectAI(entity, this.world))
+    const ai = new AIComponent(JetEffectAI(entity, this.world))
     entity.addComponent('Draw', draw)
     entity.addComponent('AI', ai)
     entity.addComponent('Position', position)

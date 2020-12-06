@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { KeyController } from '@game/systems/controlSystem'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
-import { AirEffectFactory } from '@game/entities/airEffectFactory'
+import { JetEffectFactory } from '@game/entities/jetEffectFactory'
 
 const SETTING = {
   CONSUME_SPEED: 1,
@@ -33,7 +33,6 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
   const airHolder = entity.getComponent('AirHolder')
   const velocity = body.velocity
 
-  let frame = 0
   while (true) {
     const playerAngle = calcPlayerAngle()
     if (
@@ -46,14 +45,13 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
       if (Math.random() < 0.5) {
-        const airEffectFactory = new AirEffectFactory(world)
-        airEffectFactory.setShooter(entity, 'player')
-        const airEffect = airEffectFactory.create()
-        world.addEntity(airEffect)
+        const jetEffectFactory = new JetEffectFactory(world)
+        jetEffectFactory.setShooter(entity, 'player')
+        const jetEffect = jetEffectFactory.create()
+        world.addEntity(jetEffect)
       }
     }
 
-    frame++
     yield
   }
 }

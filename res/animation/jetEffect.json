@@ -1,6 +1,6 @@
 {
   "sprite": {
-    "name": "airEffect",
+    "name": "jetEffect",
     "state": {
       "Normal": [0]
     },
