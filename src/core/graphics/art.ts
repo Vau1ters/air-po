@@ -8,6 +8,9 @@ import playerSetting from '@res/map/player.json'
 import wallImg from '@res/image/wall.png'
 import wallSetting from '@res/map/wall.json'
 
+import throughFloorImg from '@res/image/throughFloor.png'
+import throughFloorSetting from '@res/map/throughFloor.json'
+
 import enemy1Img from '@res/image/enemy1.png'
 import enemy1Setting from '@res/map/enemy1.json'
 
@@ -33,6 +36,9 @@ import dandelionHeadImg from '@res/image/dandelion_head.png'
 import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 
 import jetEffectImg from '@res/image/jetEffect.png'
+
+import airGeyserImg from '@res/image/airGeyser.png'
+import airGeyserSetting from '@res/map/airGeyser.json'
 
 type Setting = {
   columns: number
@@ -89,6 +95,7 @@ export const init = async (): Promise<void> => {
   textureStore.title = await buildSingleTexture(titleImg)
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
+  textureStore.throughFloor = await buildAnimationTexture(throughFloorImg, throughFloorSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
   textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
@@ -96,6 +103,7 @@ export const init = async (): Promise<void> => {
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
   textureStore.moss = await buildAnimationTexture(mossImg, mossSetting)
+  textureStore.airGeyser = await buildAnimationTexture(airGeyserImg, airGeyserSetting)
   textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
   textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
   textureStore.jetEffect = await buildSingleTexture(jetEffectImg)

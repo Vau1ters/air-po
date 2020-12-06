@@ -22,8 +22,7 @@ export class DandelionFactory extends EntityFactory {
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
-    const animState = new AnimationStateComponent()
-    animState.changeState.addObserver(x => sprite.changeTo(x))
+    const animState = new AnimationStateComponent(sprite)
 
     const ai = new AIComponent(dandelionAI(entity, this.world))
 
