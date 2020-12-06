@@ -8,19 +8,15 @@ import { JetEffectAI } from '@game/ai/entity/jetEffect/jetEffectAI'
 import { PositionComponent } from '@game/components/positionComponent'
 import { World } from '@core/ecs/world'
 
-type ShooterType = 'player' | 'enemy'
-
 export class JetEffectFactory extends EntityFactory {
   public shooter?: Entity
-  public shooterType: ShooterType = 'player'
 
   public constructor(private world: World) {
     super()
   }
 
-  public setShooter(shooter: Entity, shooterType: ShooterType): void {
+  public setShooter(shooter: Entity): void {
     this.shooter = shooter
-    this.shooterType = shooterType
   }
   public create(): Entity {
     if (!this.shooter) {

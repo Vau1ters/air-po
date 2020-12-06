@@ -47,7 +47,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
 
       if (Math.random() < 0.5) {
         const jetEffectFactory = new JetEffectFactory(world)
-        jetEffectFactory.setShooter(entity, 'player')
+        jetEffectFactory.setShooter(entity)
         const jetEffect = jetEffectFactory.create()
         const effectPosition = jetEffect.getComponent('Position')
         const offset = 12
