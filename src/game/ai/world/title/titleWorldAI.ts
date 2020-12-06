@@ -1,5 +1,6 @@
 import { Behaviour } from '@core/behaviour/behaviour'
-import { transition } from '@core/behaviour/easing/transition'
+import { In, InOut } from '@core/behaviour/easing/functions'
+import { stream } from '@core/behaviour/easing/stream'
 import { World } from '@core/ecs/world'
 import { textureStore } from '@core/graphics/art'
 import { MouseController } from '@game/systems/controlSystem'
@@ -13,14 +14,40 @@ export const titleWorldAI = function*(world: World): Behaviour<World> {
   world.stage.addChild(titleImage)
 
   while (!MouseController.isMousePressed('Left')) yield
-  yield* transition(12, (time: number) => {
-    const rate = time / 12
-    titleImage.alpha = (Math.cos(rate * Math.PI * 4) + 1) / 2
-  })
-  yield* transition(16, (time: number) => {
-    const rate = time / 16
-    titleImage.alpha = Math.cos((rate * Math.PI) / 2)
-  })
+
+  yield* stream(
+    (value: number) => {
+      titleImage.alpha = value
+    },
+    1,
+    [
+      {
+        easing: InOut.sine,
+        duration: 3,
+        to: 0,
+      },
+      {
+        easing: InOut.sine,
+        duration: 3,
+        to: 1,
+      },
+      {
+        easing: InOut.sine,
+        duration: 3,
+        to: 0,
+      },
+      {
+        easing: InOut.sine,
+        duration: 3,
+        to: 1,
+      },
+      {
+        easing: In.sine,
+        duration: 16,
+        to: 0,
+      },
+    ]
+  )
 
   return new GameWorldFactory().create(map, 0)
 }
