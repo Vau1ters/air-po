@@ -31,7 +31,7 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_OFFSET_X = 1
   readonly FOOT_OFFSET_Y = 13
   readonly FOOT_CLIP_TOLERANCE_X = 2
-  readonly FOOT_CLIP_TOLERANCE_Y = 14
+  readonly FOOT_CLIP_TOLERANCE_Y = 0
   readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
   readonly INITIAL_AIR_QUANTITY = 100
@@ -104,9 +104,7 @@ export class PlayerFactory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent()
-    animState.changeState.addObserver(x => sprite.changeTo(x))
-    animState.changeIsVisible.addObserver(x => sprite.setVisible(x))
+    const animState = new AnimationStateComponent(sprite)
 
     const ai = new AIComponent(playerAI(entity, this.world))
 

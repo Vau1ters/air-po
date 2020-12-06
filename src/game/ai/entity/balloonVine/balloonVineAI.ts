@@ -2,7 +2,7 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
-import { parallel } from '@core/behaviour/composite'
+import { parallelAll } from '@core/behaviour/composite'
 import { isAlive } from '../common/condition/isAlive'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
@@ -24,7 +24,7 @@ const changeState = function*(entity: Entity): Behaviour<void> {
 export const balloonvineAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(
     isAlive(entity),
-    parallel([balloonVineBehaviour(entity, world), changeState(entity)])
+    parallelAll([balloonVineBehaviour(entity, world), changeState(entity)])
   )
   if (hasAir(entity)()) {
     yield* emitAir(entity, world, 40)
