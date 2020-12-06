@@ -5,7 +5,8 @@ import { World } from '@core/ecs/world'
 export const JetEffectBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   let t = 0
   let v = 2
-  function update(): void {
+
+  while (true) {
     const draw = entity.getComponent('Draw')
     const pos = entity.getComponent('Position')
     v = Math.max(v - 0.5, 0)
@@ -15,10 +16,7 @@ export const JetEffectBehaviour = function*(entity: Entity, world: World): Behav
 
     if (t > 100) world.removeEntity(entity)
     t++
-  }
 
-  while (true) {
-    update()
     yield
   }
 }
