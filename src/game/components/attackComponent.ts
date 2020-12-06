@@ -4,7 +4,9 @@ export class AttackComponent {
   public constructor(
     // 与えたいダメージ量
     public damage: number,
-    // 攻撃元
-    public entity: Entity
+    // ダメージを与えたときに死ぬかどうか
+    public shouldCounterbalance: boolean,
+    // ダメージを与えないEntity
+    public ignoreList: Array<Entity> = []
   ) {}
 }

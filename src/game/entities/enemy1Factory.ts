@@ -57,7 +57,7 @@ export class Enemy1Factory extends EntityFactory {
     collider.createCollider(hitBox)
 
     // 攻撃判定
-    const attack = new AttackComponent(1, entity)
+    const attack = new AttackComponent(1, false)
 
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),

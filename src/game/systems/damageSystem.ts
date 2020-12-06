@@ -47,7 +47,8 @@ export class DamageSystem extends System {
     const target = targetCollider.entity
 
     const attack = attacker.getComponent('Attack')
-    if (attack.entity === attacker) return // prevent self attack
+
+    if (attack.ignoreList.includes(target)) return
 
     if (target.hasComponent('HP') === false) return
     const targetHP = target.getComponent('HP')
@@ -56,8 +57,14 @@ export class DamageSystem extends System {
       const invincible = target.getComponent('Invincible')
       if (invincible.isInvincible()) return
       invincible.setInvincible()
+    } else {
+      attack.ignoreList.push(target) // prevent double attack to non-invincible entity
     }
     targetHP.decrease(attack.damage)
-    this.world.removeEntity(attacker)
+
+    // if manually remove by adding callback to do it,
+    // the order of call can influence the result
+    // to ignore that, damage system also has a responsibility to remove entity
+    if (attack.shouldCounterbalance) this.world.removeEntity(attacker)
   }
 }
