@@ -76,7 +76,7 @@ export class BulletFactory extends EntityFactory {
     collider.createCollider(aabbBody)
 
     // 攻撃判定
-    const attack = new AttackComponent(1, this.shooter)
+    const attack = new AttackComponent(1, true)
 
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
