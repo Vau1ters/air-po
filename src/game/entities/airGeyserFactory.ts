@@ -16,9 +16,9 @@ export class AirGeyserFactory extends EntityFactory {
   readonly INV_MASS = 0
   readonly RESTITUTION = 0
   readonly WIDTH = 10
-  readonly HEIGHT = 28
+  readonly HEIGHT = 13
   readonly OFFSET_X = -5
-  readonly OFFSET_Y = -14
+  readonly OFFSET_Y = 3
 
   private position: Vec2 = new Vec2()
   private maxQuantity = 120
