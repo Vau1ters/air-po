@@ -4,7 +4,6 @@ import { KeyController } from '@game/systems/controlSystem'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
 import { JetEffectFactory } from '@game/entities/jetEffectFactory'
-import { normalize } from '*.png'
 
 const SETTING = {
   CONSUME_SPEED: 1,
