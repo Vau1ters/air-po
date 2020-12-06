@@ -6,7 +6,7 @@ import { World } from '@core/ecs/world'
 import { JetEffectFactory } from '@game/entities/jetEffectFactory'
 
 const SETTING = {
-  CONSUME_SPEED: 1,
+  CONSUME_SPEED: 0.1,
   JET_SPEED: 180,
 }
 const calcPlayerAngle = (): Vec2 => {
