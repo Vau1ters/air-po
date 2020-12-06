@@ -17,7 +17,7 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
   yield* parallelAll([
     playerGunShoot(entity, world),
     playerMove(entity),
-    playerJet(entity),
+    playerJet(entity, world),
     playerPickup(entity),
     playerItemAction(entity),
     animateLoop(entity, 'Standing'),

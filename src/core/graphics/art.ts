@@ -35,6 +35,8 @@ import mossSetting from '@res/map/moss.json'
 import dandelionHeadImg from '@res/image/dandelion_head.png'
 import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 
+import jetEffectImg from '@res/image/jetEffect.png'
+
 import airGeyserImg from '@res/image/airGeyser.png'
 import airGeyserSetting from '@res/map/airGeyser.json'
 
@@ -104,4 +106,5 @@ export const init = async (): Promise<void> => {
   textureStore.airGeyser = await buildAnimationTexture(airGeyserImg, airGeyserSetting)
   textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
   textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
+  textureStore.jetEffect = await buildSingleTexture(jetEffectImg)
 }
