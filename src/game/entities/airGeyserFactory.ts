@@ -11,6 +11,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIComponent } from '@game/components/aiComponent'
 import { airGeyserAI } from '@game/ai/entity/airGeyser/airGeyserAI'
 import { World } from '@core/ecs/world'
+import { AnimationStateComponent } from '@game/components/animationStateComponent'
 
 export class AirGeyserFactory extends EntityFactory {
   readonly INV_MASS = 0
@@ -58,6 +59,8 @@ export class AirGeyserFactory extends EntityFactory {
 
     draw.addChild(sprite)
 
+    const animState = new AnimationStateComponent(sprite)
+
     const ai = new AIComponent(
       airGeyserAI(entity, this.world, {
         maxQuantity: this.maxQuantity,
@@ -70,6 +73,7 @@ export class AirGeyserFactory extends EntityFactory {
     entity.addComponent('Collider', collider)
     entity.addComponent('RigidBody', rigidBody)
     entity.addComponent('AI', ai)
+    entity.addComponent('AnimationState', animState)
     return entity
   }
 }

@@ -1,10 +1,12 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { parallelAny } from '@core/behaviour/composite'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { AirFactory } from '@game/entities/airFactory'
 import { AirSystem } from '@game/systems/airSystem'
+import { animateLoop } from '../common/action/animate'
 
-export const airGeyserAI = function*(
+const manageAir = function*(
   entity: Entity,
   world: World,
   options: {
@@ -32,4 +34,15 @@ export const airGeyserAI = function*(
     }
     yield
   }
+}
+
+export const airGeyserAI = function(
+  entity: Entity,
+  world: World,
+  options: {
+    maxQuantity: number
+    increaseRate: number
+  }
+): Behaviour<void> {
+  return parallelAny([animateLoop(entity, 'Default'), manageAir(entity, world, options)])
 }
