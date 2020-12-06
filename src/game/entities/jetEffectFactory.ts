@@ -34,8 +34,7 @@ export class JetEffectFactory extends EntityFactory {
     draw.addChild(sprite)
 
     const shooterPosition = this.shooter.getComponent('Position')
-    const dy = 4
-    const position = new PositionComponent(shooterPosition.x, shooterPosition.y + dy)
+    const position = new PositionComponent(shooterPosition.x, shooterPosition.y)
 
     const ai = new AIComponent(JetEffectAI(entity, this.world))
     entity.addComponent('Draw', draw)

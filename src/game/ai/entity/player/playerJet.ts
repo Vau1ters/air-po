@@ -4,6 +4,7 @@ import { KeyController } from '@game/systems/controlSystem'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
 import { JetEffectFactory } from '@game/entities/jetEffectFactory'
+import { normalize } from '*.png'
 
 const SETTING = {
   CONSUME_SPEED: 1,
@@ -48,6 +49,11 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
         const jetEffectFactory = new JetEffectFactory(world)
         jetEffectFactory.setShooter(entity, 'player')
         const jetEffect = jetEffectFactory.create()
+        const effectPosition = jetEffect.getComponent('Position')
+        const offset = 12
+        const dir = playerAngle.normalize().mul(-1)
+        effectPosition.add(dir.mul(offset))
+
         world.addEntity(jetEffect)
       }
     }
