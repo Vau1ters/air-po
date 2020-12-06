@@ -7,6 +7,7 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { assert } from '@utils/assertion'
 import { EventSensorFactory } from '@game/entities/eventSensorFactory'
 import { MossFactory } from '@game/entities/mossFactory'
+import { AirGeyserFactory } from '@game/entities/airGeyserFactory'
 import { ThroughFloorFactory } from '@game/entities/throughFloorFactory'
 
 type CustomProperty = {
@@ -104,6 +105,8 @@ export class MapBuilder {
         case 'player':
           this.buildPlayer(layer as ObjectLayer, [map.tilewidth, map.tileheight], playerSpawnerID)
           break
+        case 'airGeyser':
+          this.buildAirGeyser(layer as ObjectLayer, [map.tilewidth, map.tileheight])
       }
     }
   }
@@ -120,6 +123,29 @@ export class MapBuilder {
         .setQuantity(radius)
         .create()
       this.world.addEntity(air)
+    }
+  }
+
+  private buildAirGeyser(airGeyserLayer: ObjectLayer, tileSize: [number, number]): void {
+    const [_, th] = tileSize
+
+    for (const airGeyserData of airGeyserLayer.objects) {
+      const airGeyserFactory = new AirGeyserFactory(this.world)
+      const maxQuantity = airGeyserData.properties?.find(
+        property => property.name === 'maxQuantity'
+      )?.value
+      const increaseRate = airGeyserData.properties?.find(
+        property => property.name === 'increaseRate'
+      )?.value
+
+      airGeyserFactory.setPosition(
+        airGeyserData.x + airGeyserData.width / 2,
+        airGeyserData.y - th - airGeyserData.height / 2
+      )
+      if (maxQuantity) airGeyserFactory.setMaxQuantity(Number(maxQuantity))
+      if (increaseRate) airGeyserFactory.setIncreaseRate(Number(increaseRate))
+
+      this.world.addEntity(airGeyserFactory.create())
     }
   }
 

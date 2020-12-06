@@ -35,6 +35,9 @@ import mossSetting from '@res/map/moss.json'
 import dandelionHeadImg from '@res/image/dandelion_head.png'
 import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 
+import airGeyserImg from '@res/image/airGeyser.png'
+import airGeyserSetting from '@res/map/airGeyser.json'
+
 type Setting = {
   columns: number
   image: string
@@ -98,6 +101,7 @@ export const init = async (): Promise<void> => {
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
   textureStore.moss = await buildAnimationTexture(mossImg, mossSetting)
+  textureStore.airGeyser = await buildAnimationTexture(airGeyserImg, airGeyserSetting)
   textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
   textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
 }
