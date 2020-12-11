@@ -9,6 +9,8 @@ export class Main {
     initializeApplication()
     await Art.init()
     await Sound.init()
+    const fonts = ((document as unknown) as { fonts: { load: (s: string) => void } }).fonts
+    await fonts.load('24px myFont')
 
     const world = new TitleWorldFactory().create()
     world.start()
