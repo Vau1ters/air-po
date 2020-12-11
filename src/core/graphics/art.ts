@@ -14,6 +14,9 @@ import throughFloorSetting from '@res/map/throughFloor.json'
 import enemy1Img from '@res/image/enemy1.png'
 import enemy1Setting from '@res/map/enemy1.json'
 
+import slime1Img from '@res/image/slime1.png'
+import slime1Setting from '@res/map/slime1.json'
+
 import vineImg from '@res/image/vine.png'
 import vineSetting from '@res/map/vine.json'
 
@@ -97,6 +100,7 @@ export const init = async (): Promise<void> => {
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
   textureStore.throughFloor = await buildAnimationTexture(throughFloorImg, throughFloorSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
+  textureStore.slime1 = await buildAnimationTexture(slime1Img, slime1Setting)
   textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
   textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
