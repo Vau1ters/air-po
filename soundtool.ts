@@ -2,6 +2,7 @@ import * as fs from 'fs'
 
 const fileText = `
 // IMPORT
+
 import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}
@@ -48,4 +49,8 @@ dir.forEach(e => {
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename)}`)
   generatedText = generatedText.replace(loadReg, `// LOAD_RESOURCE\n  ${loadFormatText(filename)}`)
 })
-fs.writeFile(soundTsPath, generatedText, () => {})
+const notificationText = `/*+.† NOTIFICATION †.+*/
+// this file is automatically written by soundtool.
+// you can update this file by type "yarn soundtool" command.
+`
+fs.writeFile(soundTsPath, notificationText + generatedText, () => {})

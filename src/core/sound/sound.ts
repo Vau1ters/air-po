@@ -1,8 +1,13 @@
+/*+.† NOTIFICATION †.+*/
+// this file is automatically written by soundtool.
+// you can update this file by type "yarn soundtool" command.
+
 // IMPORT
 import snibee from '@res/sound/snibee.wav'
 import shot from '@res/sound/shot.wav'
 import jump from '@res/sound/jump.wav'
 import foot from '@res/sound/foot.wav'
+
 import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}
