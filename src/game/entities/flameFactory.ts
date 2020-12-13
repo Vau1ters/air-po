@@ -16,7 +16,7 @@ import { DrawComponent } from '@game/components/drawComponent'
 export class FlameFactory extends EntityFactory {
   private SPEED = 300
   private GRAVITY_SCALE = -0.1
-  private FLAME_BODY_SIZE = 4
+  private FLAME_BODY_SIZE = 6
 
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
