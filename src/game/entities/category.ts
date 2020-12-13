@@ -73,6 +73,16 @@ export const CategoryList = {
     category: Category.PHYSICS,
     mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
   },
+  flame: {
+    body: {
+      category: Category.PHYSICS,
+      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+    },
+    airSensor: {
+      category: Category.SENSOR,
+      mask: new CategorySet(Category.AIR),
+    },
+  },
   dandelionFluff: {
     category: Category.ITEM,
     mask: new CategorySet(Category.SENSOR),

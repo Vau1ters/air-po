@@ -12,11 +12,14 @@ import { AIComponent } from '@game/components/aiComponent'
 import { flameAI } from '@game/ai/entity/flame/flameAI'
 import { World } from '@core/ecs/world'
 import { DrawComponent } from '@game/components/drawComponent'
+import { AirHolderComponent } from '@game/components/airHolderComponent'
 
 export class FlameFactory extends EntityFactory {
   private SPEED = 300
   private GRAVITY_SCALE = -0.1
   private FLAME_BODY_SIZE = 6
+  private AIR_COLLECT_SPEED = 0.01
+  private AIR_CONSUME_SPEED = 0.01
 
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
@@ -56,13 +59,19 @@ export class FlameFactory extends EntityFactory {
       this.GRAVITY_SCALE
     )
     const ai = new AIComponent(flameAI(entity, this.world))
+    const airHolder = new AirHolderComponent({
+      initialQuantity: 0,
+      maxQuantity: 1000,
+      collectSpeed: this.AIR_COLLECT_SPEED,
+      consumeSpeed: this.AIR_CONSUME_SPEED,
+    })
 
     const draw = new DrawComponent(entity)
     draw.addChild(flame.graphic)
 
     const aabbBody = new AABBDef(
       new Vec2(this.FLAME_BODY_SIZE, this.FLAME_BODY_SIZE),
-      CategoryList.bulletBody
+      CategoryList.flame.body
     )
     aabbBody.tag.add('FlameBody')
     aabbBody.offset = new Vec2(-this.FLAME_BODY_SIZE / 2, -this.FLAME_BODY_SIZE / 2)
@@ -81,6 +90,15 @@ export class FlameFactory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
+    const airHolderBody = new AABBDef(
+      new Vec2(flame.size, flame.size),
+      CategoryList.flame.airSensor
+    )
+    airHolderBody.tag.add('airHolderBody')
+    airHolderBody.offset = new Vec2(-flame.size / 2, -flame.size / 2)
+    airHolderBody.isSensor = true
+    collider.createCollider(airHolderBody)
+
     entity.addComponent('Position', position)
     entity.addComponent('Collider', collider)
     entity.addComponent('AI', ai)
@@ -88,6 +106,7 @@ export class FlameFactory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('RigidBody', body)
     entity.addComponent('Attack', attack)
+    entity.addComponent('AirHolder', airHolder)
     return entity
   }
 }

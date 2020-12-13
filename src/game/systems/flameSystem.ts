@@ -23,8 +23,7 @@ export default class FlameSystem extends System {
       graphic.endFill()
 
       for (const collider of colliders) {
-        console.log(collider)
-        if (collider.tag.has('AttackHitBox')) {
+        if (collider.tag.has('AttackHitBox') || collider.tag.has('airHolderBody')) {
           collider.aabb.size.x = size
           collider.aabb.size.y = size
           collider.aabb.position.x = -size / 2
