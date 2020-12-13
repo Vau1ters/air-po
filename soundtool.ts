@@ -34,7 +34,7 @@ function importText(filename: string): string {
   return `import shot from '@res/sound/${filename}.wav'`
 }
 function loadFormatText(filename: string): string {
-  return `soundStore.${filename}= await load(${filename})`
+  return `soundStore.${filename} = await load(${filename})`
 }
 
 const soundPath = 'res/sound'
