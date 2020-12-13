@@ -22,23 +22,24 @@ export class FukidashiFactory extends EntityFactory {
 
     const text = new Text(this.text, {
       fontFamily: 'myFont',
-      fontSize: 12,
       fill: 0,
     })
     const tailSize = 10
-    const radius = 1
+    const radius = 2
     const border = 1
     text.name = 'text'
-    text.width += (tailSize + radius) * 2
-    text.height += (tailSize + radius) * 2
+    // text.width += (tailSize + radius) * 2
+    // text.height += (tailSize + radius) * 2
+    text.roundPixels = true
     text.filters = [
-      new Filter(fukidsahiVertexShader, fukidashiFragmentShader, {
+      new Filter(undefined, undefined, {
         displaySize: [text.width, text.height],
         tailSize,
         radius,
         border,
         scale: 0,
         angle: 0,
+        textRate: [0, 0],
       }),
     ]
     draw.addChild(text)

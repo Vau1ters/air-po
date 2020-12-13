@@ -4,6 +4,7 @@ varying vec2 vTextureCoord;
 uniform sampler2D uSampler;
 uniform vec2 displaySize;
 uniform vec2 target;
+uniform vec2 textRate;
 uniform float tailSize;
 uniform float border;
 uniform float radius;
@@ -70,7 +71,14 @@ void main() {
     vec2 frame = boxSize();
     if (abs(pixel.x) < frame.x * 0.5 && abs(pixel.y) < frame.y * 0.5) {
         vec2 uv = (pixel / frame * vec2(1, -1) + 0.5) * (outputFrame.zw * inputSize.zw);
-        vec4 c = texture2D(uSampler, uv);
-        gl_FragColor.rgb = mix(gl_FragColor.rgb, c.rgb, c.a);
+        if (uv.x < textRate.x && uv.y < textRate.y) {
+            vec4 c = texture2D(uSampler, uv / textRate);
+            gl_FragColor.rgb = mix(gl_FragColor.rgb, c.rgb, c.a);
+        }
     }
+    /*
+    vec4 c = texture2D(uSampler, vTextureCoord * outputFrame.zw * inputSize.zw);
+    gl_FragColor.rgb = mix(vec3(0,0,1), c.rgb, c.a);
+    gl_FragColor.a = 1.;
+    */
 }

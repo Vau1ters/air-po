@@ -34,12 +34,28 @@ const animate = function*(fukidashi: Entity): Behaviour<void> {
   const text = draw.getChildByName('text') as Text
   const [filter] = text.filters
 
+  const wholeText = text.text
+  text.updateText(true)
+  const wholeTextSize = [text.texture.trim.width, text.texture.trim.height]
+  text.text = ''
+
   let t = 0
   while (t < 1) {
     t += 0.01
     const t2 = Math.min(1, t * 5)
     filter.uniforms.scale = t2 * (2 - t2)
     filter.uniforms.angle = Math.sin(t * 30) * Math.exp(-t * t * 10) * 0.1
+    yield
+  }
+  while (text.text.length < wholeText.length) {
+    for (let i = 0; i < 10; i++) yield
+    text.text = wholeText.substr(0, text.text.length + 1)
+    text.updateText(true)
+    const textSize = text.texture.trim
+    filter.uniforms.textRate = [
+      textSize.width / wholeTextSize[0],
+      textSize.height / wholeTextSize[1],
+    ]
     yield
   }
   t = 0

@@ -15,7 +15,10 @@ export const playerTalk = function*(entity: Entity, world: World): Behaviour<voi
       world.addEntity(fukidashi)
     }
     if (KeyController.isKeyPressed('V')) {
-      const fukidashi = new FukidashiFactory('a\naaaaaaaaaaaaaaaaaaaaaa', entity).create()
+      const fukidashi = new FukidashiFactory(
+        'Windows　でコンピュータの世界が広がります。',
+        entity
+      ).create()
       world.addEntity(fukidashi)
     }
     yield
