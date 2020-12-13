@@ -15,7 +15,7 @@ export class AirSystem extends System {
 
   private entity: Entity
 
-  private static readonly AIR_SHRINK_QUANTITY_THRESHOLD = 10
+  public static readonly AIR_SHRINK_QUANTITY_THRESHOLD = 10
   private static readonly AIR_SHRINK_QUANTITY_SPEED = 0.3
 
   public constructor(world: World) {

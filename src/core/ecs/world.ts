@@ -87,6 +87,23 @@ export class World {
     }
   }
 
+  public getEntityById(id: number): Entity | undefined {
+    for (const entity of this.entities) {
+      if (entity.id === id) return entity
+    }
+    return undefined
+  }
+
+  public removeEntityById(id: number): void {
+    for (const entity of this.entities) {
+      if (entity.id === id) this.removeEntity(entity)
+    }
+  }
+
+  public hasEntity(entity: Entity): boolean {
+    return this.entities.has(entity)
+  }
+
   public reset(): void {
     const entities = new Set(this.entities) // to ensure the order of actual remove and callback
     this.entities.clear()

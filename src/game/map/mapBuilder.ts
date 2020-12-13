@@ -7,6 +7,10 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { assert } from '@utils/assertion'
 import { EventSensorFactory } from '@game/entities/eventSensorFactory'
 import { MossFactory } from '@game/entities/mossFactory'
+import { EquipmentTileFactory } from '@game/entities/equipmentTileFactory'
+import { EquipmentTypes } from '@game/components/equipmentComponent'
+import { AirGeyserFactory } from '@game/entities/airGeyserFactory'
+import { ThroughFloorFactory } from '@game/entities/throughFloorFactory'
 
 type CustomProperty = {
   name: string
@@ -103,6 +107,12 @@ export class MapBuilder {
         case 'player':
           this.buildPlayer(layer as ObjectLayer, [map.tilewidth, map.tileheight], playerSpawnerID)
           break
+        case 'equipment':
+          this.buildEquipment(layer as ObjectLayer)
+          break
+        case 'airGeyser':
+          this.buildAirGeyser(layer as ObjectLayer, [map.tilewidth, map.tileheight])
+          break
       }
     }
   }
@@ -119,6 +129,29 @@ export class MapBuilder {
         .setQuantity(radius)
         .create()
       this.world.addEntity(air)
+    }
+  }
+
+  private buildAirGeyser(airGeyserLayer: ObjectLayer, tileSize: [number, number]): void {
+    const [_, th] = tileSize
+
+    for (const airGeyserData of airGeyserLayer.objects) {
+      const airGeyserFactory = new AirGeyserFactory(this.world)
+      const maxQuantity = airGeyserData.properties?.find(
+        property => property.name === 'maxQuantity'
+      )?.value
+      const increaseRate = airGeyserData.properties?.find(
+        property => property.name === 'increaseRate'
+      )?.value
+
+      airGeyserFactory.setPosition(
+        airGeyserData.x + airGeyserData.width / 2,
+        airGeyserData.y - th - airGeyserData.height / 2
+      )
+      if (maxQuantity) airGeyserFactory.setMaxQuantity(Number(maxQuantity))
+      if (increaseRate) airGeyserFactory.setIncreaseRate(Number(increaseRate))
+
+      this.world.addEntity(airGeyserFactory.create())
     }
   }
 
@@ -141,6 +174,12 @@ export class MapBuilder {
           builders.push({
             firstgid,
             builder: (pos: number[]) => this.buildWall(pos, tileSize, { firstgid, getTileId }),
+          })
+          break
+        case 'throughFloor':
+          builders.push({
+            firstgid,
+            builder: (pos: number[]) => this.buildThroughFloor(pos, tileSize),
           })
           break
         case 'enemy1':
@@ -213,6 +252,16 @@ export class MapBuilder {
     this.world.addEntity(wall)
   }
 
+  private buildThroughFloor(pos: number[], tileSize: number[]): void {
+    const [x, y] = pos
+    const [tw, th] = tileSize
+    const throughFloor = new ThroughFloorFactory().create()
+    const throughFloorPosition = throughFloor.getComponent('Position')
+    throughFloorPosition.x = x * tw + tw / 2
+    throughFloorPosition.y = y * th - th / 2
+    this.world.addEntity(throughFloor)
+  }
+
   private buildNPC(
     pos: number[],
     tileSize: number[],
@@ -268,6 +317,25 @@ export class MapBuilder {
         .setEvent(event)
         .create()
       this.world.addEntity(sensor)
+    }
+  }
+
+  private buildEquipment(equipmentLayer: ObjectLayer): void {
+    for (const { x, y, width, height, properties } of equipmentLayer.objects) {
+      assert(properties)
+
+      const typeProperty = properties.find(prop => prop.name === 'type')
+      assert(typeProperty)
+      assert(typeProperty.type === 'string')
+
+      const equipmentType = typeProperty.value as EquipmentTypes
+
+      const equipment = new EquipmentTileFactory()
+        .setPosition(x, y)
+        .setSize(width, height)
+        .setEquipmentType(equipmentType)
+        .create()
+      this.world.addEntity(equipment)
     }
   }
 

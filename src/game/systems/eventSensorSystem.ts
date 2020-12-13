@@ -4,14 +4,17 @@ import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
+import { EquipmentTypes } from '@game/components/equipmentComponent'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
+  private playerFamily: Family
 
   constructor(world: World) {
     super(world)
     this.sensorFamily = new FamilyBuilder(world).include('Sensor').build()
     this.sensorFamily.entityAddedEvent.addObserver((e: Entity) => this.onSensorAdded(e))
+    this.playerFamily = new FamilyBuilder(world).include('Player').build()
   }
 
   public update(): void {}
@@ -32,6 +35,9 @@ export class EventSensorSystem extends System {
       case 'changeMap':
         await this.moveEvent(options[0], Number(options[1]))
         break
+      case 'equipItem':
+        await this.equipItemEvent(options[0] as EquipmentTypes, Number(options[1]))
+        break
     }
   }
 
@@ -40,5 +46,12 @@ export class EventSensorSystem extends System {
     this.world.reset()
     const mapBuilder = new MapBuilder(this.world)
     mapBuilder.build(map, spawnerID)
+  }
+
+  private async equipItemEvent(equipmentType: EquipmentTypes, equipmentId: number): Promise<void> {
+    const player = this.playerFamily.entityArray[0]
+    const equipmentComponent = player.getComponent('Equipment')
+    equipmentComponent.equipEvent.notify(equipmentType)
+    this.world.removeEntityById(equipmentId)
   }
 }

@@ -10,11 +10,14 @@ export interface Collider {
   entity: Entity
   isSensor: boolean
   callbacks: Set<(me: Collider, other: Collider) => void>
+  shouldCollide: (me: Collider, other: Collider) => boolean
   tag: Set<string>
   category: Category
   mask: CategorySet
   bound: AABB
 }
+
+type ShouldCollide = (me: Collider, other: Collider) => boolean
 
 export class AABBCollider implements Collider {
   public bound: AABB
@@ -25,6 +28,7 @@ export class AABBCollider implements Collider {
     public maxClipTolerance: Vec2,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
+    public shouldCollide: ShouldCollide,
     public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
@@ -41,6 +45,7 @@ export class CircleCollider implements Collider {
     public circle: Circle,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
+    public shouldCollide: ShouldCollide,
     public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
@@ -69,6 +74,7 @@ export class AirCollider implements Collider {
     public airFamily: Family,
     public isSensor: boolean,
     public callbacks: Set<(me: Collider, other: Collider) => void>,
+    public shouldCollide: ShouldCollide,
     public tag: Set<string>,
     public category: Category,
     public mask: CategorySet
@@ -95,6 +101,7 @@ export class AABBDef implements ColliderDef {
   public maxClipTolerance = new Vec2()
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
+  public shouldCollide: ShouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
@@ -109,6 +116,7 @@ export class CircleDef implements ColliderDef {
   public offset = new Vec2()
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
+  public shouldCollide: ShouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
@@ -122,6 +130,7 @@ export class CircleDef implements ColliderDef {
 export class AirDef implements ColliderDef {
   public isSensor = false
   public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
+  public shouldCollide: ShouldCollide = (): boolean => true
   public tag: Set<string> = new Set()
   public category: Category
   public mask: CategorySet
@@ -144,6 +153,7 @@ export class ColliderComponent {
         def.maxClipTolerance,
         def.isSensor,
         def.callbacks,
+        def.shouldCollide,
         def.tag,
         def.category,
         def.mask
@@ -155,6 +165,7 @@ export class ColliderComponent {
         new Circle(def.offset, def.radius),
         def.isSensor,
         def.callbacks,
+        def.shouldCollide,
         def.tag,
         def.category,
         def.mask
@@ -166,6 +177,7 @@ export class ColliderComponent {
         def.airFamily,
         def.isSensor,
         def.callbacks,
+        def.shouldCollide,
         def.tag,
         def.category,
         def.mask
@@ -173,6 +185,14 @@ export class ColliderComponent {
       this.colliders.push(collider)
     } else {
       assert(false)
+    }
+  }
+
+  public removeByTag(tag: string): void {
+    while (true) {
+      const idx = this.colliders.findIndex(c => c.tag.has(tag))
+      if (idx === -1) return
+      this.colliders.splice(idx, 1)
     }
   }
 }

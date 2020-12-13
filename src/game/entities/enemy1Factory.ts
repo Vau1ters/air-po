@@ -9,7 +9,6 @@ import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
 import { HPComponent } from '@game/components/hpComponent'
-import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { AIComponent } from '@game/components/aiComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
@@ -39,11 +38,10 @@ export class Enemy1Factory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 0)
+    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 1)
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const hp = new HPComponent(2, 2)
-    const invincible = new InvincibleComponent()
 
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.body)
     aabbBody.tag.add('enemy1Body')
@@ -59,7 +57,7 @@ export class Enemy1Factory extends EntityFactory {
     collider.createCollider(hitBox)
 
     // 攻撃判定
-    const attack = new AttackComponent(1, entity)
+    const attack = new AttackComponent(1, false)
 
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
@@ -82,8 +80,7 @@ export class Enemy1Factory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent()
-    animState.changeState.addObserver(x => sprite.changeTo(x))
+    const animState = new AnimationStateComponent(sprite)
 
     const ai = new AIComponent(enemy1AI(entity, this.world))
 
@@ -94,7 +91,6 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Attack', attack)
-    entity.addComponent('Invincible', invincible)
     entity.addComponent('HP', hp)
     entity.addComponent('AnimationState', animState)
     return entity

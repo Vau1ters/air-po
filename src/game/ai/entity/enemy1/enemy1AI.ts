@@ -4,22 +4,24 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
 import { isAlive } from '../common/condition/isAlive'
 import { move, Direction } from '../common/action/move'
-import { animate } from '../common/action/animate'
-import { wait } from '@core/behaviour/wait'
+import { animate, animateLoop } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
+import { parallelAny } from '@core/behaviour/composite'
 
 const enemy1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
-    yield* move(entity, Direction.Right, 2, 60)
-    yield* move(entity, Direction.Left, 2, 60)
+    for (let i = 0; i < 3; i++) yield* animate(entity, 'Idle', 0.15)
+    yield* parallelAny([animateLoop(entity, 'Walk'), move(entity, Direction.Right, 0.3, 200)])
+    for (let i = 0; i < 3; i++) yield* animate(entity, 'Idle', 0.15)
+    yield* parallelAny([animateLoop(entity, 'Walk'), move(entity, Direction.Left, 0.3, 200)])
   }
 }
 
 export const enemy1AI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), enemy1Move(entity))
-  yield* animate(entity, 'Dying')
-  yield* wait(60)
+  entity.getComponent('Collider').removeByTag('AttackHitBox')
   yield* emitAir(entity, world, 50)
+  yield* animate(entity, 'Dying', 0.2)
   yield* kill(entity, world)
 }

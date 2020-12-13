@@ -18,6 +18,7 @@ import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
 import { LightComponent } from '@game/components/lightComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
 import { StaticComponent } from '@game/components/staticComponent'
+import { EquipmentComponent } from '@game/components/equipmentComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -40,6 +41,7 @@ export interface ComponentMap {
   Light: LightComponent
   Sensor: SensorComponent
   Static: StaticComponent
+  Equipment: EquipmentComponent
 }
 
 export type ComponentName = keyof ComponentMap

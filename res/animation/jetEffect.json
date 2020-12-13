@@ -1,0 +1,9 @@
+{
+  "sprite": {
+    "name": "jetEffect",
+    "state": {
+      "Normal": [0]
+    },
+    "default": "Normal"
+  }
+}
