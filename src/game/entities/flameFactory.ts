@@ -14,7 +14,7 @@ import { World } from '@core/ecs/world'
 import { DrawComponent } from '@game/components/drawComponent'
 
 export class FlameFactory extends EntityFactory {
-  private SPEED = 200
+  private SPEED = 300
   private GRAVITY_SCALE = -0.1
   private FLAME_BODY_SIZE = 4
 

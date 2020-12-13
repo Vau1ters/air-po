@@ -7,7 +7,7 @@ import { Out } from '@core/behaviour/easing/functions'
 
 const SETTING = {
   FLAME_LIFE: 60,
-  AIR_RESISTANCE: 2.0,
+  AIR_RESISTANCE: 3.0,
   INITIAL_SIZE: 2,
   MAX_SIZE: 16,
 }
