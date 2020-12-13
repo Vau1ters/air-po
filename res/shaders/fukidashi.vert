@@ -4,35 +4,37 @@ uniform mat3 projectionMatrix;
 
 varying vec2 vTextureCoord;
 
+uniform vec4 inputSize;
 uniform vec4 outputFrame;
-uniform vec2 target;
-uniform float scale;
+uniform vec2 anchor;
 uniform float angle;
+uniform float scale;
 
 vec2 rot(vec2 v, float a) {
     float c = cos(a);
     float s = sin(a);
-    return vec2(v.x * c - v.y * s, v.x * s + v.y * c);
+    mat2 r = mat2(c, -s, s, c);
+    return r * v;
 }
 
 vec4 filterVertexPosition( void )
 {
-    vec2 origin = target;
-    origin *= outputFrame.zw;
+    vec2 center = anchor * outputFrame.zw;
 
-    vec2 position = aVertexPosition;
-    position *= outputFrame.zw;
-    position -= origin;
-    position = rot(position, angle);
-    position *= scale;
-    position += origin;
+    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.));
+    position = scale * rot(position - center, angle) + center;
     position += outputFrame.xy;
 
     return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);
 }
 
+vec2 filterTextureCoord( void )
+{
+    return aVertexPosition * (outputFrame.zw * inputSize.zw);
+}
+
 void main(void)
 {
     gl_Position = filterVertexPosition();
-    vTextureCoord = (aVertexPosition - 0.5) * vec2(+1,-1) + 0.5;
+    vTextureCoord = filterTextureCoord();
 }

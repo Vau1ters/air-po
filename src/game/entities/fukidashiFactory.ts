@@ -2,9 +2,10 @@ import { Entity } from '@core/ecs/entity'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from './entityFactory'
-import { Text, Filter } from 'pixi.js'
+import { Filter, BitmapText, Sprite } from 'pixi.js'
 import fukidsahiVertexShader from '@res/shaders/fukidashi.vert'
 import fukidashiFragmentShader from '@res/shaders/fukidashi.frag'
+import fukidashiTextFragmentShader from '@res/shaders/fukidashiText.frag'
 import { fukidashiAI } from '@game/ai/entity/fukidashi/fukidashiAI'
 import { AIComponent } from '@game/components/aiComponent'
 
@@ -19,30 +20,41 @@ export class FukidashiFactory extends EntityFactory {
     const position = new PositionComponent()
 
     const draw = new DrawComponent(entity)
+    draw.filters = [
+      new Filter(fukidsahiVertexShader, undefined, {
+        anchor: [0, 0],
+        scale: 0,
+        angle: 0,
+      }),
+    ]
+    draw.sortableChildren = true
 
-    const text = new Text(this.text, {
-      fontFamily: 'myFont',
-      fill: 0,
+    const text = new BitmapText(this.text, {
+      fontName: 'PixelMplus12',
+      fontSize: 6,
     })
+    text.name = 'text'
+    text.roundPixels = true
+    text.filters = [new Filter(undefined, fukidashiTextFragmentShader)]
+    text.zIndex = 1
+    draw.addChild(text)
+
     const tailSize = 10
     const radius = 2
     const border = 1
-    text.name = 'text'
-    // text.width += (tailSize + radius) * 2
-    // text.height += (tailSize + radius) * 2
-    text.roundPixels = true
-    text.filters = [
-      new Filter(undefined, undefined, {
-        displaySize: [text.width, text.height],
+    const sprite = new Sprite()
+    sprite.name = 'background'
+    sprite.width = text.width + (tailSize + radius) * 2
+    sprite.height = text.height + (tailSize + radius) * 2
+    sprite.filters = [
+      new Filter(undefined, fukidashiFragmentShader, {
+        displaySize: [sprite.width, sprite.height],
         tailSize,
         radius,
         border,
-        scale: 0,
-        angle: 0,
-        textRate: [0, 0],
       }),
     ]
-    draw.addChild(text)
+    draw.addChild(sprite)
 
     entity.addComponent('Draw', draw)
     entity.addComponent('Position', position)

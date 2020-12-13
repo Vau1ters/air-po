@@ -22,8 +22,3 @@
   margin: auto;
   image-rendering: pixelated;
 }
-
-@font-face {
-  font-family: myFont;
-  src: url(font/PixelMplus12-Regular.ttf);
-}

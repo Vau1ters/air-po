@@ -1,6 +1,7 @@
 import { application, initializeApplication } from '@core/application'
 import * as Art from '@core/graphics/art'
 import * as Sound from '@core/sound/sound'
+import * as Font from '@core/font/font'
 import { TitleWorldFactory } from '@game/worlds/titleWorldFactory'
 
 export class Main {
@@ -9,8 +10,7 @@ export class Main {
     initializeApplication()
     await Art.init()
     await Sound.init()
-    const fonts = ((document as unknown) as { fonts: { load: (s: string) => void } }).fonts
-    await fonts.load('24px myFont')
+    Font.init()
 
     const world = new TitleWorldFactory().create()
     world.start()
