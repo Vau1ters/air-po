@@ -21,8 +21,6 @@ export class FlameFactory extends EntityFactory {
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
   public angle = 0
-  public speed = 10
-  public offset: Vec2 = new Vec2(0, 0)
 
   public constructor(private world: World) {
     super()
@@ -47,10 +45,7 @@ export class FlameFactory extends EntityFactory {
     const direction = new Vec2(Math.cos(this.angle), Math.sin(this.angle))
 
     const entity = new Entity()
-    const position = new PositionComponent(
-      shooterPosition.x - (direction.x * this.offset.x) / 2,
-      shooterPosition.y + this.offset.y
-    )
+    const position = new PositionComponent(shooterPosition.x, shooterPosition.y)
     const flame = new FlameComponent()
     const collider = new ColliderComponent(entity)
     const body = new RigidBodyComponent(

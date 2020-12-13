@@ -15,7 +15,6 @@ const SETTING = {
 
 export const playerFlameShoot = function*(entity: Entity, world: World): Behaviour<void> {
   const flameFactory = new FlameFactory(world)
-  flameFactory.offset.y = 1
 
   while (true) {
     const equipment = entity.getComponent('Equipment')
