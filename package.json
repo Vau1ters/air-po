@@ -10,7 +10,7 @@
     "build": "webpack",
     "lint": "eslint 'src/**/*.ts'",
     "format": "eslint --fix 'src/**/*.ts'",
-    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js"
+    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format"
   },
   "husky": {
     "hooks": {

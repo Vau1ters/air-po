@@ -31,13 +31,14 @@ export const init = async (): Promise<void> => {
 }
 `
 function importText(filename: string): string {
-  return `import shot from '@res/sound/${filename}.wav'`
+  return `import ${filename} from '@res/sound/${filename}.wav'`
 }
 function loadFormatText(filename: string): string {
   return `soundStore.${filename} = await load(${filename})`
 }
 
 const soundPath = 'res/sound'
+const soundTsPath = 'src/core/sound/sound.ts'
 const dir = fs.readdirSync(soundPath, { withFileTypes: true })
 let generatedText = fileText
 dir.forEach(e => {
@@ -47,5 +48,4 @@ dir.forEach(e => {
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename)}`)
   generatedText = generatedText.replace(loadReg, `// LOAD_RESOURCE\n  ${loadFormatText(filename)}`)
 })
-
-console.log(generatedText)
+fs.writeFile(soundTsPath, generatedText, () => {})

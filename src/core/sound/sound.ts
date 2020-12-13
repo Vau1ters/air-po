@@ -1,7 +1,8 @@
-import shot from '@res/sound/shot.wav'
+// IMPORT
 import snibee from '@res/sound/snibee.wav'
-import foot from '@res/sound/foot.wav'
+import shot from '@res/sound/shot.wav'
 import jump from '@res/sound/jump.wav'
+import foot from '@res/sound/foot.wav'
 import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}
@@ -27,8 +28,9 @@ const load = (url: string): Promise<PIXI.Sound> => {
 }
 
 export const init = async (): Promise<void> => {
-  soundStore.shot = await load(shot)
-  soundStore.foot = await load(foot)
-  soundStore.jump = await load(jump)
+  // LOAD_RESOURCE
   soundStore.snibee = await load(snibee)
+  soundStore.shot = await load(shot)
+  soundStore.jump = await load(jump)
+  soundStore.foot = await load(foot)
 }
