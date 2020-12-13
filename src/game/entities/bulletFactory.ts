@@ -10,6 +10,7 @@ import { AttackComponent } from '@game/components/attackComponent'
 import ballBulletDefinition from '@res/animation/ballBullet.json'
 import needleBulletDefinition from '@res/animation/needleBullet.json'
 import { parseAnimation } from '@core/graphics/animationParser'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,
@@ -29,7 +30,7 @@ export class BulletFactory extends EntityFactory {
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
   public angle = 0
-  public speed = 10
+  public speed = 600
   public life?: number
   public offset: Vec2 = new Vec2(0, 0)
   public type: BulletType = 'ball'
@@ -39,7 +40,7 @@ export class BulletFactory extends EntityFactory {
   }
 
   public setRange(range: number): void {
-    this.life = range / this.speed
+    this.life = (range / this.speed) * 60
   }
 
   public setShooter(shooter: Entity, shooterType: ShooterType): void {
@@ -61,10 +62,7 @@ export class BulletFactory extends EntityFactory {
       shooterPosition.x - (direction.x * this.offset.x) / 2,
       shooterPosition.y + this.offset.y
     )
-    const bullet = new BulletComponent(
-      new Vec2(direction.x * this.speed, direction.y * this.speed),
-      this.life
-    )
+    const bullet = new BulletComponent(this.life)
     const collider = new ColliderComponent(entity)
 
     const aabbBody = new AABBDef(
@@ -74,10 +72,11 @@ export class BulletFactory extends EntityFactory {
     aabbBody.tag.add('bulletBody')
     aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     aabbBody.maxClipTolerance = new Vec2(0, 0)
+    aabbBody.isSensor = true
     collider.createCollider(aabbBody)
 
     // 攻撃判定
-    const attack = new AttackComponent(1, this.shooter)
+    const attack = new AttackComponent(1, true)
 
     const attackHitBox = new AABBDef(
       new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
@@ -87,6 +86,14 @@ export class BulletFactory extends EntityFactory {
     attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
+
+    const body = new RigidBodyComponent(
+      0,
+      new Vec2(direction.x * this.speed, direction.y * this.speed),
+      new Vec2(),
+      0,
+      0
+    )
 
     const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
@@ -117,6 +124,7 @@ export class BulletFactory extends EntityFactory {
     entity.addComponent('Position', position)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
+    entity.addComponent('RigidBody', body)
     entity.addComponent('Bullet', bullet)
     entity.addComponent('Attack', attack)
     return entity

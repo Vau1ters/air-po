@@ -100,6 +100,10 @@ export class World {
     }
   }
 
+  public hasEntity(entity: Entity): boolean {
+    return this.entities.has(entity)
+  }
+
   public reset(): void {
     const entities = new Set(this.entities) // to ensure the order of actual remove and callback
     this.entities.clear()

@@ -64,7 +64,7 @@ export default class UiSystem extends System {
     const hp = player.getComponent('HP')
     this.playerHpGauge.clear()
     this.playerHpGauge.beginFill(0x30ff70)
-    this.playerHpGauge.drawRect(0, 0, (hp.hp / hp.maxHp) * windowSize.width, 16)
+    this.playerHpGauge.drawRect(0, 0, hp.ratio * windowSize.width, 16)
     this.playerHpGauge.endFill()
   }
 
@@ -146,7 +146,7 @@ export default class UiSystem extends System {
     for (const entity of this.hpFamily.entityIterator) {
       const hp = entity.getComponent('HP')
       const position = entity.getComponent('Position')
-      this.hpGauge.drawRect(position.x - 8, position.y - 12, (hp.hp / hp.maxHp) * 16, 2)
+      this.hpGauge.drawRect(position.x - 8, position.y - 12, hp.ratio * 16, 2)
     }
     this.hpGauge.endFill()
   }

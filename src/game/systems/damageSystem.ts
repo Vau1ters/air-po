@@ -39,19 +39,28 @@ export class DamageSystem extends System {
     }
   }
 
-  private attackCollisionCallback = (hitbox: Collider, other: Collider): void => {
-    // AttackComponent持ってるEntityのColliderComponentと
-    // HPComponentとInvincibleComponent持ちEntityとの衝突を見てHPを減らす
-    const entity = other.entity
+  private attackCollisionCallback = (
+    attackerCollider: Collider,
+    targetCollider: Collider
+  ): void => {
+    const attacker = attackerCollider.entity
+    const target = targetCollider.entity
 
-    if (entity.hasComponent('HP') && entity.hasComponent('Invincible')) {
-      const hp = entity.getComponent('HP')
-      const invincible = entity.getComponent('Invincible')
-      const attack = hitbox.entity.getComponent('Attack')
-      if (!invincible.isInvincible() && attack.entity !== entity) {
-        hp.hp = Math.max(0, hp.hp - attack.damage)
-        invincible.setInvincible()
-      }
+    const attack = attacker.getComponent('Attack')
+
+    if (target.hasComponent('HP') === false) return
+    const targetHP = target.getComponent('HP')
+
+    if (target.hasComponent('Invincible')) {
+      const invincible = target.getComponent('Invincible')
+      if (invincible.isInvincible()) return
+      invincible.setInvincible()
     }
+    targetHP.decrease(attack.damage)
+
+    // if manually remove by adding callback to do it,
+    // the order of call can influence the result
+    // to ignore that, damage system also has a responsibility to remove entity
+    if (attack.shouldCounterbalance) this.world.removeEntity(attacker)
   }
 }

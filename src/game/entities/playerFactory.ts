@@ -3,7 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { ColliderComponent, AABBDef, Collider } from '@game/components/colliderComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
@@ -32,7 +32,7 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_OFFSET_X = 1
   readonly FOOT_OFFSET_Y = 13
   readonly FOOT_CLIP_TOLERANCE_X = 2
-  readonly FOOT_CLIP_TOLERANCE_Y = 14
+  readonly FOOT_CLIP_TOLERANCE_Y = 0
   readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
   readonly AIR_COLLECT_SPEED = 0.05
@@ -73,9 +73,15 @@ export class PlayerFactory extends EntityFactory {
     // TODO: カメラをプレイヤーから分離する
     const camera = new CameraComponent()
 
+    const shouldCollide = (me: Collider, other: Collider): boolean => {
+      if (player.throughFloorIgnoreCount > 0 && other.tag.has('throughFloor')) return false
+      return true
+    }
+
     const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.body)
     aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
     aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
+    aabbBody.shouldCollide = shouldCollide
     collider.createCollider(aabbBody)
 
     const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.hitBox)
@@ -95,6 +101,7 @@ export class PlayerFactory extends EntityFactory {
     foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
     foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
     foot.isSensor = true
+    foot.shouldCollide = shouldCollide
     collider.createCollider(foot)
 
     const sprite = parseAnimation(playerDefinition.sprite)
@@ -108,9 +115,7 @@ export class PlayerFactory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent()
-    animState.changeState.addObserver(x => sprite.changeTo(x))
-    animState.changeIsVisible.addObserver(x => sprite.setVisible(x))
+    const animState = new AnimationStateComponent(sprite)
 
     const ai = new AIComponent(playerAI(entity, this.world))
 

@@ -28,9 +28,6 @@ export class BulletSystem extends System {
   public update(): void {
     for (const entity of this.family.entityIterator) {
       const bullet = entity.getComponent('Bullet')
-      const pos = entity.getComponent('Position')
-      pos.x += bullet.speed.x
-      pos.y += bullet.speed.y
 
       if (bullet.life-- < 0) {
         this.world.removeEntity(entity)

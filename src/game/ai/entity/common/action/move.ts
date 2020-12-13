@@ -19,9 +19,11 @@ export const move = function*(
     switch (direction) {
       case Direction.Left:
         position.x -= speed
+        entity.getComponent('HorizontalDirection').looking = 'Left'
         break
       case Direction.Right:
         position.x += speed
+        entity.getComponent('HorizontalDirection').looking = 'Right'
         break
       case Direction.Up:
         position.y -= speed
