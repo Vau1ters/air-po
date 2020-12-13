@@ -65,7 +65,6 @@ export default class UiSystem extends System {
       this.renderLaserSight(player)
     }
     this.renderNpcHp()
-    this.renderFlame()
   }
 
   private renderPlayerHp(player: Entity): void {
@@ -157,15 +156,5 @@ export default class UiSystem extends System {
       this.hpGauge.drawRect(position.x - 8, position.y - 12, hp.ratio * 16, 2)
     }
     this.hpGauge.endFill()
-  }
-
-  private renderFlame(): void {
-    this.flame.clear()
-    this.flame.beginFill(0xff0000)
-    for (const entity of this.flameFamily.entityIterator) {
-      const { size } = entity.getComponent('Flame')
-      const position = entity.getComponent('Position')
-      this.flame.drawRect(position.x - size / 2, position.y - size / 2, size, size)
-    }
   }
 }

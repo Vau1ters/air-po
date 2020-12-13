@@ -11,10 +11,12 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIComponent } from '@game/components/aiComponent'
 import { flameAI } from '@game/ai/entity/flame/flameAI'
 import { World } from '@core/ecs/world'
+import { DrawComponent } from '@game/components/drawComponent'
 
 export class FlameFactory extends EntityFactory {
   private SPEED = 200
   private GRAVITY_SCALE = -0.1
+  private FLAME_BODY_SIZE = 4
 
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
@@ -52,7 +54,7 @@ export class FlameFactory extends EntityFactory {
     const flame = new FlameComponent()
     const collider = new ColliderComponent(entity)
     const body = new RigidBodyComponent(
-      0,
+      1,
       direction.mul(this.SPEED),
       new Vec2(),
       0,
@@ -60,9 +62,15 @@ export class FlameFactory extends EntityFactory {
     )
     const ai = new AIComponent(flameAI(entity, this.world))
 
-    const aabbBody = new AABBDef(new Vec2(flame.size, flame.size), CategoryList.bulletBody)
-    aabbBody.tag.add('bulletBody')
-    aabbBody.offset = new Vec2(-flame.size / 2, -flame.size / 2)
+    const draw = new DrawComponent(entity)
+    draw.addChild(flame.graphic)
+
+    const aabbBody = new AABBDef(
+      new Vec2(this.FLAME_BODY_SIZE, this.FLAME_BODY_SIZE),
+      CategoryList.bulletBody
+    )
+    aabbBody.tag.add('FlameBody')
+    aabbBody.offset = new Vec2(-this.FLAME_BODY_SIZE / 2, -this.FLAME_BODY_SIZE / 2)
     aabbBody.maxClipTolerance = new Vec2(0, 0)
     collider.createCollider(aabbBody)
 
@@ -78,17 +86,11 @@ export class FlameFactory extends EntityFactory {
     attackHitBox.isSensor = true
     collider.createCollider(attackHitBox)
 
-    // const graphics = new Graphics()
-    // graphics.beginFill(0xff0000)
-    // graphics.drawRect(-flame.size / 2, -flame.size / 2, flame.size, flame.size)
-    // graphics.endFill()
-    // const draw = new DrawComponent(entity)
-    // draw.addChild(graphics)
-
     entity.addComponent('Position', position)
     entity.addComponent('Collider', collider)
     entity.addComponent('AI', ai)
     entity.addComponent('Flame', flame)
+    entity.addComponent('Draw', draw)
     entity.addComponent('RigidBody', body)
     entity.addComponent('Attack', attack)
     return entity

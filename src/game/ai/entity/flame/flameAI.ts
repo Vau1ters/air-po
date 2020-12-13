@@ -8,6 +8,8 @@ import { Out } from '@core/behaviour/easing/functions'
 const SETTING = {
   FLAME_LIFE: 60,
   AIR_RESISTANCE: 2.0,
+  INITIAL_SIZE: 2,
+  MAX_SIZE: 16,
 }
 
 export const flameAI = function*(entity: Entity, world: World): Behaviour<void> {
@@ -20,7 +22,7 @@ export const flameAI = function*(entity: Entity, world: World): Behaviour<void> 
       flameComponent.size = value
       rigidBody.acceleration = rigidBody.velocity.mul(-SETTING.AIR_RESISTANCE)
     },
-    { from: 2, to: 16 }
+    { from: SETTING.INITIAL_SIZE, to: SETTING.MAX_SIZE }
   )
   yield* kill(entity, world)
 }

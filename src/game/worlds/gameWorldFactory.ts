@@ -21,6 +21,7 @@ import { FilterSystem } from '@game/systems/filterSystem'
 import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
+import FlameSystem from '@game/systems/flameSystem'
 
 export class GameWorldFactory {
   public create(map: Map, playerSpawnerID: number): World {
@@ -69,7 +70,8 @@ export class GameWorldFactory {
       new DebugDrawSystem(world, debugContainer, physicsSystem),
       new CameraSystem(world, gameWorldContainer, background),
       new ControlSystem(world),
-      new EventSensorSystem(world)
+      new EventSensorSystem(world),
+      new FlameSystem(world)
     )
 
     const mapBuilder = new MapBuilder(world)
