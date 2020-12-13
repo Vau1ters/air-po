@@ -1,8 +1,9 @@
 import * as fs from 'fs'
 
 const fileText = `
-import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 // IMPORT
+
+import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
 type Setting = {
   columns: number
@@ -70,10 +71,10 @@ const artPath = 'res/image'
 const mapPath = 'res/map'
 
 function importText(filename: string, ext: string): string {
-  filename = snakeToCamel(filename)
+  const camelFilename = snakeToCamel(filename)
   return ext === 'png'
-    ? `import ${filename}Img from '@${artPath}/${filename}.${ext}'`
-    : `import ${filename}Setting from '@${mapPath}/${filename}.${ext}'`
+    ? `import ${camelFilename}Img from '@${artPath}/${filename}.${ext}'`
+    : `import ${camelFilename}Setting from '@${mapPath}/${filename}.${ext}'`
 }
 function loadImgText(filename: string): string {
   return `textureStore.${filename} = await buildSingleTexture(${filename}Img)`
@@ -83,22 +84,27 @@ const mapdir = fs.readdirSync(mapPath, { withFileTypes: true })
 let generatedText = fileText
 
 imgdir.forEach(e => {
-  const filename = snakeToCamel(e.name.split('.')[0])
+  const filename = e.name.split('.')[0]
+  const camelFilename = snakeToCamel(filename)
   const ext = e.name.split('.')[1]
   const importReg = new RegExp('// IMPORT')
   const loadReg = new RegExp('// LOAD_RESOURCE')
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
-  generatedText = generatedText.replace(loadReg, `// LOAD_RESOURCE\n  ${loadImgText(filename)}`)
+  generatedText = generatedText.replace(
+    loadReg,
+    `// LOAD_RESOURCE\n  ${loadImgText(camelFilename)}`
+  )
 })
 mapdir.forEach(e => {
-  const filename = snakeToCamel(e.name.split('.')[0])
+  const filename = e.name.split('.')[0]
+  const camelFilename = snakeToCamel(filename)
   const ext = e.name.split('.')[1]
   const importReg = new RegExp('// IMPORT')
-  const loadReg = new RegExp('buildSingleTexture\\(' + `${filename}Img`)
+  const loadReg = new RegExp('buildSingleTexture\\(' + `${camelFilename}Img`)
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
   generatedText = generatedText.replace(
     loadReg,
-    `buildAnimationTexture(${filename}Img, ${filename}Setting`
+    `buildAnimationTexture(${camelFilename}Img, ${camelFilename}Setting`
   )
 })
 const notificationText = `/*+.† NOTIFICATION †.+*/

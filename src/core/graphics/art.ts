@@ -2,7 +2,6 @@
 // this file is automaticaly written by arttool.
 // you can update this file by type "yarn arttool" command.
 
-import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 // IMPORT
 import wallSetting from '@res/map/wall.json'
 import vineSetting from '@res/map/vine.json'
@@ -26,11 +25,13 @@ import playerImg from '@res/image/player.png'
 import needleBulletImg from '@res/image/needleBullet.png'
 import mossImg from '@res/image/moss.png'
 import enemy1Img from '@res/image/enemy1.png'
-import dandelionHeadImg from '@res/image/dandelionHead.png'
-import dandelionFluffImg from '@res/image/dandelionFluff.png'
+import dandelionHeadImg from '@res/image/dandelion_head.png'
+import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 import dandelionImg from '@res/image/dandelion.png'
 import balloonvineImg from '@res/image/balloonvine.png'
 import ballBulletImg from '@res/image/ballBullet.png'
+
+import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
 type Setting = {
   columns: number
