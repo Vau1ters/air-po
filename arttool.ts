@@ -108,7 +108,7 @@ mapdir.forEach(e => {
   )
 })
 const notificationText = `/*+.† NOTIFICATION †.+*/
-// this file is automaticaly written by arttool.
+// this file is automatically written by arttool.
 // you can update this file by type "yarn arttool" command.
 `
 
