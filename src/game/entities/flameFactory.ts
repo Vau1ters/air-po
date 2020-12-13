@@ -75,7 +75,7 @@ export class FlameFactory extends EntityFactory {
     collider.createCollider(aabbBody)
 
     // 攻撃判定
-    const attack = new AttackComponent(1, this.shooter)
+    const attack = new AttackComponent(1, false)
 
     const attackHitBox = new AABBDef(
       new Vec2(flame.size, flame.size),
