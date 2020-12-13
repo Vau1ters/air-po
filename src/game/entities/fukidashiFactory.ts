@@ -3,8 +3,8 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from './entityFactory'
 import { Text, Filter } from 'pixi.js'
-import commonVertexShader from '@res/shaders/common.vert'
-import fukidashiShader from '@res/shaders/fukidashi.frag'
+import fukidsahiVertexShader from '@res/shaders/fukidashi.vert'
+import fukidashiFragmentShader from '@res/shaders/fukidashi.frag'
 import { fukidashiAI } from '@game/ai/entity/fukidashi/fukidashiAI'
 import { AIComponent } from '@game/components/aiComponent'
 
@@ -32,7 +32,7 @@ export class FukidashiFactory extends EntityFactory {
     text.width += (tailSize + radius) * 2
     text.height += (tailSize + radius) * 2
     text.filters = [
-      new Filter(commonVertexShader, fukidashiShader, {
+      new Filter(fukidsahiVertexShader, fukidashiFragmentShader, {
         displaySize: [text.width, text.height],
         tailSize,
         radius,
