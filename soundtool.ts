@@ -30,10 +30,10 @@ export const init = async (): Promise<void> => {
   // LOAD_RESOURCE 
 }
 `
-function importText(filename: string) {
+function importText(filename: string): string {
   return `import shot from '@res/sound/${filename}.wav'`
 }
-function loadFormatText(filename: string) {
+function loadFormatText(filename: string): string {
   return `soundStore.${filename}= await load(${filename})`
 }
 
