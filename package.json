@@ -9,7 +9,8 @@
     "start": "webpack-dev-server --hot --inline --watch-content-base",
     "build": "webpack",
     "lint": "eslint 'src/**/*.ts'",
-    "format": "eslint --fix 'src/**/*.ts'"
+    "format": "eslint --fix 'src/**/*.ts'",
+    "arttool": "tsc arttool.ts && node arttool.js && rm arttool.js && yarn format"
   },
   "husky": {
     "hooks": {
