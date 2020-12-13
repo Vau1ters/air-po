@@ -56,7 +56,7 @@ async function buildSingleTexture(baseURL: string): Promise<Array<Texture>> {
 
 export const textureStore: { [key: string]: Array<Texture> } = {}
 export const init = async (): Promise<void> => {
-    // LOAD_RESOURCE
+// LOAD_RESOURCE
 }
 `
 function snakeToCamel(p: string): string {
@@ -98,13 +98,12 @@ mapdir.forEach(e => {
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
   generatedText = generatedText.replace(
     loadReg,
-    `buildAnimationTexture(${filename}Img,${filename}Setting`
+    `buildAnimationTexture(${filename}Img, ${filename}Setting`
   )
 })
-const notificationText = `
-    /*+.† NOTIFICATION †.+*/
-    // this file is automaticaly written by arttool.
-    // you can update this file by type "yarn arttool" command.
+const notificationText = `/*+.† NOTIFICATION †.+*/
+// this file is automaticaly written by arttool.
+// you can update this file by type "yarn arttool" command.
 `
 
 fs.writeFile(outputPath, notificationText + generatedText, () => {})
