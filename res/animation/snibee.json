@@ -2,7 +2,8 @@
   "sprite": {
     "name": "snibee",
     "state": {
-      "Alive": [0, 1]
+      "Alive": [0, 1, 2, 3, 4, 5, 6, 7],
+      "Dying": [8, 9, 10, 11]
     },
     "default": "Alive"
   }

@@ -2,15 +2,15 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
-import { isAlive } from '../common/condition/isAlive'
-import { kill } from '../common/action/kill'
-import { emitAir } from '../common/action/emitAir'
+import { isAlive } from '@game/ai/entity/common/condition/isAlive'
+import { kill } from '@game/ai/entity/common/action/kill'
+import { emitAir } from '@game/ai/entity/common/action/emitAir'
 import { FamilyBuilder } from '@core/ecs/family'
 import { BulletFactory } from '@game/entities/bulletFactory'
 import { wait } from '@core/behaviour/wait'
 import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
-import { animateLoop } from '../common/action/animate'
+import { animateLoop, animate } from '@game/ai/entity/common/action/animate'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -87,12 +87,17 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* parallelAll([
     moveAI(entity, playerEntity),
     shootAI(entity, world, playerEntity),
-    animateLoop(entity, 'Alive'),
+    animateLoop(entity, 'Alive', 0.3),
   ])
 }
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
+  entity.getComponent('Collider').removeByTag('AttackHitBox')
+  entity.getComponent('RigidBody').velocity.y = -200
+  entity.getComponent('RigidBody').gravityScale = 1
+  yield* animate(entity, 'Dying', 0.3)
   yield* emitAir(entity, world, 50)
+  for (let i = 0; i < 20; i++) yield
   yield* kill(entity, world)
 }
