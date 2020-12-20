@@ -7,6 +7,7 @@ import wallSetting from '@res/map/tileset/wall.json'
 import vineSetting from '@res/map/tileset/vine.json'
 import throughFloorSetting from '@res/map/tileset/throughFloor.json'
 import snibeeSetting from '@res/map/tileset/snibee.json'
+import slime1Setting from '@res/map/tileset/slime1.json'
 import sensorSetting from '@res/map/tileset/sensor.json'
 import playerSetting from '@res/map/tileset/player.json'
 import needleBulletSetting from '@res/map/tileset/needleBullet.json'
@@ -22,6 +23,7 @@ import vineImg from '@res/image/vine.png'
 import titleImg from '@res/image/title.png'
 import throughFloorImg from '@res/image/throughFloor.png'
 import snibeeImg from '@res/image/snibee.png'
+import slime1Img from '@res/image/slime1.png'
 import sensorImg from '@res/image/sensor.png'
 import playerImg from '@res/image/player.png'
 import needleBulletImg from '@res/image/needleBullet.png'
@@ -96,6 +98,7 @@ export const init = async (): Promise<void> => {
   textureStore.title = await buildSingleTexture(titleImg)
   textureStore.throughFloor = await buildAnimationTexture(throughFloorImg, throughFloorSetting)
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
+  textureStore.slime1 = await buildAnimationTexture(slime1Img, slime1Setting)
   textureStore.sensor = await buildAnimationTexture(sensorImg, sensorSetting)
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)

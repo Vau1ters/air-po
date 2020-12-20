@@ -1,0 +1,14 @@
+{ "columns":22,
+ "image":"../../image/slime1.png",
+ "imageheight":16,
+ "imagewidth":352,
+ "margin":0,
+ "name":"slime1",
+ "spacing":0,
+ "tilecount":22,
+ "tiledversion":"1.4.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":1.4
+}
