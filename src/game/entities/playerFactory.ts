@@ -18,6 +18,7 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 import playerDefinition from '@res/animation/player.json'
 import { World } from '@core/ecs/world'
 import { playerAI } from '@game/ai/entity/player/playerAI'
+import { EquipmentComponent } from '@game/components/equipmentComponent'
 
 export class PlayerFactory extends EntityFactory {
   readonly MASS = 10
@@ -34,8 +35,6 @@ export class PlayerFactory extends EntityFactory {
   readonly FOOT_CLIP_TOLERANCE_Y = 0
   readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
   readonly CLIP_TOLERANCE_Y = 4
-  readonly INITIAL_AIR_QUANTITY = 100
-  readonly MAX_AIR_QUANTITY = 100
   readonly AIR_COLLECT_SPEED = 0.05
   readonly AIR_CONSUME_SPEED = 0.025
 
@@ -51,13 +50,25 @@ export class PlayerFactory extends EntityFactory {
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent(entity)
     const airHolder = new AirHolderComponent({
-      initialQuantity: this.INITIAL_AIR_QUANTITY,
-      maxQuantity: this.MAX_AIR_QUANTITY,
+      initialQuantity: 0,
+      maxQuantity: 0,
       collectSpeed: this.AIR_COLLECT_SPEED,
       consumeSpeed: this.AIR_CONSUME_SPEED,
     })
     const hp = new HPComponent(3, 3)
     const invincible = new InvincibleComponent()
+
+    const equipment = new EquipmentComponent()
+    equipment.equipEvent.addObserver(type => {
+      if (type === 'AirTank') {
+        equipment.airTank.count += 1
+        airHolder.maxQuantity += equipment.airTank.quantity
+        airHolder.quantity += equipment.airTank.quantity
+      }
+    })
+    // 初期状態で空気タンクを2つ追加しておく
+    equipment.equipEvent.notify('AirTank')
+    equipment.equipEvent.notify('AirTank')
 
     // TODO: カメラをプレイヤーから分離する
     const camera = new CameraComponent()
@@ -118,6 +129,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
+    entity.addComponent('Equipment', equipment)
     entity.addComponent('Camera', camera)
     entity.addComponent('AnimationState', animState)
     return entity

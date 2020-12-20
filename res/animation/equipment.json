@@ -1,0 +1,9 @@
+{
+  "sprite": {
+    "name": "equipment",
+    "state": {
+      "AirTank": [0]
+    },
+    "default": "AirTank"
+  }
+}

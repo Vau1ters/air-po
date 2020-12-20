@@ -1,6 +1,6 @@
 export class AirHolderComponent {
-  private quantity: number
-  private _maxQuantity: number
+  public quantity: number
+  public maxQuantity: number
   private consumeSpeed: number
   private collectSpeed: number
   public inAir: boolean
@@ -12,18 +12,10 @@ export class AirHolderComponent {
     collectSpeed: number
   }) {
     this.quantity = airSetting.initialQuantity
-    this._maxQuantity = airSetting.maxQuantity
+    this.maxQuantity = airSetting.maxQuantity
     this.consumeSpeed = airSetting.consumeSpeed
     this.collectSpeed = airSetting.collectSpeed
     this.inAir = false
-  }
-
-  public get currentQuantity(): number {
-    return this.quantity
-  }
-
-  public get maxQuantity(): number {
-    return this._maxQuantity
   }
 
   public consume(): void {
@@ -37,7 +29,7 @@ export class AirHolderComponent {
   public collect(airQuantity: number): number {
     const prevQuantity = this.quantity
     this.quantity = Math.min(
-      this._maxQuantity,
+      this.maxQuantity,
       this.quantity + this.collectSpeed,
       this.quantity + airQuantity
     )
