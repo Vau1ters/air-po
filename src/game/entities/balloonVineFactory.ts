@@ -102,7 +102,9 @@ export class BalloonVineFactory extends EntityFactory {
     collider.createCollider(wallAABB)
 
     const sprite = parseAnimation(balloonvineDefinition.sprite)
+    sprite.zIndex = 1
     const draw = new DrawComponent(entity)
+    draw.sortableChildren = true
     draw.addChild(sprite)
 
     const animState = new AnimationStateComponent(sprite)
