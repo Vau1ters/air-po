@@ -1,5 +1,5 @@
 { "columns":8,
- "image":"../image/wall.png",
+ "image":"../../image/wall.png",
  "imageheight":32,
  "imagewidth":64,
  "margin":0,
