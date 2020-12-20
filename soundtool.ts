@@ -1,7 +1,11 @@
 import * as fs from 'fs'
 
 const fileText = `
-// IMPORT
+/*+.† NOTIFICATION †.+*/
+// this file is automatically written by soundtool.
+// you can update this file by type "yarn soundtool" command.
+
+// #†IMPORT†#
 
 import PIXI from 'pixi-sound'
 
@@ -28,7 +32,7 @@ const load = (url: string): Promise<PIXI.Sound> => {
 }
 
 export const init = async (): Promise<void> => {
-  // LOAD_RESOURCE 
+  // #†LOAD_RESOURCE†#
 }
 `
 function importText(filename: string): string {
@@ -41,16 +45,16 @@ function loadFormatText(filename: string): string {
 const soundPath = 'res/sound'
 const soundTsPath = 'src/core/sound/sound.ts'
 const dir = fs.readdirSync(soundPath, { withFileTypes: true })
-let generatedText = fileText
-dir.forEach(e => {
-  const filename = e.name.split('.')[0]
-  const importReg = new RegExp('// IMPORT')
-  const loadReg = new RegExp('// LOAD_RESOURCE')
-  generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename)}`)
-  generatedText = generatedText.replace(loadReg, `// LOAD_RESOURCE\n  ${loadFormatText(filename)}`)
+let generatedText = dir.reduce((text, file) => {
+  const filename = file.name.split('.')[0]
+  const importReg = new RegExp('// #†IMPORT†#')
+  const loadReg = new RegExp('// #†LOAD_RESOURCE†#')
+  text = text.replace(importReg, `// #†IMPORT†#\n${importText(filename)}`)
+  text = text.replace(loadReg, `// #†LOAD_RESOURCE†#\n  ${loadFormatText(filename)}`)
+  return text;
+}, fileText)
+
+fs.writeFile(soundTsPath, generatedText, (err) => {
+  if (err) throw err;
+  console.log("Successfully generated soundtool.ts")
 })
-const notificationText = `/*+.† NOTIFICATION †.+*/
-// this file is automatically written by soundtool.
-// you can update this file by type "yarn soundtool" command.
-`
-fs.writeFile(soundTsPath, notificationText + generatedText, () => {})
