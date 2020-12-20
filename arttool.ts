@@ -68,19 +68,19 @@ function snakeToCamel(p: string): string {
 
 const outputPath = 'src/core/graphics/art.ts'
 const artPath = 'res/image'
-const mapPath = 'res/map'
+const tilesetPath = 'res/map/tileset'
 
 function importText(filename: string, ext: string): string {
   const camelFilename = snakeToCamel(filename)
   return ext === 'png'
     ? `import ${camelFilename}Img from '@${artPath}/${filename}.${ext}'`
-    : `import ${camelFilename}Setting from '@${mapPath}/${filename}.${ext}'`
+    : `import ${camelFilename}Setting from '@${tilesetPath}/${filename}.${ext}'`
 }
 function loadImgText(filename: string): string {
   return `textureStore.${filename} = await buildSingleTexture(${filename}Img)`
 }
 const imgdir = fs.readdirSync(artPath, { withFileTypes: true })
-const mapdir = fs.readdirSync(mapPath, { withFileTypes: true })
+const mapdir = fs.readdirSync(tilesetPath, { withFileTypes: true })
 let generatedText = fileText
 
 imgdir.forEach(e => {
