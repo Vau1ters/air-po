@@ -1,0 +1,12 @@
+{
+  "sprite": {
+    "name": "slime1",
+    "state": {
+      "Idling": [3, 4, 0, 1, 2],
+      "Landing": [5, 6, 7],
+      "Jumping": [8, 9, 10, 11, 12],
+      "Dying": [13, 14, 15, 16, 17, 18, 19, 20, 21]
+    },
+    "default": "Idling"
+  }
+}
