@@ -2,6 +2,9 @@ import * as fs from 'fs'
 
 const fileText = `
 // IMPORT
+/*+.† NOTIFICATION †.+*/
+// this file is automatically written by arttool.
+// you can update this file by type "yarn arttool" command.
 
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
@@ -60,7 +63,7 @@ export const init = async (): Promise<void> => {
 // LOAD_RESOURCE
 }
 `
-function snakeToCamel(p: string): string {
+const snakeToCamel = (p: string): string => {
   return p.replace(/_./g, s => {
     return s.charAt(1).toUpperCase()
   })
@@ -83,12 +86,13 @@ const imgdir = fs.readdirSync(artPath, { withFileTypes: true })
 const mapdir = fs.readdirSync(tilesetPath, { withFileTypes: true })
 let generatedText = fileText
 
+const importReg = new RegExp('// IMPORT')
+const loadReg = new RegExp('// LOAD_RESOURCE')
+
 imgdir.forEach(e => {
   const filename = e.name.split('.')[0]
   const camelFilename = snakeToCamel(filename)
   const ext = e.name.split('.')[1]
-  const importReg = new RegExp('// IMPORT')
-  const loadReg = new RegExp('// LOAD_RESOURCE')
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
   generatedText = generatedText.replace(
     loadReg,
@@ -99,17 +103,12 @@ mapdir.forEach(e => {
   const filename = e.name.split('.')[0]
   const camelFilename = snakeToCamel(filename)
   const ext = e.name.split('.')[1]
-  const importReg = new RegExp('// IMPORT')
-  const loadReg = new RegExp('buildSingleTexture\\(' + `${camelFilename}Img`)
+  const singleTextureLoadReg = new RegExp('buildSingleTexture\\(' + `${camelFilename}Img\\)`)
   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
   generatedText = generatedText.replace(
-    loadReg,
-    `buildAnimationTexture(${camelFilename}Img, ${camelFilename}Setting`
+    singleTextureLoadReg,
+    `buildAnimationTexture(${camelFilename}Img, ${camelFilename}Setting)`
   )
 })
-const notificationText = `/*+.† NOTIFICATION †.+*/
-// this file is automatically written by arttool.
-// you can update this file by type "yarn arttool" command.
-`
 
-fs.writeFile(outputPath, notificationText + generatedText, () => {})
+fs.writeFile(outputPath, generatedText, () => { })

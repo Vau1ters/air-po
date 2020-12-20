@@ -1,7 +1,3 @@
-/*+.† NOTIFICATION †.+*/
-// this file is automatically written by arttool.
-// you can update this file by type "yarn arttool" command.
-
 // IMPORT
 import wallSetting from '@res/map/tileset/wall.json'
 import vineSetting from '@res/map/tileset/vine.json'
@@ -37,6 +33,9 @@ import dandelionImg from '@res/image/dandelion.png'
 import balloonvineImg from '@res/image/balloonvine.png'
 import ballBulletImg from '@res/image/ballBullet.png'
 import airGeyserImg from '@res/image/airGeyser.png'
+/*+.† NOTIFICATION †.+*/
+// this file is automatically written by arttool.
+// you can update this file by type "yarn arttool" command.
 
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
