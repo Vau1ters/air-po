@@ -2,7 +2,7 @@
 // this file is automatically written by soundtool.
 // you can update this file by type "yarn soundtool" command.
 
-// #†IMPORT†#
+// IMPORT
 import snibee from '@res/sound/snibee.wav'
 import shot from '@res/sound/shot.wav'
 import jump from '@res/sound/jump.wav'
@@ -33,7 +33,7 @@ const load = (url: string): Promise<PIXI.Sound> => {
 }
 
 export const init = async (): Promise<void> => {
-  // #†LOAD_RESOURCE†#
+  // LOAD_RESOURCE
   soundStore.snibee = await load(snibee)
   soundStore.shot = await load(shot)
   soundStore.jump = await load(jump)
