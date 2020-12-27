@@ -4,6 +4,7 @@ import { KeyController } from '@game/systems/controlSystem'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
 import { JetEffectFactory } from '@game/entities/jetEffectFactory'
+import * as Sound from '@core/sound/sound'
 
 const SETTING = {
   CONSUME_SPEED: 0.1,
@@ -53,6 +54,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
         const dir = playerAngle.normalize().mul(-1)
         effectPosition.add(dir.mul(offset))
 
+        Sound.play('airJet')
         world.addEntity(jetEffect)
       }
     }

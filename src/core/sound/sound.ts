@@ -3,10 +3,18 @@
 // you can update this file by type "yarn soundtool" command.
 
 // IMPORT
+import snibeeDie from '@res/sound/snibeeDie.wav'
 import snibee from '@res/sound/snibee.wav'
 import shot from '@res/sound/shot.wav'
+import playerWalk from '@res/sound/playerWalk.wav'
+import playerHit from '@res/sound/playerHit.wav'
 import jump from '@res/sound/jump.wav'
+import getAirTank from '@res/sound/getAirTank.wav'
 import foot from '@res/sound/foot.wav'
+import enemyHit from '@res/sound/enemyHit.wav'
+import burner from '@res/sound/burner.wav'
+import airTankBecameEmpty from '@res/sound/airTankBecameEmpty.wav'
+import airJet from '@res/sound/airJet.wav'
 
 import PIXI from 'pixi-sound'
 
@@ -34,8 +42,16 @@ const load = (url: string): Promise<PIXI.Sound> => {
 
 export const init = async (): Promise<void> => {
   // LOAD_RESOURCE
+  soundStore.snibeeDie = await load(snibeeDie)
   soundStore.snibee = await load(snibee)
   soundStore.shot = await load(shot)
+  soundStore.playerWalk = await load(playerWalk)
+  soundStore.playerHit = await load(playerHit)
   soundStore.jump = await load(jump)
+  soundStore.getAirTank = await load(getAirTank)
   soundStore.foot = await load(foot)
+  soundStore.enemyHit = await load(enemyHit)
+  soundStore.burner = await load(burner)
+  soundStore.airTankBecameEmpty = await load(airTankBecameEmpty)
+  soundStore.airJet = await load(airJet)
 }

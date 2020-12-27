@@ -5,6 +5,7 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
+import * as Sound from '@core/sound/sound'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
@@ -49,6 +50,7 @@ export class EventSensorSystem extends System {
   }
 
   private async equipItemEvent(equipmentType: EquipmentTypes, equipmentId: number): Promise<void> {
+    Sound.play('getAirTank')
     const player = this.playerFamily.entityArray[0]
     const equipmentComponent = player.getComponent('Equipment')
     equipmentComponent.equipEvent.notify(equipmentType)

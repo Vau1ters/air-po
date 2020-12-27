@@ -94,5 +94,6 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
   yield* emitAir(entity, world, 50)
+  Sound.play('snibeeDie')
   yield* kill(entity, world)
 }

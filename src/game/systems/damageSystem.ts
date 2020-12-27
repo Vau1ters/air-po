@@ -3,6 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Collider } from '@game/components/colliderComponent'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
+import * as Sound from '@core/sound/sound'
 
 export class DamageSystem extends System {
   private family: Family
@@ -56,6 +57,7 @@ export class DamageSystem extends System {
       if (invincible.isInvincible()) return
       invincible.setInvincible()
     }
+    Sound.play('enemyHit')
     targetHP.decrease(attack.damage)
 
     // if manually remove by adding callback to do it,
