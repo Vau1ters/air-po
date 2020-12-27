@@ -9,19 +9,17 @@ import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
 
+const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<void> {
+  yield* parallelAny([animate(entity, 'Jumping'), move(entity, direction, 0.5, Infinity)])
+  yield* animate(entity, 'Landing')
+}
+
 const slime1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
     yield* animateLoop(entity, 'Idling', 3)
-    for (let i = 0; i < 5; i++) {
-      yield* parallelAny([animate(entity, 'Jumping'), move(entity, Direction.Right, 0.5, Infinity)])
-      yield* animate(entity, 'Landing')
-    }
-
+    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Right)
     yield* animateLoop(entity, 'Idling', 3)
-    for (let i = 0; i < 5; i++) {
-      yield* parallelAny([animate(entity, 'Jumping'), move(entity, Direction.Left, 0.5, Infinity)])
-      yield* animate(entity, 'Landing')
-    }
+    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Left)
   }
 }
 
