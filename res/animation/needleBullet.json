@@ -19,6 +19,7 @@
       "Right": [14],
       "RightDownUp": [15]
     },
+    "speed": {},
     "default": "Right"
   }
 }

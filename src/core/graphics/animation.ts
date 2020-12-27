@@ -3,7 +3,7 @@ import { wait } from '@core/behaviour/wait'
 import { Container, ObservablePoint, Sprite, Texture } from 'pixi.js'
 
 class AnimationSprite extends Sprite {
-  public constructor(private textures: Array<Texture>) {
+  public constructor(private textures: Array<Texture>, private waitFrames = 10) {
     super(textures[0])
   }
 
@@ -11,11 +11,18 @@ class AnimationSprite extends Sprite {
     this.texture = this.textures[number]
   }
 
-  public *animate(waitFrames: number): Behaviour<void> {
+  public *animate(): Behaviour<void> {
     for (const texture of this.textures) {
       this.texture = texture
-      yield* wait(waitFrames)
+      yield* wait(this.waitFrames)
     }
+  }
+}
+
+export type AnimationDefinition = {
+  [key: string]: {
+    textures: Array<Texture>
+    waitFrames: number
   }
 }
 
@@ -23,11 +30,11 @@ export class Animation extends Container {
   private currentState: string
   private animationSprites: { [key: string]: AnimationSprite } = {}
 
-  public constructor(animatedTextures: { [key: string]: Array<Texture> }, initialState: string) {
+  public constructor(definition: AnimationDefinition, initialState: string) {
     super()
 
-    for (const [key, textures] of Object.entries(animatedTextures)) {
-      const sprite = new AnimationSprite(textures)
+    for (const [key, { textures, waitFrames }] of Object.entries(definition)) {
+      const sprite = new AnimationSprite(textures, waitFrames)
       sprite.visible = false
       sprite.anchor.set(0.5)
       this.animationSprites[key] = sprite
@@ -37,8 +44,8 @@ export class Animation extends Container {
     this.currentAnimationSprite.visible = true
   }
 
-  public *animate(waitFrames: number): Behaviour<void> {
-    yield* this.currentAnimationSprite.animate(waitFrames)
+  public *animate(): Behaviour<void> {
+    yield* this.currentAnimationSprite.animate()
   }
 
   public setVisible(isVisible: boolean): void {

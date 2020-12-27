@@ -11,22 +11,16 @@ import { parallelAny } from '@core/behaviour/composite'
 
 const slime1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
-    yield* animateLoop(entity, 'Idling', 8, 3)
+    yield* animateLoop(entity, 'Idling', 3)
     for (let i = 0; i < 5; i++) {
-      yield* parallelAny([
-        animate(entity, 'Jumping', 5),
-        move(entity, Direction.Right, 0.5, Infinity),
-      ])
-      yield* animate(entity, 'Landing', 5)
+      yield* parallelAny([animate(entity, 'Jumping'), move(entity, Direction.Right, 0.5, Infinity)])
+      yield* animate(entity, 'Landing')
     }
 
-    yield* animateLoop(entity, 'Idling', 8, 3)
+    yield* animateLoop(entity, 'Idling', 3)
     for (let i = 0; i < 5; i++) {
-      yield* parallelAny([
-        animate(entity, 'Jumping', 5),
-        move(entity, Direction.Left, 0.5, Infinity),
-      ])
-      yield* animate(entity, 'Landing', 5)
+      yield* parallelAny([animate(entity, 'Jumping'), move(entity, Direction.Left, 0.5, Infinity)])
+      yield* animate(entity, 'Landing')
     }
   }
 }
@@ -35,6 +29,6 @@ export const slime1AI = function*(entity: Entity, world: World): Behaviour<void>
   yield* suspendable(isAlive(entity), slime1Move(entity))
   entity.getComponent('Collider').removeByTag('AttackHitBox')
   yield* emitAir(entity, world, 50)
-  yield* animate(entity, 'Dying', 5)
+  yield* animate(entity, 'Dying')
   yield* kill(entity, world)
 }
