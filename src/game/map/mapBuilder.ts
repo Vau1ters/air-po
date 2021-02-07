@@ -183,6 +183,7 @@ export class MapBuilder {
           })
           break
         case 'enemy1':
+        case 'slime1':
         case 'balloonvine':
         case 'dandelion':
         case 'vine':
