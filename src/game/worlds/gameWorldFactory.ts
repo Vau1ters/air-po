@@ -21,6 +21,8 @@ import { FilterSystem } from '@game/systems/filterSystem'
 import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
+import { PlayerUIFactory } from '@game/entities/playerUIFactory'
+import { HPSystem } from '@game/systems/hpSystem'
 
 export class GameWorldFactory {
   public create(map: Map, playerSpawnerID: number): World {
@@ -65,12 +67,15 @@ export class GameWorldFactory {
       new LightSystem(world),
       new AirHolderSystem(world),
       new DrawSystem(world, drawContainer),
-      new UiSystem(world, uiContainer, gameWorldUiContainer, physicsSystem),
+      new UiSystem(world, uiContainer),
       new DebugDrawSystem(world, debugContainer, physicsSystem),
       new CameraSystem(world, gameWorldContainer, background),
       new ControlSystem(world),
-      new EventSensorSystem(world)
+      new EventSensorSystem(world),
+      new HPSystem(world, gameWorldUiContainer)
     )
+
+    world.addEntity(new PlayerUIFactory(world, physicsSystem).create())
 
     const mapBuilder = new MapBuilder(world)
     mapBuilder.build(map, playerSpawnerID)

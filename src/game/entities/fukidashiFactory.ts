@@ -30,8 +30,8 @@ export class FukidashiFactory extends EntityFactory {
     draw.sortableChildren = true
 
     const text = new BitmapText(this.text, {
-      fontName: 'PixelMplus12',
-      fontSize: 6,
+      fontName: '����S�V�b�N',
+      fontSize: 8,
     })
     text.name = 'text'
     text.roundPixels = true

@@ -5,21 +5,18 @@ import { FukidashiFactory } from '@game/entities/fukidashiFactory'
 import { KeyController } from '@game/systems/controlSystem'
 
 export const playerTalk = function*(entity: Entity, world: World): Behaviour<void> {
+  const talk = (serif: string): void => {
+    world.addEntity(new FukidashiFactory(serif, entity).create())
+  }
   while (true) {
     if (KeyController.isKeyPressed('X')) {
-      const fukidashi = new FukidashiFactory('わーい！うんち！うんち！', entity).create()
-      world.addEntity(fukidashi)
+      talk('わーい！うんち！うんち！')
     }
     if (KeyController.isKeyPressed('C')) {
-      const fukidashi = new FukidashiFactory('a\nu\nd\nj', entity).create()
-      world.addEntity(fukidashi)
+      talk('a\nu\nd\nj')
     }
     if (KeyController.isKeyPressed('V')) {
-      const fukidashi = new FukidashiFactory(
-        'Windows　でコンピュータの世界が広がります。',
-        entity
-      ).create()
-      world.addEntity(fukidashi)
+      talk('Windows　でコンピュータのせかいがひろがります。')
     }
     yield
   }
