@@ -96,7 +96,7 @@ export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void>
   entity.getComponent('Collider').removeByTag('AttackHitBox')
   entity.getComponent('RigidBody').velocity.y = -200
   entity.getComponent('RigidBody').gravityScale = 1
-  yield* animate(entity, 'Dying', 0.3)
+  yield* animate(entity, 'Dying')
   yield* emitAir(entity, world, 50)
   for (let i = 0; i < 20; i++) yield
   yield* kill(entity, world)
