@@ -41,7 +41,7 @@ export default class UiSystem extends System {
 
     this.playerHpGauge.position.set(0, 0)
     this.uiContainer.addChild(this.playerHpGauge)
-    this.playerAirGauge.position.set(0, 16)
+    this.playerAirGauge.position.set(6, 20)
     this.uiContainer.addChild(this.playerAirGauge)
 
     uiContainer.addChild(this.uiContainer)
@@ -68,17 +68,44 @@ export default class UiSystem extends System {
     this.playerHpGauge.endFill()
   }
 
+  private static airGaugeUiSetting = {
+    width: 10,
+    height: 24,
+    paddingRight: 6,
+    paddingTop: 0,
+  }
+
   private renderPlayerAir(player: Entity): void {
     const holder = player.getComponent('AirHolder')
+    const airTank = player.getComponent('Equipment').airTank
+
     this.playerAirGauge.clear()
-    this.playerAirGauge.beginFill(0x3080ff)
-    this.playerAirGauge.drawRect(
-      0,
-      0,
-      (holder.currentQuantity / holder.maxQuantity) * windowSize.width,
-      16
-    )
-    this.playerAirGauge.endFill()
+    for (let i = 0; i < airTank.count; i++) {
+      // 枠
+      this.playerAirGauge.lineStyle(1, 0xffffff, 1, 1)
+      this.playerAirGauge.drawRect(
+        (UiSystem.airGaugeUiSetting.paddingRight + UiSystem.airGaugeUiSetting.width) * i,
+        UiSystem.airGaugeUiSetting.paddingTop,
+        UiSystem.airGaugeUiSetting.width,
+        UiSystem.airGaugeUiSetting.height
+      )
+
+      // 割合計算
+      const rate = Math.max(
+        0,
+        Math.min(1, (holder.quantity - airTank.quantity * i) / airTank.quantity)
+      )
+      // ゲージ
+      this.playerAirGauge.lineStyle()
+      this.playerAirGauge.beginFill(0x3080ff)
+      this.playerAirGauge.drawRect(
+        (UiSystem.airGaugeUiSetting.paddingRight + UiSystem.airGaugeUiSetting.width) * i,
+        UiSystem.airGaugeUiSetting.paddingTop + (1 - rate) * UiSystem.airGaugeUiSetting.height,
+        UiSystem.airGaugeUiSetting.width,
+        rate * UiSystem.airGaugeUiSetting.height
+      )
+      this.playerAirGauge.endFill()
+    }
   }
 
   private renderLaserSight(player: Entity): void {

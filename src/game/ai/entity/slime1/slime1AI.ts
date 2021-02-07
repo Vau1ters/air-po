@@ -9,21 +9,22 @@ import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
 
-const enemy1Walk = function*(entity: Entity, direction: Direction): Behaviour<void> {
-  yield* parallelAny([animateLoop(entity, 'Walk'), move(entity, direction, 0.3, 200)])
+const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<void> {
+  yield* parallelAny([animate(entity, 'Jumping'), move(entity, direction, 0.5, Infinity)])
+  yield* animate(entity, 'Landing')
 }
 
-const enemy1Move = function*(entity: Entity): Behaviour<void> {
+const slime1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
-    yield* animateLoop(entity, 'Idle', 3)
-    yield* enemy1Walk(entity, Direction.Right)
-    yield* animateLoop(entity, 'Idle', 3)
-    yield* enemy1Walk(entity, Direction.Left)
+    yield* animateLoop(entity, 'Idling', 3)
+    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Right)
+    yield* animateLoop(entity, 'Idling', 3)
+    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Left)
   }
 }
 
-export const enemy1AI = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* suspendable(isAlive(entity), enemy1Move(entity))
+export const slime1AI = function*(entity: Entity, world: World): Behaviour<void> {
+  yield* suspendable(isAlive(entity), slime1Move(entity))
   entity.getComponent('Collider').removeByTag('AttackHitBox')
   yield* emitAir(entity, world, 50)
   yield* animate(entity, 'Dying')

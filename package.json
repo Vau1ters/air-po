@@ -9,7 +9,8 @@
     "start": "webpack-dev-server --hot --inline --watch-content-base",
     "build": "webpack",
     "lint": "eslint 'src/**/*.ts'",
-    "format": "eslint --fix 'src/**/*.ts'"
+    "format": "eslint --fix 'src/**/*.ts'",
+    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format"
   },
   "husky": {
     "hooks": {
@@ -40,7 +41,7 @@
   "dependencies": {
     "@types/stats": "^0.16.30",
     "pixi-sound": "^3.0.5",
-    "pixi.js": "^5.2.1",
+    "pixi.js": "^5.3.3",
     "stats.js": "^0.17.0"
   }
 }

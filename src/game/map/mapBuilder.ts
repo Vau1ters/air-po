@@ -7,6 +7,8 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { assert } from '@utils/assertion'
 import { EventSensorFactory } from '@game/entities/eventSensorFactory'
 import { MossFactory } from '@game/entities/mossFactory'
+import { EquipmentTileFactory } from '@game/entities/equipmentTileFactory'
+import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { AirGeyserFactory } from '@game/entities/airGeyserFactory'
 import { ThroughFloorFactory } from '@game/entities/throughFloorFactory'
 
@@ -105,8 +107,12 @@ export class MapBuilder {
         case 'player':
           this.buildPlayer(layer as ObjectLayer, [map.tilewidth, map.tileheight], playerSpawnerID)
           break
+        case 'equipment':
+          this.buildEquipment(layer as ObjectLayer)
+          break
         case 'airGeyser':
           this.buildAirGeyser(layer as ObjectLayer, [map.tilewidth, map.tileheight])
+          break
       }
     }
   }
@@ -177,6 +183,7 @@ export class MapBuilder {
           })
           break
         case 'enemy1':
+        case 'slime1':
         case 'balloonvine':
         case 'dandelion':
         case 'vine':
@@ -311,6 +318,25 @@ export class MapBuilder {
         .setEvent(event)
         .create()
       this.world.addEntity(sensor)
+    }
+  }
+
+  private buildEquipment(equipmentLayer: ObjectLayer): void {
+    for (const { x, y, width, height, properties } of equipmentLayer.objects) {
+      assert(properties)
+
+      const typeProperty = properties.find(prop => prop.name === 'type')
+      assert(typeProperty)
+      assert(typeProperty.type === 'string')
+
+      const equipmentType = typeProperty.value as EquipmentTypes
+
+      const equipment = new EquipmentTileFactory()
+        .setPosition(x, y)
+        .setSize(width, height)
+        .setEquipmentType(equipmentType)
+        .create()
+      this.world.addEntity(equipment)
     }
   }
 
