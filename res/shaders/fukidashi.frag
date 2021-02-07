@@ -3,7 +3,7 @@ varying vec2 vTextureCoord;
 
 uniform sampler2D uSampler;
 uniform vec2 displaySize;
-uniform vec2 target;
+uniform vec2 direction;
 uniform float tailSize;
 uniform float border;
 uniform float radius;
@@ -19,6 +19,16 @@ float distSegment(vec2 pixel, vec2 start, vec2 end) {
     float l = length(end - start);
     float t = dot(pixel - start, v);
     return distance(pixel, start + clamp(t, 0., l) * v);
+}
+
+float distTriangle(vec2 pixel, vec2 p0, vec2 p1, vec2 p2) {
+    float d1 = distSegment(pixel, p1, p0);
+    float d2 = distSegment(pixel, p2, p0);
+    float s0 = -cross2(p1 - p0, pixel - p1);
+    float s1 = -cross2(p2 - p1, pixel - p2);
+    float s2 = -cross2(p0 - p2, pixel - p0);
+    float s = s0 > 0. && s1 > 0. && s2 > 0. ? -1. : +1.;
+    return min(d1, d2) * s;
 }
 
 vec2 rot(vec2 v, float a) {
@@ -37,20 +47,12 @@ float distBox(vec2 pixel) {
 }
 
 float distTail(vec2 pixel) {
-    vec2 anchor = (target - 0.5) * vec2(+1, -1) * displaySize;
-    float bias = distance(pixel, anchor);
+    vec2 target = direction * displaySize.y * 0.45;
     float r = min(displaySize.x, displaySize.y) * 0.1;
-    vec2 p0 = anchor;
-    vec2 p1 = normalize(vec2(+anchor.y, -anchor.x)) * r;
-    vec2 p2 = normalize(vec2(-anchor.y, +anchor.x)) * r;
-    pixel = rot(pixel, -bias * 0.01);
-    float d1 = distSegment(pixel, p1, p0);
-    float d2 = distSegment(pixel, p2, p0);
-    float s0 = -cross2(p1 - p0, pixel - p1);
-    float s1 = -cross2(p2 - p1, pixel - p2);
-    float s2 = -cross2(p0 - p2, pixel - p0);
-    float s = s0 > 0. && s1 > 0. && s2 > 0. ? -1. : +1.;
-    return min(d1, d2) * s;
+    vec2 p0 = target;
+    vec2 p1 = normalize(vec2(+target.y, -target.x)) * r;
+    vec2 p2 = normalize(vec2(-target.y, +target.x)) * r;
+    return distTriangle(pixel, p0, p1, p2);
 }
 
 float dist(vec2 pixel) {

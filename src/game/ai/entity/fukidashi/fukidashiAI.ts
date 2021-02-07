@@ -1,44 +1,40 @@
+import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { BitmapText, Sprite, Text } from 'pixi.js'
 
-const chase = function*(fukidashi: Entity, target: Entity): Behaviour<void> {
-  const draw = fukidashi.getComponent('Draw')
-  const background = draw.getChildByName('background') as Sprite
-  const text = draw.getChildByName('text') as Text
-  const fukidashiPosition = fukidashi.getComponent('Position')
-  const targetPosition = target.getComponent('Position')
-  const v = new Vec2(1, -1).normalize()
-  const [drawFilter] = draw.filters
+const chase = function*(fukidashi: Entity, target: Entity, camera: Entity): Behaviour<void> {
+  const ui = fukidashi.getComponent('UI')
+  const background = ui.getChildByName('background') as Sprite
+  const text = ui.getChildByName('text') as Text
+
+  const [uiFilter] = ui.filters
   const [backgroundFilter] = background.filters
 
-  const size = new Vec2(draw.width, draw.height)
-  const t = size.div(v.abs())
-  const anchor = v
-    .mul(-1)
-    .mul(Math.min(t.x, t.y))
-    .div(size)
-    .mul(0.5)
-    .add(0.5)
-  background.position.set(-anchor.x * background.width, -anchor.y * background.height)
-  text.position.set(
-    -anchor.x * background.width - text.width / 2 + background.width / 2,
-    -anchor.y * background.height - text.height / 2 + background.height / 2
+  const targetPositionOnWorld = target.getComponent('Position')
+  const cameraPositionOnWorld = camera.getComponent('Position')
+  const fukidashiPositionOnScreen = new Vec2(ui.position.x, ui.position.y)
+  const centerPositionOnScreen = new Vec2(windowSize.width * 0.5, windowSize.height * 0.5)
+
+  const fukidashiPositionOnWorld = cameraPositionOnWorld.add(
+    fukidashiPositionOnScreen.sub(centerPositionOnScreen)
   )
+  const direction = targetPositionOnWorld.sub(fukidashiPositionOnWorld).normalize()
 
   while (true) {
-    fukidashiPosition.x = targetPosition.x + v.x * 20
-    fukidashiPosition.y = targetPosition.y + v.y * 20
-    drawFilter.uniforms.anchor = [anchor.x, anchor.y]
-    backgroundFilter.uniforms.target = [anchor.x, 1 - anchor.y]
+    uiFilter.uniforms.anchor = [
+      ((targetPositionOnWorld.x - fukidashiPositionOnWorld.x) / ui.width) * 0.5 + 0.5,
+      ((targetPositionOnWorld.y - fukidashiPositionOnWorld.y) / ui.height) * 0.5 + 0.5,
+    ]
+    backgroundFilter.uniforms.direction = [direction.x, direction.y]
     yield
   }
 }
 
 const animate = function*(fukidashi: Entity): Behaviour<void> {
-  const draw = fukidashi.getComponent('Draw')
+  const draw = fukidashi.getComponent('UI')
   const text = draw.getChildByName('text') as BitmapText
   const [filter] = draw.filters
 
@@ -72,6 +68,10 @@ const animate = function*(fukidashi: Entity): Behaviour<void> {
   }
 }
 
-export const fukidashiAI = function(fukidashi: Entity, target: Entity): Behaviour<void> {
-  return parallelAll([animate(fukidashi), chase(fukidashi, target)])
+export const fukidashiAI = function(
+  fukidashi: Entity,
+  target: Entity,
+  camera: Entity
+): Behaviour<void> {
+  return parallelAll([animate(fukidashi), chase(fukidashi, target, camera)])
 }

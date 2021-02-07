@@ -1,6 +1,4 @@
 import { Entity } from '@core/ecs/entity'
-import { DrawComponent } from '@game/components/drawComponent'
-import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from './entityFactory'
 import { Filter, BitmapText, Sprite } from 'pixi.js'
 import fukidsahiVertexShader from '@res/shaders/fukidashi.vert'
@@ -8,26 +6,44 @@ import fukidashiFragmentShader from '@res/shaders/fukidashi.frag'
 import fukidashiTextFragmentShader from '@res/shaders/fukidashiText.frag'
 import { fukidashiAI } from '@game/ai/entity/fukidashi/fukidashiAI'
 import { AIComponent } from '@game/components/aiComponent'
+import { UIComponent } from '@game/components/uiComponent'
+import { windowSize } from '@core/application'
 
 export class FukidashiFactory extends EntityFactory {
-  constructor(public text: string, public target: Entity) {
+  constructor(private text: string, private target: Entity, private camera: Entity) {
     super()
   }
 
   create(): Entity {
     const entity = new Entity()
 
-    const position = new PositionComponent()
+    const tailSize = 20
+    const radius = 10
+    const border = 1
+    const sprite = new Sprite()
+    sprite.name = 'background'
+    sprite.width = windowSize.width
+    sprite.height = windowSize.height * 0.4
+    sprite.anchor.set(0.5)
+    sprite.filters = [
+      new Filter(undefined, fukidashiFragmentShader, {
+        displaySize: [sprite.width, sprite.height],
+        tailSize,
+        radius,
+        border,
+      }),
+    ]
 
-    const draw = new DrawComponent(entity)
-    draw.filters = [
+    const ui = new UIComponent()
+    ui.filters = [
       new Filter(fukidsahiVertexShader, undefined, {
         anchor: [0, 0],
         scale: 0,
         angle: 0,
       }),
     ]
-    draw.sortableChildren = true
+    ui.position.set(windowSize.width * 0.5, sprite.height * 0.5)
+    ui.sortableChildren = true
 
     const text = new BitmapText(this.text, {
       fontName: '����S�V�b�N',
@@ -37,28 +53,16 @@ export class FukidashiFactory extends EntityFactory {
     text.roundPixels = true
     text.filters = [new Filter(undefined, fukidashiTextFragmentShader)]
     text.zIndex = 1
-    draw.addChild(text)
+    text.position.set(
+      tailSize + radius / Math.sqrt(2) - sprite.width * 0.5,
+      tailSize + radius / Math.sqrt(2) - sprite.height * 0.5
+    )
 
-    const tailSize = 10
-    const radius = 2
-    const border = 1
-    const sprite = new Sprite()
-    sprite.name = 'background'
-    sprite.width = text.width + (tailSize + radius) * 2
-    sprite.height = text.height + (tailSize + radius) * 2
-    sprite.filters = [
-      new Filter(undefined, fukidashiFragmentShader, {
-        displaySize: [sprite.width, sprite.height],
-        tailSize,
-        radius,
-        border,
-      }),
-    ]
-    draw.addChild(sprite)
+    ui.addChild(sprite)
+    ui.addChild(text)
 
-    entity.addComponent('Draw', draw)
-    entity.addComponent('Position', position)
-    entity.addComponent('AI', new AIComponent(fukidashiAI(entity, this.target)))
+    entity.addComponent('UI', ui)
+    entity.addComponent('AI', new AIComponent(fukidashiAI(entity, this.target, this.camera)))
     return entity
   }
 }
