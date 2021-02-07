@@ -4,6 +4,7 @@
     "state": {
       "Alive": [0, 1]
     },
+    "speed": {},
     "default": "Alive"
   }
 }
