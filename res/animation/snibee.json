@@ -6,8 +6,8 @@
       "Dying": [8, 9, 10, 11, 12, 13]
     },
     "speed": {
-      "Alive": 2,
-      "Dying": 3
+      "Alive": 6,
+      "Dying": 6
     },
     "default": "Alive"
   }

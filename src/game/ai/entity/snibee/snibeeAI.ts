@@ -87,17 +87,17 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* parallelAll([
     moveAI(entity, playerEntity),
     shootAI(entity, world, playerEntity),
-    animateLoop(entity, 'Alive', 0.3),
+    animateLoop(entity, 'Alive'),
   ])
 }
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
   entity.getComponent('Collider').removeByTag('AttackHitBox')
+  yield* animate(entity, 'Dying')
   entity.getComponent('RigidBody').velocity.y = -200
   entity.getComponent('RigidBody').gravityScale = 1
-  yield* animate(entity, 'Dying')
   yield* emitAir(entity, world, 50)
-  for (let i = 0; i < 20; i++) yield
+  for (let i = 0; i < 60; i++) yield
   yield* kill(entity, world)
 }
