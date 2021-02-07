@@ -24,10 +24,7 @@ const chase = function*(fukidashi: Entity, target: Entity, camera: Entity): Beha
   const direction = targetPositionOnWorld.sub(fukidashiPositionOnWorld).normalize()
 
   while (true) {
-    uiFilter.uniforms.anchor = [
-      ((targetPositionOnWorld.x - fukidashiPositionOnWorld.x) / ui.width) * 0.5 + 0.5,
-      ((targetPositionOnWorld.y - fukidashiPositionOnWorld.y) / ui.height) * 0.5 + 0.5,
-    ]
+    uiFilter.uniforms.anchor = [direction.x * 0.45 + 0.5, direction.y * 0.45 + 0.5]
     backgroundFilter.uniforms.direction = [direction.x, direction.y]
     yield
   }
