@@ -25,7 +25,7 @@ export class Entity {
 
   public getComponent<K extends ComponentName>(componentName: K): ComponentMap[K] {
     const result = this.componentMap[componentName] as ComponentMap[K]
-    assert(result)
+    assert(result, `This entity does not have component '${componentName}'`)
     return result
   }
 

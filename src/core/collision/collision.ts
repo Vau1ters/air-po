@@ -79,6 +79,6 @@ export const collide = (
     const aabb = c1.aabb.add(position1)
     return collideAirAndAABB(air, aabb)
   } else {
-    assert(false)
+    assert(false, 'This collision is not implemented.')
   }
 }
