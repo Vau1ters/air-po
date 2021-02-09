@@ -54,14 +54,14 @@ export default class PhysicsSystem extends System {
       const cs = e.getComponent('Collider').colliders
       for (const c of cs) {
         const colliders = colliderMap.get(c.category)
-        assert(colliders)
+        assert(colliders, `There are no collider with category '${c.category}'`)
         colliders.push(c)
       }
     }
     for (const [category, bvh] of this.bvhs) {
       if (category === Category.STATIC_WALL && bvh.root) continue
       const colliders = colliderMap.get(category)
-      assert(colliders)
+      assert(colliders, `There are no collider with category '${category}'`)
       bvh.build(colliders)
     }
   }
@@ -76,7 +76,7 @@ export default class PhysicsSystem extends System {
         if (c.category === Category.STATIC_WALL) continue // for performance
         for (const m of c.mask) {
           const bvh = this.bvhs.get(m)
-          assert(bvh)
+          assert(bvh, `There are no BVH with category '${m}'`)
           const rs = bvh.query(c.bound.add(position1))
           for (const r of rs) {
             if (r.entity === entity1) continue
