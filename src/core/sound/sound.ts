@@ -11,8 +11,10 @@ import playerHit from '@res/sound/playerHit.wav'
 import jump from '@res/sound/jump.wav'
 import getAirTank from '@res/sound/getAirTank.wav'
 import foot from '@res/sound/foot.wav'
+import fire from '@res/sound/fire.wav'
 import enemyHit from '@res/sound/enemyHit.wav'
 import dandelionShot from '@res/sound/dandelionShot.wav'
+import danball from '@res/sound/danball.wav'
 import burner from '@res/sound/burner.wav'
 import airTankBecameEmpty from '@res/sound/airTankBecameEmpty.wav'
 import airJet from '@res/sound/airJet.wav'
@@ -51,8 +53,10 @@ export const init = async (): Promise<void> => {
   soundStore.jump = await load(jump)
   soundStore.getAirTank = await load(getAirTank)
   soundStore.foot = await load(foot)
+  soundStore.fire = await load(fire)
   soundStore.enemyHit = await load(enemyHit)
   soundStore.dandelionShot = await load(dandelionShot)
+  soundStore.danball = await load(danball)
   soundStore.burner = await load(burner)
   soundStore.airTankBecameEmpty = await load(airTankBecameEmpty)
   soundStore.airJet = await load(airJet)

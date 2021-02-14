@@ -54,7 +54,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
         const dir = playerAngle.normalize().mul(-1)
         effectPosition.add(dir.mul(offset))
 
-        Sound.play('airJet')
+        Sound.play('fire')
         world.addEntity(jetEffect)
       }
     }
