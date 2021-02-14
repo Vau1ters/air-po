@@ -1,50 +1,43 @@
-import { BaseTexture, Rectangle, Texture } from 'pixi.js'
-
-import titleImg from '@res/image/title.png'
-
-import playerImg from '@res/image/player.png'
-import playerSetting from '@res/map/player.json'
-
+// IMPORT
+import wallSetting from '@res/map/tileset/wall.json'
+import vineSetting from '@res/map/tileset/vine.json'
+import throughFloorSetting from '@res/map/tileset/throughFloor.json'
+import snibeeSetting from '@res/map/tileset/snibee.json'
+import slime1Setting from '@res/map/tileset/slime1.json'
+import sensorSetting from '@res/map/tileset/sensor.json'
+import playerSetting from '@res/map/tileset/player.json'
+import needleBulletSetting from '@res/map/tileset/needleBullet.json'
+import mossSetting from '@res/map/tileset/moss.json'
+import equipmentSetting from '@res/map/tileset/equipment.json'
+import enemy1Setting from '@res/map/tileset/enemy1.json'
+import dandelionSetting from '@res/map/tileset/dandelion.json'
+import balloonvineSetting from '@res/map/tileset/balloonvine.json'
+import ballBulletSetting from '@res/map/tileset/ballBullet.json'
+import airGeyserSetting from '@res/map/tileset/airGeyser.json'
 import wallImg from '@res/image/wall.png'
-import wallSetting from '@res/map/wall.json'
-
-import throughFloorImg from '@res/image/throughFloor.png'
-import throughFloorSetting from '@res/map/throughFloor.json'
-
-import enemy1Img from '@res/image/enemy1.png'
-import enemy1Setting from '@res/map/enemy1.json'
-
-import slime1Img from '@res/image/slime1.png'
-import slime1Setting from '@res/map/slime1.json'
-
 import vineImg from '@res/image/vine.png'
-import vineSetting from '@res/map/vine.json'
-
+import titleImg from '@res/image/title.png'
+import throughFloorImg from '@res/image/throughFloor.png'
 import snibeeImg from '@res/image/snibee.png'
-import snibeeSetting from '@res/map/snibee.json'
-
-import ballBulletImg from '@res/image/ballBullet.png'
-import ballBulletSetting from '@res/map/ballBullet.json'
-
+import slime1Img from '@res/image/slime1.png'
+import sensorImg from '@res/image/sensor.png'
+import playerImg from '@res/image/player.png'
 import needleBulletImg from '@res/image/needleBullet.png'
-import needleBulletSetting from '@res/map/needleBullet.json'
-
-import balloonvineImg from '@res/image/balloonvine.png'
-import balloonvineSetting from '@res/map/balloonvine.json'
-
 import mossImg from '@res/image/moss.png'
-import mossSetting from '@res/map/moss.json'
-
+import jetEffectImg from '@res/image/jetEffect.png'
+import equipmentImg from '@res/image/equipment.png'
+import enemy1Img from '@res/image/enemy1.png'
 import dandelionHeadImg from '@res/image/dandelion_head.png'
 import dandelionFluffImg from '@res/image/dandelion_fluff.png'
-
-import equipmentImg from '@res/image/equipment.png'
-import equipmentSetting from '@res/map/equipment.json'
-
-import jetEffectImg from '@res/image/jetEffect.png'
-
+import dandelionImg from '@res/image/dandelion.png'
+import balloonvineImg from '@res/image/balloonvine.png'
+import ballBulletImg from '@res/image/ballBullet.png'
 import airGeyserImg from '@res/image/airGeyser.png'
-import airGeyserSetting from '@res/map/airGeyser.json'
+/*+.† NOTIFICATION †.+*/
+// this file is automatically written by arttool.
+// you can update this file by type "yarn arttool" command.
+
+import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
 type Setting = {
   columns: number
@@ -98,21 +91,24 @@ async function buildSingleTexture(baseURL: string): Promise<Array<Texture>> {
 
 export const textureStore: { [key: string]: Array<Texture> } = {}
 export const init = async (): Promise<void> => {
-  textureStore.title = await buildSingleTexture(titleImg)
-  textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
+  // LOAD_RESOURCE
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
-  textureStore.throughFloor = await buildAnimationTexture(throughFloorImg, throughFloorSetting)
-  textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
-  textureStore.slime1 = await buildAnimationTexture(slime1Img, slime1Setting)
   textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
+  textureStore.title = await buildSingleTexture(titleImg)
+  textureStore.throughFloor = await buildAnimationTexture(throughFloorImg, throughFloorSetting)
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
-  textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
+  textureStore.slime1 = await buildAnimationTexture(slime1Img, slime1Setting)
+  textureStore.sensor = await buildAnimationTexture(sensorImg, sensorSetting)
+  textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
-  textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
   textureStore.moss = await buildAnimationTexture(mossImg, mossSetting)
-  textureStore.airGeyser = await buildAnimationTexture(airGeyserImg, airGeyserSetting)
+  textureStore.jetEffect = await buildSingleTexture(jetEffectImg)
+  textureStore.equipment = await buildAnimationTexture(equipmentImg, equipmentSetting)
+  textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
   textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
   textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
-  textureStore.equipment = await buildAnimationTexture(equipmentImg, equipmentSetting)
-  textureStore.jetEffect = await buildSingleTexture(jetEffectImg)
+  textureStore.dandelion = await buildAnimationTexture(dandelionImg, dandelionSetting)
+  textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
+  textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)
+  textureStore.airGeyser = await buildAnimationTexture(airGeyserImg, airGeyserSetting)
 }
