@@ -1,7 +1,7 @@
 import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { Filter, BitmapText, Sprite } from 'pixi.js'
-import fukidsahiVertexShader from '@res/shaders/fukidashi.vert'
+import fukidashiVertexShader from '@res/shaders/fukidashi.vert'
 import fukidashiFragmentShader from '@res/shaders/fukidashi.frag'
 import fukidashiTextFragmentShader from '@res/shaders/fukidashiText.frag'
 import { fukidashiAI } from '@game/ai/entity/fukidashi/fukidashiAI'
@@ -36,7 +36,7 @@ export class FukidashiFactory extends EntityFactory {
 
     const ui = new UIComponent()
     ui.filters = [
-      new Filter(fukidsahiVertexShader, undefined, {
+      new Filter(fukidashiVertexShader, undefined, {
         anchor: [0, 0],
         scale: 0,
         angle: 0,
