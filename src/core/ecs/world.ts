@@ -22,7 +22,7 @@ export class World {
     })
 
     if (!!done === true) {
-      assert(nextWorld)
+      assert(nextWorld, 'World behaviour must yield nextWorld at end')
       nextWorld.start()
       this.end()
     }

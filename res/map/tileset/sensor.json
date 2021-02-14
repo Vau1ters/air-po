@@ -1,5 +1,5 @@
 { "columns":1,
- "image":"../image/sensor.png",
+ "image":"../../image/sensor.png",
  "imageheight":128,
  "imagewidth":128,
  "margin":0,

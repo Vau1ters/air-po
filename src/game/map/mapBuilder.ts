@@ -118,9 +118,8 @@ export class MapBuilder {
   }
 
   private buildAir(airLayer: ObjectLayer): void {
-    assert(airLayer.objects.length > 0)
     for (const airData of airLayer.objects) {
-      assert(airData.ellipse === true)
+      assert(airData.ellipse === true, 'Air must be ellipse')
       const radius = airData.width / 2
       const x = airData.x + radius
       const y = airData.y + radius
@@ -215,8 +214,7 @@ export class MapBuilder {
         if (i < builders.length - 1 && builders[i + 1].firstgid <= tileId) continue
         return builders[i].builder
       }
-      console.error(`Could not find appropriate builder for tileId ${tileId}`)
-      assert(false)
+      assert(false, `Could not find appropriate builder for tileId ${tileId}`)
     }
 
     for (let x = 0; x < mapLayer.width; x++) {
@@ -283,7 +281,10 @@ export class MapBuilder {
       (player: MapObject) =>
         player.properties?.find(prop => prop.name === 'id')?.value === playerSpawnerID
     )
-    assert(playerInfo)
+    assert(
+      playerInfo,
+      `There are no object with custom property 'id = ${playerSpawnerID}' in player layer`
+    )
     const { x, y, width, height } = playerInfo
     const player = new PlayerFactory(this.world).create()
     const playerPosition = player.getComponent('Position')
@@ -304,11 +305,13 @@ export class MapBuilder {
 
   private buildSensor(sensorLayer: ObjectLayer): void {
     for (const { x, y, width, height, properties } of sensorLayer.objects) {
-      assert(properties)
+      assert(properties, `Sensor must have custom property`)
 
       const eventProperty = properties.find(prop => prop.name === 'event')
-      assert(eventProperty)
-      assert(eventProperty.type === 'string')
+      assert(
+        eventProperty && eventProperty.type === 'string',
+        `Sensor must have string property 'event'`
+      )
 
       const event = eventProperty.value as string
 
@@ -323,11 +326,13 @@ export class MapBuilder {
 
   private buildEquipment(equipmentLayer: ObjectLayer): void {
     for (const { x, y, width, height, properties } of equipmentLayer.objects) {
-      assert(properties)
+      assert(properties, 'Equipment must have custom property')
 
       const typeProperty = properties.find(prop => prop.name === 'type')
-      assert(typeProperty)
-      assert(typeProperty.type === 'string')
+      assert(
+        typeProperty && typeProperty.type === 'string',
+        `Equipment must have string property 'type'`
+      )
 
       const equipmentType = typeProperty.value as EquipmentTypes
 

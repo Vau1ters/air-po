@@ -73,7 +73,7 @@ export class AirSystem extends System {
 
   updateBounds(): void {
     const airCollider = this.entity.getComponent('Collider').colliders[0]
-    assert(airCollider instanceof AirCollider)
+    assert(airCollider instanceof AirCollider, 'Invalid collider')
 
     const aabbBounds: AABB[] = airCollider.airFamily.entityArray.map((e: Entity) => {
       const p = e.getComponent('Position')
