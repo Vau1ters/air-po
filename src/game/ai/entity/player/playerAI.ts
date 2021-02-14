@@ -22,7 +22,7 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
     playerPickup(entity),
     playerItemAction(entity),
     playerTalk(entity, world),
-    animateLoop(entity, 'Standing'),
+    animateLoop(entity),
     invincibleTime(entity),
   ])
 }

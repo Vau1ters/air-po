@@ -1,9 +1,9 @@
 import { Family } from '@core/ecs/family'
 import { isAlive } from '@game/ai/entity/common/condition/isAlive'
-import { assert } from '@utils/assertion'
+import { assertSingle } from '@utils/assertion'
 
 export const isPlayerAlive = (playerFamily: Family) => (): boolean => {
-  assert(playerFamily.entityArray.length === 1)
-  const playerEntity = playerFamily.entityArray[0]
+  assertSingle(playerFamily.entityArray.length, 'player')
+  const [playerEntity] = playerFamily.entityArray
   return isAlive(playerEntity)()
 }
