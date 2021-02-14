@@ -3,6 +3,7 @@ import { DandelionFluffFactory } from '@game/entities/dandelionFluffFactory'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
+import * as Sound from '@core/sound/sound'
 import * as PIXI from 'pixi.js'
 
 const FLUFF_EMIT_INTERVAL = 200
@@ -54,7 +55,9 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   function updateFluff(): void {
     t += 1
     if (t % FLUFF_EMIT_INTERVAL == 0) {
+      Sound.play('dandelionShot')
       world.addEntity(factory.create())
+      console.log('s')
     }
   }
 
