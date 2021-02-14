@@ -5,7 +5,7 @@ import DrawSystem from '@game/systems/drawSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
 import { MapBuilder } from '@game/map/mapBuilder'
-import map from '@res/map/teststage.json'
+import map from '@res/map/stage1_map1.json'
 import { titleWorldAI } from '@game/ai/world/title/titleWorldAI'
 
 export class TitleWorldFactory {
