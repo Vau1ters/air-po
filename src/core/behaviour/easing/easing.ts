@@ -19,5 +19,5 @@ export const ease = (easingFunction: EasingFunction): Easing =>
       )
       yield
     }
-    callback(valueOption.to)
+    callback(easingFunction(1) * (valueOption.to - valueOption.from) + valueOption.from)
   }
