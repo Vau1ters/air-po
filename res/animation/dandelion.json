@@ -4,6 +4,7 @@
     "state": {
       "Normal": [0]
     },
+    "speed": {},
     "default": "Normal"
   }
 }

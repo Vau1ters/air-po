@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export const assert: (condition: unknown) => asserts condition = condition => {
+export function assert(condition: unknown, msg: string): asserts condition {
   if (!condition) {
-    throw new Error(`Assertion failed. Condition: ${condition}`)
+    throw new Error(msg)
   }
+}
+
+export function assertSingle(n: number, name: string): void {
+  assert(n > 0, `There are no '${name}'.`)
+  assert(n < 2, `There are multiple '${name}'.`)
 }
 
 export function checkMembers(

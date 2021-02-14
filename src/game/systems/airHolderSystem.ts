@@ -49,7 +49,7 @@ export class AirHolderSystem extends System {
   private static airHolderSensor(airHolderCollider: Collider, otherCollider: Collider): void {
     // collect air
     if (otherCollider.tag.has('air')) {
-      assert(otherCollider instanceof AirCollider)
+      assert(otherCollider instanceof AirCollider, 'Invaild collider')
 
       const position = airHolderCollider.entity.getComponent('Position')
       const airHolder = airHolderCollider.entity.getComponent('AirHolder')

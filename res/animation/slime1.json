@@ -7,6 +7,12 @@
       "Jumping": [8, 9, 10, 11, 12],
       "Dying": [13, 14, 15, 16, 17, 18, 19, 20, 21]
     },
+    "speed": {
+      "Idling": 8,
+      "Jumping": 5,
+      "Landing": 5,
+      "Dying": 5
+    },
     "default": "Idling"
   }
 }

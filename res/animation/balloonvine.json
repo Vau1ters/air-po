@@ -5,6 +5,7 @@
       "Dead": [0],
       "Alive": [1]
     },
+    "speed": {},
     "default": "Dead"
   }
 }

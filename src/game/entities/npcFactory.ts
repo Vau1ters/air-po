@@ -31,7 +31,7 @@ export class NPCFactory extends EntityFactory {
       case 'dandelion':
         return new DandelionFactory(this.world).create()
       default:
-        assert(false)
+        assert(false, `NPC '${this.type}' is not implemented`)
     }
   }
 }

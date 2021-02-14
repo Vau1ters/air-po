@@ -184,7 +184,7 @@ export class ColliderComponent {
       )
       this.colliders.push(collider)
     } else {
-      assert(false)
+      assert(false, 'This definition is not implemented.')
     }
   }
 
