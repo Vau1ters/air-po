@@ -91,13 +91,34 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   ])
 }
 
+const flutteringAI = function*(entity: Entity): Behaviour<void> {
+  const rigidbody = entity.getComponent('RigidBody')
+  yield* animate(entity, 'FlutteringLeft')
+  for (let x = 0; x < 10; x++) {
+    rigidbody.acceleration.x = 500
+    yield
+  }
+  yield* animate(entity, 'FlutteringRight')
+  for (let x = 0; x < 20; x++) {
+    rigidbody.acceleration.x = -500
+    yield
+  }
+  yield* animate(entity, 'FlutteringLeft')
+  for (let x = 0; x < 20; x++) {
+    rigidbody.acceleration.x = 500
+    yield
+  }
+}
+
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
   entity.getComponent('Collider').removeByTag('AttackHitBox')
+  entity.getComponent('Collider').removeByTag('snibeeBody')
   yield* animate(entity, 'Dying')
-  entity.getComponent('RigidBody').velocity.y = -200
-  entity.getComponent('RigidBody').gravityScale = 1
+  entity.getComponent('RigidBody').velocity.x = 0
+  entity.getComponent('RigidBody').velocity.y = -3
+  entity.getComponent('RigidBody').gravityScale = 0.05
   yield* emitAir(entity, world, 50)
-  for (let i = 0; i < 60; i++) yield
+  yield* flutteringAI(entity)
   yield* kill(entity, world)
 }
