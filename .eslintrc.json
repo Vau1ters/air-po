@@ -23,6 +23,14 @@
         "checkLoops": false
       }
     ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "eol-last": [
+      "error",
+      "always"
+    ],
     "@typescript-eslint/no-empty-function": "off",
     "prettier/prettier": [
       "error",

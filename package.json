@@ -8,8 +8,8 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline --watch-content-base",
     "build": "webpack",
-    "lint": "eslint 'src/**/*.ts'",
-    "format": "eslint --fix 'src/**/*.ts'",
+    "lint": "eslint './**/*.ts'",
+    "format": "eslint --fix './**/*.ts'",
     "arttool": "tsc arttool.ts && node arttool.js && rm arttool.js && yarn format",
     "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format"
   },
