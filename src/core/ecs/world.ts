@@ -3,7 +3,6 @@ import { System } from './system'
 import { EventNotifier } from '@utils/eventNotifier'
 import { Container } from 'pixi.js'
 import { application } from '../application'
-import { assert } from '@utils/assertion'
 import { Behaviour } from '../behaviour/behaviour'
 
 export class World {
@@ -12,23 +11,23 @@ export class World {
   public readonly stage: Container
   public readonly entityAddedEvent: EventNotifier<Entity>
   public readonly entityRemovedEvent: EventNotifier<Entity>
-  public readonly behaviour: Behaviour<World>
+  public readonly behaviour: Behaviour<void>
+  private paused = false
 
   private readonly _updateCallback = (): void => {
-    const { done, value: nextWorld } = this.behaviour.next()
+    if (this.paused) return
+    const { done } = this.behaviour.next()
 
     this.systems.forEach(system => {
       system.update(1 / 60)
     })
 
     if (!!done === true) {
-      assert(nextWorld)
-      nextWorld.start()
       this.end()
     }
   }
 
-  public constructor(behaviour: (world: World) => Behaviour<World>) {
+  public constructor(behaviour: (world: World) => Behaviour<void>) {
     this.entities = new Set()
     this.systems = new Set()
     this.stage = new Container()
@@ -45,6 +44,14 @@ export class World {
   public end(): void {
     application.ticker.remove(this._updateCallback)
     application.stage.removeChild(this.stage)
+  }
+
+  public pause(): void {
+    this.paused = true
+  }
+
+  public resume(): void {
+    this.paused = false
   }
 
   public get entitySet(): Set<Entity> {
