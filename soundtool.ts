@@ -49,16 +49,16 @@ const dir = fs.readdirSync(soundPath, { withFileTypes: true })
 const importReg = new RegExp('// IMPORT')
 const loadReg = new RegExp('// LOAD_RESOURCE')
 
-console.log("File added:")
+console.log('File added:')
 const generatedText = dir.reduce((text, file) => {
   const filename = file.name.split('.')[0]
   text = text.replace(importReg, `// IMPORT\n${importText(filename)}`)
   text = text.replace(loadReg, `// LOAD_RESOURCE\n  ${loadFormatText(filename)}`)
   console.log(file.name)
-  return text;
+  return text
 }, fileText)
 
-fs.writeFile(soundTsPath, generatedText, (err) => {
-  if (err) throw err;
-  console.log("Successfully generated soundtool.ts")
+fs.writeFile(soundTsPath, generatedText, err => {
+  if (err) throw err
+  console.log('Successfully generated soundtool.ts')
 })
