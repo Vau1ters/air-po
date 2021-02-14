@@ -3,12 +3,11 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { BitmapText, Sprite, Text } from 'pixi.js'
+import { BitmapText, Sprite } from 'pixi.js'
 
 const chase = function*(fukidashi: Entity, target: Entity, camera: Entity): Behaviour<void> {
   const ui = fukidashi.getComponent('UI')
   const background = ui.getChildByName('background') as Sprite
-  const text = ui.getChildByName('text') as Text
 
   const [uiFilter] = ui.filters
   const [backgroundFilter] = background.filters
