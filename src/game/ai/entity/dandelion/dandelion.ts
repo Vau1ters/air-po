@@ -57,7 +57,6 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
     if (t % FLUFF_EMIT_INTERVAL == 0) {
       Sound.play('dandelionShot')
       world.addEntity(factory.create())
-      console.log('s')
     }
   }
 
