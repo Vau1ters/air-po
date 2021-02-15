@@ -11,21 +11,21 @@ import { BitmapText, Sprite } from 'pixi.js'
 const chase = function*(fukidashi: Entity, target: Entity, camera: Entity): Behaviour<void> {
   const ui = fukidashi.getComponent('UI')
   const background = ui.getChildByName('background') as Sprite
+  const targetPositionOnWorld = target.getComponent('Position')
+  const cameraPositionOnWorld = camera.getComponent('Position')
 
   const [uiFilter] = ui.filters
   const [backgroundFilter] = background.filters
 
-  const targetPositionOnWorld = target.getComponent('Position')
-  const cameraPositionOnWorld = camera.getComponent('Position')
-  const fukidashiPositionOnScreen = new Vec2(ui.position.x, ui.position.y)
-  const centerPositionOnScreen = new Vec2(windowSize.width * 0.5, windowSize.height * 0.5)
-
-  const fukidashiPositionOnWorld = cameraPositionOnWorld.add(
-    fukidashiPositionOnScreen.sub(centerPositionOnScreen)
-  )
-  const direction = targetPositionOnWorld.sub(fukidashiPositionOnWorld).normalize()
-
   while (true) {
+    const fukidashiPositionOnScreen = new Vec2(ui.position.x, ui.position.y)
+    const centerPositionOnScreen = new Vec2(windowSize.width * 0.5, windowSize.height * 0.5)
+
+    const fukidashiPositionOnWorld = cameraPositionOnWorld.add(
+      fukidashiPositionOnScreen.sub(centerPositionOnScreen)
+    )
+    const direction = targetPositionOnWorld.sub(fukidashiPositionOnWorld).normalize()
+
     uiFilter.uniforms.anchor = [direction.x * 0.45 + 0.5, direction.y * 0.45 + 0.5]
     backgroundFilter.uniforms.direction = [direction.x, direction.y]
     yield
