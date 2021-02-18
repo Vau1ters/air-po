@@ -16,15 +16,15 @@ export class LightSystem extends System {
     this.family.entityAddedEvent.addObserver((e: Entity) => {
       for (const c of e
         .getComponent('Collider')
-        .colliders.filter(c => c.option.category === Category.SENSOR)) {
-        c.option.callbacks.add(LightSystem.lightAirCollision)
+        .colliders.filter(c => c.category === Category.SENSOR)) {
+        c.callbacks.add(LightSystem.lightAirCollision)
       }
     })
     this.family.entityAddedEvent.removeObserver((e: Entity) => {
       for (const c of e
         .getComponent('Collider')
-        .colliders.filter(c => c.option.category === Category.SENSOR)) {
-        c.option.callbacks.delete(LightSystem.lightAirCollision)
+        .colliders.filter(c => c.category === Category.SENSOR)) {
+        c.callbacks.delete(LightSystem.lightAirCollision)
       }
     })
   }
