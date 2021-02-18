@@ -54,7 +54,7 @@ export const CategoryList = {
     },
     body: {
       category: Category.HITBOX,
-      mask: new CategorySet(Category.ATTACK),
+      mask: new CategorySet(Category.ATTACK, Category.SENSOR),
     },
     root: {
       category: Category.PHYSICS,
@@ -84,7 +84,7 @@ export const CategoryList = {
     },
     hitBox: {
       category: Category.HITBOX,
-      mask: new CategorySet(Category.ATTACK),
+      mask: new CategorySet(Category.ATTACK, Category.SENSOR),
     },
     attack: {
       category: Category.ATTACK,
@@ -130,7 +130,7 @@ export const CategoryList = {
   vine: {
     body: {
       category: Category.DYNAMIC_WALL,
-      mask: new CategorySet(Category.PHYSICS),
+      mask: new CategorySet(Category.PHYSICS, Category.SENSOR),
     },
     wallSensor: {
       category: Category.SENSOR,

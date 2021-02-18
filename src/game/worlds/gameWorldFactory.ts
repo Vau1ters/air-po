@@ -22,7 +22,6 @@ import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
 import CollisionSystem from '@game/systems/collisionSystem'
-import { LaserSightFactory } from '@game/entities/laserSightFactory'
 
 export class GameWorldFactory {
   public create(map: Map, playerSpawnerID: number): World {
@@ -77,8 +76,6 @@ export class GameWorldFactory {
 
     const mapBuilder = new MapBuilder(world)
     mapBuilder.build(map, playerSpawnerID)
-
-    world.addEntity(new LaserSightFactory(world).create())
 
     return world
   }

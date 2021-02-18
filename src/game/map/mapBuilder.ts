@@ -11,6 +11,7 @@ import { EquipmentTileFactory } from '@game/entities/equipmentTileFactory'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { AirGeyserFactory } from '@game/entities/airGeyserFactory'
 import { ThroughFloorFactory } from '@game/entities/throughFloorFactory'
+import { LaserSightFactory } from '@game/entities/laserSightFactory'
 
 type CustomProperty = {
   name: string
@@ -291,6 +292,8 @@ export class MapBuilder {
     playerPosition.x = x + width / 2
     playerPosition.y = y - height
     this.world.addEntity(player)
+
+    this.world.addEntity(new LaserSightFactory(this.world).create())
   }
 
   private buildMoss(pos: number[], tileSize: number[]): void {

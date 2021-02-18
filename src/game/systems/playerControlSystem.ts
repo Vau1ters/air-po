@@ -33,7 +33,6 @@ export class PlayerControlSystem extends System {
   }
 
   private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
-    console.log('foot')
     if (otherCollider.isSensor) return
 
     const rigidBody = playerCollider.entity.getComponent('RigidBody')

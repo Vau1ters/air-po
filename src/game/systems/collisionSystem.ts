@@ -2,13 +2,11 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider, RayForCollision } from '@game/components/colliderComponent'
+import { Collider } from '@game/components/colliderComponent'
 import { collide } from '@core/collision/collision'
 import { Category, CategorySet } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 import { BVH } from '@core/collision/bvh'
-import { AABB } from '@core/collision/aabb'
-import { PositionComponent } from '@game/components/positionComponent'
 
 export default class CollisionSystem extends System {
   private family: Family
@@ -65,12 +63,11 @@ export default class CollisionSystem extends System {
           const bvh = this.bvhs.get(m)
           assert(bvh, `There are no BVH with category '${m}'`)
           const rs = bvh.query(c.bound.add(position1))
-          for (const r of rs) {
-            if (r.entity === entity1) continue
-            const entity2 = r.entity
-            if (collidedEntityIdSet.has(entity2.id)) continue
-            this.collide(entity1, entity2)
+          for (const { entity: entity2 } of rs) {
+            if (entity1 === entity2) continue // prevent self collision
+            if (collidedEntityIdSet.has(entity2.id)) continue // prevent dual collision
             collidedEntityIdSet.add(entity2.id)
+            this.collide(entity1, entity2)
           }
         }
       }
@@ -86,21 +83,18 @@ export default class CollisionSystem extends System {
 
     for (const c1 of colliders1.colliders) {
       for (const c2 of colliders2.colliders) {
-        const mask1 = c1.mask
-        const category1 = c1.category
-        const mask2 = c2.mask
-        const category2 = c2.category
+        const { mask: mask1, category: category1 } = c1
+        const { mask: mask2, category: category2 } = c2
         if (!mask1.has(category2) || !mask2.has(category1)) continue
         if (!c1.shouldCollide(c1, c2) || !c2.shouldCollide(c2, c1)) continue
 
         const result = collide(c1, c2, position1, position2)
-        if (result.hit) {
-          for (const callback of c1.callbacks) {
-            callback(c1, c2, result)
-          }
-          for (const callback of c2.callbacks) {
-            callback(c2, c1, result)
-          }
+        if (result.hit === false) continue
+        for (const callback of c1.callbacks) {
+          callback(c1, c2, result)
+        }
+        for (const callback of c2.callbacks) {
+          callback(c2, c1, result)
         }
       }
     }
