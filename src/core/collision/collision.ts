@@ -11,7 +11,6 @@ import {
 import { Vec2 } from '@core/math/vec2'
 import { raycastToAABB } from './ray'
 
-export type CollisionResultHit = { hit: boolean }
 type WithHit<T> = { hit: false } | ({ hit: true } & T)
 
 export type CollisionResultAABBAndAABB = {
