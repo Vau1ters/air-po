@@ -2,7 +2,6 @@ import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
 import { BulletComponent } from '@game/components/bulletComponent'
 import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
@@ -11,6 +10,7 @@ import ballBulletDefinition from '@res/animation/ballBullet.json'
 import needleBulletDefinition from '@res/animation/needleBullet.json'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { ColliderComponent, ColliderBuilder } from '@game/components/colliderComponent'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,
@@ -63,29 +63,32 @@ export class BulletFactory extends EntityFactory {
       shooterPosition.y + this.offset.y
     )
     const bullet = new BulletComponent(this.life)
-    const collider = new ColliderComponent(entity)
 
-    const aabbBody = new AABBDef(
-      new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT),
-      CategoryList.bulletBody
+    const collider = new ColliderComponent()
+    collider.colliders.push(
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2),
+          size: new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT),
+        })
+        .setCategory(CategoryList.bulletBody)
+        .addTag('bulletBody')
+        .setIsSensor(true)
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2),
+          size: new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
+        })
+        .setCategory(
+          this.shooterType === 'player' ? CategoryList.player.attack : CategoryList.enemy.attack
+        )
+        .addTag('AttackHitBox')
+        .setIsSensor(true)
+        .build()
     )
-    aabbBody.tag.add('bulletBody')
-    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    aabbBody.maxClipTolerance = new Vec2(0, 0)
-    aabbBody.isSensor = true
-    collider.createCollider(aabbBody)
-
-    // 攻撃判定
-    const attack = new AttackComponent(1, true)
-
-    const attackHitBox = new AABBDef(
-      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
-      this.shooterType === 'player' ? CategoryList.player.attack : CategoryList.enemy.attack
-    )
-    attackHitBox.tag.add('AttackHitBox')
-    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    attackHitBox.isSensor = true
-    collider.createCollider(attackHitBox)
 
     const body = new RigidBodyComponent(
       0,
@@ -126,7 +129,7 @@ export class BulletFactory extends EntityFactory {
     entity.addComponent('Collider', collider)
     entity.addComponent('RigidBody', body)
     entity.addComponent('Bullet', bullet)
-    entity.addComponent('Attack', attack)
+    entity.addComponent('Attack', new AttackComponent(1, true))
     return entity
   }
 }

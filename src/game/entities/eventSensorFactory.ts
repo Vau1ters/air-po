@@ -1,4 +1,4 @@
-import { AABBDef, ColliderComponent } from '@game/components/colliderComponent'
+import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
 import { Entity } from '@core/ecs/entity'
@@ -19,10 +19,18 @@ export class EventSensorFactory extends EntityFactory {
       new PositionComponent(this.position.x + this.size.x / 2, this.position.y - this.size.y / 2)
     )
 
-    const collider = new ColliderComponent(result)
-    const aabb = new AABBDef(new Vec2(this.size.x, this.size.y), CategoryList.eventSensor)
-    aabb.offset = new Vec2(-this.size.x / 2, -this.size.y / 2)
-    collider.createCollider(aabb)
+    const collider = new ColliderComponent()
+    collider.colliders.push(
+      new ColliderBuilder()
+        .setEntity(result)
+        .setAABB({
+          offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
+          size: new Vec2(this.size.x, this.size.y),
+        })
+        .setCategory(CategoryList.eventSensor)
+        .setIsSensor(true)
+        .build()
+    )
     result.addComponent('Collider', collider)
 
     result.addComponent('Sensor', new SensorComponent(this.event))

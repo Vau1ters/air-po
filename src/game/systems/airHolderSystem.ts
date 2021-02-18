@@ -2,8 +2,8 @@ import { System } from '@core/ecs/system'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Entity } from '@core/ecs/entity'
-import { Collider, AirCollider } from '@game/components/colliderComponent'
 import { assert } from '@utils/assertion'
+import { AirForCollision, Collider } from '@game/components/colliderComponent'
 
 export class AirHolderSystem extends System {
   private family: Family
@@ -49,12 +49,13 @@ export class AirHolderSystem extends System {
   private static airHolderSensor(airHolderCollider: Collider, otherCollider: Collider): void {
     // collect air
     if (otherCollider.tag.has('air')) {
-      assert(otherCollider instanceof AirCollider, 'Invaild collider')
+      const air = otherCollider.geometry
+      assert(air instanceof AirForCollision, 'Invaild collider')
 
       const position = airHolderCollider.entity.getComponent('Position')
       const airHolder = airHolderCollider.entity.getComponent('AirHolder')
 
-      const hitAirs: Entity[] = otherCollider.airFamily.entityArray.filter(
+      const hitAirs: Entity[] = air.family.entityArray.filter(
         (a: Entity) => a.getComponent('Air').hit
       )
       const nearestAir = hitAirs.reduce((a, b) => {
@@ -68,9 +69,9 @@ export class AirHolderSystem extends System {
           return b
         }
       })
-      const air = nearestAir.getComponent('Air')
-      const collectedQuantity = airHolder.collect(air.quantity)
-      air.decrease(collectedQuantity)
+      const airComponent = nearestAir.getComponent('Air')
+      const collectedQuantity = airHolder.collect(airComponent.quantity)
+      airComponent.decrease(collectedQuantity)
     }
   }
 }

@@ -3,7 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef, Collider } from '@game/components/colliderComponent'
+import { ColliderComponent, Collider, ColliderBuilder } from '@game/components/colliderComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
@@ -48,7 +48,6 @@ export class PlayerFactory extends EntityFactory {
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
-    const collider = new ColliderComponent(entity)
     const airHolder = new AirHolderComponent({
       initialQuantity: 0,
       maxQuantity: 0,
@@ -78,31 +77,51 @@ export class PlayerFactory extends EntityFactory {
       return true
     }
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.body)
-    aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    aabbBody.shouldCollide = shouldCollide
-    collider.createCollider(aabbBody)
-
-    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.hitBox)
-    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(hitBox)
-
-    const sensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.sensor)
-    sensor.tag.add('airHolderBody')
-    sensor.tag.add('playerSensor')
-    sensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    sensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(sensor)
-
-    const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT), CategoryList.player.foot)
-    foot.tag.add('playerFoot')
-    foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
-    foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
-    foot.isSensor = true
-    foot.shouldCollide = shouldCollide
-    collider.createCollider(foot)
+    const collider = new ColliderComponent()
+    collider.colliders.push(
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
+          size: new Vec2(this.WIDTH, this.HEIGHT),
+          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
+        })
+        .setCategory(CategoryList.player.body)
+        .setShouldCollide(shouldCollide)
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
+          size: new Vec2(this.WIDTH, this.HEIGHT),
+          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
+        })
+        .setCategory(CategoryList.player.hitBox)
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
+          size: new Vec2(this.WIDTH, this.HEIGHT),
+          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
+        })
+        .setCategory(CategoryList.player.sensor)
+        .addTag('airHolderBody')
+        .addTag('playerSensor')
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y),
+          size: new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT),
+          maxClipToTolerance: new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y),
+        })
+        .setCategory(CategoryList.player.foot)
+        .addTag('playerFoot')
+        .setIsSensor(true)
+        .setShouldCollide(shouldCollide)
+        .build()
+    )
 
     const sprite = parseAnimation(playerDefinition.sprite)
     const draw = new DrawComponent(entity)

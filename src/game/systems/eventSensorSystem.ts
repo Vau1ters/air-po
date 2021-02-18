@@ -20,9 +20,9 @@ export class EventSensorSystem extends System {
   public update(): void {}
 
   private onSensorAdded(entity: Entity): void {
-    const event = entity.getComponent('Sensor').event
+    const { event } = entity.getComponent('Sensor')
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(async (_, other: Collider) => {
+      c.callbacks.add(async (me: Collider, other: Collider) => {
         if (!other.tag.has('playerSensor')) return
         await this.fireEvent(event)
       })

@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
 import { CategoryList } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
 import { HPComponent } from '@game/components/hpComponent'
@@ -40,31 +40,40 @@ export class Slime1Factory extends EntityFactory {
     const position = new PositionComponent(200, 100)
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 1)
     const direction = new HorizontalDirectionComponent('Right')
-    const collider = new ColliderComponent(entity)
     const hp = new HPComponent(2, 2)
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.body)
-    aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(aabbBody)
-
-    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.hitBox)
-    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    hitBox.isSensor = true
-    collider.createCollider(hitBox)
-
-    // 攻撃判定
-    const attack = new AttackComponent(1, false)
-
-    const attackHitBox = new AABBDef(
-      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
-      CategoryList.enemy.attack
+    const collider = new ColliderComponent()
+    collider.colliders.push(
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
+          size: new Vec2(this.WIDTH, this.HEIGHT),
+          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
+        })
+        .setCategory(CategoryList.enemy.body)
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
+          size: new Vec2(this.WIDTH, this.HEIGHT),
+          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
+        })
+        .setCategory(CategoryList.enemy.hitBox)
+        .setIsSensor(true)
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y),
+          size: new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
+        })
+        .setCategory(CategoryList.enemy.attack)
+        .addTag('AttackHitBox')
+        .setIsSensor(true)
+        .build()
     )
-    attackHitBox.tag.add('AttackHitBox')
-    attackHitBox.offset = new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y)
-    attackHitBox.isSensor = true
-    collider.createCollider(attackHitBox)
 
     const sprite = parseAnimation(slime1Definition.sprite)
     const draw = new DrawComponent(entity)
@@ -88,7 +97,7 @@ export class Slime1Factory extends EntityFactory {
     entity.addComponent('HorizontalDirection', direction)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    entity.addComponent('Attack', attack)
+    entity.addComponent('Attack', new AttackComponent(1, false))
     entity.addComponent('HP', hp)
     entity.addComponent('AnimationState', animState)
     return entity

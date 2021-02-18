@@ -1,10 +1,10 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
-import { Collider, ColliderComponent, AABBCollider } from '@game/components/colliderComponent'
 import { VineComponent } from '@game/components/vineComponent'
 import vineDefinition from '@res/animation/vine.json'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
+import { AABBForCollision, Collider, ColliderComponent } from '@game/components/colliderComponent'
 
 const canExtend = (me: Collider, other: Collider): void => {
   if (!other.isSensor) {
@@ -31,12 +31,13 @@ export const addTag = (vine: Entity): void => {
 }
 
 const changeColliderLength = (colliderComponent: ColliderComponent, length: number): void => {
-  for (const collider of colliderComponent.colliders as Array<AABBCollider>) {
+  for (const collider of colliderComponent.colliders) {
+    const aabb = collider.geometry as AABBForCollision
     if (collider.tag.has('vine')) {
-      collider.aabb.size.y = (length / 3) * 16
+      aabb.bound.size.y = (length / 3) * 16
     }
     if (collider.tag.has('vineWallSensor')) {
-      collider.aabb.position.y = (length / 3) * 16 - 8
+      aabb.bound.position.y = (length / 3) * 16 - 8
     }
   }
 }

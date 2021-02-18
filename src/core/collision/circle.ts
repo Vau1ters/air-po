@@ -1,4 +1,5 @@
 import { Vec2 } from '@core/math/vec2'
+import { AABB } from './aabb'
 
 export class Circle {
   public constructor(public position = new Vec2(), public radius = 0) {}
@@ -14,6 +15,13 @@ export class Circle {
 
   public contains(point: Vec2): boolean {
     return this.position.sub(point).lengthSq() < this.radius * this.radius
+  }
+
+  public createBound(): AABB {
+    return new AABB(
+      this.position.sub(new Vec2(this.radius, this.radius)),
+      new Vec2(this.radius, this.radius).mul(2)
+    )
   }
 
   get center(): Vec2 {

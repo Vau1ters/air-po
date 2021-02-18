@@ -4,8 +4,8 @@ import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
-import { AABBCollider, Collider } from '@game/components/colliderComponent'
 import { PositionComponent } from '@game/components/positionComponent'
+import { AABBForCollision, Collider } from '@game/components/colliderComponent'
 
 export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   const player = new FamilyBuilder(world).include('Player').build().entityArray[0]
@@ -18,14 +18,18 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
   himo.tint = 0x22ff22
   draw.addChild(himo)
 
-  const [gripAABB, _, __, rootAABB, wallDetectionAABB] = entity.getComponent('Collider')
-    .colliders as Array<AABBCollider>
+  const [gripCollider, _, __, rootCollider, wallDetectionCollider] = entity.getComponent(
+    'Collider'
+  ).colliders
+  const gripAABB = gripCollider.geometry as AABBForCollision
+  const rootAABB = rootCollider.geometry as AABBForCollision
+  const wallDetectionAABB = wallDetectionCollider.geometry as AABBForCollision
 
   const targetWall = ((): { update: () => void; get: () => PositionComponent | undefined } => {
     let walls: Array<Entity> = []
     let targetWall: PositionComponent | undefined = undefined
 
-    wallDetectionAABB.callbacks.add((_: Collider, other: Collider) => {
+    wallDetectionCollider.callbacks.add((_: Collider, other: Collider) => {
       walls.push(other.entity)
     })
 

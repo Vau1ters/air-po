@@ -3,7 +3,7 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
+import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from './category'
 import vineDefinition from '@res/animation/vine.json'
@@ -39,29 +39,38 @@ export class VineFactory extends EntityFactory {
     const entity = new Entity()
     const position = new PositionComponent()
 
-    const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.vine.body)
-    aabb.tag.add('vine')
-    aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    const collider = new ColliderComponent(entity)
-    collider.createCollider(aabb)
-
-    const wallSensor = new AABBDef(
-      new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT),
-      CategoryList.vine.wallSensor
+    const collider = new ColliderComponent()
+    collider.colliders.push(
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
+          size: new Vec2(this.WIDTH, this.HEIGHT),
+        })
+        .setCategory(CategoryList.vine.body)
+        .addTag('vine')
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y),
+          size: new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT),
+        })
+        .setCategory(CategoryList.vine.wallSensor)
+        .addTag('vineWallSensor')
+        .setIsSensor(true)
+        .build(),
+      new ColliderBuilder()
+        .setEntity(entity)
+        .setAABB({
+          offset: new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y),
+          size: new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT),
+        })
+        .setCategory(CategoryList.vine.airSensor)
+        .addTag('vineAirSensor')
+        .setIsSensor(true)
+        .build()
     )
-    wallSensor.tag.add('vineWallSensor')
-    wallSensor.offset = new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y)
-    wallSensor.isSensor = true
-    collider.createCollider(wallSensor)
-
-    const airSensor = new AABBDef(
-      new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT),
-      CategoryList.vine.airSensor
-    )
-    airSensor.tag.add('vineAirSensor')
-    airSensor.offset = new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y)
-    airSensor.isSensor = true
-    collider.createCollider(airSensor)
 
     const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
     body.invMass = this.INV_MASS

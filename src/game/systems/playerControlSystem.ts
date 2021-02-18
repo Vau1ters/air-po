@@ -33,13 +33,14 @@ export class PlayerControlSystem extends System {
   }
 
   private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
+    console.log('foot')
+    if (otherCollider.isSensor) return
+
+    const rigidBody = playerCollider.entity.getComponent('RigidBody')
+    if (rigidBody.velocity.y < -1e-2) return
+
     const player = playerCollider.entity.getComponent('Player')
-    if (
-      !otherCollider.isSensor &&
-      playerCollider.entity.getComponent('RigidBody').velocity.y > -1e-2
-    ) {
-      player.landing = true
-    }
+    player.landing = true
   }
 
   private static itemPickerCallback(playerCollider: Collider, otherCollider: Collider): void {

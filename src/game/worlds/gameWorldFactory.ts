@@ -21,59 +21,64 @@ import { FilterSystem } from '@game/systems/filterSystem'
 import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
+import CollisionSystem from '@game/systems/collisionSystem'
+import { LaserSightFactory } from '@game/entities/laserSightFactory'
 
 export class GameWorldFactory {
   public create(map: Map, playerSpawnerID: number): World {
     const world = new World(gameWorldAI)
 
-    const gameWorldContainer = new Container()
-    world.stage.addChild(gameWorldContainer)
+    const rootContainer = new Container()
+    world.stage.addChild(rootContainer)
 
-    const drawContainer = new Container()
-    gameWorldContainer.addChild(drawContainer)
-    drawContainer.filterArea = application.screen
+    const worldContainer = new Container()
+    rootContainer.addChild(worldContainer)
+    worldContainer.filterArea = application.screen
 
     const background = new PIXI.Graphics()
     background.beginFill(0xc0c0c0)
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
-    drawContainer.addChild(background)
+    worldContainer.addChild(background)
 
-    const gameWorldUiContainer = new Container()
-    gameWorldUiContainer.zIndex = Infinity
-    drawContainer.addChild(gameWorldUiContainer)
+    const worldUIContainer = new Container()
+    worldUIContainer.zIndex = Infinity
+    worldContainer.addChild(worldUIContainer)
 
     const debugContainer = new Container()
     debugContainer.zIndex = Infinity
-    gameWorldContainer.addChild(debugContainer)
+    rootContainer.addChild(debugContainer)
 
     const uiContainer = new Container()
     uiContainer.zIndex = Infinity
     world.stage.addChild(uiContainer)
 
-    const physicsSystem = new PhysicsSystem(world)
+    const collisionSystem = new CollisionSystem(world)
     world.addSystem(
       new AISystem(world),
-      physicsSystem,
+      new PhysicsSystem(world),
+      collisionSystem,
       new GravitySystem(world),
       new PlayerControlSystem(world),
       new BulletSystem(world),
       new InvincibleSystem(world),
       new DamageSystem(world),
-      new FilterSystem(world, gameWorldContainer),
+      new FilterSystem(world, rootContainer),
       new AirSystem(world),
       new LightSystem(world),
       new AirHolderSystem(world),
-      new DrawSystem(world, drawContainer),
-      new UiSystem(world, uiContainer, gameWorldUiContainer, physicsSystem),
-      new DebugDrawSystem(world, debugContainer, physicsSystem),
-      new CameraSystem(world, gameWorldContainer, background),
+      new DrawSystem(world, worldContainer, worldUIContainer),
+      new UiSystem(world, uiContainer, worldUIContainer),
+      new DebugDrawSystem(world, debugContainer, collisionSystem),
+      new CameraSystem(world, rootContainer, background),
       new ControlSystem(world),
       new EventSensorSystem(world)
     )
 
     const mapBuilder = new MapBuilder(world)
     mapBuilder.build(map, playerSpawnerID)
+
+    world.addEntity(new LaserSightFactory(world).create())
 
     return world
   }

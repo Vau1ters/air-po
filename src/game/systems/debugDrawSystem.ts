@@ -2,12 +2,11 @@ import { System } from '@core/ecs/system'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Graphics, Container } from 'pixi.js'
-import { AABBCollider, CircleCollider } from '@game/components/colliderComponent'
 import { windowSize } from '@core/application'
 import { AABB } from '@core/collision/aabb'
 import { Vec2 } from '@core/math/vec2'
-import PhysicsSystem from './physicsSystem'
 import { BVHLeaf, BVHNode } from '@core/collision/bvh'
+import CollisionSystem from './collisionSystem'
 
 export default class DebugDrawSystem extends System {
   private state = {
@@ -20,17 +19,17 @@ export default class DebugDrawSystem extends System {
   private colliderFamily: Family
   private cameraFamily: Family
 
-  private physicsSystem: PhysicsSystem
+  private collisionSystem: CollisionSystem
   private graphics: Graphics = new Graphics()
 
-  public constructor(world: World, container: Container, physicsSystem: PhysicsSystem) {
+  public constructor(world: World, container: Container, collisionSystem: CollisionSystem) {
     super(world)
 
     this.positionFamily = new FamilyBuilder(world).include('Position').build()
     this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
-    this.physicsSystem = physicsSystem
+    this.collisionSystem = collisionSystem
 
     container.addChild(this.graphics)
   }
@@ -66,16 +65,8 @@ export default class DebugDrawSystem extends System {
         const collider = entity.getComponent('Collider')
 
         for (const c of collider.colliders) {
-          if (c instanceof AABBCollider) {
-            const pos = position.add(c.aabb.position)
-            if (cameraArea.overlap(new AABB(pos, c.aabb.size))) {
-              this.graphics.drawRect(pos.x, pos.y, c.aabb.size.x, c.aabb.size.y)
-            }
-          } else if (c instanceof CircleCollider) {
-            const pos = position.add(c.circle.position)
-            if (cameraArea.overlap(new AABB(pos, new Vec2(c.circle.radius, c.circle.radius)))) {
-              this.graphics.drawCircle(pos.x, pos.y, c.circle.radius)
-            }
+          if (c.bound.overlap(cameraArea)) {
+            c.geometry.draw(this.graphics, position)
           }
         }
       }
@@ -83,7 +74,7 @@ export default class DebugDrawSystem extends System {
     }
 
     if (this.state.bvh) {
-      for (const [_, bvh] of this.physicsSystem.bvhs) {
+      for (const [_, bvh] of this.collisionSystem.bvhs) {
         // webGLの頂点数上限に引っかからないようにnative: trueにしている
         this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)
 

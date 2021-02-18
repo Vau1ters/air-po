@@ -149,6 +149,10 @@ export const CategoryList = {
     category: Category.AIR,
     mask: new CategorySet(Category.SENSOR),
   },
+  laserSight: {
+    category: Category.SENSOR,
+    mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.HITBOX),
+  },
   lightSearcher: {
     category: Category.SENSOR,
     mask: new CategorySet(Category.LIGHT),

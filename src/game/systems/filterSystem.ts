@@ -5,11 +5,17 @@ import { AirFilter } from '@game/filters/airFilter'
 import { DarknessFilter } from '@game/filters/darknessFilter'
 import { windowSize } from '@core/application'
 import { Entity } from '@core/ecs/entity'
-import { AABBDef, Collider, ColliderComponent } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
 import { CategoryList } from '@game/entities/category'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
+import {
+  AABBForCollision,
+  Collider,
+  ColliderBuilder,
+  ColliderComponent,
+} from '@game/components/colliderComponent'
+import { AABB } from '@core/collision/aabb'
 
 export class FilterSystem extends System {
   private airFilter: AirFilter
@@ -45,18 +51,24 @@ export class FilterSystem extends System {
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.lightSearcher = new Entity()
-    const aabbBody = new AABBDef(
-      new Vec2(windowSize.width, windowSize.height),
-      CategoryList.lightSearcher
+    const collider = new ColliderComponent()
+    collider.colliders.push(
+      new ColliderBuilder()
+        .setEntity(this.lightSearcher)
+        .setGeometry(
+          new AABBForCollision(
+            new AABB(new Vec2(0, 0), new Vec2(windowSize.width, windowSize.height))
+          )
+        )
+        .setCategory(CategoryList.lightSearcher)
+        .addTag('screen')
+        .setIsSensor(true)
+        .addCallback((me: Collider, other: Collider) => {
+          if (!other.tag.has('light')) return
+          this.lights.push(other.entity)
+        })
+        .build()
     )
-    aabbBody.tag.add('screen')
-    aabbBody.isSensor = true
-    const collider = new ColliderComponent(this.lightSearcher)
-    collider.createCollider(aabbBody)
-    collider.colliders[0].callbacks.add((me: Collider, other: Collider) => {
-      if (!other.tag.has('light')) return
-      this.lights.push(other.entity)
-    })
     this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())
 
