@@ -1,6 +1,6 @@
 import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 
@@ -39,12 +39,11 @@ export class DamageSystem extends System {
     }
   }
 
-  private attackCollisionCallback = (
-    attackerCollider: Collider,
-    targetCollider: Collider
-  ): void => {
-    const attacker = attackerCollider.entity
-    const target = targetCollider.entity
+  private attackCollisionCallback = (args: CollisionCallbackArgs): void => {
+    const {
+      me: { entity: attacker },
+      other: { entity: target },
+    } = args
 
     const attack = attacker.getComponent('Attack')
 

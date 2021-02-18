@@ -11,9 +11,9 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
 import {
   AABBForCollision,
-  Collider,
   ColliderBuilder,
   ColliderComponent,
+  CollisionCallbackArgs,
 } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/aabb'
 
@@ -63,7 +63,8 @@ export class FilterSystem extends System {
         .setCategory(CategoryList.lightSearcher)
         .addTag('screen')
         .setIsSensor(true)
-        .addCallback((me: Collider, other: Collider) => {
+        .addCallback((args: CollisionCallbackArgs) => {
+          const { other } = args
           if (!other.tag.has('light')) return
           this.lights.push(other.entity)
         })

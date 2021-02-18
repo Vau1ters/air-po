@@ -5,7 +5,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import { PositionComponent } from '@game/components/positionComponent'
-import { AABBForCollision, Collider } from '@game/components/colliderComponent'
+import { AABBForCollision, CollisionCallbackArgs } from '@game/components/colliderComponent'
 
 export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   const player = new FamilyBuilder(world).include('Player').build().entityArray[0]
@@ -29,8 +29,8 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
     let walls: Array<Entity> = []
     let targetWall: PositionComponent | undefined = undefined
 
-    wallDetectionCollider.callbacks.add((_: Collider, other: Collider) => {
-      walls.push(other.entity)
+    wallDetectionCollider.callbacks.add((args: CollisionCallbackArgs) => {
+      walls.push(args.other.entity)
     })
 
     const findAppropriateWall = (): PositionComponent | undefined => {

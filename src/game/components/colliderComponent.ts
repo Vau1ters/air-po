@@ -9,10 +9,14 @@ import { Circle } from '@core/collision/circle'
 import { Ray } from '@core/collision/ray'
 import { assert } from '@utils/assertion'
 import { Graphics } from 'pixi.js'
-import { CollisionResult } from '@core/collision/collision'
+import { CollisionResult, CollisionResultHit } from '@core/collision/collision'
 
 export type ShouldCollide = (me: Collider, other: Collider) => boolean
-export type CollisionCallback = (me: Collider, other: Collider, result: CollisionResult) => void
+export type CollisionCallbackArgs = Exclude<CollisionResult, CollisionResultHit> & {
+  me: Collider
+  other: Collider
+}
+export type CollisionCallback = (args: CollisionCallbackArgs) => void
 
 export class Collider {
   constructor(

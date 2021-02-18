@@ -4,16 +4,22 @@ import { VineComponent } from '@game/components/vineComponent'
 import vineDefinition from '@res/animation/vine.json'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
-import { AABBForCollision, Collider, ColliderComponent } from '@game/components/colliderComponent'
+import {
+  AABBForCollision,
+  ColliderComponent,
+  CollisionCallbackArgs,
+} from '@game/components/colliderComponent'
 
-const canExtend = (me: Collider, other: Collider): void => {
+const canExtend = (args: CollisionCallbackArgs): void => {
+  const { me, other } = args
   if (!other.isSensor) {
     const vine = me.entity.getComponent('Vine')
     vine.canExtend = false
   }
 }
 
-const shouldShrink = (me: Collider, other: Collider): void => {
+const shouldShrink = (args: CollisionCallbackArgs): void => {
+  const { me, other } = args
   if (other.tag.has('air')) {
     const vine = me.entity.getComponent('Vine')
     vine.shouldShrink = false

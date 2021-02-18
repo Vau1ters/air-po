@@ -2,7 +2,11 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { AABBForCollision, Collider } from '@game/components/colliderComponent'
+import {
+  AABBForCollision,
+  Collider,
+  CollisionCallbackArgs,
+} from '@game/components/colliderComponent'
 
 export default class PhysicsSystem extends System {
   private family: Family
@@ -13,8 +17,8 @@ export default class PhysicsSystem extends System {
     this.family = new FamilyBuilder(world).include('Position', 'Collider', 'RigidBody').build()
     this.family.entityAddedEvent.addObserver((entity: Entity) => {
       for (const c of entity.getComponent('Collider').colliders) {
-        c.callbacks.add((me: Collider, other: Collider) => {
-          this.solve(me, other)
+        c.callbacks.add((args: CollisionCallbackArgs) => {
+          this.solve(args.me, args.other)
         })
       }
     })

@@ -1,5 +1,5 @@
 import { Map, MapBuilder } from '@game/map/mapBuilder'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
@@ -22,8 +22,8 @@ export class EventSensorSystem extends System {
   private onSensorAdded(entity: Entity): void {
     const { event } = entity.getComponent('Sensor')
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(async (me: Collider, other: Collider) => {
-        if (!other.tag.has('playerSensor')) return
+      c.callbacks.add(async (args: CollisionCallbackArgs) => {
+        if (!args.other.tag.has('playerSensor')) return
         await this.fireEvent(event)
       })
     }

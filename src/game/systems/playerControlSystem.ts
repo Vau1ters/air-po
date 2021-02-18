@@ -2,7 +2,7 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -32,19 +32,26 @@ export class PlayerControlSystem extends System {
     // 何もしない
   }
 
-  private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
-    if (otherCollider.isSensor) return
+  private static footCollisionCallback(args: CollisionCallbackArgs): void {
+    const {
+      me: { entity: playerEntity },
+      other,
+    } = args
+    if (other.isSensor) return
 
-    const rigidBody = playerCollider.entity.getComponent('RigidBody')
+    const rigidBody = playerEntity.getComponent('RigidBody')
     if (rigidBody.velocity.y < -1e-2) return
 
-    const player = playerCollider.entity.getComponent('Player')
+    const player = playerEntity.getComponent('Player')
     player.landing = true
   }
 
-  private static itemPickerCallback(playerCollider: Collider, otherCollider: Collider): void {
-    const player = playerCollider.entity.getComponent('Player')
-    const other = otherCollider.entity
+  private static itemPickerCallback(args: CollisionCallbackArgs): void {
+    const {
+      me: { entity: playerEntity },
+      other: { entity: other },
+    } = args
+    const player = playerEntity.getComponent('Player')
     if (other.hasComponent('PickupTarget')) {
       player.pickupTarget.add(other) // this target reference will be removed in playerPickup
     }

@@ -11,19 +11,17 @@ import {
 import { Vec2 } from '@core/math/vec2'
 import { raycastToAABB } from './ray'
 
-export type CollisionResultAABBAndAABB =
-  | {
-      hit: false
-    }
-  | {
-      hit: true
-      clip: number
-    }
+export type CollisionResultHit = { hit: boolean }
+type WithHit<T> = { hit: false } | ({ hit: true } & T)
+
+export type CollisionResultAABBAndAABB = {
+  clip: number
+}
 
 const collideAABBAndAABB = (
   aabb1: AABBForCollision,
   aabb2: AABBForCollision
-): CollisionResultAABBAndAABB => {
+): WithHit<CollisionResultAABBAndAABB> => {
   if (!aabb1.bound.overlap(aabb2.bound)) return { hit: false }
   const center1 = aabb1.bound.center
   const center2 = aabb2.bound.center
@@ -40,19 +38,14 @@ const collideAABBAndAABB = (
   return { hit: true, clip: Math.max(clip.x - tolerance.x, clip.y - tolerance.y) }
 }
 
-export type CollisionResultCircleAndAABB =
-  | {
-      hit: false
-    }
-  | {
-      hit: true
-      clip: number
-    }
+export type CollisionResultCircleAndAABB = {
+  clip: number
+}
 
 const collideCircleAndAABB = (
   circle: CircleForCollision,
   aabb: AABBForCollision
-): CollisionResultCircleAndAABB => {
+): WithHit<CollisionResultCircleAndAABB> => {
   const distX = Math.max(
     0,
     aabb.bound.left - circle.circle.center.x,
@@ -71,38 +64,28 @@ const collideCircleAndAABB = (
   return { hit: true, clip: Math.sqrt(radius2) - Math.sqrt(dist2) }
 }
 
-export type CollisionResultCircleAndCircle =
-  | {
-      hit: false
-    }
-  | {
-      hit: true
-      clip: number
-    }
+export type CollisionResultCircleAndCircle = {
+  clip: number
+}
 
 const collideCircleAndCircle = (
   c1: CircleForCollision,
   c2: CircleForCollision
-): CollisionResultCircleAndCircle => {
+): WithHit<CollisionResultCircleAndCircle> => {
   const dist2 = c1.circle.position.sub(c2.circle.position).lengthSq()
   const radius = c1.circle.radius + c2.circle.radius
   if (dist2 > radius * radius) return { hit: false }
   return { hit: true, clip: radius - Math.sqrt(dist2) }
 }
 
-export type CollisionResultAirAndAABB =
-  | {
-      hit: false
-    }
-  | {
-      hit: true
-      score: number
-    }
+export type CollisionResultAirAndAABB = {
+  score: number
+}
 
 const collideAirAndAABB = (
   airs: AirForCollision,
   aabb: AABBForCollision
-): CollisionResultAirAndAABB => {
+): WithHit<CollisionResultAirAndAABB> => {
   let score = 0
   for (const air of airs.family.entityIterator) {
     const airComponent = air.getComponent('Air')
@@ -118,19 +101,14 @@ const collideAirAndAABB = (
   return { hit: true, score }
 }
 
-export type CollisionResultRayAndAABB =
-  | {
-      hit: false
-    }
-  | {
-      hit: true
-      hitPoint: Vec2
-    }
+export type CollisionResultRayAndAABB = {
+  hitPoint: Vec2
+}
 
 const collideRayAndAABB = (
   ray: RayForCollision,
   aabb: AABBForCollision
-): CollisionResultRayAndAABB => {
+): WithHit<CollisionResultRayAndAABB> => {
   const result = raycastToAABB(ray.ray, aabb.bound)
   if (result === undefined) return { hit: false }
   return { hit: true, hitPoint: result }
@@ -148,7 +126,7 @@ export const collide = (
   c2: Collider,
   position1: PositionComponent,
   position2: PositionComponent
-): CollisionResult => {
+): WithHit<CollisionResult> => {
   const g1 = c1.geometry.applyPosition(position1)
   const g2 = c2.geometry.applyPosition(position2)
   if (g1 instanceof AABBForCollision && g2 instanceof AABBForCollision) {

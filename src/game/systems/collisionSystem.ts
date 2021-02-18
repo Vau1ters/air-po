@@ -91,10 +91,10 @@ export default class CollisionSystem extends System {
         const result = collide(c1, c2, position1, position2)
         if (result.hit === false) continue
         for (const callback of c1.callbacks) {
-          callback(c1, c2, result)
+          callback({ me: c1, other: c2, ...result })
         }
         for (const callback of c2.callbacks) {
-          callback(c2, c1, result)
+          callback({ me: c2, other: c1, ...result })
         }
       }
     }

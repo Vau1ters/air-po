@@ -2,7 +2,7 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { Category } from '@game/entities/category'
 
 export class LightSystem extends System {
@@ -35,7 +35,8 @@ export class LightSystem extends System {
     }
   }
 
-  private static lightAirCollision(me: Collider, other: Collider): void {
+  private static lightAirCollision(args: CollisionCallbackArgs): void {
+    const { me, other } = args
     if (!other.tag.has('air')) return
     me.entity.getComponent('Light').intensity = 1
   }

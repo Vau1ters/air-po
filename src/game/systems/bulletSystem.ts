@@ -2,7 +2,7 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 
 export class BulletSystem extends System {
   private family: Family
@@ -19,7 +19,7 @@ export class BulletSystem extends System {
     if (collider) {
       for (const c of collider.colliders) {
         if (c.tag.has('bulletBody')) {
-          c.callbacks.add((bullet): void => this.bulletCollisionCallback(bullet))
+          c.callbacks.add((args: CollisionCallbackArgs) => this.bulletCollisionCallback(args))
         }
       }
     }
@@ -35,9 +35,12 @@ export class BulletSystem extends System {
     }
   }
 
-  private bulletCollisionCallback(bullet: Collider): void {
-    if (bullet.entity.hasComponent('Bullet')) {
-      this.world.removeEntity(bullet.entity)
+  private bulletCollisionCallback(args: CollisionCallbackArgs): void {
+    const {
+      me: { entity: bullet },
+    } = args
+    if (bullet.hasComponent('Bullet')) {
+      this.world.removeEntity(bullet)
     }
   }
 }

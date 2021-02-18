@@ -1,14 +1,13 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
-import { CollisionResult, CollisionResultRayAndAABB } from '@core/collision/collision'
+import { CollisionResultRayAndAABB } from '@core/collision/collision'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { Collider, RayForCollision } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs, RayForCollision } from '@game/components/colliderComponent'
 import { MouseController } from '@game/systems/controlSystem'
-import { assert } from '@utils/assertion'
 import { Graphics } from 'pixi.js'
 
 const getClosestHitPointGenerator = function*(entity: Entity): Generator<Vec2, void> {
@@ -16,10 +15,8 @@ const getClosestHitPointGenerator = function*(entity: Entity): Generator<Vec2, v
   const ray = (collider.geometry as RayForCollision).ray
 
   let hitPoints: Array<Vec2> = []
-  collider.callbacks.add((_: Collider, __: Collider, result: CollisionResult) => {
-    const tmp = result as CollisionResultRayAndAABB
-    assert(tmp.hit === true, 'unexpected code')
-    const { hitPoint } = tmp
+  collider.callbacks.add((args: CollisionCallbackArgs) => {
+    const { hitPoint } = args as CollisionResultRayAndAABB
     hitPoints.push(hitPoint)
   })
 

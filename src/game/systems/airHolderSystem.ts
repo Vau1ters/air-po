@@ -3,7 +3,7 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Entity } from '@core/ecs/entity'
 import { assert } from '@utils/assertion'
-import { AirForCollision, Collider } from '@game/components/colliderComponent'
+import { AirForCollision, CollisionCallbackArgs } from '@game/components/colliderComponent'
 
 export class AirHolderSystem extends System {
   private family: Family
@@ -46,7 +46,8 @@ export class AirHolderSystem extends System {
     }
   }
 
-  private static airHolderSensor(airHolderCollider: Collider, otherCollider: Collider): void {
+  private static airHolderSensor(args: CollisionCallbackArgs): void {
+    const { me: airHolderCollider, other: otherCollider } = args
     // collect air
     if (otherCollider.tag.has('air')) {
       const air = otherCollider.geometry
