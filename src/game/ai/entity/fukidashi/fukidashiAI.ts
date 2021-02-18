@@ -1,6 +1,6 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
-import { parallelAll } from '@core/behaviour/composite'
+import { parallelAll, parallelAny } from '@core/behaviour/composite'
 import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
 import { wait } from '@core/behaviour/wait'
@@ -70,5 +70,5 @@ export const fukidashiAI = function(
   target: Entity,
   camera: Entity
 ): Behaviour<void> {
-  return parallelAll([animate(fukidashi), chase(fukidashi, target, camera)])
+  return parallelAny([animate(fukidashi), chase(fukidashi, target, camera)])
 }
