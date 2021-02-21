@@ -19,6 +19,7 @@ export class FukidashiFactory extends EntityFactory {
 
     const tailSize = 20
     const radius = 10
+    const padding = radius / Math.sqrt(2)
     const border = 1
     const sprite = new Sprite()
     sprite.name = 'background'
@@ -54,8 +55,8 @@ export class FukidashiFactory extends EntityFactory {
     text.filters = [new Filter(undefined, fukidashiTextFragmentShader)]
     text.zIndex = 1
     text.position.set(
-      tailSize + radius / Math.sqrt(2) - sprite.width * 0.5,
-      tailSize + radius / Math.sqrt(2) - sprite.height * 0.5
+      tailSize + padding - sprite.width * 0.5,
+      tailSize + padding - sprite.height * 0.5
     )
 
     ui.addChild(sprite)

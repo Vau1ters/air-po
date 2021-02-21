@@ -3,7 +3,7 @@ varying vec2 vTextureCoord;
 
 uniform sampler2D uSampler;
 uniform vec2 displaySize;
-uniform vec2 direction;
+uniform vec2 target;
 uniform float tailSize;
 uniform float border;
 uniform float radius;
@@ -47,12 +47,21 @@ float distBox(vec2 pixel) {
 }
 
 float distTail(vec2 pixel) {
-    vec2 target = direction * displaySize.y * 0.45;
-    float r = min(displaySize.x, displaySize.y) * 0.1;
-    vec2 p0 = target;
-    vec2 p1 = normalize(vec2(+target.y, -target.x)) * r;
-    vec2 p2 = normalize(vec2(-target.y, +target.x)) * r;
-    return distTriangle(pixel, p0, p1, p2);
+    vec2 offsetDirection = normalize(target * displaySize);
+    float w = max(0., boxSize().x * 0.5 - tailSize * 0.5);
+    float h = max(0., boxSize().y * 0.5 - tailSize * 0.5);
+    float x = offsetDirection.x;
+    float y = offsetDirection.y;
+    vec2 offset = w * abs(y) > h * abs(x) ? offsetDirection * (h / abs(y)) : offsetDirection * (w / abs(x));
+    vec2 direction = normalize(target - offset);
+
+    float scale = tailSize * 2.0;
+    float r = scale * 0.3;
+    vec2 p0 = direction * scale;
+    vec2 p1 = normalize(vec2(+p0.y, -p0.x)) * r;
+    vec2 p2 = normalize(vec2(-p0.y, +p0.x)) * r;
+
+    return distTriangle(pixel, p0 + offset, p1 + offset, p2 + offset);
 }
 
 float dist(vec2 pixel) {
