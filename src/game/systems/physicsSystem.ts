@@ -2,11 +2,11 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import {
-  AABBForCollision,
-  Collider,
-  CollisionCallbackArgs,
-} from '@game/components/colliderComponent'
+import { Collider, CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { collide, WithHit } from '@core/collision/collision'
+import { AABB } from '@core/collision/geometry/aabb'
+import { OBB } from '@core/collision/geometry/obb'
+import { CollisionResultOBBOBB } from '@core/collision/collision/OBB_OBB'
 
 export default class PhysicsSystem extends System {
   private family: Family
@@ -18,7 +18,8 @@ export default class PhysicsSystem extends System {
     this.family.entityAddedEvent.addObserver((entity: Entity) => {
       for (const c of entity.getComponent('Collider').colliders) {
         c.callbacks.add((args: CollisionCallbackArgs) => {
-          this.solve(args.me, args.other)
+          const { me, other } = args
+          this.solve(me, other)
         })
       }
     })
@@ -40,65 +41,61 @@ export default class PhysicsSystem extends System {
   private solve(c1: Collider, c2: Collider): void {
     if (c1.isSensor) return
     if (c2.isSensor) return
-    if (!c1.entity.hasComponent('RigidBody')) return
-    if (!c2.entity.hasComponent('RigidBody')) return
+    const { entity: entity1, geometry: g1 } = c1
+    const { entity: entity2, geometry: g2 } = c2
+    if (!entity1.hasComponent('RigidBody')) return
+    if (!entity2.hasComponent('RigidBody')) return
 
-    const body1 = c1.entity.getComponent('RigidBody')
-    const body2 = c2.entity.getComponent('RigidBody')
+    const body1 = entity1.getComponent('RigidBody')
+    const body2 = entity2.getComponent('RigidBody')
 
-    const position1 = c1.entity.getComponent('Position')
-    const position2 = c2.entity.getComponent('Position')
+    const position1 = entity1.getComponent('Position')
+    const position2 = entity2.getComponent('Position')
+
+    if (!(g1 instanceof AABB) && !(g1 instanceof OBB)) return
+    if (!(g2 instanceof AABB) && !(g2 instanceof OBB)) return
+
+    let obb1 = g1 instanceof AABB ? g1.asOBB() : g1
+    let obb2 = g2 instanceof AABB ? g2.asOBB() : g2
+
     // TODO:別クラスに分ける
-    if (c1.geometry instanceof AABBForCollision && c2.geometry instanceof AABBForCollision) {
-      const aabb1 = c1.geometry.bound.add(position1)
-      const aabb2 = c2.geometry.bound.add(position2)
+    obb1 = obb1.applyPosition(position1)
+    obb2 = obb2.applyPosition(position2)
 
-      const center1 = aabb1.center
-      const center2 = aabb2.center
+    const center1 = obb1.bound.center
+    const center2 = obb2.bound.center
 
-      const pDiff = center1.sub(center2)
-      const vDiff = body1.velocity.sub(body2.velocity)
+    const pDiff = center1.sub(center2)
+    const vDiff = body1.velocity.sub(body2.velocity)
 
-      const clip = aabb1.size
-        .add(aabb2.size)
-        .div(2)
-        .sub(pDiff.abs())
+    const obbResult = collide(c1, c2, position1, position2) as WithHit<CollisionResultOBBOBB>
 
-      if (clip.x < 0 || clip.y < 0) {
-        // すでに衝突は解消されている
-        return
-      }
-
-      const sumMass = body1.invMass + body2.invMass
-      if (sumMass === 0) return
-      // 反発係数
-      const rest = 1 + body1.restitution * body2.restitution
-      // 埋まってる距離が短い方向に押し出す
-      if (Math.abs(clip.x) > Math.abs(clip.y)) {
-        // 縦方向
-        // 離れようとしているときに押し出さないようにする
-        if (vDiff.y * pDiff.y <= 0) {
-          body1.velocity.y += -vDiff.y * (body1.invMass / sumMass) * rest
-          body2.velocity.y += vDiff.y * (body2.invMass / sumMass) * rest
-        }
-        // 押し出し
-        let sign = 1
-        if (pDiff.y > 0) sign = -1
-        position1.y += sign * -clip.y * (body1.invMass / sumMass)
-        position2.y += sign * clip.y * (body2.invMass / sumMass)
-      } else {
-        // 横方向
-        // 離れようとしているときに押し出さないようにする
-        if (vDiff.x * pDiff.x <= 0) {
-          body1.velocity.x += -vDiff.x * (body1.invMass / sumMass) * rest
-          body2.velocity.x += vDiff.x * (body2.invMass / sumMass) * rest
-        }
-        // 押し出し
-        let sign = 1
-        if (pDiff.x > 0) sign = -1
-        position1.x += sign * -clip.x * (body1.invMass / sumMass)
-        position2.x += sign * clip.x * (body2.invMass / sumMass)
-      }
+    // これまでのsolveですでに衝突が解消されている可能性がある
+    if (!obbResult.hit) {
+      return
     }
+
+    const { clip, axis } = obbResult
+
+    if (clip < 0) {
+      // すでに衝突は解消されている
+      return
+    }
+
+    const sumMass = body1.invMass + body2.invMass
+    if (sumMass === 0) return
+    // 反発係数
+    const rest = 1 + body1.restitution * body2.restitution
+
+    // 離れようとしているときに押し出さないようにする
+    if (vDiff.dot(axis) * pDiff.dot(axis) <= 0) {
+      const dv = (vDiff.dot(axis) / sumMass) * rest
+      body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
+      body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
+    }
+
+    // 押し出し
+    position1.assign(position1.add(axis.mul((-clip * body1.invMass) / sumMass)))
+    position2.assign(position2.add(axis.mul((+clip * body2.invMass) / sumMass)))
   }
 }

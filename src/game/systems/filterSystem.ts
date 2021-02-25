@@ -10,12 +10,10 @@ import { CategoryList } from '@game/entities/category'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
 import {
-  AABBForCollision,
   ColliderBuilder,
   ColliderComponent,
   CollisionCallbackArgs,
 } from '@game/components/colliderComponent'
-import { AABB } from '@core/collision/aabb'
 
 export class FilterSystem extends System {
   private airFilter: AirFilter
@@ -55,11 +53,9 @@ export class FilterSystem extends System {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(this.lightSearcher)
-        .setGeometry(
-          new AABBForCollision(
-            new AABB(new Vec2(0, 0), new Vec2(windowSize.width, windowSize.height))
-          )
-        )
+        .setAABB({
+          size: new Vec2(windowSize.width, windowSize.height),
+        })
         .setCategory(CategoryList.lightSearcher)
         .addTag('screen')
         .setIsSensor(true)

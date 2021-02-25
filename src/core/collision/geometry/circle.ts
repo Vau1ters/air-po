@@ -1,7 +1,9 @@
 import { Vec2 } from '@core/math/vec2'
+import { Graphics } from 'pixi.js'
 import { AABB } from './aabb'
+import { GeometryForCollision } from './geometry'
 
-export class Circle {
+export class Circle implements GeometryForCollision {
   public constructor(public position = new Vec2(), public radius = 0) {}
 
   public add(position: Vec2): Circle {
@@ -26,5 +28,14 @@ export class Circle {
 
   get center(): Vec2 {
     return this.position
+  }
+
+  applyPosition(pos: Vec2): Circle {
+    return this.add(pos)
+  }
+
+  draw(g: Graphics, position: Vec2): void {
+    const pos = position.add(this.position)
+    g.drawCircle(pos.x, pos.y, this.radius)
   }
 }

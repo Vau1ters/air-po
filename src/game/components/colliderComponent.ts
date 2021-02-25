@@ -1,15 +1,14 @@
+import { CollisionResult } from '@core/collision/collision'
+import { AABB } from '@core/collision/geometry/aabb'
+import { Air } from '@core/collision/geometry/air'
+import { GeometryForCollision } from '@core/collision/geometry/geometry'
+import { OBB } from '@core/collision/geometry/obb'
+import { Ray } from '@core/collision/geometry/ray'
 import { Entity } from '@core/ecs/entity'
-import { Category } from '../entities/category'
-import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { AirFilter } from '@game/filters/airFilter'
-import { AABB } from '@core/collision/aabb'
-import { Circle } from '@core/collision/circle'
-import { Ray } from '@core/collision/ray'
+import { Category } from '@game/entities/category'
 import { assert } from '@utils/assertion'
-import { Graphics } from 'pixi.js'
-import { CollisionResult } from '@core/collision/collision'
 
 export type ShouldCollide = (me: Collider, other: Collider) => boolean
 export type CollisionCallbackArgs = CollisionResult & {
@@ -60,86 +59,6 @@ export type ColliderOption = {
   mask: Set<Category>
 }
 
-export interface GeometryForCollision {
-  createBound(): AABB
-  applyPosition(pos: Vec2): GeometryForCollision
-  draw(g: Graphics, pos: Vec2): void
-}
-
-export class AABBForCollision implements GeometryForCollision {
-  constructor(public bound: AABB, public maxClipToTolerance: Vec2 = new Vec2(0, 0)) {}
-
-  createBound(): AABB {
-    return this.bound
-  }
-
-  applyPosition(pos: Vec2): AABBForCollision {
-    return new AABBForCollision(this.bound.add(pos), this.maxClipToTolerance)
-  }
-
-  draw(g: Graphics, position: Vec2): void {
-    const pos = position.add(this.bound.position)
-    g.drawRect(pos.x, pos.y, this.bound.size.x, this.bound.size.y)
-  }
-}
-
-export class CircleForCollision implements GeometryForCollision {
-  constructor(public circle: Circle) {}
-
-  createBound(): AABB {
-    return this.circle.createBound()
-  }
-
-  applyPosition(pos: Vec2): CircleForCollision {
-    return new CircleForCollision(this.circle.add(pos))
-  }
-
-  draw(g: Graphics, position: Vec2): void {
-    const pos = position.add(this.circle.position)
-    g.drawCircle(pos.x, pos.y, this.circle.radius)
-  }
-}
-
-export class AirForCollision implements GeometryForCollision {
-  public family: Family
-  constructor(world: World) {
-    this.family = new FamilyBuilder(world).include('Air').build()
-  }
-
-  createBound(): AABB {
-    const aabbBounds: AABB[] = this.family.entityArray.map((e: Entity) => {
-      const p = e.getComponent('Position')
-      return new AABB(
-        p.sub(new Vec2(AirFilter.EFFECTIVE_RADIUS, AirFilter.EFFECTIVE_RADIUS)),
-        new Vec2(AirFilter.EFFECTIVE_RADIUS * 2, AirFilter.EFFECTIVE_RADIUS * 2)
-      )
-    })
-    if (aabbBounds.length === 0) return new AABB()
-    return aabbBounds.reduce((a, b) => a.merge(b))
-  }
-
-  applyPosition(): GeometryForCollision {
-    return this
-  }
-
-  draw(_: Graphics, __: Vec2): void {}
-}
-
-export class RayForCollision implements GeometryForCollision {
-  constructor(public ray: Ray) {}
-
-  createBound(): AABB {
-    const big = 114514 // cannot use Infinity since coordinate of right edge become NaN (-Infinity + Infinity)
-    return new AABB(new Vec2(-big, -big), new Vec2(+big * 2, +big * 2))
-  }
-
-  applyPosition(pos: Vec2): GeometryForCollision {
-    return new RayForCollision(new Ray(pos.add(this.ray.origin), this.ray.direction))
-  }
-
-  draw(_: Graphics, __: Vec2): void {}
-}
-
 export class ColliderBuilder {
   private entity?: Entity
   private geometry?: GeometryForCollision
@@ -163,17 +82,19 @@ export class ColliderBuilder {
   }
 
   setAABB(arg: { offset?: Vec2; size: Vec2; maxClipToTolerance?: Vec2 }): ColliderBuilder {
-    return this.setGeometry(
-      new AABBForCollision(new AABB(arg.offset, arg.size), arg.maxClipToTolerance)
-    )
+    return this.setGeometry(new AABB(arg.offset, arg.size, arg.maxClipToTolerance))
+  }
+
+  setOBB(arg: { offset?: Vec2; size: Vec2 }): ColliderBuilder {
+    return this.setGeometry(new OBB(new AABB(arg.offset, arg.size), 0))
   }
 
   setAir(world: World): ColliderBuilder {
-    return this.setGeometry(new AirForCollision(world))
+    return this.setGeometry(new Air(world))
   }
 
   setRay(arg: { offset?: Vec2; direction: Vec2 }): ColliderBuilder {
-    return this.setGeometry(new RayForCollision(new Ray(arg.offset, arg.direction)))
+    return this.setGeometry(new Ray(arg.offset, arg.direction))
   }
 
   setIsSensor(isSensor: boolean): ColliderBuilder {
