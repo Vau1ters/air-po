@@ -2,7 +2,7 @@ import { Container } from 'pixi.js'
 import { Entity } from '@core/ecs/entity'
 import { Category, CategorySet } from '../entities/category'
 import { Vec2 } from '@core/math/vec2'
-import { Collider, ColliderBuilder } from './colliderComponent'
+import { buildCollider, Collider } from './colliderComponent'
 
 export type ContainerType = 'World' | 'WorldUI'
 
@@ -15,14 +15,16 @@ export class DrawComponent extends Container {
 
   createCollider(): Collider {
     const localBounds = this.getLocalBounds()
-    return new ColliderBuilder()
-      .setEntity(this.entity)
-      .setAABB({
+    return buildCollider({
+      entity: this.entity,
+      geometry: {
+        type: 'AABB',
         offset: new Vec2(localBounds.x, localBounds.y),
         size: new Vec2(localBounds.width, localBounds.height),
-      })
-      .setIsSensor(true)
-      .setCategory({ category: Category.DRAW, mask: new CategorySet(Category.SENSOR) })
-      .build()
+      },
+      isSensor: true,
+      category: Category.DRAW,
+      mask: new CategorySet(Category.SENSOR),
+    })
   }
 }

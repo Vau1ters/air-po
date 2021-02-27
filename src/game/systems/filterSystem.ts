@@ -6,11 +6,11 @@ import { DarknessFilter } from '@game/filters/darknessFilter'
 import { windowSize } from '@core/application'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from '@game/entities/category'
+import { Category, CategorySet } from '@game/entities/category'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
 import {
-  ColliderBuilder,
+  buildCollider,
   ColliderComponent,
   CollisionCallbackArgs,
 } from '@game/components/colliderComponent'
@@ -51,20 +51,24 @@ export class FilterSystem extends System {
     this.lightSearcher = new Entity()
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(this.lightSearcher)
-        .setAABB({
+      buildCollider({
+        entity: this.lightSearcher,
+        geometry: {
+          type: 'AABB',
           size: new Vec2(windowSize.width, windowSize.height),
-        })
-        .setCategory(CategoryList.lightSearcher)
-        .addTag('screen')
-        .setIsSensor(true)
-        .addCallback((args: CollisionCallbackArgs) => {
-          const { other } = args
-          if (!other.tag.has('light')) return
-          this.lights.push(other.entity)
-        })
-        .build()
+        },
+        category: Category.SENSOR,
+        mask: new CategorySet(Category.LIGHT),
+        tag: ['screen'],
+        isSensor: true,
+        callbacks: [
+          (args: CollisionCallbackArgs): void => {
+            const { other } = args
+            if (!other.tag.has('light')) return
+            this.lights.push(other.entity)
+          },
+        ],
+      })
     )
     this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())

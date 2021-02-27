@@ -3,10 +3,10 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, Collider, ColliderBuilder } from '@game/components/colliderComponent'
+import { ColliderComponent, Collider, buildColliders } from '@game/components/colliderComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import { HPComponent } from '@game/components/hpComponent'
@@ -24,19 +24,26 @@ export class PlayerFactory extends EntityFactory {
   private readonly MASS = 10
   private readonly RESTITUTION = 0
 
-  private readonly BODY_AABB = {
+  private readonly BODY_COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
     maxClipToTolerance: new Vec2(3, 4),
   }
-  private readonly FOOT_AABB = {
+
+  private readonly FOOT_COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-4, 7),
     size: new Vec2(8, 1),
     maxClipToTolerance: new Vec2(2, 0),
   }
 
-  private readonly AIR_COLLECT_SPEED = 0.05
-  private readonly AIR_CONSUME_SPEED = 0.025
+  private readonly AIR_HOLDER = {
+    initialQuantity: 0,
+    maxQuantity: 0,
+    collectSpeed: 0.05,
+    consumeSpeed: 0.025,
+  }
 
   public constructor(private world: World) {
     super()
@@ -44,16 +51,11 @@ export class PlayerFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(200, 100)
+    const position = new PositionComponent()
     const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
-    const airHolder = new AirHolderComponent({
-      initialQuantity: 0,
-      maxQuantity: 0,
-      collectSpeed: this.AIR_COLLECT_SPEED,
-      consumeSpeed: this.AIR_CONSUME_SPEED,
-    })
+    const airHolder = new AirHolderComponent(this.AIR_HOLDER)
     const hp = new HPComponent(3, 3)
     const invincible = new InvincibleComponent()
 
@@ -79,32 +81,36 @@ export class PlayerFactory extends EntityFactory {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.BODY_AABB)
-        .setCategory(CategoryList.player.body)
-        .setShouldCollide(shouldCollide)
-        .build(),
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.BODY_AABB)
-        .setCategory(CategoryList.player.hitBox)
-        .build(),
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.BODY_AABB)
-        .setCategory(CategoryList.player.sensor)
-        .addTag('airHolderBody')
-        .addTag('playerSensor')
-        .build(),
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.FOOT_AABB)
-        .setCategory(CategoryList.player.foot)
-        .addTag('playerFoot')
-        .setIsSensor(true)
-        .setShouldCollide(shouldCollide)
-        .build()
+      ...buildColliders({
+        entity,
+        colliders: [
+          {
+            geometry: this.BODY_COLLIDER,
+            category: Category.PHYSICS,
+            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+            condition: shouldCollide,
+          },
+          {
+            geometry: this.BODY_COLLIDER,
+            category: Category.PLAYER_HITBOX,
+            mask: new CategorySet(Category.ATTACK, Category.SENSOR),
+          },
+          {
+            geometry: this.BODY_COLLIDER,
+            category: Category.SENSOR,
+            mask: new CategorySet(Category.ITEM, Category.AIR, Category.SENSOR),
+            tag: ['airHolderBody', 'playerSensor'],
+          },
+          {
+            geometry: this.FOOT_COLLIDER,
+            category: Category.PHYSICS,
+            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+            tag: ['playerFoot'],
+            isSensor: true,
+            condition: shouldCollide,
+          },
+        ],
+      })
     )
 
     const sprite = parseAnimation(playerDefinition.sprite)

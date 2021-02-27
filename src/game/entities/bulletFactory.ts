@@ -4,13 +4,13 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { BulletComponent } from '@game/components/bulletComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
 import ballBulletDefinition from '@res/animation/ballBullet.json'
 import needleBulletDefinition from '@res/animation/needleBullet.json'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
-import { ColliderComponent, ColliderBuilder } from '@game/components/colliderComponent'
+import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,
@@ -21,7 +21,8 @@ type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
 
 export class BulletFactory extends EntityFactory {
-  private readonly AABB = {
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-2, -2),
     size: new Vec2(4, 4),
   }
@@ -65,22 +66,27 @@ export class BulletFactory extends EntityFactory {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(CategoryList.bulletBody)
-        .addTag('bulletBody')
-        .setIsSensor(true)
-        .build(),
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(
-          this.shooterType === 'player' ? CategoryList.player.attack : CategoryList.enemy.attack
-        )
-        .addTag('AttackHitBox')
-        .setIsSensor(true)
-        .build()
+      ...buildColliders({
+        entity,
+        colliders: [
+          {
+            geometry: this.COLLIDER,
+            category: Category.PHYSICS,
+            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+            tag: ['bulletBody'],
+            isSensor: true,
+          },
+          {
+            geometry: this.COLLIDER,
+            category: Category.ATTACK,
+            mask: new CategorySet(
+              this.shooterType === 'player' ? Category.HITBOX : Category.PLAYER_HITBOX
+            ),
+            tag: ['AttackHitBox'],
+            isSensor: true,
+          },
+        ],
+      })
     )
 
     const body = new RigidBodyComponent(

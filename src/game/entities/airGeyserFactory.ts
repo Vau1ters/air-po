@@ -4,8 +4,8 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import airGeyserDefinition from '@res/animation/airGeyser.json'
-import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
-import { CategoryList } from './category'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
+import { Category, CategorySet } from './category'
 import { Vec2 } from '@core/math/vec2'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIComponent } from '@game/components/aiComponent'
@@ -16,7 +16,8 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 export class AirGeyserFactory extends EntityFactory {
   private readonly INV_MASS = 0
   private readonly RESTITUTION = 0
-  private readonly AABB = {
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-5, 3),
     size: new Vec2(10, 13),
   }
@@ -49,11 +50,12 @@ export class AirGeyserFactory extends EntityFactory {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(CategoryList.airGeyser)
-        .build()
+      buildCollider({
+        entity,
+        geometry: this.COLLIDER,
+        category: Category.DYNAMIC_WALL,
+        mask: new CategorySet(Category.PHYSICS),
+      })
     )
 
     const rigidBody = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)

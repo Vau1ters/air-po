@@ -1,9 +1,9 @@
-import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { EntityFactory } from './entityFactory'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
@@ -32,14 +32,16 @@ export class EquipmentTileFactory extends EntityFactory {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB({
+      buildCollider({
+        entity,
+        geometry: {
+          type: 'AABB',
           offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
           size: new Vec2(this.size.x, this.size.y),
-        })
-        .setCategory(CategoryList.eventSensor)
-        .build()
+        },
+        category: Category.SENSOR,
+        mask: new CategorySet(Category.SENSOR),
+      })
     )
     entity.addComponent('Collider', collider)
 

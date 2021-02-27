@@ -2,11 +2,11 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { laserSightAI } from '@game/ai/entity/laserSight/laserSightAI'
 import { AIComponent } from '@game/components/aiComponent'
-import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { Graphics } from 'pixi.js'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { EntityFactory } from './entityFactory'
 
 export class LaserSightFactory extends EntityFactory {
@@ -25,12 +25,13 @@ export class LaserSightFactory extends EntityFactory {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setRay({})
-        .setCategory(CategoryList.laserSight)
-        .setIsSensor(true)
-        .build()
+      buildCollider({
+        entity,
+        geometry: { type: 'Ray' },
+        category: Category.SENSOR,
+        mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.HITBOX),
+        isSensor: true,
+      })
     )
     entity.addComponent('Collider', collider)
 

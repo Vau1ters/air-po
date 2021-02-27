@@ -5,13 +5,14 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import mossDefinition from '@res/animation/moss.json'
 import { World } from '@core/ecs/world'
-import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
-import { CategoryList } from './category'
+import { buildColliders, ColliderComponent } from '@game/components/colliderComponent'
+import { Category, CategorySet } from './category'
 import { Vec2 } from '@core/math/vec2'
 import { LightComponent } from '@game/components/lightComponent'
 
 export class MossFactory extends EntityFactory {
-  private readonly AABB = {
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-4, -4),
     size: new Vec2(8, 8),
   }
@@ -22,21 +23,26 @@ export class MossFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(200, 100)
+    const position = new PositionComponent()
     const collider = new ColliderComponent()
 
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(CategoryList.moss.light)
-        .addTag('light')
-        .build(),
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(CategoryList.moss.airSensor)
-        .build()
+      ...buildColliders({
+        entity,
+        colliders: [
+          {
+            geometry: this.COLLIDER,
+            category: Category.LIGHT,
+            mask: new CategorySet(Category.SENSOR),
+            tag: ['light'],
+          },
+          {
+            geometry: this.COLLIDER,
+            category: Category.SENSOR,
+            mask: new CategorySet(Category.AIR),
+          },
+        ],
+      })
     )
 
     const sprite = parseAnimation(mossDefinition.sprite)

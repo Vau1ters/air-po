@@ -3,8 +3,8 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { PositionComponent } from '@game/components/positionComponent'
-import { CategoryList } from '@game/entities/category'
-import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
+import { Category, CategorySet } from '@game/entities/category'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 
 export class AirSystem extends System {
   private family: Family
@@ -23,13 +23,17 @@ export class AirSystem extends System {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(this.entity)
-        .setAir(world)
-        .setCategory(CategoryList.air)
-        .addTag('air')
-        .setIsSensor(true)
-        .build()
+      buildCollider({
+        entity: this.entity,
+        geometry: {
+          type: 'Air',
+          world,
+        },
+        category: Category.AIR,
+        mask: new CategorySet(Category.SENSOR),
+        tag: ['air'],
+        isSensor: true,
+      })
     )
     this.entity.addComponent('Collider', collider)
 

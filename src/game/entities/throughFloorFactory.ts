@@ -3,17 +3,19 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, Collider, ColliderBuilder } from '@game/components/colliderComponent'
+import { ColliderComponent, Collider, buildCollider } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import throughFloorDefinition from '@res/animation/throughFloor.json'
-import { StaticComponent } from '@game/components/staticComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
+import { StaticComponent } from '@game/components/staticComponent'
 
 export class ThroughFloorFactory extends EntityFactory {
   private readonly INV_MASS = 0
   private readonly RESTITUTION = 0
-  private readonly AABB = {
+
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-4, -4),
     size: new Vec2(8, 4),
   }
@@ -23,16 +25,17 @@ export class ThroughFloorFactory extends EntityFactory {
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(CategoryList.wall)
-        .addTag('throughFloor')
-        .setShouldCollide((_: Collider, other: Collider): boolean => {
+      buildCollider({
+        entity,
+        geometry: this.COLLIDER,
+        category: Category.STATIC_WALL,
+        mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
+        tag: ['throughFloor'],
+        condition: (_: Collider, other: Collider): boolean => {
           if (!other.entity.hasComponent('RigidBody')) return false
           return other.entity.getComponent('RigidBody').velocity.y >= 0
-        })
-        .build()
+        },
+      })
     )
 
     const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)

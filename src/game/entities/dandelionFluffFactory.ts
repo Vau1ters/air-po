@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { PositionComponent } from '@game/components/positionComponent'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { AIComponent } from '@game/components/aiComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
@@ -11,10 +11,11 @@ import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
 import dandelionFluffDefinition from '@res/animation/dandelion_fluff.json'
 import { World } from '@core/ecs/world'
 import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
-import { ColliderComponent, ColliderBuilder } from '@game/components/colliderComponent'
+import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 
 export class DandelionFluffFactory extends EntityFactory {
-  private readonly AABB = {
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-8, -16),
     size: new Vec2(16, 32),
   }
@@ -25,18 +26,19 @@ export class DandelionFluffFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(0, 0).add(this.parent.getComponent('Position'))
+    const position = new PositionComponent().add(this.parent.getComponent('Position'))
     const pickup = new PickupTargetComponent(false)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
-      new ColliderBuilder()
-        .setEntity(entity)
-        .setAABB(this.AABB)
-        .setCategory(CategoryList.dandelionFluff)
-        .addTag('fluff')
-        .setIsSensor(true)
-        .build()
+      buildCollider({
+        entity,
+        geometry: this.COLLIDER,
+        category: Category.ITEM,
+        mask: new CategorySet(Category.SENSOR),
+        tag: ['fluff'],
+        isSensor: true,
+      })
     )
 
     const sprite = parseAnimation(dandelionFluffDefinition.sprite)

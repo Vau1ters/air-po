@@ -3,9 +3,9 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { textureStore } from '@core/graphics/art'
 import { Sprite } from 'pixi.js'
 import { StaticComponent } from '@game/components/staticComponent'
@@ -14,7 +14,8 @@ export class WallFactory extends EntityFactory {
   private readonly INV_MASS = 0
   private readonly RESTITUTION = 0
 
-  private readonly AABB = {
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
     offset: new Vec2(-4, -4),
     size: new Vec2(8, 8),
   }
@@ -28,12 +29,13 @@ export class WallFactory extends EntityFactory {
     if (this.shouldCollide) {
       const collider = new ColliderComponent()
       collider.colliders.push(
-        new ColliderBuilder()
-          .setEntity(entity)
-          .setAABB(this.AABB)
-          .setCategory(CategoryList.wall)
-          .addTag('wall')
-          .build()
+        buildCollider({
+          entity,
+          geometry: this.COLLIDER,
+          category: Category.STATIC_WALL,
+          mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
+          tag: ['wall'],
+        })
       )
       entity.addComponent('Collider', collider)
 

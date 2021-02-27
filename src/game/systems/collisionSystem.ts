@@ -86,7 +86,7 @@ export default class CollisionSystem extends System {
         const { mask: mask1, category: category1 } = c1
         const { mask: mask2, category: category2 } = c2
         if (!mask1.has(category2) || !mask2.has(category1)) continue
-        if (!c1.shouldCollide(c1, c2) || !c2.shouldCollide(c2, c1)) continue
+        if (!c1.condition(c1, c2) || !c2.condition(c2, c1)) continue
 
         const result = collide(c1, c2, position1, position2)
         if (result.hit === false) continue

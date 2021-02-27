@@ -4,7 +4,7 @@ import { AABB } from './aabb'
 import { GeometryForCollision } from './geometry'
 
 export class OBB implements GeometryForCollision {
-  constructor(public bound: AABB, public angle: number) {}
+  constructor(public bound: AABB, public angle = 0) {}
 
   createBound(): AABB {
     const { angle } = this
