@@ -11,9 +11,6 @@ import { parseAnimation } from '@core/graphics/animationParser'
 import { StaticComponent } from '@game/components/staticComponent'
 
 export class ThroughFloorFactory extends EntityFactory {
-  private readonly INV_MASS = 0
-  private readonly RESTITUTION = 0
-
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-4, -4),
@@ -38,8 +35,7 @@ export class ThroughFloorFactory extends EntityFactory {
       })
     )
 
-    const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    body.invMass = this.INV_MASS
+    const body = new RigidBodyComponent()
 
     const sprite = parseAnimation(throughFloorDefinition.sprite)
     const draw = new DrawComponent(entity)

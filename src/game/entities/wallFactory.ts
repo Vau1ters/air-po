@@ -11,9 +11,6 @@ import { Sprite } from 'pixi.js'
 import { StaticComponent } from '@game/components/staticComponent'
 
 export class WallFactory extends EntityFactory {
-  private readonly INV_MASS = 0
-  private readonly RESTITUTION = 0
-
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-4, -4),
@@ -39,8 +36,7 @@ export class WallFactory extends EntityFactory {
       )
       entity.addComponent('Collider', collider)
 
-      const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-      body.invMass = this.INV_MASS
+      const body = new RigidBodyComponent()
       entity.addComponent('RigidBody', body)
     }
 

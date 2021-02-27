@@ -17,9 +17,6 @@ import { World } from '@core/ecs/world'
 import { enemy1AI } from '@game/ai/entity/enemy1/enemy1AI'
 
 export class Enemy1Factory extends EntityFactory {
-  private readonly MASS = 10
-  private readonly RESTITUTION = 0
-
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-5, -6),
@@ -34,6 +31,11 @@ export class Enemy1Factory extends EntityFactory {
     maxClipToTolerance: new Vec2(2, 2),
   }
 
+  private readonly RIGID_BODY = {
+    mass: 10,
+    gravityScale: 1,
+  }
+
   public constructor(private world: World) {
     super()
   }
@@ -41,7 +43,7 @@ export class Enemy1Factory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 1)
+    const body = new RigidBodyComponent(this.RIGID_BODY)
     const direction = new HorizontalDirectionComponent('Right')
     const hp = new HPComponent(2, 2)
 

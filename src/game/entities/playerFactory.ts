@@ -21,9 +21,6 @@ import { playerAI } from '@game/ai/entity/player/playerAI'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 
 export class PlayerFactory extends EntityFactory {
-  private readonly MASS = 10
-  private readonly RESTITUTION = 0
-
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-5, -6),
@@ -36,6 +33,11 @@ export class PlayerFactory extends EntityFactory {
     offset: new Vec2(-4, 7),
     size: new Vec2(8, 1),
     maxClipToTolerance: new Vec2(2, 0),
+  }
+
+  private readonly RIGID_BODY = {
+    mass: 10,
+    gravityScale: 1,
   }
 
   private readonly AIR_HOLDER = {
@@ -52,7 +54,7 @@ export class PlayerFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
+    const body = new RigidBodyComponent(this.RIGID_BODY)
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const airHolder = new AirHolderComponent(this.AIR_HOLDER)

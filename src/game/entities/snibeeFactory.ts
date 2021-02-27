@@ -17,9 +17,6 @@ import { World } from '@core/ecs/world'
 import { snibeeAI, SnibeeSetting } from '@game/ai/entity/snibee/snibeeAI'
 
 export class SnibeeFactory extends EntityFactory {
-  private readonly MASS = 10
-  private readonly RESTITUTION = 0
-
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-5, -6),
@@ -33,6 +30,10 @@ export class SnibeeFactory extends EntityFactory {
     size: new Vec2(10, 13),
   }
 
+  private readonly RIGID_BODY = {
+    mass: 10,
+  }
+
   public constructor(private world: World) {
     super()
   }
@@ -40,7 +41,7 @@ export class SnibeeFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 0)
+    const body = new RigidBodyComponent(this.RIGID_BODY)
     const direction = new HorizontalDirectionComponent('Right')
     const collider = new ColliderComponent()
     const hp = new HPComponent(2, 2)

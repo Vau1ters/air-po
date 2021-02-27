@@ -47,8 +47,10 @@ export class BalloonVineFactory extends EntityFactory {
     consumeSpeed: 0,
   }
 
-  private readonly MASS = 0.0001
-  private readonly RESTITUTION = 0
+  private readonly RIGID_BODY = {
+    mass: 0.0001,
+    gravityScale: 1,
+  }
 
   constructor(private world: World) {
     super()
@@ -62,7 +64,7 @@ export class BalloonVineFactory extends EntityFactory {
     const airHolder = new AirHolderComponent(this.AIR_HOLDER)
     const pickup = new PickupTargetComponent(false)
 
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
+    const body = new RigidBodyComponent(this.RIGID_BODY)
 
     const collider = new ColliderComponent()
     collider.colliders.push(

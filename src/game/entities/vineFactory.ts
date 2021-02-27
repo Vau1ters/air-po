@@ -14,9 +14,6 @@ import { parseAnimation } from '@core/graphics/animationParser'
 import { addTag } from '@game/ai/entity/vine/changeVineLength'
 
 export class VineFactory extends EntityFactory {
-  private readonly INV_MASS = 0
-  private readonly RESTITUTION = 0
-
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-8, -8),
@@ -28,6 +25,7 @@ export class VineFactory extends EntityFactory {
     offset: new Vec2(-7, 0),
     size: new Vec2(14, 5),
   }
+
   private readonly AIR_SENSOR_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-3, -3),
@@ -71,8 +69,7 @@ export class VineFactory extends EntityFactory {
       })
     )
 
-    const body = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    body.invMass = this.INV_MASS
+    const body = new RigidBodyComponent()
 
     const vine = new VineComponent(0)
 

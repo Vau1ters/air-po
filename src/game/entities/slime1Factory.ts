@@ -17,20 +17,22 @@ import { World } from '@core/ecs/world'
 import { slime1AI } from '@game/ai/entity/slime1/slime1AI'
 
 export class Slime1Factory extends EntityFactory {
-  private readonly MASS = 10
-  private readonly RESTITUTION = 0
-
-  private BODY_COLLIDER = {
+  private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
     maxClipToTolerance: new Vec2(2, 2),
   }
 
-  private HIT_BOX_COLLIDER = {
+  private readonly HIT_BOX_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
+  }
+
+  private readonly RIGID_BODY = {
+    mass: 10,
+    gravityScale: 1,
   }
 
   public constructor(private world: World) {
@@ -40,7 +42,7 @@ export class Slime1Factory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 1)
+    const body = new RigidBodyComponent(this.RIGID_BODY)
     const direction = new HorizontalDirectionComponent('Right')
     const hp = new HPComponent(2, 2)
 

@@ -14,8 +14,6 @@ import { World } from '@core/ecs/world'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 
 export class AirGeyserFactory extends EntityFactory {
-  private readonly INV_MASS = 0
-  private readonly RESTITUTION = 0
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(-5, 3),
@@ -58,8 +56,7 @@ export class AirGeyserFactory extends EntityFactory {
       })
     )
 
-    const rigidBody = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    rigidBody.invMass = this.INV_MASS
+    const rigidBody = new RigidBodyComponent()
 
     const sprite = parseAnimation(airGeyserDefinition.sprite)
 

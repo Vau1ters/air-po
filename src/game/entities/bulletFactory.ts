@@ -89,13 +89,7 @@ export class BulletFactory extends EntityFactory {
       })
     )
 
-    const body = new RigidBodyComponent(
-      0,
-      new Vec2(direction.x * this.speed, direction.y * this.speed),
-      new Vec2(),
-      0,
-      0
-    )
+    const body = new RigidBodyComponent({ velocity: direction.mul(this.speed) })
 
     const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
