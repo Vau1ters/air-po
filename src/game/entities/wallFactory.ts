@@ -34,21 +34,18 @@ export class WallFactory extends EntityFactory {
           tag: ['wall'],
         })
       )
+
       entity.addComponent('Collider', collider)
-
-      const body = new RigidBodyComponent()
-      entity.addComponent('RigidBody', body)
+      entity.addComponent('RigidBody', new RigidBodyComponent())
     }
-
-    const position = new PositionComponent()
-    entity.addComponent('Position', position)
 
     const sprite = new Sprite(textureStore.wall[this.tileId])
     sprite.anchor.set(0.5)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
-    entity.addComponent('Draw', draw)
 
+    entity.addComponent('Draw', draw)
+    entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Static', new StaticComponent())
 
     return entity

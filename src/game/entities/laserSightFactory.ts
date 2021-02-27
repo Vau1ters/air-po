@@ -21,7 +21,6 @@ export class LaserSightFactory extends EntityFactory {
     g.position.set(0)
     const draw = new DrawComponent(entity, 'WorldUI')
     draw.addChild(g)
-    entity.addComponent('Draw', draw)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -33,10 +32,10 @@ export class LaserSightFactory extends EntityFactory {
         isSensor: true,
       })
     )
+
+    entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-
     entity.addComponent('AI', new AIComponent(laserSightAI(entity, this.world)))
-
     entity.addComponent('Position', new PositionComponent())
 
     return entity

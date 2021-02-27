@@ -18,12 +18,6 @@ export class EquipmentTileFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const positionComponent = new PositionComponent(
-      this.position.x + this.size.x / 2,
-      this.position.y - this.size.y
-    )
-    entity.addComponent('Position', positionComponent)
-
     const sprite = parseAnimation(equipmentDefinition.sprite)
     sprite.changeTo(this.equipmentType)
     const draw = new DrawComponent(entity)
@@ -48,6 +42,10 @@ export class EquipmentTileFactory extends EntityFactory {
     entity.addComponent(
       'Sensor',
       new SensorComponent(`equipItem ${this.equipmentType} ${entity.id}`)
+    )
+    entity.addComponent(
+      'Position',
+      new PositionComponent(this.position.x + this.size.x / 2, this.position.y - this.size.y)
     )
 
     return entity

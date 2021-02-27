@@ -16,20 +16,15 @@ export class DandelionFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
 
     const sprite = parseAnimation(dandelionDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(dandelionAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
+    entity.addComponent('AI', new AIComponent(dandelionAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Draw', draw)
-    entity.addComponent('AnimationState', animState)
+    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
     return entity
   }
 }

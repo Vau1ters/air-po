@@ -58,11 +58,6 @@ export class BulletFactory extends EntityFactory {
     const direction = new Vec2(Math.cos(this.angle), Math.sin(this.angle))
 
     const entity = new Entity()
-    const position = new PositionComponent(
-      shooterPosition.x - (direction.x * this.offset.x) / 2,
-      shooterPosition.y + this.offset.y
-    )
-    const bullet = new BulletComponent(this.life)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -88,8 +83,6 @@ export class BulletFactory extends EntityFactory {
         ],
       })
     )
-
-    const body = new RigidBodyComponent({ velocity: direction.mul(this.speed) })
 
     const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
@@ -117,11 +110,20 @@ export class BulletFactory extends EntityFactory {
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
-    entity.addComponent('Position', position)
+    entity.addComponent(
+      'Position',
+      new PositionComponent(
+        shooterPosition.x - (direction.x * this.offset.x) / 2,
+        shooterPosition.y + this.offset.y
+      )
+    )
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    entity.addComponent('RigidBody', body)
-    entity.addComponent('Bullet', bullet)
+    entity.addComponent(
+      'RigidBody',
+      new RigidBodyComponent({ velocity: direction.mul(this.speed) })
+    )
+    entity.addComponent('Bullet', new BulletComponent(this.life))
     entity.addComponent('Attack', new AttackComponent(1, true))
     return entity
   }

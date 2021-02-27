@@ -58,13 +58,6 @@ export class BalloonVineFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
-    const hp = new HPComponent(1, 1)
-    const invincible = new InvincibleComponent()
-    const airHolder = new AirHolderComponent(this.AIR_HOLDER)
-    const pickup = new PickupTargetComponent(false)
-
-    const body = new RigidBodyComponent(this.RIGID_BODY)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -116,20 +109,16 @@ export class BalloonVineFactory extends EntityFactory {
     draw.sortableChildren = true
     draw.addChild(sprite)
 
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(balloonvineAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
+    entity.addComponent('AI', new AIComponent(balloonvineAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    entity.addComponent('HP', hp)
-    entity.addComponent('Invincible', invincible)
-    entity.addComponent('PickupTarget', pickup)
-    entity.addComponent('AnimationState', animState)
-    entity.addComponent('AirHolder', airHolder)
+    entity.addComponent('HP', new HPComponent(1, 1))
+    entity.addComponent('Invincible', new InvincibleComponent())
+    entity.addComponent('PickupTarget', new PickupTargetComponent(false))
+    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
+    entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
     return entity
   }
 }

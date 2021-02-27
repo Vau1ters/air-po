@@ -40,12 +40,9 @@ export class SnibeeFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.RIGID_BODY)
     const direction = new HorizontalDirectionComponent('Right')
-    const collider = new ColliderComponent()
-    const hp = new HPComponent(2, 2)
 
+    const collider = new ColliderComponent()
     collider.colliders.push(
       ...buildColliders({
         entity,
@@ -90,13 +87,13 @@ export class SnibeeFactory extends EntityFactory {
     const ai = new AIComponent(snibeeAI(entity, this.world))
 
     entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('HorizontalDirection', direction)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Attack', new AttackComponent(1, false))
-    entity.addComponent('HP', hp)
+    entity.addComponent('HP', new HPComponent(2, 2))
     entity.addComponent('AnimationState', animState)
     return entity
   }

@@ -43,8 +43,10 @@ export class AirGeyserFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(this.position.x, this.position.y)
+
     const draw = new DrawComponent(entity)
+    const sprite = parseAnimation(airGeyserDefinition.sprite)
+    draw.addChild(sprite)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -56,27 +58,20 @@ export class AirGeyserFactory extends EntityFactory {
       })
     )
 
-    const rigidBody = new RigidBodyComponent()
-
-    const sprite = parseAnimation(airGeyserDefinition.sprite)
-
-    draw.addChild(sprite)
-
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(
-      airGeyserAI(entity, this.world, {
-        maxQuantity: this.maxQuantity,
-        increaseRate: this.increaseRate,
-      })
-    )
-
-    entity.addComponent('Position', position)
+    entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    entity.addComponent('RigidBody', rigidBody)
-    entity.addComponent('AI', ai)
-    entity.addComponent('AnimationState', animState)
+    entity.addComponent('RigidBody', new RigidBodyComponent())
+    entity.addComponent(
+      'AI',
+      new AIComponent(
+        airGeyserAI(entity, this.world, {
+          maxQuantity: this.maxQuantity,
+          increaseRate: this.increaseRate,
+        })
+      )
+    )
+    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
     return entity
   }
 }

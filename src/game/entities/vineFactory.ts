@@ -38,7 +38,6 @@ export class VineFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -69,28 +68,23 @@ export class VineFactory extends EntityFactory {
       })
     )
 
-    const body = new RigidBodyComponent()
-
-    const vine = new VineComponent(0)
-
-    entity.addComponent('Collider', collider)
-
-    addTag(entity)
-
-    const ai = new AIComponent(vineAI(entity))
-
     const sprite = parseAnimation(vineDefinition.sprite)
     sprite.changeTo('Root0')
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
-    entity.addComponent('AI', ai)
-    entity.addComponent('RigidBody', body)
-    entity.addComponent('Position', position)
+    const vine = new VineComponent(0)
+    vine.sprites.push(sprite)
+
+    entity.addComponent('Collider', collider)
+    entity.addComponent('AI', new AIComponent(vineAI(entity)))
+    entity.addComponent('RigidBody', new RigidBodyComponent())
+    entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Draw', draw)
     entity.addComponent('Vine', vine)
 
-    vine.sprites.push(sprite)
+    addTag(entity)
+
     return entity
   }
 }

@@ -26,8 +26,6 @@ export class DandelionFluffFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent().add(this.parent.getComponent('Position'))
-    const pickup = new PickupTargetComponent(false)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -45,16 +43,15 @@ export class DandelionFluffFactory extends EntityFactory {
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(dandelionFluffAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
+    entity.addComponent('AI', new AIComponent(dandelionFluffAI(entity, this.world)))
+    entity.addComponent(
+      'Position',
+      new PositionComponent().add(this.parent.getComponent('Position'))
+    )
     entity.addComponent('Collider', collider)
     entity.addComponent('Draw', draw)
-    entity.addComponent('PickupTarget', pickup)
-    entity.addComponent('AnimationState', animState)
+    entity.addComponent('PickupTarget', new PickupTargetComponent(false))
+    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
     return entity
   }
 }

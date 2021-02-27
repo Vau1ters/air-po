@@ -35,8 +35,6 @@ export class ThroughFloorFactory extends EntityFactory {
       })
     )
 
-    const body = new RigidBodyComponent()
-
     const sprite = parseAnimation(throughFloorDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
@@ -45,7 +43,7 @@ export class ThroughFloorFactory extends EntityFactory {
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
-    entity.addComponent('RigidBody', body)
+    entity.addComponent('RigidBody', new RigidBodyComponent())
 
     return entity
   }

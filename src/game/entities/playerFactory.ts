@@ -53,13 +53,9 @@ export class PlayerFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.RIGID_BODY)
     const player = new PlayerComponent()
     const direction = new HorizontalDirectionComponent('Right')
     const airHolder = new AirHolderComponent(this.AIR_HOLDER)
-    const hp = new HPComponent(3, 3)
-    const invincible = new InvincibleComponent()
 
     const equipment = new EquipmentComponent()
     equipment.equipEvent.addObserver(type => {
@@ -72,9 +68,6 @@ export class PlayerFactory extends EntityFactory {
     // 初期状態で空気タンクを2つ追加しておく
     equipment.equipEvent.notify('AirTank')
     equipment.equipEvent.notify('AirTank')
-
-    // TODO: カメラをプレイヤーから分離する
-    const camera = new CameraComponent()
 
     const shouldCollide = (me: Collider, other: Collider): boolean => {
       if (player.throughFloorIgnoreCount > 0 && other.tag.has('throughFloor')) return false
@@ -126,23 +119,20 @@ export class PlayerFactory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(playerAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
+    entity.addComponent('AI', new AIComponent(playerAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('HorizontalDirection', direction)
-    entity.addComponent('HP', hp)
-    entity.addComponent('Invincible', invincible)
+    entity.addComponent('HP', new HPComponent(3, 3))
+    entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Equipment', equipment)
-    entity.addComponent('Camera', camera)
-    entity.addComponent('AnimationState', animState)
+    // TODO: カメラをプレイヤーから分離する
+    entity.addComponent('Camera', new CameraComponent())
+    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
     return entity
   }
 }

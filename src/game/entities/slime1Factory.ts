@@ -41,10 +41,7 @@ export class Slime1Factory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
-    const body = new RigidBodyComponent(this.RIGID_BODY)
     const direction = new HorizontalDirectionComponent('Right')
-    const hp = new HPComponent(2, 2)
 
     const collider = new ColliderComponent()
     collider.colliders.push(
@@ -85,19 +82,15 @@ export class Slime1Factory extends EntityFactory {
       }
     })
 
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(slime1AI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
+    entity.addComponent('AI', new AIComponent(slime1AI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('HorizontalDirection', direction)
     entity.addComponent('Draw', draw)
     entity.addComponent('Collider', collider)
     entity.addComponent('Attack', new AttackComponent(1, false))
-    entity.addComponent('HP', hp)
-    entity.addComponent('AnimationState', animState)
+    entity.addComponent('HP', new HPComponent(2, 2))
+    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
     return entity
   }
 }
