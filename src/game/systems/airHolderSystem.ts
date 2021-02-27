@@ -2,9 +2,8 @@ import { System } from '@core/ecs/system'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Entity } from '@core/ecs/entity'
-import { assert } from '@utils/assertion'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { Air } from '@core/collision/geometry/air'
+import { CollisionResultAirAABB } from '@core/collision/collision/Air_AABB'
 
 export class AirHolderSystem extends System {
   private family: Family
@@ -49,17 +48,12 @@ export class AirHolderSystem extends System {
 
   private static airHolderSensor(args: CollisionCallbackArgs): void {
     const { me: airHolderCollider, other: otherCollider } = args
+    const { hitAirs } = args as CollisionResultAirAABB
     // collect air
     if (otherCollider.tag.has('air')) {
-      const air = otherCollider.geometry
-      assert(air instanceof Air, 'Invaild collider')
-
       const position = airHolderCollider.entity.getComponent('Position')
       const airHolder = airHolderCollider.entity.getComponent('AirHolder')
 
-      const hitAirs: Entity[] = air.family.entityArray.filter(
-        (a: Entity) => a.getComponent('Air').hit
-      )
       const nearestAir = hitAirs.reduce((a, b) => {
         const aa = a.getComponent('Air')
         const pa = a.getComponent('Position')
