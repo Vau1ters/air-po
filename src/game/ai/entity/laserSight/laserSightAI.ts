@@ -1,22 +1,23 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
-import { CollisionResultRayAndAABB } from '@core/collision/collision'
+import { CollisionResultRayAABB } from '@core/collision/collision/Ray_AABB'
+import { Ray } from '@core/collision/geometry/ray'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { CollisionCallbackArgs, RayForCollision } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { MouseController } from '@game/systems/controlSystem'
 import { Graphics } from 'pixi.js'
 
 const getClosestHitPointGenerator = function*(entity: Entity): Generator<Vec2, void> {
   const [collider] = entity.getComponent('Collider').colliders
-  const ray = (collider.geometry as RayForCollision).ray
+  const ray = collider.geometry as Ray
 
   let hitPoints: Array<Vec2> = []
   collider.callbacks.add((args: CollisionCallbackArgs) => {
-    const { hitPoint } = args as CollisionResultRayAndAABB
+    const { hitPoint } = args as CollisionResultRayAABB
     hitPoints.push(hitPoint)
   })
 
@@ -34,7 +35,7 @@ const updateDraw = function*(entity: Entity): Behaviour<void> {
   const getClosestHitPoint = getClosestHitPointGenerator(entity)
   const [g] = entity.getComponent('Draw').children as [Graphics]
   const [collider] = entity.getComponent('Collider').colliders
-  const ray = (collider.geometry as RayForCollision).ray
+  const ray = collider.geometry as Ray
 
   for (const closestHitPoint of getClosestHitPoint) {
     g.clear()
@@ -53,11 +54,11 @@ const updateRay = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
     const [player] = playerFamily.entityArray
     const mousePosition = MouseController.position
-    const ray = collider.geometry as RayForCollision
+    const ray = collider.geometry as Ray
     const position = player.getComponent('Position')
 
-    ray.ray.origin = position
-    ray.ray.direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+    ray.origin = position
+    ray.direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
     yield
   }
 }
