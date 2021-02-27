@@ -11,8 +11,10 @@ import { Vec2 } from '@core/math/vec2'
 import { LightComponent } from '@game/components/lightComponent'
 
 export class MossFactory extends EntityFactory {
-  readonly WIDTH = 8
-  readonly HEIGHT = 8
+  private readonly AABB = {
+    offset: new Vec2(-4, -4),
+    size: new Vec2(8, 8),
+  }
 
   public constructor(private world: World) {
     super()
@@ -26,19 +28,13 @@ export class MossFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(-this.WIDTH / 2, -this.HEIGHT / 2),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-        })
+        .setAABB(this.AABB)
         .setCategory(CategoryList.moss.light)
         .addTag('light')
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(-this.WIDTH / 2, -this.HEIGHT / 2),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-        })
+        .setAABB(this.AABB)
         .setCategory(CategoryList.moss.airSensor)
         .build()
     )

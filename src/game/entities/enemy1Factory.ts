@@ -17,19 +17,20 @@ import { World } from '@core/ecs/world'
 import { enemy1AI } from '@game/ai/entity/enemy1/enemy1AI'
 
 export class Enemy1Factory extends EntityFactory {
-  readonly MASS = 10
-  readonly RESTITUTION = 0
-  readonly WIDTH = 10
-  readonly HEIGHT = 13
-  readonly OFFSET_X = -5
-  readonly OFFSET_Y = -6
-  readonly CLIP_TOLERANCE_X = 2
-  readonly CLIP_TOLERANCE_Y = 2
+  private readonly MASS = 10
+  private readonly RESTITUTION = 0
 
-  readonly ATTACK_HIT_BOX_WIDTH = 10
-  readonly ATTACK_HIT_BOX_HEIGHT = 13
-  readonly ATTACK_HIT_BOX_OFFSET_X = -5
-  readonly ATTACK_HIT_BOX_OFFSET_Y = -6
+  private readonly BODY_AABB = {
+    offset: new Vec2(-5, -6),
+    size: new Vec2(10, 13),
+    maxClipToTolerance: new Vec2(2, 2),
+  }
+
+  private readonly HIT_BOX_AABB = {
+    offset: new Vec2(-5, -6),
+    size: new Vec2(10, 13),
+    maxClipToTolerance: new Vec2(2, 2),
+  }
 
   public constructor(private world: World) {
     super()
@@ -46,31 +47,20 @@ export class Enemy1Factory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.enemy.body)
         .addTag('enemy1Body')
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.enemy.hitBox)
         .addTag('enemy1Body')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y),
-          size: new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
-        })
+        .setAABB(this.HIT_BOX_AABB)
         .setCategory(CategoryList.enemy.attack)
         .addTag('AttackHitBox')
         .setIsSensor(true)

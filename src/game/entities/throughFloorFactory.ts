@@ -11,12 +11,12 @@ import { StaticComponent } from '@game/components/staticComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 
 export class ThroughFloorFactory extends EntityFactory {
-  readonly INV_MASS = 0
-  readonly RESTITUTION = 0
-  readonly WIDTH = 8
-  readonly HEIGHT = 4
-  readonly OFFSET_X = -this.WIDTH / 2
-  readonly OFFSET_Y = -this.HEIGHT
+  private readonly INV_MASS = 0
+  private readonly RESTITUTION = 0
+  private readonly AABB = {
+    offset: new Vec2(-4, -4),
+    size: new Vec2(8, 4),
+  }
 
   public create(): Entity {
     const entity = new Entity()
@@ -25,10 +25,7 @@ export class ThroughFloorFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-        })
+        .setAABB(this.AABB)
         .setCategory(CategoryList.wall)
         .addTag('throughFloor')
         .setShouldCollide((_: Collider, other: Collider): boolean => {

@@ -21,11 +21,10 @@ type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
 
 export class BulletFactory extends EntityFactory {
-  readonly HIT_BOX_WIDTH = 4
-  readonly HIT_BOX_HEIGHT = 4
-
-  readonly ATTACK_HIT_BOX_WIDTH = 4
-  readonly ATTACK_HIT_BOX_HEIGHT = 4
+  private readonly AABB = {
+    offset: new Vec2(-2, -2),
+    size: new Vec2(4, 4),
+  }
 
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
@@ -68,20 +67,14 @@ export class BulletFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2),
-          size: new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT),
-        })
+        .setAABB(this.AABB)
         .setCategory(CategoryList.bulletBody)
         .addTag('bulletBody')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2),
-          size: new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
-        })
+        .setAABB(this.AABB)
         .setCategory(
           this.shooterType === 'player' ? CategoryList.player.attack : CategoryList.enemy.attack
         )

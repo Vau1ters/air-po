@@ -18,16 +18,20 @@ import { World } from '@core/ecs/world'
 import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
 
 export class BalloonVineFactory extends EntityFactory {
-  private readonly BODY_WIDTH = 10
-  private readonly BODY_HEIGHT = 13
-  private readonly ROOT_WIDTH = 5
-  private readonly ROOT_HEIGHT = 5
-  private readonly WALL_WIDTH = 2
-  private readonly WALL_HEIGHT = 10
-  private readonly OFFSET_X = -5
-  private readonly OFFSET_Y = -6
-  private readonly CLIP_TOLERANCE_X = 2
-  private readonly CLIP_TOLERANCE_Y = 2
+  private readonly GRIP_AABB = {
+    maxClipToTolerance: new Vec2(2, 2),
+  }
+  private readonly BODY_AABB = {
+    offset: new Vec2(-5, -6),
+    size: new Vec2(10, 13),
+    maxClipToTolerance: new Vec2(2, 2),
+  }
+  private readonly ROOT_AABB = {
+    size: new Vec2(5, 5),
+  }
+  private readonly WALL_AABB = {
+    size: new Vec2(2, 10),
+  }
 
   private readonly INITIAL_AIR_QUANTITY = 0
   private readonly MAX_AIR_QUANTITY = 10
@@ -60,50 +64,35 @@ export class BalloonVineFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          size: new Vec2(),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.GRIP_AABB)
         .setCategory(CategoryList.balloonVine.grip)
         .addTag('balloonVine')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.balloonVine.body)
         .addTag('balloonVine')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.balloonVine.airSensor)
         .addTag('airHolderBody')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          size: new Vec2(this.ROOT_WIDTH, this.ROOT_HEIGHT),
-        })
+        .setAABB(this.ROOT_AABB)
         .setCategory(CategoryList.balloonVine.root)
         .addTag('balloonVine')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          size: new Vec2(this.WALL_WIDTH, this.WALL_HEIGHT),
-        })
+        .setAABB(this.WALL_AABB)
         .setCategory(CategoryList.balloonVine.wallSensor)
         .addTag('balloonVine')
         .setIsSensor(true)

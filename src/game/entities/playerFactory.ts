@@ -21,22 +21,22 @@ import { playerAI } from '@game/ai/entity/player/playerAI'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 
 export class PlayerFactory extends EntityFactory {
-  readonly MASS = 10
-  readonly RESTITUTION = 0
-  readonly WIDTH = 10
-  readonly HEIGHT = 13
-  readonly OFFSET_X = -5
-  readonly OFFSET_Y = -6
-  readonly FOOT_WIDTH = this.WIDTH - 2
-  readonly FOOT_HEIGHT = 1
-  readonly FOOT_OFFSET_X = 1
-  readonly FOOT_OFFSET_Y = 13
-  readonly FOOT_CLIP_TOLERANCE_X = 2
-  readonly FOOT_CLIP_TOLERANCE_Y = 0
-  readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
-  readonly CLIP_TOLERANCE_Y = 4
-  readonly AIR_COLLECT_SPEED = 0.05
-  readonly AIR_CONSUME_SPEED = 0.025
+  private readonly MASS = 10
+  private readonly RESTITUTION = 0
+
+  private readonly BODY_AABB = {
+    offset: new Vec2(-5, -6),
+    size: new Vec2(10, 13),
+    maxClipToTolerance: new Vec2(3, 4),
+  }
+  private readonly FOOT_AABB = {
+    offset: new Vec2(-4, 7),
+    size: new Vec2(8, 1),
+    maxClipToTolerance: new Vec2(2, 0),
+  }
+
+  private readonly AIR_COLLECT_SPEED = 0.05
+  private readonly AIR_CONSUME_SPEED = 0.025
 
   public constructor(private world: World) {
     super()
@@ -81,41 +81,25 @@ export class PlayerFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.player.body)
         .setShouldCollide(shouldCollide)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.player.hitBox)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-          maxClipToTolerance: new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.player.sensor)
         .addTag('airHolderBody')
         .addTag('playerSensor')
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y),
-          size: new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT),
-          maxClipToTolerance: new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y),
-        })
+        .setAABB(this.FOOT_AABB)
         .setCategory(CategoryList.player.foot)
         .addTag('playerFoot')
         .setIsSensor(true)

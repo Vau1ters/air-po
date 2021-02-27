@@ -1,6 +1,5 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { Vec2 } from '@core/math/vec2'
 import { laserSightAI } from '@game/ai/entity/laserSight/laserSightAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { ColliderBuilder, ColliderComponent } from '@game/components/colliderComponent'
@@ -28,9 +27,7 @@ export class LaserSightFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setRay({
-          direction: new Vec2(),
-        })
+        .setRay({})
         .setCategory(CategoryList.laserSight)
         .setIsSensor(true)
         .build()

@@ -14,22 +14,22 @@ import { parseAnimation } from '@core/graphics/animationParser'
 import { addTag } from '@game/ai/entity/vine/changeVineLength'
 
 export class VineFactory extends EntityFactory {
-  readonly INV_MASS = 0
-  readonly RESTITUTION = 0
-  readonly WIDTH = 16
-  readonly HEIGHT = 16
-  readonly OFFSET_X = -8
-  readonly OFFSET_Y = -8
+  private readonly INV_MASS = 0
+  private readonly RESTITUTION = 0
 
-  readonly WALL_SENSOR_WIDTH = 14
-  readonly WALL_SENSOR_HEIGHT = 5
-  readonly WALL_SENSOR_OFFSET_X = -7
-  readonly WALL_SENSOR_OFFSET_Y = 0
+  private readonly BODY_AABB = {
+    offset: new Vec2(-8, -8),
+    size: new Vec2(16, 16),
+  }
 
-  readonly AIR_SENSOR_WIDTH = 6
-  readonly AIR_SENSOR_HEIGHT = 6
-  readonly AIR_SENSOR_OFFSET_X = -3
-  readonly AIR_SENSOR_OFFSET_Y = -3
+  private readonly WALL_AABB = {
+    offset: new Vec2(-7, 0),
+    size: new Vec2(14, 5),
+  }
+  private readonly AIR_SENSOR_AABB = {
+    offset: new Vec2(-3, -3),
+    size: new Vec2(6, 6),
+  }
 
   public constructor() {
     super()
@@ -43,29 +43,20 @@ export class VineFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-        })
+        .setAABB(this.BODY_AABB)
         .setCategory(CategoryList.vine.body)
         .addTag('vine')
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.WALL_SENSOR_OFFSET_X, this.WALL_SENSOR_OFFSET_Y),
-          size: new Vec2(this.WALL_SENSOR_WIDTH, this.WALL_SENSOR_HEIGHT),
-        })
+        .setAABB(this.WALL_AABB)
         .setCategory(CategoryList.vine.wallSensor)
         .addTag('vineWallSensor')
         .setIsSensor(true)
         .build(),
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.AIR_SENSOR_OFFSET_X, this.AIR_SENSOR_OFFSET_Y),
-          size: new Vec2(this.AIR_SENSOR_WIDTH, this.AIR_SENSOR_HEIGHT),
-        })
+        .setAABB(this.AIR_SENSOR_AABB)
         .setCategory(CategoryList.vine.airSensor)
         .addTag('vineAirSensor')
         .setIsSensor(true)

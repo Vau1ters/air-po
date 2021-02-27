@@ -11,12 +11,14 @@ import { Sprite } from 'pixi.js'
 import { StaticComponent } from '@game/components/staticComponent'
 
 export class WallFactory extends EntityFactory {
-  readonly INV_MASS = 0
-  readonly RESTITUTION = 0
-  readonly WIDTH = 8
-  readonly HEIGHT = 8
-  readonly OFFSET_X = -this.WIDTH / 2
-  readonly OFFSET_Y = -this.HEIGHT / 2
+  private readonly INV_MASS = 0
+  private readonly RESTITUTION = 0
+
+  private readonly AABB = {
+    offset: new Vec2(-4, -4),
+    size: new Vec2(8, 8),
+  }
+
   public tileId = 0
   public shouldCollide = true
 
@@ -28,10 +30,7 @@ export class WallFactory extends EntityFactory {
       collider.colliders.push(
         new ColliderBuilder()
           .setEntity(entity)
-          .setAABB({
-            offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-            size: new Vec2(this.WIDTH, this.HEIGHT),
-          })
+          .setAABB(this.AABB)
           .setCategory(CategoryList.wall)
           .addTag('wall')
           .build()

@@ -81,7 +81,7 @@ export class ColliderBuilder {
     return this
   }
 
-  setAABB(arg: { offset?: Vec2; size: Vec2; maxClipToTolerance?: Vec2 }): ColliderBuilder {
+  setAABB(arg: { offset?: Vec2; size?: Vec2; maxClipToTolerance?: Vec2 }): ColliderBuilder {
     return this.setGeometry(new AABB(arg.offset, arg.size, arg.maxClipToTolerance))
   }
 
@@ -93,7 +93,7 @@ export class ColliderBuilder {
     return this.setGeometry(new Air(world))
   }
 
-  setRay(arg: { offset?: Vec2; direction: Vec2 }): ColliderBuilder {
+  setRay(arg: { offset?: Vec2; direction?: Vec2 }): ColliderBuilder {
     return this.setGeometry(new Ray(arg.offset, arg.direction))
   }
 

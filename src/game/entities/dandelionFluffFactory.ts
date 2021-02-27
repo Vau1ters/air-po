@@ -14,6 +14,11 @@ import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 import { ColliderComponent, ColliderBuilder } from '@game/components/colliderComponent'
 
 export class DandelionFluffFactory extends EntityFactory {
+  private readonly AABB = {
+    offset: new Vec2(-8, -16),
+    size: new Vec2(16, 32),
+  }
+
   constructor(private world: World, private parent: Entity) {
     super()
   }
@@ -27,10 +32,7 @@ export class DandelionFluffFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(-8, -16),
-          size: new Vec2(16, 32),
-        })
+        .setAABB(this.AABB)
         .setCategory(CategoryList.dandelionFluff)
         .addTag('fluff')
         .setIsSensor(true)

@@ -14,12 +14,12 @@ import { World } from '@core/ecs/world'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 
 export class AirGeyserFactory extends EntityFactory {
-  readonly INV_MASS = 0
-  readonly RESTITUTION = 0
-  readonly WIDTH = 10
-  readonly HEIGHT = 13
-  readonly OFFSET_X = -5
-  readonly OFFSET_Y = 3
+  private readonly INV_MASS = 0
+  private readonly RESTITUTION = 0
+  private readonly AABB = {
+    offset: new Vec2(-5, 3),
+    size: new Vec2(10, 13),
+  }
 
   private position: Vec2 = new Vec2()
   private maxQuantity = 120
@@ -51,10 +51,7 @@ export class AirGeyserFactory extends EntityFactory {
     collider.colliders.push(
       new ColliderBuilder()
         .setEntity(entity)
-        .setAABB({
-          offset: new Vec2(this.OFFSET_X, this.OFFSET_Y),
-          size: new Vec2(this.WIDTH, this.HEIGHT),
-        })
+        .setAABB(this.AABB)
         .setCategory(CategoryList.airGeyser)
         .build()
     )
