@@ -1,4 +1,4 @@
-import { AABB } from '../geometry/aabb'
+import { AABB } from '../geometry/AABB'
 import { Circle } from '../geometry/circle'
 import { WithHit } from '../collision'
 

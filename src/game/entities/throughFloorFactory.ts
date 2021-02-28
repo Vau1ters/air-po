@@ -20,13 +20,17 @@ export class ThroughFloorFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const sprite = parseAnimation(throughFloorDefinition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-
     entity.addComponent('Static', new StaticComponent())
     entity.addComponent('Position', new PositionComponent())
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(throughFloorDefinition.sprite),
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(

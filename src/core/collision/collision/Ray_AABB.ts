@@ -1,5 +1,5 @@
 import { Vec2 } from '@core/math/vec2'
-import { AABB } from '../geometry/aabb'
+import { AABB } from '../geometry/AABB'
 import { Ray } from '../geometry/ray'
 import { WithHit } from '../collision'
 

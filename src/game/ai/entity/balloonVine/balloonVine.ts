@@ -6,7 +6,7 @@ import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { AABB } from '@core/collision/geometry/aabb'
+import { AABB } from '@core/collision/geometry/AABB'
 
 export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   const player = new FamilyBuilder(world).include('Player').build().entityArray[0]

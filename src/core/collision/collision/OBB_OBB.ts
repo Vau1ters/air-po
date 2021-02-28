@@ -1,5 +1,5 @@
 import { Vec2 } from '@core/math/vec2'
-import { OBB } from '../geometry/obb'
+import { OBB } from '../geometry/OBB'
 import { WithHit } from '../collision'
 
 export type CollisionResultOBBOBB = {

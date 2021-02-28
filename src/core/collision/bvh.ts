@@ -1,4 +1,4 @@
-import { AABB } from './geometry/aabb'
+import { AABB } from './geometry/AABB'
 import { ReservedArray } from '@utils/reservedArray'
 import { Collider } from '@game/components/colliderComponent'
 

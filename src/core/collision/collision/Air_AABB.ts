@@ -1,4 +1,4 @@
-import { AABB } from '../geometry/aabb'
+import { AABB } from '../geometry/AABB'
 import { Air } from '../geometry/air'
 import { WithHit } from '../collision'
 import { Entity } from '@core/ecs/entity'

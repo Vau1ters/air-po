@@ -1,4 +1,4 @@
-import { AABB } from './aabb'
+import { AABB } from './AABB'
 import { Vec2 } from '@core/math/vec2'
 import { GeometryForCollision } from './geometry'
 import { Graphics } from 'pixi.js'

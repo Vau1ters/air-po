@@ -2,7 +2,7 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { Graphics } from 'pixi.js'
-import { AABB } from './aabb'
+import { AABB } from './AABB'
 import { GeometryForCollision } from './geometry'
 
 export class Air implements GeometryForCollision {

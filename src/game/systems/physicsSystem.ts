@@ -4,8 +4,8 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Collider, CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { collide, WithHit } from '@core/collision/collision'
-import { AABB } from '@core/collision/geometry/aabb'
-import { OBB } from '@core/collision/geometry/obb'
+import { AABB } from '@core/collision/geometry/AABB'
+import { OBB } from '@core/collision/geometry/OBB'
 import { CollisionResultOBBOBB } from '@core/collision/collision/OBB_OBB'
 
 export default class PhysicsSystem extends System {

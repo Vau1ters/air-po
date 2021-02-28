@@ -7,10 +7,10 @@ import { CollisionResultCircleAABB, collideCircleAABB } from './collision/Circle
 import { CollisionResultCircleCircle, collideCircleCircle } from './collision/Circle_Circle'
 import { CollisionResultOBBOBB, collideOBBOBB } from './collision/OBB_OBB'
 import { CollisionResultRayAABB, collideRayAABB } from './collision/Ray_AABB'
-import { AABB } from './geometry/aabb'
+import { AABB } from './geometry/AABB'
 import { Air } from './geometry/air'
 import { Circle } from './geometry/circle'
-import { OBB } from './geometry/obb'
+import { OBB } from './geometry/OBB'
 import { Ray } from './geometry/ray'
 
 export type WithHit<T> = { hit: false } | ({ hit: true } & T)

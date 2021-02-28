@@ -5,7 +5,7 @@ import vineDefinition from '@res/animation/vine.json'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { ColliderComponent, CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { AABB } from '@core/collision/geometry/aabb'
+import { AABB } from '@core/collision/geometry/AABB'
 
 const canExtend = (args: CollisionCallbackArgs): void => {
   const { me, other } = args

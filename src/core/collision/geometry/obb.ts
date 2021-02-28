@@ -1,6 +1,6 @@
 import { Vec2 } from '@core/math/vec2'
 import { Graphics } from 'pixi.js'
-import { AABB } from './aabb'
+import { AABB } from './AABB'
 import { GeometryForCollision } from './geometry'
 
 export class OBB implements GeometryForCollision {
