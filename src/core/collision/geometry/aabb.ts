@@ -19,7 +19,7 @@ export class AABB implements GeometryForCollision {
   }
 
   public add(position: Vec2): AABB {
-    return new AABB(this.position.add(position), this.size)
+    return new AABB(this.position.add(position), this.size, this.maxClipToTolerance)
   }
 
   public overlap(other: AABB): boolean {
