@@ -8,7 +8,7 @@ import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import map from '@res/map/teststage.json'
 import { Sprite } from 'pixi.js'
 
-export const titleWorldAI = function*(world: World): Behaviour<World> {
+export const titleWorldAI = function*(world: World): Behaviour<void> {
   const titleImage = new Sprite(textureStore.title[0])
   titleImage.interactive = true
   world.stage.addChild(titleImage)
@@ -49,5 +49,6 @@ export const titleWorldAI = function*(world: World): Behaviour<World> {
     ]
   )
 
-  return new GameWorldFactory().create(map, 0)
+  const gameWorld = new GameWorldFactory().create(map, 0)
+  gameWorld.start()
 }
