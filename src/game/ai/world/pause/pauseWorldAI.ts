@@ -4,10 +4,6 @@ import { KeyController } from '@game/systems/controlSystem'
 
 export const pauseWorldAI = (gameWorld: World) =>
   function*(): Behaviour<void> {
-    while (true) {
-      yield
-      if (KeyController.isActionPressed('Pause')) break
-    }
-    yield
+    while (!KeyController.isActionPressed('Pause')) yield
     gameWorld.resume()
   }

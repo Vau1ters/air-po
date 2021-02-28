@@ -9,20 +9,20 @@ import { isPlayerAlive } from '../common/condition/isPlayerAlive'
 
 export const gameWorldAI = function*(world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
-  const title = (): boolean => isPlayerAlive(playerFamily)() === false
-  const pause = (): boolean => KeyController.isActionPressed('Pause')
+  const isGameOn = isPlayerAlive(playerFamily)
+  const shouldPause = (): boolean => KeyController.isActionPressed('Pause')
 
-  while (true) {
-    if (title()) {
-      yield* wait(60)
-      const titleWorld = new TitleWorldFactory().create()
-      titleWorld.start()
-      return
-    } else if (pause()) {
+  while (isGameOn()) {
+    if (shouldPause()) {
       const pauseWorld = new PauseWorldFactory().create(world)
       pauseWorld.start()
       world.pause()
     }
     yield
   }
+
+  yield* wait(60)
+  const titleWorld = new TitleWorldFactory().create()
+  titleWorld.start()
+  return
 }
