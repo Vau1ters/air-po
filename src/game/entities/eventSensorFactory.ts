@@ -25,7 +25,6 @@ export class EventSensorFactory extends EntityFactory {
           entity,
           geometry: {
             type: 'AABB',
-            offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
             size: new Vec2(this.size.x, this.size.y),
           },
           category: Category.SENSOR,

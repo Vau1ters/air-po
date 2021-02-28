@@ -19,14 +19,12 @@ import { snibeeAI, SnibeeSetting } from '@game/ai/entity/snibee/snibeeAI'
 export class SnibeeFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
     maxClipToTolerance: new Vec2(SnibeeSetting.maxVelocity / 60, SnibeeSetting.maxVelocity / 60),
   }
 
   private readonly HIT_BOX_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
   }
 
@@ -44,7 +42,6 @@ export class SnibeeFactory extends EntityFactory {
     entity.addComponent('AI', new AIComponent(snibeeAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
-    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     entity.addComponent(
       'Draw',
       new DrawComponent({
@@ -87,6 +84,7 @@ export class SnibeeFactory extends EntityFactory {
     entity.addComponent('Attack', new AttackComponent(1, false))
     entity.addComponent('HP', new HPComponent(2, 2))
     entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     return entity
   }
 }

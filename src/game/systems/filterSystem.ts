@@ -57,6 +57,7 @@ export class FilterSystem extends System {
           entity: this.lightSearcher,
           geometry: {
             type: 'AABB',
+            offset: new Vec2(windowSize.width / 2, windowSize.height / 2),
             size: new Vec2(windowSize.width, windowSize.height),
           },
           category: Category.SENSOR,

@@ -16,7 +16,7 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 export class AirGeyserFactory extends EntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-5, 3),
+    offset: new Vec2(0, 9),
     size: new Vec2(10, 13),
   }
 

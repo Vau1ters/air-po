@@ -13,7 +13,6 @@ import { LightComponent } from '@game/components/lightComponent'
 export class MossFactory extends EntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-4, -4),
     size: new Vec2(8, 8),
   }
 

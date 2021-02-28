@@ -25,7 +25,6 @@ export class BalloonVineFactory extends EntityFactory {
 
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
     maxClipToTolerance: new Vec2(2, 2),
   }

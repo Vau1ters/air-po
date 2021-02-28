@@ -23,14 +23,13 @@ import { EquipmentComponent } from '@game/components/equipmentComponent'
 export class PlayerFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-5, -6),
     size: new Vec2(10, 13),
     maxClipToTolerance: new Vec2(3, 4),
   }
 
   private readonly FOOT_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-4, 7),
+    offset: new Vec2(0, 8),
     size: new Vec2(8, 1),
     maxClipToTolerance: new Vec2(2, 0),
   }
@@ -76,7 +75,6 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('AI', new AIComponent(playerAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
-    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     entity.addComponent('HP', new HPComponent(3, 3))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent(
@@ -129,6 +127,7 @@ export class PlayerFactory extends EntityFactory {
     // TODO: カメラをプレイヤーから分離する
     entity.addComponent('Camera', new CameraComponent())
     entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     return entity
   }
 }

@@ -5,38 +5,51 @@ import { OBB } from './OBB'
 
 export class AABB implements GeometryForCollision {
   public constructor(
-    public position = new Vec2(),
+    public center = new Vec2(),
     public size = new Vec2(),
     public maxClipToTolerance = new Vec2()
   ) {}
 
   public clone(): AABB {
-    return new AABB(this.position, this.size, this.maxClipToTolerance)
+    return new AABB(this.center, this.size, this.maxClipToTolerance)
+  }
+
+  public assign(aabb: AABB): void {
+    this.center = aabb.center
+    this.size = aabb.size
+    this.maxClipToTolerance = aabb.maxClipToTolerance
   }
 
   public static fromMinMax(min: Vec2, max: Vec2): AABB {
-    return new AABB(min, max.sub(min))
+    return new AABB(min.add(max).div(2), max.sub(min))
+  }
+
+  public static fromPoints(points: Vec2[]): AABB {
+    return AABB.fromMinMax(
+      points.reduce((a, b) => Vec2.min(a, b)),
+      points.reduce((a, b) => Vec2.max(a, b))
+    )
   }
 
   public add(position: Vec2): AABB {
-    return new AABB(this.position.add(position), this.size, this.maxClipToTolerance)
+    return new AABB(this.center.add(position), this.size, this.maxClipToTolerance)
   }
 
   public overlap(other: AABB): boolean {
     return (
-      this.position.x + this.size.x >= other.position.x &&
-      other.position.x + other.size.x >= this.position.x &&
-      this.position.y + this.size.y >= other.position.y &&
-      other.position.y + other.size.y >= this.position.y
+      this.max.x >= other.min.x &&
+      other.max.x >= this.min.x &&
+      this.max.y >= other.min.y &&
+      other.max.y >= this.min.y
     )
   }
 
   public contains(point: Vec2): boolean {
     return (
-      this.position.x <= point.x &&
-      this.position.x + this.size.x >= point.x &&
-      this.position.y <= point.y &&
-      this.position.y + this.size.y >= point.y
+      this.min.x <= point.x &&
+      this.max.x >= point.x &&
+      this.min.y <= point.y &&
+      this.max.y >= point.y
     )
   }
 
@@ -49,19 +62,19 @@ export class AABB implements GeometryForCollision {
   }
 
   get top(): number {
-    return this.position.y
+    return this.center.y - this.size.y / 2
   }
 
   get bottom(): number {
-    return this.position.y + this.size.y
+    return this.center.y + this.size.y / 2
   }
 
   get left(): number {
-    return this.position.x
+    return this.center.x - this.size.x / 2
   }
 
   get right(): number {
-    return this.position.x + this.size.x
+    return this.center.x + this.size.x / 2
   }
 
   get topLeft(): Vec2 {
@@ -88,14 +101,6 @@ export class AABB implements GeometryForCollision {
     return this.bottomRight
   }
 
-  get center(): Vec2 {
-    return this.position.add(this.size.div(2))
-  }
-
-  set center(c: Vec2) {
-    this.position.assign(c.sub(this.size.div(2)))
-  }
-
   asOBB(): OBB {
     return new OBB(this.clone(), 0)
   }
@@ -109,7 +114,7 @@ export class AABB implements GeometryForCollision {
   }
 
   draw(g: Graphics, position: Vec2): void {
-    const pos = position.add(this.position)
+    const pos = position.add(this.min)
     g.drawRect(pos.x, pos.y, this.size.x, this.size.y)
   }
 }

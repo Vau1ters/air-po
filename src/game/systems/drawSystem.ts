@@ -122,6 +122,6 @@ export default class DrawSystem extends System {
     const sw = windowSize.width
     const sh = windowSize.height
     const cpos = camera.getComponent('Position')
-    return new AABB(new Vec2(-sw / 2, -sh / 2).add(cpos), new Vec2(sw, sh))
+    return new AABB(cpos.copy(), new Vec2(sw, sh))
   }
 }

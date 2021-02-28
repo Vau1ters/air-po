@@ -23,7 +23,6 @@ type BulletType = 'ball' | 'needle'
 export class BulletFactory extends EntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-2, -2),
     size: new Vec2(4, 4),
   }
 

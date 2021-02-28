@@ -41,8 +41,8 @@ export default class DebugDrawSystem extends System {
     if (this.cameraFamily.entityArray.length === 0) return
     const [camera] = this.cameraFamily.entityArray
     const cameraPosition = camera.getComponent('Position')
-    const cameraX = cameraPosition.x - windowSize.width / 2
-    const cameraY = cameraPosition.y - windowSize.height / 2
+    const cameraX = cameraPosition.x
+    const cameraY = cameraPosition.y
     const cameraW = windowSize.width
     const cameraH = windowSize.height
     const cameraArea = new AABB(new Vec2(cameraX, cameraY), new Vec2(cameraW, cameraH))
@@ -81,7 +81,7 @@ export default class DebugDrawSystem extends System {
         const draw = (n: BVHNode | BVHLeaf): void => {
           const b = n.bound
           if (cameraArea.overlap(b)) {
-            this.graphics.drawRect(b.position.x, b.position.y, b.size.x, b.size.y)
+            b.draw(this.graphics, new Vec2())
           }
           if (n instanceof BVHNode) {
             for (const c of n.child) draw(c)

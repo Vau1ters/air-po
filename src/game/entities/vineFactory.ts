@@ -16,19 +16,16 @@ import { addTag } from '@game/ai/entity/vine/changeVineLength'
 export class VineFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-8, -8),
     size: new Vec2(16, 16),
   }
 
   private readonly WALL_SENSOR_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-7, 0),
     size: new Vec2(14, 5),
   }
 
   private readonly AIR_SENSOR_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-3, -3),
     size: new Vec2(6, 6),
   }
 

@@ -11,7 +11,6 @@ type DrawComponentOption = {
   entity: Entity
   type?: ContainerType
   child?: { sprite: DisplayObject; zIndex?: number; state?: string }
-  zIndex?: number
 }
 
 export class DrawComponent extends Container {
@@ -25,7 +24,7 @@ export class DrawComponent extends Container {
     if (option.child) {
       this.addChild(option.child.sprite)
       if (option.child.zIndex) {
-        option.child.zIndex = option.zIndex
+        option.child.sprite.zIndex = option.child.zIndex
         this.sortableChildren = true
       }
       if (option.child.state) {
@@ -42,7 +41,10 @@ export class DrawComponent extends Container {
       entity: this.entity,
       geometry: {
         type: 'AABB',
-        offset: new Vec2(localBounds.x, localBounds.y),
+        offset: new Vec2(
+          localBounds.x + localBounds.width / 2,
+          localBounds.y + localBounds.height / 2
+        ),
         size: new Vec2(localBounds.width, localBounds.height),
       },
       isSensor: true,

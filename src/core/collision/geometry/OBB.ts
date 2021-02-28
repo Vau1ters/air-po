@@ -8,12 +8,12 @@ export class OBB implements GeometryForCollision {
 
   createBound(): AABB {
     const { angle } = this
-    const { position, size: s } = this.bound
+    const { center, size: s } = this.bound
     const cos = Math.cos(angle)
     const sin = Math.sin(angle)
-    const width = (Math.abs(s.x * cos) + Math.abs(s.y * sin)) * 0.5
-    const height = (Math.abs(s.x * sin) + Math.abs(s.y * cos)) * 0.5
-    return new AABB(position, new Vec2(width, height))
+    const width = Math.abs(s.x * cos) + Math.abs(s.y * sin)
+    const height = Math.abs(s.x * sin) + Math.abs(s.y * cos)
+    return new AABB(center, new Vec2(width, height))
   }
 
   applyPosition(pos: Vec2): OBB {

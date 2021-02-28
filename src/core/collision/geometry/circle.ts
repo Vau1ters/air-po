@@ -20,10 +20,7 @@ export class Circle implements GeometryForCollision {
   }
 
   public createBound(): AABB {
-    return new AABB(
-      this.position.sub(new Vec2(this.radius, this.radius)),
-      new Vec2(this.radius, this.radius).mul(2)
-    )
+    return new AABB(this.position, new Vec2(this.radius, this.radius).mul(2))
   }
 
   get center(): Vec2 {

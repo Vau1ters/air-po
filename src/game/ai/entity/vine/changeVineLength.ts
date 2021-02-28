@@ -38,9 +38,10 @@ const changeColliderLength = (colliderComponent: ColliderComponent, length: numb
     const aabb = collider.geometry as AABB
     if (collider.tag.has('vine')) {
       aabb.size.y = (length / 3) * 16
+      aabb.center.y = aabb.size.y / 2
     }
     if (collider.tag.has('vineWallSensor')) {
-      aabb.position.y = (length / 3) * 16 - 8
+      aabb.center.y = (length / 3) * 16 - 8 + aabb.size.y
     }
   }
 }

@@ -16,7 +16,6 @@ import { ColliderComponent, buildCollider } from '@game/components/colliderCompo
 export class DandelionFluffFactory extends EntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-8, -16),
     size: new Vec2(16, 32),
   }
 

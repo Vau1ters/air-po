@@ -13,7 +13,7 @@ import { StaticComponent } from '@game/components/staticComponent'
 export class ThroughFloorFactory extends EntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(-4, -4),
+    offset: new Vec2(0, -2),
     size: new Vec2(8, 4),
   }
 

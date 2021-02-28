@@ -98,18 +98,14 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
         points[i].y = -y
       }
     }
-    gripAABB.position.x = points.map(p => p.x).reduce((a, b) => Math.min(a, b))
-    gripAABB.position.y = points.map(p => p.y).reduce((a, b) => Math.min(a, b))
-    gripAABB.size.x =
-      points.map(p => p.x).reduce((a, b) => Math.max(a, b)) - gripAABB.position.x + 1
-    gripAABB.size.y = points.map(p => p.y).reduce((a, b) => Math.max(a, b)) - gripAABB.position.y
+    gripAABB.assign(AABB.fromPoints(points.map(p => new Vec2(p.x, p.y))))
 
     const lp = points[points.length - 1]
-    rootAABB.position.x = lp.x - rootAABB.size.x / 2
-    rootAABB.position.y = lp.y - rootAABB.size.y
+    rootAABB.center.x = lp.x
+    rootAABB.center.y = lp.y - rootAABB.size.y / 2
 
-    wallDetectionAABB.position.x = lp.x - wallDetectionAABB.size.x / 2
-    wallDetectionAABB.position.y = lp.y - wallDetectionAABB.size.y / 2
+    wallDetectionAABB.center.x = lp.x
+    wallDetectionAABB.center.y = lp.y
 
     const rigidBody = entity.getComponent('RigidBody')
 
