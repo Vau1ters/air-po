@@ -29,7 +29,7 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
       if (player.landing) animState.state = 'Standing'
     }
     if (player.landing) {
-      if (!isLandingPrevFrame) Sound.play('foot')
+      if (!isLandingPrevFrame) Sound.play('playerLanding')
       velocity.y = 0
       if (KeyController.isActionPressing('MoveDown')) {
         player.throughFloorIgnoreCount = 20
@@ -41,7 +41,7 @@ export const playerMove = function*(entity: Entity): Behaviour<void> {
     if (KeyController.isActionPressing('Jump') && player.landing) {
       velocity.y = -250
       animState.state = 'Jumping'
-      Sound.play('jump')
+      Sound.play('playerJump')
     }
     isLandingPrevFrame = player.landing
     player.landing = false
