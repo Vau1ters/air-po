@@ -19,13 +19,14 @@ import { enemy1AI } from '@game/ai/entity/enemy1/enemy1AI'
 export class Enemy1Factory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    size: new Vec2(10, 13),
+    offset: new Vec2(0, 1),
+    size: new Vec2(16, 12),
     maxClipToTolerance: new Vec2(2, 2),
   }
 
   private readonly HIT_BOX_COLLIDER = {
     type: 'AABB' as const,
-    size: new Vec2(10, 13),
+    size: new Vec2(16, 12),
     maxClipToTolerance: new Vec2(2, 2),
   }
 

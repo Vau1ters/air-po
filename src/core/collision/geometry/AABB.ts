@@ -113,8 +113,7 @@ export class AABB implements GeometryForCollision {
     return this.add(pos)
   }
 
-  draw(g: Graphics, position: Vec2): void {
-    const pos = position.add(this.min)
-    g.drawRect(pos.x, pos.y, this.size.x, this.size.y)
+  draw(g: Graphics): void {
+    g.drawRect(this.min.x, this.min.y, this.size.x, this.size.y)
   }
 }

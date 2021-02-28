@@ -19,7 +19,8 @@ import { slime1AI } from '@game/ai/entity/slime1/slime1AI'
 export class Slime1Factory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    size: new Vec2(10, 13),
+    offset: new Vec2(0, 1),
+    size: new Vec2(16, 12),
     maxClipToTolerance: new Vec2(2, 2),
   }
 

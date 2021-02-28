@@ -42,7 +42,7 @@ export class ThroughFloorFactory extends EntityFactory {
           tag: ['throughFloor'],
           condition: (_: Collider, other: Collider): boolean => {
             if (!other.entity.hasComponent('RigidBody')) return false
-            return other.entity.getComponent('RigidBody').velocity.y >= 0
+            return other.entity.getComponent('RigidBody').velocity.y > -1e-3
           },
         })
       )

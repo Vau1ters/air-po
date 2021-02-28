@@ -23,7 +23,7 @@ import { EquipmentComponent } from '@game/components/equipmentComponent'
 export class PlayerFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
-    size: new Vec2(10, 13),
+    size: new Vec2(13, 16),
     maxClipToTolerance: new Vec2(3, 4),
   }
 

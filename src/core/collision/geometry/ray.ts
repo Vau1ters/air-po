@@ -15,5 +15,5 @@ export class Ray implements GeometryForCollision {
     return new Ray(pos.add(this.origin), this.direction)
   }
 
-  draw(_: Graphics, __: Vec2): void {}
+  draw(_: Graphics): void {}
 }

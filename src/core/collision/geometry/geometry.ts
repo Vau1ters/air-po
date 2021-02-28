@@ -5,5 +5,5 @@ import { AABB } from './AABB'
 export interface GeometryForCollision {
   createBound(): AABB
   applyPosition(pos: Vec2): GeometryForCollision
-  draw(g: Graphics, pos: Vec2): void
+  draw(g: Graphics): void
 }

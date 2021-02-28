@@ -22,5 +22,5 @@ export class Air implements GeometryForCollision {
     return this
   }
 
-  draw(_: Graphics, __: Vec2): void {}
+  draw(_: Graphics): void {}
 }

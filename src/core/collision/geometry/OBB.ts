@@ -20,7 +20,7 @@ export class OBB implements GeometryForCollision {
     return new OBB(this.bound.add(pos), this.angle)
   }
 
-  draw(_: Graphics, __: Vec2): void {}
+  draw(_: Graphics): void {}
 
   get axisX(): Vec2 {
     return new Vec2(Math.cos(this.angle), Math.sin(this.angle))

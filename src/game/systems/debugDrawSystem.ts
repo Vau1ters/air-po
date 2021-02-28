@@ -59,14 +59,15 @@ export default class DebugDrawSystem extends System {
     }
 
     if (this.state.collider) {
-      this.graphics.beginFill(0x00ffff, 0.5)
+      this.graphics.lineStyle(1, 0x0000ff, 1, 0.5, true)
       for (const entity of this.colliderFamily.entityIterator) {
         const position = entity.getComponent('Position')
         const collider = entity.getComponent('Collider')
 
         for (const c of collider.colliders) {
-          if (c.bound.overlap(cameraArea)) {
-            c.geometry.draw(this.graphics, position)
+          const g = c.bound.applyPosition(position)
+          if (cameraArea.overlap(g)) {
+            g.draw(this.graphics)
           }
         }
       }
@@ -79,9 +80,9 @@ export default class DebugDrawSystem extends System {
         this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)
 
         const draw = (n: BVHNode | BVHLeaf): void => {
-          const b = n.bound
-          if (cameraArea.overlap(b)) {
-            b.draw(this.graphics, new Vec2())
+          const g = n.bound
+          if (cameraArea.overlap(g)) {
+            g.draw(this.graphics)
           }
           if (n instanceof BVHNode) {
             for (const c of n.child) draw(c)

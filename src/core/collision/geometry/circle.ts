@@ -31,8 +31,7 @@ export class Circle implements GeometryForCollision {
     return this.add(pos)
   }
 
-  draw(g: Graphics, position: Vec2): void {
-    const pos = position.add(this.position)
-    g.drawCircle(pos.x, pos.y, this.radius)
+  draw(g: Graphics): void {
+    g.drawCircle(this.position.x, this.position.y, this.radius)
   }
 }
