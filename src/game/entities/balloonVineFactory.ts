@@ -59,50 +59,6 @@ export class BalloonVineFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      ...buildColliders({
-        entity,
-        colliders: [
-          {
-            geometry: this.GRIP_COLLIDER,
-            category: Category.ITEM,
-            mask: new CategorySet(Category.SENSOR),
-            tag: ['balloonVine'],
-            isSensor: true,
-          },
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.HITBOX,
-            mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-            tag: ['balloonVine'],
-            isSensor: true,
-          },
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.SENSOR,
-            mask: new CategorySet(Category.AIR),
-            tag: ['airHolderBody'],
-            isSensor: true,
-          },
-          {
-            geometry: this.ROOT_COLLIDER,
-            category: Category.PHYSICS,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.PHYSICS),
-            tag: ['balloonVine'],
-            isSensor: true,
-          },
-          {
-            geometry: this.WALL_COLLIDER,
-            category: Category.SENSOR,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-            tag: ['balloonVine'],
-            isSensor: true,
-          },
-        ],
-      })
-    )
-
     const sprite = parseAnimation(balloonvineDefinition.sprite)
     sprite.zIndex = 1
     const draw = new DrawComponent(entity)
@@ -113,7 +69,52 @@ export class BalloonVineFactory extends EntityFactory {
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.GRIP_COLLIDER,
+              category: Category.ITEM,
+              mask: new CategorySet(Category.SENSOR),
+              tag: ['balloonVine'],
+              isSensor: true,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.HITBOX,
+              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
+              tag: ['balloonVine'],
+              isSensor: true,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.AIR),
+              tag: ['airHolderBody'],
+              isSensor: true,
+            },
+            {
+              geometry: this.ROOT_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.PHYSICS),
+              tag: ['balloonVine'],
+              isSensor: true,
+            },
+            {
+              geometry: this.WALL_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              tag: ['balloonVine'],
+              isSensor: true,
+            },
+          ],
+        })
+      )
+    )
+
     entity.addComponent('HP', new HPComponent(1, 1))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))

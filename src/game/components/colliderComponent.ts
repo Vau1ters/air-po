@@ -125,7 +125,11 @@ export const buildColliders = (options: {
   )
 
 export class ColliderComponent {
-  public readonly colliders = new Array<Collider>()
+  public readonly colliders: Array<Collider>
+
+  constructor(...colliders: Array<Collider>) {
+    this.colliders = colliders
+  }
 
   public removeByTag(tag: string): void {
     while (true) {

@@ -1,4 +1,4 @@
-import { Animation } from '@core/graphics/animation'
+import { AnimationSprite } from '@core/graphics/animation'
 import { EventNotifier } from '@utils/eventNotifier'
 
 export class AnimationStateComponent {
@@ -8,7 +8,7 @@ export class AnimationStateComponent {
   public readonly changeState = new EventNotifier<string>()
   public readonly changeIsVisible = new EventNotifier<boolean>()
 
-  constructor(public animation: Animation) {
+  constructor(public animation: AnimationSprite) {
     this.changeState.addObserver(x => animation.changeTo(x))
     this.changeIsVisible.addObserver(x => animation.setVisible(x))
   }

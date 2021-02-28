@@ -27,18 +27,6 @@ export class DandelionFluffFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity,
-        geometry: this.COLLIDER,
-        category: Category.ITEM,
-        mask: new CategorySet(Category.SENSOR),
-        tag: ['fluff'],
-        isSensor: true,
-      })
-    )
-
     const sprite = parseAnimation(dandelionFluffDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
@@ -48,7 +36,19 @@ export class DandelionFluffFactory extends EntityFactory {
       'Position',
       new PositionComponent().add(this.parent.getComponent('Position'))
     )
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: this.COLLIDER,
+          category: Category.ITEM,
+          mask: new CategorySet(Category.SENSOR),
+          tag: ['fluff'],
+          isSensor: true,
+        })
+      )
+    )
     entity.addComponent('Draw', draw)
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
     entity.addComponent('AnimationState', new AnimationStateComponent(sprite))

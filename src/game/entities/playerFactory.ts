@@ -74,40 +74,6 @@ export class PlayerFactory extends EntityFactory {
       return true
     }
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      ...buildColliders({
-        entity,
-        colliders: [
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.PHYSICS,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-            condition: shouldCollide,
-          },
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.PLAYER_HITBOX,
-            mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-          },
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.SENSOR,
-            mask: new CategorySet(Category.ITEM, Category.AIR, Category.SENSOR),
-            tag: ['airHolderBody', 'playerSensor'],
-          },
-          {
-            geometry: this.FOOT_COLLIDER,
-            category: Category.PHYSICS,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-            tag: ['playerFoot'],
-            isSensor: true,
-            condition: shouldCollide,
-          },
-        ],
-      })
-    )
-
     const sprite = parseAnimation(playerDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
@@ -126,7 +92,41 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('HP', new HPComponent(3, 3))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              condition: shouldCollide,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.PLAYER_HITBOX,
+              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.ITEM, Category.AIR, Category.SENSOR),
+              tag: ['airHolderBody', 'playerSensor'],
+            },
+            {
+              geometry: this.FOOT_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              tag: ['playerFoot'],
+              isSensor: true,
+              condition: shouldCollide,
+            },
+          ],
+        })
+      )
+    )
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Equipment', equipment)

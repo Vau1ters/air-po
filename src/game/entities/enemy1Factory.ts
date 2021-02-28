@@ -44,35 +44,6 @@ export class Enemy1Factory extends EntityFactory {
     const entity = new Entity()
     const direction = new HorizontalDirectionComponent('Right')
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      ...buildColliders({
-        entity,
-        colliders: [
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.PHYSICS,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-            tag: ['enemy1Body'],
-          },
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.HITBOX,
-            mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-            tag: ['enemy1Body'],
-            isSensor: true,
-          },
-          {
-            geometry: this.HIT_BOX_COLLIDER,
-            category: Category.ATTACK,
-            mask: new CategorySet(Category.PLAYER_HITBOX),
-            tag: ['AttackHitBox'],
-            isSensor: true,
-          },
-        ],
-      })
-    )
-
     const sprite = parseAnimation(enemy1Definition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
@@ -90,7 +61,36 @@ export class Enemy1Factory extends EntityFactory {
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('HorizontalDirection', direction)
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              tag: ['enemy1Body'],
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.HITBOX,
+              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
+              tag: ['enemy1Body'],
+              isSensor: true,
+            },
+            {
+              geometry: this.HIT_BOX_COLLIDER,
+              category: Category.ATTACK,
+              mask: new CategorySet(Category.PLAYER_HITBOX),
+              tag: ['AttackHitBox'],
+              isSensor: true,
+            },
+          ],
+        })
+      )
+    )
     entity.addComponent('Attack', new AttackComponent(1, false))
     entity.addComponent('HP', new HPComponent(2, 2))
     entity.addComponent('AnimationState', new AnimationStateComponent(sprite))

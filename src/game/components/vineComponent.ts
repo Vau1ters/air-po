@@ -1,7 +1,7 @@
-import { Animation } from '@core/graphics/animation'
+import { AnimationSprite } from '@core/graphics/animation'
 
 export class VineComponent {
-  public sprites: Array<Animation> = []
+  public sprites: Array<AnimationSprite> = []
   public canExtend = false
   public shouldShrink = false
   public constructor(public length: number) {}

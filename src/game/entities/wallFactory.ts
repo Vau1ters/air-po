@@ -24,18 +24,18 @@ export class WallFactory extends EntityFactory {
     const entity = new Entity()
 
     if (this.shouldCollide) {
-      const collider = new ColliderComponent()
-      collider.colliders.push(
-        buildCollider({
-          entity,
-          geometry: this.COLLIDER,
-          category: Category.STATIC_WALL,
-          mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
-          tag: ['wall'],
-        })
+      entity.addComponent(
+        'Collider',
+        new ColliderComponent(
+          buildCollider({
+            entity,
+            geometry: this.COLLIDER,
+            category: Category.STATIC_WALL,
+            mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
+            tag: ['wall'],
+          })
+        )
       )
-
-      entity.addComponent('Collider', collider)
       entity.addComponent('RigidBody', new RigidBodyComponent())
     }
 

@@ -39,35 +39,6 @@ export class VineFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      ...buildColliders({
-        entity,
-        colliders: [
-          {
-            geometry: this.BODY_COLLIDER,
-            category: Category.DYNAMIC_WALL,
-            mask: new CategorySet(Category.PHYSICS, Category.SENSOR),
-            tag: ['vine'],
-          },
-          {
-            geometry: this.WALL_SENSOR_COLLIDER,
-            category: Category.SENSOR,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-            tag: ['vineWallSensor'],
-            isSensor: true,
-          },
-          {
-            geometry: this.AIR_SENSOR_COLLIDER,
-            category: Category.SENSOR,
-            mask: new CategorySet(Category.AIR),
-            tag: ['vineAirSensor'],
-            isSensor: true,
-          },
-        ],
-      })
-    )
-
     const sprite = parseAnimation(vineDefinition.sprite)
     sprite.changeTo('Root0')
     const draw = new DrawComponent(entity)
@@ -76,7 +47,36 @@ export class VineFactory extends EntityFactory {
     const vine = new VineComponent(0)
     vine.sprites.push(sprite)
 
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.DYNAMIC_WALL,
+              mask: new CategorySet(Category.PHYSICS, Category.SENSOR),
+              tag: ['vine'],
+            },
+            {
+              geometry: this.WALL_SENSOR_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              tag: ['vineWallSensor'],
+              isSensor: true,
+            },
+            {
+              geometry: this.AIR_SENSOR_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.AIR),
+              tag: ['vineAirSensor'],
+              isSensor: true,
+            },
+          ],
+        })
+      )
+    )
     entity.addComponent('AI', new AIComponent(vineAI(entity)))
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent('Position', new PositionComponent())

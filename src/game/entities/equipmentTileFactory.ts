@@ -23,22 +23,21 @@ export class EquipmentTileFactory extends EntityFactory {
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
     entity.addComponent('Draw', draw)
-
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity,
-        geometry: {
-          type: 'AABB',
-          offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
-          size: new Vec2(this.size.x, this.size.y),
-        },
-        category: Category.SENSOR,
-        mask: new CategorySet(Category.SENSOR),
-      })
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: {
+            type: 'AABB',
+            offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
+            size: new Vec2(this.size.x, this.size.y),
+          },
+          category: Category.SENSOR,
+          mask: new CategorySet(Category.SENSOR),
+        })
+      )
     )
-    entity.addComponent('Collider', collider)
-
     entity.addComponent(
       'Sensor',
       new SensorComponent(`equipItem ${this.equipmentType} ${entity.id}`)

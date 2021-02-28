@@ -22,19 +22,19 @@ export class LaserSightFactory extends EntityFactory {
     const draw = new DrawComponent(entity, 'WorldUI')
     draw.addChild(g)
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity,
-        geometry: { type: 'Ray' },
-        category: Category.SENSOR,
-        mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.HITBOX),
-        isSensor: true,
-      })
-    )
-
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: { type: 'Ray' },
+          category: Category.SENSOR,
+          mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.HITBOX),
+          isSensor: true,
+        })
+      )
+    )
     entity.addComponent('AI', new AIComponent(laserSightAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
 

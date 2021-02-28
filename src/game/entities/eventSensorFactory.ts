@@ -18,23 +18,22 @@ export class EventSensorFactory extends EntityFactory {
       'Position',
       new PositionComponent(this.position.x + this.size.x / 2, this.position.y - this.size.y / 2)
     )
-
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity,
-        geometry: {
-          type: 'AABB',
-          offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
-          size: new Vec2(this.size.x, this.size.y),
-        },
-        category: Category.SENSOR,
-        mask: new CategorySet(Category.SENSOR),
-        isSensor: true,
-      })
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: {
+            type: 'AABB',
+            offset: new Vec2(-this.size.x / 2, -this.size.y / 2),
+            size: new Vec2(this.size.x, this.size.y),
+          },
+          category: Category.SENSOR,
+          mask: new CategorySet(Category.SENSOR),
+          isSensor: true,
+        })
+      )
     )
-    entity.addComponent('Collider', collider)
-
     entity.addComponent('Sensor', new SensorComponent(this.event))
 
     return entity

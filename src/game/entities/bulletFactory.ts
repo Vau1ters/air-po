@@ -59,31 +59,6 @@ export class BulletFactory extends EntityFactory {
 
     const entity = new Entity()
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      ...buildColliders({
-        entity,
-        colliders: [
-          {
-            geometry: this.COLLIDER,
-            category: Category.PHYSICS,
-            mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-            tag: ['bulletBody'],
-            isSensor: true,
-          },
-          {
-            geometry: this.COLLIDER,
-            category: Category.ATTACK,
-            mask: new CategorySet(
-              this.shooterType === 'player' ? Category.HITBOX : Category.PLAYER_HITBOX
-            ),
-            tag: ['AttackHitBox'],
-            isSensor: true,
-          },
-        ],
-      })
-    )
-
     const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
     const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
@@ -118,7 +93,32 @@ export class BulletFactory extends EntityFactory {
       )
     )
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              tag: ['bulletBody'],
+              isSensor: true,
+            },
+            {
+              geometry: this.COLLIDER,
+              category: Category.ATTACK,
+              mask: new CategorySet(
+                this.shooterType === 'player' ? Category.HITBOX : Category.PLAYER_HITBOX
+              ),
+              tag: ['AttackHitBox'],
+              isSensor: true,
+            },
+          ],
+        })
+      )
+    )
     entity.addComponent(
       'RigidBody',
       new RigidBodyComponent({ velocity: direction.mul(this.speed) })

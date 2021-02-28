@@ -23,36 +23,36 @@ export class MossFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent()
-    const collider = new ColliderComponent()
-
-    collider.colliders.push(
-      ...buildColliders({
-        entity,
-        colliders: [
-          {
-            geometry: this.COLLIDER,
-            category: Category.LIGHT,
-            mask: new CategorySet(Category.SENSOR),
-            tag: ['light'],
-          },
-          {
-            geometry: this.COLLIDER,
-            category: Category.SENSOR,
-            mask: new CategorySet(Category.AIR),
-          },
-        ],
-      })
-    )
 
     const sprite = parseAnimation(mossDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
 
-    entity.addComponent('Position', position)
+    entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.COLLIDER,
+              category: Category.LIGHT,
+              mask: new CategorySet(Category.SENSOR),
+              tag: ['light'],
+            },
+            {
+              geometry: this.COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.AIR),
+            },
+          ],
+        })
+      )
+    )
     entity.addComponent('Light', new LightComponent(0))
+
     return entity
   }
 }

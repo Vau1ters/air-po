@@ -7,11 +7,11 @@ export type CollisionResultRayAABB = {
   hitPoint: Vec2
 }
 
-export const collideRayAABB = (ray: Ray, aabb: AABB): WithHit<CollisionResultRayAABB> => {
-  type Axis = 'x' | 'y'
-  // 微小量
-  const delta = 0.0001
+type Axis = 'x' | 'y'
+// 微小量
+const delta = 0.0001
 
+export const collideRayAABB = (ray: Ray, aabb: AABB): WithHit<CollisionResultRayAABB> => {
   // Rayの原点がすでにAABB内にある
   if (aabb.contains(ray.origin)) return { hit: true, hitPoint: ray.origin.copy() }
 

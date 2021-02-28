@@ -48,19 +48,20 @@ export class AirGeyserFactory extends EntityFactory {
     const sprite = parseAnimation(airGeyserDefinition.sprite)
     draw.addChild(sprite)
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity,
-        geometry: this.COLLIDER,
-        category: Category.DYNAMIC_WALL,
-        mask: new CategorySet(Category.PHYSICS),
-      })
-    )
-
     entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: this.COLLIDER,
+          category: Category.DYNAMIC_WALL,
+          mask: new CategorySet(Category.PHYSICS),
+        })
+      )
+    )
+
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent(
       'AI',

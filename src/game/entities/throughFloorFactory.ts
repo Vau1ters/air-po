@@ -20,21 +20,6 @@ export class ThroughFloorFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity,
-        geometry: this.COLLIDER,
-        category: Category.STATIC_WALL,
-        mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
-        tag: ['throughFloor'],
-        condition: (_: Collider, other: Collider): boolean => {
-          if (!other.entity.hasComponent('RigidBody')) return false
-          return other.entity.getComponent('RigidBody').velocity.y >= 0
-        },
-      })
-    )
-
     const sprite = parseAnimation(throughFloorDefinition.sprite)
     const draw = new DrawComponent(entity)
     draw.addChild(sprite)
@@ -42,7 +27,23 @@ export class ThroughFloorFactory extends EntityFactory {
     entity.addComponent('Static', new StaticComponent())
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: this.COLLIDER,
+          category: Category.STATIC_WALL,
+          mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
+          tag: ['throughFloor'],
+          condition: (_: Collider, other: Collider): boolean => {
+            if (!other.entity.hasComponent('RigidBody')) return false
+            return other.entity.getComponent('RigidBody').velocity.y >= 0
+          },
+        })
+      )
+    )
+
     entity.addComponent('RigidBody', new RigidBodyComponent())
 
     return entity

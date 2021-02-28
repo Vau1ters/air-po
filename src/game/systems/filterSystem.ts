@@ -49,28 +49,30 @@ export class FilterSystem extends System {
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.lightSearcher = new Entity()
-    const collider = new ColliderComponent()
-    collider.colliders.push(
-      buildCollider({
-        entity: this.lightSearcher,
-        geometry: {
-          type: 'AABB',
-          size: new Vec2(windowSize.width, windowSize.height),
-        },
-        category: Category.SENSOR,
-        mask: new CategorySet(Category.LIGHT),
-        tag: ['screen'],
-        isSensor: true,
-        callbacks: [
-          (args: CollisionCallbackArgs): void => {
-            const { other } = args
-            if (!other.tag.has('light')) return
-            this.lights.push(other.entity)
+
+    this.lightSearcher.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity: this.lightSearcher,
+          geometry: {
+            type: 'AABB',
+            size: new Vec2(windowSize.width, windowSize.height),
           },
-        ],
-      })
+          category: Category.SENSOR,
+          mask: new CategorySet(Category.LIGHT),
+          tag: ['screen'],
+          isSensor: true,
+          callbacks: [
+            (args: CollisionCallbackArgs): void => {
+              const { other } = args
+              if (!other.tag.has('light')) return
+              this.lights.push(other.entity)
+            },
+          ],
+        })
+      )
     )
-    this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())
 
     container.filters = [this.airFilter, this.darknessFilter]
