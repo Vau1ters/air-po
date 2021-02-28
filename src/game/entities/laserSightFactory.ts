@@ -19,10 +19,17 @@ export class LaserSightFactory extends EntityFactory {
 
     const g = new Graphics()
     g.position.set(0)
-    const draw = new DrawComponent(entity, 'WorldUI')
-    draw.addChild(g)
 
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: g,
+        },
+        type: 'WorldUI',
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(

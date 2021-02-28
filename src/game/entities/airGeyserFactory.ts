@@ -44,12 +44,16 @@ export class AirGeyserFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const draw = new DrawComponent(entity)
-    const sprite = parseAnimation(airGeyserDefinition.sprite)
-    draw.addChild(sprite)
-
     entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(airGeyserDefinition.sprite),
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -72,7 +76,7 @@ export class AirGeyserFactory extends EntityFactory {
         })
       )
     )
-    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     return entity
   }
 }

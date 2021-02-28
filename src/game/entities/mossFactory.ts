@@ -24,12 +24,16 @@ export class MossFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const sprite = parseAnimation(mossDefinition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-
     entity.addComponent('Position', new PositionComponent())
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(mossDefinition.sprite),
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(

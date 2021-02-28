@@ -54,7 +54,6 @@ export class PlayerFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     const player = new PlayerComponent()
-    const direction = new HorizontalDirectionComponent('Right')
     const airHolder = new AirHolderComponent(this.AIR_HOLDER)
 
     const equipment = new EquipmentComponent()
@@ -74,24 +73,21 @@ export class PlayerFactory extends EntityFactory {
       return true
     }
 
-    const sprite = parseAnimation(playerDefinition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-    direction.changeDirection.addObserver(x => {
-      if (x === 'Left') {
-        sprite.scale.x = -1
-      } else {
-        sprite.scale.x = 1
-      }
-    })
-
     entity.addComponent('AI', new AIComponent(playerAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
-    entity.addComponent('HorizontalDirection', direction)
+    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     entity.addComponent('HP', new HPComponent(3, 3))
     entity.addComponent('Invincible', new InvincibleComponent())
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(playerDefinition.sprite),
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -132,7 +128,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Equipment', equipment)
     // TODO: カメラをプレイヤーから分離する
     entity.addComponent('Camera', new CameraComponent())
-    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     return entity
   }
 }

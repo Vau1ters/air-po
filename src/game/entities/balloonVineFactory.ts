@@ -59,16 +59,19 @@ export class BalloonVineFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const sprite = parseAnimation(balloonvineDefinition.sprite)
-    sprite.zIndex = 1
-    const draw = new DrawComponent(entity)
-    draw.sortableChildren = true
-    draw.addChild(sprite)
-
     entity.addComponent('AI', new AIComponent(balloonvineAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(balloonvineDefinition.sprite),
+          zIndex: 1,
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -118,7 +121,7 @@ export class BalloonVineFactory extends EntityFactory {
     entity.addComponent('HP', new HPComponent(1, 1))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
-    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
     return entity
   }

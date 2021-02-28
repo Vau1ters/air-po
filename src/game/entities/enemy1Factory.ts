@@ -42,25 +42,20 @@ export class Enemy1Factory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const direction = new HorizontalDirectionComponent('Right')
-
-    const sprite = parseAnimation(enemy1Definition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-
-    direction.changeDirection.addObserver(x => {
-      if (x === 'Left') {
-        sprite.scale.x = -1
-      } else {
-        sprite.scale.x = 1
-      }
-    })
 
     entity.addComponent('AI', new AIComponent(enemy1AI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
-    entity.addComponent('HorizontalDirection', direction)
-    entity.addComponent('Draw', draw)
+    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(enemy1Definition.sprite),
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -93,7 +88,7 @@ export class Enemy1Factory extends EntityFactory {
     )
     entity.addComponent('Attack', new AttackComponent(1, false))
     entity.addComponent('HP', new HPComponent(2, 2))
-    entity.addComponent('AnimationState', new AnimationStateComponent(sprite))
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     return entity
   }
 }

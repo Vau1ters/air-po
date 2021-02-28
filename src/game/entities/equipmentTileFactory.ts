@@ -18,11 +18,16 @@ export class EquipmentTileFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const sprite = parseAnimation(equipmentDefinition.sprite)
-    sprite.changeTo(this.equipmentType)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(equipmentDefinition.sprite),
+          state: this.equipmentType,
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(

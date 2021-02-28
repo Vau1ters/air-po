@@ -59,7 +59,6 @@ export class BulletFactory extends EntityFactory {
 
     const entity = new Entity()
 
-    const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
     const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
     const directions = [
@@ -80,10 +79,6 @@ export class BulletFactory extends EntityFactory {
       'RightUp',
       'RightUpDown',
     ]
-    sprite.changeTo(directions[index])
-
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
 
     entity.addComponent(
       'Position',
@@ -92,7 +87,16 @@ export class BulletFactory extends EntityFactory {
         shooterPosition.y + this.offset.y
       )
     )
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(bulletDefinition[this.type].sprite),
+          state: directions[index],
+        },
+      })
+    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(

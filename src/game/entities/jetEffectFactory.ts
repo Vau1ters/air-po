@@ -27,11 +27,16 @@ export class JetEffectFactory extends EntityFactory {
     const shooterPosition = this.shooter.getComponent('Position')
 
     const entity = new Entity()
-    const sprite = parseAnimation(jetEffectDefinition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
 
-    entity.addComponent('Draw', draw)
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(jetEffectDefinition.sprite),
+        },
+      })
+    )
     entity.addComponent('AI', new AIComponent(JetEffectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(shooterPosition.x, shooterPosition.y))
 
