@@ -1,20 +1,36 @@
 import { World } from '@core/ecs/world'
-import { windowSize } from '@core/application'
 import { ControlSystem } from '@game/systems/controlSystem'
 import { pauseWorldAI } from '@game/ai/world/pause/pauseWorldAI'
-import * as PIXI from 'pixi.js'
+import DrawSystem from '@game/systems/drawSystem'
+import { Entity } from '@core/ecs/entity'
+import { CameraComponent } from '@game/components/cameraComponent'
+import { PositionComponent } from '@game/components/positionComponent'
+import { Container, filters, Graphics } from 'pixi.js'
+import { windowSize } from '@core/application'
 
 export class PauseWorldFactory {
   public create(gameWorld: World): World {
-    const world = new World(pauseWorldAI(gameWorld))
+    const drawContainer = new Container()
+    const alphaFilter = new filters.AlphaFilter(0)
+    drawContainer.filters = drawContainer.filters || [] // undefinedの場合は空配列を入れる
+    drawContainer.filters.push(alphaFilter)
 
-    const background = new PIXI.Graphics()
-    background.beginFill(0xc0c0c0)
-    background.drawRect(0, 0, windowSize.width / 2, windowSize.height / 2)
+    const background = new Graphics()
+    background.beginFill(0, 0.5)
+    background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
-    world.stage.addChild(background)
+    drawContainer.addChild(background)
 
-    world.addSystem(new ControlSystem(world))
+    const world = new World(pauseWorldAI(gameWorld, alphaFilter))
+
+    world.stage.addChild(drawContainer)
+
+    world.addSystem(new ControlSystem(world), new DrawSystem(world, drawContainer))
+
+    const camera = new Entity()
+    camera.addComponent('Camera', new CameraComponent())
+    camera.addComponent('Position', new PositionComponent(160, 120))
+    world.addEntity(camera)
 
     return world
   }
