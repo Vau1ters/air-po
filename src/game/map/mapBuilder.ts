@@ -293,7 +293,7 @@ export class MapBuilder {
     playerPosition.y = y - height
     this.world.addEntity(player)
 
-    this.world.addEntity(new LaserSightFactory(this.world).create())
+    this.world.addEntity(new LaserSightFactory(player, this.world).create())
   }
 
   private buildMoss(pos: number[], tileSize: number[]): void {

@@ -12,6 +12,11 @@ import { AIComponent } from '@game/components/aiComponent'
 import { vineAI } from '@game/ai/entity/vine/vineAI'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { addTag } from '@game/ai/entity/vine/changeVineLength'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+
+export const VINE_TAG = 'Vine'
+export const VINE_TERRAIN_SENSOR_TAG = 'VineWallSensor'
+export const VINE_AIR_SENSOR_TAG = 'VineAirSensor'
 
 export class VineFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
@@ -19,7 +24,7 @@ export class VineFactory extends EntityFactory {
     size: new Vec2(16, 16),
   }
 
-  private readonly WALL_SENSOR_COLLIDER = {
+  private readonly TERRAIN_SENSOR_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(14, 5),
   }
@@ -44,23 +49,21 @@ export class VineFactory extends EntityFactory {
           colliders: [
             {
               geometry: this.BODY_COLLIDER,
-              category: Category.DYNAMIC_WALL,
-              mask: new CategorySet(Category.PHYSICS, Category.SENSOR),
-              tag: ['vine'],
+              category: Category.TERRAIN,
+              mask: new CategorySet(Category.PHYSICS),
+              tag: [PHYSICS_TAG, VINE_TAG],
             },
             {
-              geometry: this.WALL_SENSOR_COLLIDER,
+              geometry: this.TERRAIN_SENSOR_COLLIDER,
               category: Category.SENSOR,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-              tag: ['vineWallSensor'],
-              isSensor: true,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [VINE_TERRAIN_SENSOR_TAG],
             },
             {
               geometry: this.AIR_SENSOR_COLLIDER,
               category: Category.SENSOR,
               mask: new CategorySet(Category.AIR),
-              tag: ['vineAirSensor'],
-              isSensor: true,
+              tag: [VINE_AIR_SENSOR_TAG],
             },
           ],
         })

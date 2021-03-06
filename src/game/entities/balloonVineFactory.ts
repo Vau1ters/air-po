@@ -16,6 +16,7 @@ import { AirHolderComponent } from '@game/components/airHolderComponent'
 import balloonvineDefinition from '@res/animation/balloonvine.json'
 import { World } from '@core/ecs/world'
 import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
+import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 
 export class BalloonVineFactory extends EntityFactory {
   private readonly GRIP_COLLIDER = {
@@ -34,7 +35,7 @@ export class BalloonVineFactory extends EntityFactory {
     size: new Vec2(5, 5),
   }
 
-  private readonly WALL_COLLIDER = {
+  private readonly TERRAIN_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(2, 10),
   }
@@ -80,37 +81,26 @@ export class BalloonVineFactory extends EntityFactory {
             {
               geometry: this.GRIP_COLLIDER,
               category: Category.ITEM,
-              mask: new CategorySet(Category.SENSOR),
-              tag: ['balloonVine'],
-              isSensor: true,
             },
             {
               geometry: this.BODY_COLLIDER,
-              category: Category.HITBOX,
-              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-              tag: ['balloonVine'],
-              isSensor: true,
+              category: Category.ENEMY_HITBOX,
             },
             {
               geometry: this.BODY_COLLIDER,
-              category: Category.SENSOR,
+              category: Category.AIR_HOLDER,
               mask: new CategorySet(Category.AIR),
-              tag: ['airHolderBody'],
-              isSensor: true,
+              tag: [AIR_HOLDER_TAG],
             },
             {
               geometry: this.ROOT_COLLIDER,
               category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.PHYSICS),
-              tag: ['balloonVine'],
-              isSensor: true,
+              mask: new CategorySet(Category.TERRAIN),
             },
             {
-              geometry: this.WALL_COLLIDER,
+              geometry: this.TERRAIN_COLLIDER,
               category: Category.SENSOR,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-              tag: ['balloonVine'],
-              isSensor: true,
+              mask: new CategorySet(Category.TERRAIN),
             },
           ],
         })

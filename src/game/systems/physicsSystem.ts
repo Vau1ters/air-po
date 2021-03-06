@@ -7,6 +7,10 @@ import { collide, WithHit } from '@core/collision/collision'
 import { AABB } from '@core/collision/geometry/AABB'
 import { OBB } from '@core/collision/geometry/OBB'
 import { CollisionResultOBBOBB } from '@core/collision/collision/OBB_OBB'
+import { Category } from '@game/entities/category'
+import { assert } from '@utils/assertion'
+
+export const PHYSICS_TAG = 'physics'
 
 export default class PhysicsSystem extends System {
   private family: Family
@@ -17,10 +21,35 @@ export default class PhysicsSystem extends System {
     this.family = new FamilyBuilder(world).include('Position', 'Collider', 'RigidBody').build()
     this.family.entityAddedEvent.addObserver((entity: Entity) => {
       for (const c of entity.getComponent('Collider').colliders) {
-        c.callbacks.add((args: CollisionCallbackArgs) => {
-          const { me, other } = args
-          this.solve(me, other)
-        })
+        if (c.tag.has(PHYSICS_TAG)) {
+          switch (c.category) {
+            case Category.PHYSICS:
+              assert(
+                c.mask.has(Category.PHYSICS) || c.mask.has(Category.TERRAIN),
+                `Collider with '${PHYSICS_TAG}' tag and PHYSICS category must have PHYSICS or TERRAIN mask`
+              )
+              c.callbacks.add((args: CollisionCallbackArgs) => {
+                const { me, other } = args
+                this.solve(me, other)
+              })
+              break
+            case Category.TERRAIN:
+              assert(
+                c.mask.has(Category.PHYSICS),
+                `Collider with '${PHYSICS_TAG}' tag and TERRAIN category must have PHYSICS mask`
+              )
+              c.callbacks.add((args: CollisionCallbackArgs) => {
+                const { me, other } = args
+                this.solve(me, other)
+              })
+              break
+            default:
+              assert(
+                false,
+                `Collider with '${PHYSICS_TAG}' tag must have PHYSICS or TERRAIN category`
+              )
+          }
+        }
       }
     })
   }
@@ -39,8 +68,6 @@ export default class PhysicsSystem extends System {
 
   // 互いに押し合う
   private solve(c1: Collider, c2: Collider): void {
-    if (c1.isSensor) return
-    if (c2.isSensor) return
     const { entity: entity1, geometry: g1 } = c1
     const { entity: entity2, geometry: g2 } = c2
     if (!entity1.hasComponent('RigidBody')) return

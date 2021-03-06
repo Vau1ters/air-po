@@ -19,6 +19,12 @@ import playerDefinition from '@res/animation/player.json'
 import { World } from '@core/ecs/world'
 import { playerAI } from '@game/ai/entity/player/playerAI'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
+import { THROUGH_FLOOR_TAG } from './throughFloorFactory'
+
+export const PLAYER_SENSOR_TAG = 'PlayerSensor'
+export const PLAYER_FOOT_TAG = 'PlayerFoot'
 
 export class PlayerFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
@@ -68,7 +74,7 @@ export class PlayerFactory extends EntityFactory {
     equipment.equipEvent.notify('AirTank')
 
     const shouldCollide = (me: Collider, other: Collider): boolean => {
-      if (player.throughFloorIgnoreCount > 0 && other.tag.has('throughFloor')) return false
+      if (player.throughFloorIgnoreCount > 0 && other.tag.has(THROUGH_FLOOR_TAG)) return false
       return true
     }
 
@@ -95,26 +101,31 @@ export class PlayerFactory extends EntityFactory {
             {
               geometry: this.BODY_COLLIDER,
               category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PHYSICS_TAG],
               condition: shouldCollide,
             },
             {
               geometry: this.BODY_COLLIDER,
               category: Category.PLAYER_HITBOX,
-              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.AIR_HOLDER,
+              mask: new CategorySet(Category.AIR),
+              tag: [AIR_HOLDER_TAG],
             },
             {
               geometry: this.BODY_COLLIDER,
               category: Category.SENSOR,
-              mask: new CategorySet(Category.ITEM, Category.AIR, Category.SENSOR),
-              tag: ['airHolderBody', 'playerSensor'],
+              mask: new CategorySet(Category.ITEM, Category.EQUIPMENT, Category.SENSOR),
+              tag: [PLAYER_SENSOR_TAG],
             },
             {
               geometry: this.FOOT_COLLIDER,
-              category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-              tag: ['playerFoot'],
-              isSensor: true,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PLAYER_FOOT_TAG],
               condition: shouldCollide,
             },
           ],

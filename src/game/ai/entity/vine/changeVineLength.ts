@@ -6,18 +6,18 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { ColliderComponent, CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/geometry/AABB'
+import { VINE_AIR_SENSOR_TAG, VINE_TAG, VINE_TERRAIN_SENSOR_TAG } from '@game/entities/vineFactory'
+import { AIR_TAG } from '@game/systems/airSystem'
 
 const canExtend = (args: CollisionCallbackArgs): void => {
-  const { me, other } = args
-  if (!other.isSensor) {
-    const vine = me.entity.getComponent('Vine')
-    vine.canExtend = false
-  }
+  const { me } = args
+  const vine = me.entity.getComponent('Vine')
+  vine.canExtend = false
 }
 
 const shouldShrink = (args: CollisionCallbackArgs): void => {
   const { me, other } = args
-  if (other.tag.has('air')) {
+  if (other.tag.has(AIR_TAG)) {
     const vine = me.entity.getComponent('Vine')
     vine.shouldShrink = false
   }
@@ -25,9 +25,9 @@ const shouldShrink = (args: CollisionCallbackArgs): void => {
 
 export const addTag = (vine: Entity): void => {
   for (const collider of vine.getComponent('Collider').colliders) {
-    if (collider.tag.has('vineWallSensor')) {
+    if (collider.tag.has(VINE_TERRAIN_SENSOR_TAG)) {
       collider.callbacks.add(canExtend)
-    } else if (collider.tag.has('vineAirSensor')) {
+    } else if (collider.tag.has(VINE_AIR_SENSOR_TAG)) {
       collider.callbacks.add(shouldShrink)
     }
   }
@@ -36,11 +36,11 @@ export const addTag = (vine: Entity): void => {
 const changeColliderLength = (colliderComponent: ColliderComponent, length: number): void => {
   for (const collider of colliderComponent.colliders) {
     const aabb = collider.geometry as AABB
-    if (collider.tag.has('vine')) {
+    if (collider.tag.has(VINE_TAG)) {
       aabb.size.y = (length / 3) * 16
       aabb.center.y = aabb.size.y / 2
     }
-    if (collider.tag.has('vineWallSensor')) {
+    if (collider.tag.has(VINE_TERRAIN_SENSOR_TAG)) {
       aabb.center.y = (length / 3) * 16 - 8 + aabb.size.y
     }
   }

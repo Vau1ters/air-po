@@ -75,7 +75,7 @@ export default class DebugDrawSystem extends System {
     }
 
     if (this.state.bvh) {
-      for (const [_, bvh] of this.collisionSystem.bvhs) {
+      for (const bvh of this.collisionSystem.bvhs) {
         // webGLの頂点数上限に引っかからないようにnative: trueにしている
         this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)
 

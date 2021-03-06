@@ -37,7 +37,7 @@ export class EquipmentTileFactory extends EntityFactory {
             type: 'AABB',
             size: new Vec2(this.size.x, this.size.y),
           },
-          category: Category.SENSOR,
+          category: Category.EQUIPMENT,
           mask: new CategorySet(Category.SENSOR),
         })
       )

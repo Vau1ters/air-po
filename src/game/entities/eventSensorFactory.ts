@@ -29,7 +29,6 @@ export class EventSensorFactory extends EntityFactory {
           },
           category: Category.SENSOR,
           mask: new CategorySet(Category.SENSOR),
-          isSensor: true,
         })
       )
     )

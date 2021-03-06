@@ -12,6 +12,7 @@ import { AIComponent } from '@game/components/aiComponent'
 import { airGeyserAI } from '@game/ai/entity/airGeyser/airGeyserAI'
 import { World } from '@core/ecs/world'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 
 export class AirGeyserFactory extends EntityFactory {
   private readonly COLLIDER = {
@@ -60,12 +61,12 @@ export class AirGeyserFactory extends EntityFactory {
         buildCollider({
           entity,
           geometry: this.COLLIDER,
-          category: Category.DYNAMIC_WALL,
+          category: Category.TERRAIN,
           mask: new CategorySet(Category.PHYSICS),
+          tag: [PHYSICS_TAG],
         })
       )
     )
-
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent(
       'AI',

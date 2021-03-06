@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { PositionComponent } from '@game/components/positionComponent'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
-import { Category, CategorySet } from './category'
+import { Category } from './category'
 import { AIComponent } from '@game/components/aiComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
@@ -12,6 +12,7 @@ import dandelionFluffDefinition from '@res/animation/dandelion_fluff.json'
 import { World } from '@core/ecs/world'
 import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
+import { FLUFF_TAG } from '@game/ai/entity/player/playerItemAction'
 
 export class DandelionFluffFactory extends EntityFactory {
   private readonly COLLIDER = {
@@ -38,9 +39,7 @@ export class DandelionFluffFactory extends EntityFactory {
           entity,
           geometry: this.COLLIDER,
           category: Category.ITEM,
-          mask: new CategorySet(Category.SENSOR),
-          tag: ['fluff'],
-          isSensor: true,
+          tag: [FLUFF_TAG],
         })
       )
     )

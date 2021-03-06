@@ -10,7 +10,7 @@ import { Category, CategorySet } from './category'
 import { EntityFactory } from './entityFactory'
 
 export class LaserSightFactory extends EntityFactory {
-  constructor(private world: World) {
+  constructor(private player: Entity, private world: World) {
     super()
   }
 
@@ -37,12 +37,11 @@ export class LaserSightFactory extends EntityFactory {
           entity,
           geometry: { type: 'Ray' },
           category: Category.SENSOR,
-          mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.HITBOX),
-          isSensor: true,
+          mask: new CategorySet(Category.ENEMY_HITBOX, Category.TERRAIN),
         })
       )
     )
-    entity.addComponent('AI', new AIComponent(laserSightAI(entity, this.world)))
+    entity.addComponent('AI', new AIComponent(laserSightAI(this.player, entity, this.world)))
     entity.addComponent('Position', new PositionComponent())
 
     return entity

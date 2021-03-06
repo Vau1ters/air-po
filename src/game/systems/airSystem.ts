@@ -3,8 +3,10 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { PositionComponent } from '@game/components/positionComponent'
-import { Category, CategorySet } from '@game/entities/category'
+import { Category } from '@game/entities/category'
 import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
+
+export const AIR_TAG = 'Air'
 
 export class AirSystem extends System {
   private family: Family
@@ -31,9 +33,7 @@ export class AirSystem extends System {
             world,
           },
           category: Category.AIR,
-          mask: new CategorySet(Category.SENSOR),
-          tag: ['air'],
-          isSensor: true,
+          tag: [AIR_TAG],
         })
       )
     )

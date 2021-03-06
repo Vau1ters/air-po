@@ -3,6 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { PLAYER_FOOT_TAG, PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -18,10 +19,10 @@ export class PlayerControlSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        if (c.tag.has('playerFoot')) {
+        if (c.tag.has(PLAYER_FOOT_TAG)) {
           c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
-        if (c.tag.has('playerSensor')) {
+        if (c.tag.has(PLAYER_SENSOR_TAG)) {
           c.callbacks.add(PlayerControlSystem.itemPickerCallback)
         }
       }
@@ -35,9 +36,7 @@ export class PlayerControlSystem extends System {
   private static footCollisionCallback(args: CollisionCallbackArgs): void {
     const {
       me: { entity: playerEntity },
-      other,
     } = args
-    if (other.isSensor) return
 
     const rigidBody = playerEntity.getComponent('RigidBody')
     if (rigidBody.velocity.y < -1e-2) return

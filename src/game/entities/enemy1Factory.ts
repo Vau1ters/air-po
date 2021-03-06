@@ -15,6 +15,8 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 import enemy1Definition from '@res/animation/enemy1.json'
 import { World } from '@core/ecs/world'
 import { enemy1AI } from '@game/ai/entity/enemy1/enemy1AI'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { ATTACK_TAG, HITBOX_TAG } from '@game/systems/damageSystem'
 
 export class Enemy1Factory extends EntityFactory {
   private readonly BODY_COLLIDER = {
@@ -63,22 +65,19 @@ export class Enemy1Factory extends EntityFactory {
             {
               geometry: this.BODY_COLLIDER,
               category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-              tag: ['enemy1Body'],
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PHYSICS_TAG],
             },
             {
               geometry: this.BODY_COLLIDER,
-              category: Category.HITBOX,
-              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-              tag: ['enemy1Body'],
-              isSensor: true,
+              category: Category.ENEMY_HITBOX,
+              tag: [HITBOX_TAG],
             },
             {
               geometry: this.HIT_BOX_COLLIDER,
               category: Category.ATTACK,
               mask: new CategorySet(Category.PLAYER_HITBOX),
-              tag: ['AttackHitBox'],
-              isSensor: true,
+              tag: [ATTACK_TAG],
             },
           ],
         })

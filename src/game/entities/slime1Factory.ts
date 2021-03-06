@@ -15,6 +15,8 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 import slime1Definition from '@res/animation/slime1.json'
 import { World } from '@core/ecs/world'
 import { slime1AI } from '@game/ai/entity/slime1/slime1AI'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { ATTACK_TAG, HITBOX_TAG } from '@game/systems/damageSystem'
 
 export class Slime1Factory extends EntityFactory {
   private readonly BODY_COLLIDER = {
@@ -62,20 +64,19 @@ export class Slime1Factory extends EntityFactory {
             {
               geometry: this.BODY_COLLIDER,
               category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PHYSICS_TAG],
             },
             {
               geometry: this.BODY_COLLIDER,
-              category: Category.HITBOX,
-              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-              isSensor: true,
+              category: Category.ENEMY_HITBOX,
+              tag: [HITBOX_TAG],
             },
             {
               geometry: this.HIT_BOX_COLLIDER,
               category: Category.ATTACK,
               mask: new CategorySet(Category.PLAYER_HITBOX),
-              tag: ['AttackHitBox'],
-              isSensor: true,
+              tag: [ATTACK_TAG],
             },
           ],
         })

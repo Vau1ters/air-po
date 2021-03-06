@@ -15,6 +15,8 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 import snibeeDefinition from '@res/animation/snibee.json'
 import { World } from '@core/ecs/world'
 import { snibeeAI, SnibeeSetting } from '@game/ai/entity/snibee/snibeeAI'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { ATTACK_TAG } from '@game/systems/damageSystem'
 
 export class SnibeeFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
@@ -60,22 +62,18 @@ export class SnibeeFactory extends EntityFactory {
             {
               geometry: this.BODY_COLLIDER,
               category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-              tag: ['snibeeBody'],
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PHYSICS_TAG],
             },
             {
               geometry: this.BODY_COLLIDER,
-              category: Category.HITBOX,
-              mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-              tag: ['snibeeBody'],
-              isSensor: true,
+              category: Category.ENEMY_HITBOX,
             },
             {
               geometry: this.HIT_BOX_COLLIDER,
               category: Category.ATTACK,
               mask: new CategorySet(Category.PLAYER_HITBOX),
-              tag: ['AttackHitBox'],
-              isSensor: true,
+              tag: [ATTACK_TAG],
             },
           ],
         })

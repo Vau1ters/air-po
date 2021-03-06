@@ -9,6 +9,7 @@ import { buildColliders, ColliderComponent } from '@game/components/colliderComp
 import { Category, CategorySet } from './category'
 import { Vec2 } from '@core/math/vec2'
 import { LightComponent } from '@game/components/lightComponent'
+import { LIGHT_TAG } from '@game/systems/lightSystem'
 
 export class MossFactory extends EntityFactory {
   private readonly COLLIDER = {
@@ -42,13 +43,8 @@ export class MossFactory extends EntityFactory {
             {
               geometry: this.COLLIDER,
               category: Category.LIGHT,
-              mask: new CategorySet(Category.SENSOR),
-              tag: ['light'],
-            },
-            {
-              geometry: this.COLLIDER,
-              category: Category.SENSOR,
               mask: new CategorySet(Category.AIR),
+              tag: [LIGHT_TAG],
             },
           ],
         })

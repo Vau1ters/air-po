@@ -24,10 +24,6 @@ export class Collider {
     public option: ColliderOption
   ) {}
 
-  get isSensor(): boolean {
-    return this.option.isSensor
-  }
-
   get condition(): CollisionCondition {
     return this.option.condition
   }
@@ -50,7 +46,6 @@ export class Collider {
 }
 
 export type ColliderOption = {
-  isSensor: boolean
   condition: CollisionCondition
   callbacks: Set<CollisionCallback>
   tag: Set<string>
@@ -82,12 +77,11 @@ type GeometryBuildOption =
     }
 
 type ColliderBuildOption = {
-  isSensor?: boolean
   condition?: CollisionCondition
   callbacks?: CollisionCallback[]
   tag?: string[]
   category: Category
-  mask: Set<Category>
+  mask?: Set<Category>
   geometry: GeometryBuildOption
 }
 
@@ -107,12 +101,11 @@ const buildGeometry = (option: GeometryBuildOption): GeometryForCollision => {
 export const buildCollider = (option: { entity: Entity } & ColliderBuildOption): Collider => {
   const geometry = buildGeometry(option.geometry)
   return new Collider(option.entity, geometry.createBound(), geometry, {
-    isSensor: option.isSensor ?? false,
     condition: option.condition ?? ((): boolean => true),
     callbacks: new Set<CollisionCallback>(option.callbacks),
     tag: new Set<string>(option.tag),
     category: option.category,
-    mask: option.mask,
+    mask: option.mask ?? new Set<Category>(),
   })
 }
 

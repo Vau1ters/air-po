@@ -11,13 +11,18 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { MouseController } from '@game/systems/controlSystem'
 import { Graphics } from 'pixi.js'
 
-const getClosestHitPointGenerator = function*(entity: Entity): Generator<Vec2, void> {
-  const [collider] = entity.getComponent('Collider').colliders
+const getClosestHitPointGenerator = function*(
+  player: Entity,
+  laser: Entity
+): Generator<Vec2, void> {
+  const [collider] = laser.getComponent('Collider').colliders
   const ray = collider.geometry as Ray
 
   let hitPoints: Array<Vec2> = []
   collider.callbacks.add((args: CollisionCallbackArgs) => {
+    const { other } = args
     const { hitPoint } = args as CollisionResultRayAABB
+    if (other.entity === player) return
     hitPoints.push(hitPoint)
   })
 
@@ -31,10 +36,10 @@ const getClosestHitPointGenerator = function*(entity: Entity): Generator<Vec2, v
   }
 }
 
-const updateDraw = function*(entity: Entity): Behaviour<void> {
-  const getClosestHitPoint = getClosestHitPointGenerator(entity)
-  const [g] = entity.getComponent('Draw').children as [Graphics]
-  const [collider] = entity.getComponent('Collider').colliders
+const updateDraw = function*(player: Entity, laser: Entity): Behaviour<void> {
+  const getClosestHitPoint = getClosestHitPointGenerator(player, laser)
+  const [g] = laser.getComponent('Draw').children as [Graphics]
+  const [collider] = laser.getComponent('Collider').colliders
   const ray = collider.geometry as Ray
 
   for (const closestHitPoint of getClosestHitPoint) {
@@ -48,9 +53,9 @@ const updateDraw = function*(entity: Entity): Behaviour<void> {
   }
 }
 
-const updateRay = function*(entity: Entity, world: World): Behaviour<void> {
+const updateRay = function*(laser: Entity, world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
-  const [collider] = entity.getComponent('Collider').colliders
+  const [collider] = laser.getComponent('Collider').colliders
   while (true) {
     const [player] = playerFamily.entityArray
     const mousePosition = MouseController.position
@@ -63,5 +68,5 @@ const updateRay = function*(entity: Entity, world: World): Behaviour<void> {
   }
 }
 
-export const laserSightAI = (entity: Entity, world: World): Behaviour<void> =>
-  parallelAll([updateDraw(entity), updateRay(entity, world)])
+export const laserSightAI = (player: Entity, laser: Entity, world: World): Behaviour<void> =>
+  parallelAll([updateDraw(player, laser), updateRay(laser, world)])

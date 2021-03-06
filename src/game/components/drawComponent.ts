@@ -1,6 +1,6 @@
 import { Container, DisplayObject } from 'pixi.js'
 import { Entity } from '@core/ecs/entity'
-import { Category, CategorySet } from '../entities/category'
+import { Category } from '../entities/category'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
 import { AnimationSprite } from '@core/graphics/animation'
@@ -47,9 +47,7 @@ export class DrawComponent extends Container {
         ),
         size: new Vec2(localBounds.width, localBounds.height),
       },
-      isSensor: true,
       category: Category.DRAW,
-      mask: new CategorySet(Category.SENSOR),
     })
   }
 }

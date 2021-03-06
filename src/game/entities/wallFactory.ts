@@ -9,6 +9,7 @@ import { Category, CategorySet } from './category'
 import { textureStore } from '@core/graphics/art'
 import { Sprite } from 'pixi.js'
 import { StaticComponent } from '@game/components/staticComponent'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 
 export class WallFactory extends EntityFactory {
   private readonly COLLIDER = {
@@ -29,9 +30,9 @@ export class WallFactory extends EntityFactory {
           buildCollider({
             entity,
             geometry: this.COLLIDER,
-            category: Category.STATIC_WALL,
-            mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
-            tag: ['wall'],
+            category: Category.TERRAIN,
+            mask: new CategorySet(Category.PHYSICS),
+            tag: [PHYSICS_TAG],
           })
         )
       )

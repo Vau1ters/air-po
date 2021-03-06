@@ -11,12 +11,13 @@ import needleBulletDefinition from '@res/animation/needleBullet.json'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
+import { BULLET_TAG } from '@game/systems/bulletSystem'
+import { ATTACK_TAG } from '@game/systems/damageSystem'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,
   needle: needleBulletDefinition,
 }
-
 type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
 
@@ -104,19 +105,17 @@ export class BulletFactory extends EntityFactory {
           colliders: [
             {
               geometry: this.COLLIDER,
-              category: Category.PHYSICS,
-              mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-              tag: ['bulletBody'],
-              isSensor: true,
+              category: Category.BULLET,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [BULLET_TAG],
             },
             {
               geometry: this.COLLIDER,
               category: Category.ATTACK,
               mask: new CategorySet(
-                this.shooterType === 'player' ? Category.HITBOX : Category.PLAYER_HITBOX
+                this.shooterType === 'player' ? Category.ENEMY_HITBOX : Category.PLAYER_HITBOX
               ),
-              tag: ['AttackHitBox'],
-              isSensor: true,
+              tag: [ATTACK_TAG],
             },
           ],
         })

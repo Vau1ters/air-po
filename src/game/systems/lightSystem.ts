@@ -3,7 +3,11 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { AIR_TAG } from './airSystem'
 import { Category } from '@game/entities/category'
+import { assert } from '@utils/assertion'
+
+export const LIGHT_TAG = 'Light'
 
 export class LightSystem extends System {
   private family: Family
@@ -14,17 +18,22 @@ export class LightSystem extends System {
     this.family = new FamilyBuilder(world).include('Light').build()
 
     this.family.entityAddedEvent.addObserver((e: Entity) => {
-      for (const c of e
-        .getComponent('Collider')
-        .colliders.filter(c => c.category === Category.SENSOR)) {
-        c.callbacks.add(LightSystem.lightAirCollision)
+      for (const c of e.getComponent('Collider').colliders) {
+        if (c.tag.has(LIGHT_TAG)) {
+          assert(
+            c.category === Category.LIGHT,
+            `Collider with '${LIGHT_TAG}' tag must have LIGHT category`
+          )
+          assert(c.mask.has(Category.AIR), `Collider with '${LIGHT_TAG}' tag must have AIR mask`)
+          c.callbacks.add(LightSystem.lightAirCollision)
+        }
       }
     })
     this.family.entityAddedEvent.removeObserver((e: Entity) => {
-      for (const c of e
-        .getComponent('Collider')
-        .colliders.filter(c => c.category === Category.SENSOR)) {
-        c.callbacks.delete(LightSystem.lightAirCollision)
+      for (const c of e.getComponent('Collider').colliders) {
+        if (c.tag.has(LIGHT_TAG)) {
+          c.callbacks.delete(LightSystem.lightAirCollision)
+        }
       }
     })
   }
@@ -37,7 +46,7 @@ export class LightSystem extends System {
 
   private static lightAirCollision(args: CollisionCallbackArgs): void {
     const { me, other } = args
-    if (!other.tag.has('air')) return
+    if (!other.tag.has(AIR_TAG)) return
     me.entity.getComponent('Light').intensity = 1
   }
 }

@@ -7,44 +7,58 @@ import { collide } from '@core/collision/collision'
 import { Category, CategorySet } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 import { BVH } from '@core/collision/bvh'
+import { AABB } from '@core/collision/geometry/AABB'
 
 export default class CollisionSystem extends System {
-  private family: Family
-  public bvhs = new Map<Category, BVH>()
+  private staticFamily: Family
+  private dynamicFamily: Family
+  private staticBVHs = new Map<Category, BVH>()
+  private dynamicBVHs = new Map<Category, BVH>()
+  private needsStaticInitialize = true
 
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world).include('Position', 'Collider').build()
+    this.staticFamily = new FamilyBuilder(world)
+      .include('Collider')
+      .include('Static')
+      .build()
+    this.dynamicFamily = new FamilyBuilder(world)
+      .include('Collider')
+      .exclude('Static')
+      .build()
   }
 
   public init(): void {
     for (const c of CategorySet.ALL) {
-      const bvh = new BVH()
-      this.bvhs.set(c, bvh)
+      this.staticBVHs.set(c, new BVH())
+      this.dynamicBVHs.set(c, new BVH())
     }
+    this.needsStaticInitialize = true
   }
 
   public update(): void {
-    this.buildBVH()
+    if (this.needsStaticInitialize) {
+      this.needsStaticInitialize = false
+      this.buildBVH(this.staticFamily, this.staticBVHs)
+    }
+    this.buildBVH(this.dynamicFamily, this.dynamicBVHs)
     this.broadPhase()
   }
 
-  private buildBVH(): void {
+  private buildBVH(family: Family, bvhs: Map<Category, BVH>): void {
     const colliderMap = new Map<Category, Collider[]>()
     for (const c of CategorySet.ALL) {
       colliderMap.set(c, [])
     }
-    for (const e of this.family.entityIterator) {
-      const cs = e.getComponent('Collider').colliders
-      for (const c of cs) {
+    for (const e of family.entityIterator) {
+      for (const c of e.getComponent('Collider').colliders) {
         const colliders = colliderMap.get(c.category)
         assert(colliders, `There are no collider with category '${c.category}'`)
         colliders.push(c)
       }
     }
-    for (const [category, bvh] of this.bvhs) {
-      if (category === Category.STATIC_WALL && bvh.root) continue
+    for (const [category, bvh] of bvhs) {
       const colliders = colliderMap.get(category)
       assert(colliders, `There are no collider with category '${category}'`)
       bvh.build(colliders)
@@ -52,17 +66,14 @@ export default class CollisionSystem extends System {
   }
 
   private broadPhase(): void {
-    for (const entity1 of this.family.entityIterator) {
+    for (const entity1 of this.dynamicFamily.entityIterator) {
       const collider1 = entity1.getComponent('Collider')
       const position1 = entity1.getComponent('Position')
 
       const collidedEntityIdSet = new Set<number>()
       for (const c of collider1.colliders) {
-        if (c.category === Category.STATIC_WALL) continue // for performance
         for (const m of c.mask) {
-          const bvh = this.bvhs.get(m)
-          assert(bvh, `There are no BVH with category '${m}'`)
-          const rs = bvh.query(c.bound.add(position1))
+          const rs = this.query(m, c.bound.add(position1))
           for (const { entity: entity2 } of rs) {
             if (entity1 === entity2) continue // prevent self collision
             if (collidedEntityIdSet.has(entity2.id)) continue // prevent dual collision
@@ -72,6 +83,14 @@ export default class CollisionSystem extends System {
         }
       }
     }
+  }
+
+  private query(category: Category, bound: AABB): Collider[] {
+    const staticResult = this.staticBVHs.get(category)?.query(bound)
+    const dynamicResult = this.dynamicBVHs.get(category)?.query(bound)
+    assert(staticResult !== undefined, `There are no BVH with category '${category}'`)
+    assert(dynamicResult !== undefined, `There are no BVH with category '${category}'`)
+    return staticResult?.concat(dynamicResult)
   }
 
   // 衝突判定
@@ -85,18 +104,29 @@ export default class CollisionSystem extends System {
       for (const c2 of colliders2.colliders) {
         const { mask: mask1, category: category1 } = c1
         const { mask: mask2, category: category2 } = c2
-        if (!mask1.has(category2) || !mask2.has(category1)) continue
         if (!c1.condition(c1, c2) || !c2.condition(c2, c1)) continue
 
         const result = collide(c1, c2, position1, position2)
         if (result.hit === false) continue
-        for (const callback of c1.callbacks) {
-          callback({ me: c1, other: c2, ...result })
+        if (mask1.has(category2)) {
+          for (const callback of c1.callbacks) {
+            callback({ me: c1, other: c2, ...result })
+          }
         }
-        for (const callback of c2.callbacks) {
-          callback({ me: c2, other: c1, ...result })
+        if (mask2.has(category1)) {
+          for (const callback of c2.callbacks) {
+            callback({ me: c2, other: c1, ...result })
+          }
         }
       }
     }
+  }
+
+  public get bvhs(): IterableIterator<BVH> {
+    const { staticBVHs, dynamicBVHs } = this
+    return (function*(): Generator<BVH> {
+      for (const [_, bvh] of staticBVHs) yield bvh
+      for (const [_, bvh] of dynamicBVHs) yield bvh
+    })()
   }
 }

@@ -9,6 +9,9 @@ import { Category, CategorySet } from './category'
 import throughFloorDefinition from '@res/animation/throughFloor.json'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { StaticComponent } from '@game/components/staticComponent'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+
+export const THROUGH_FLOOR_TAG = 'ThroughFloor'
 
 export class ThroughFloorFactory extends EntityFactory {
   private readonly COLLIDER = {
@@ -37,9 +40,9 @@ export class ThroughFloorFactory extends EntityFactory {
         buildCollider({
           entity,
           geometry: this.COLLIDER,
-          category: Category.STATIC_WALL,
-          mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
-          tag: ['throughFloor'],
+          category: Category.TERRAIN,
+          mask: new CategorySet(Category.PHYSICS),
+          tag: [PHYSICS_TAG, THROUGH_FLOOR_TAG],
           condition: (_: Collider, other: Collider): boolean => {
             if (!other.entity.hasComponent('RigidBody')) return false
             return other.entity.getComponent('RigidBody').velocity.y > -1e-3

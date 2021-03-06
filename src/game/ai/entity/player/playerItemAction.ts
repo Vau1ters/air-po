@@ -7,6 +7,8 @@ const PLAYER_TO_FLUFF_VELOCITY_CONTRIBUTION = 0.003
 const FLUFF_STICK_SCALE = 0.5
 const FLUFF_RELEASE_DISTANCE = 10
 
+export const FLUFF_TAG = 'Fluff'
+
 export const playerItemAction = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
   const playerPosition = entity.getComponent('Position')
@@ -14,7 +16,7 @@ export const playerItemAction = function*(entity: Entity): Behaviour<void> {
 
   while (true) {
     if (player.possessingEntity !== undefined) {
-      if (player.possessingEntity.getComponent('Collider').colliders[0].tag.has('fluff')) {
+      if (player.possessingEntity.getComponent('Collider').colliders[0].tag.has(FLUFF_TAG)) {
         const fluff = player.possessingEntity
         const fluffPosition = fluff.getComponent('Position')
         playerBody.gravityScale = 0

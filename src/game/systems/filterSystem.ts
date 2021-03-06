@@ -14,6 +14,7 @@ import {
   ColliderComponent,
   CollisionCallbackArgs,
 } from '@game/components/colliderComponent'
+import { LIGHT_TAG } from './lightSystem'
 
 export class FilterSystem extends System {
   private airFilter: AirFilter
@@ -62,12 +63,10 @@ export class FilterSystem extends System {
           },
           category: Category.SENSOR,
           mask: new CategorySet(Category.LIGHT),
-          tag: ['screen'],
-          isSensor: true,
           callbacks: [
             (args: CollisionCallbackArgs): void => {
               const { other } = args
-              if (!other.tag.has('light')) return
+              if (!other.tag.has(LIGHT_TAG)) return
               this.lights.push(other.entity)
             },
           ],
