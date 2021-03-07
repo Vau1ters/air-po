@@ -7,8 +7,7 @@ export class Ray implements GeometryForCollision {
   public constructor(public origin = new Vec2(), public direction = new Vec2()) {}
 
   createBound(): AABB {
-    const big = 114514 // cannot use Infinity since coordinate of right edge become NaN (-Infinity + Infinity)
-    return new AABB(new Vec2(), new Vec2(+big * 2, +big * 2))
+    return new AABB(new Vec2(), new Vec2(Infinity, Infinity))
   }
 
   applyPosition(pos: Vec2): GeometryForCollision {

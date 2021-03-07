@@ -29,7 +29,7 @@ const getClosestHitPointGenerator = function*(
   while (true) {
     const closestHitPoint = hitPoints.reduce(
       (a, b) => (a.sub(ray.origin).length() < b.sub(ray.origin).length() ? a : b),
-      ray.origin.add(ray.direction.mul(114514))
+      ray.origin.add(ray.direction.mul(Infinity))
     )
     hitPoints = []
     yield closestHitPoint
