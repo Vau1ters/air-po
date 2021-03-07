@@ -2,30 +2,30 @@ import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
 import { BulletComponent } from '@game/components/bulletComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
 import ballBulletDefinition from '@res/animation/ballBullet.json'
 import needleBulletDefinition from '@res/animation/needleBullet.json'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
+import { BULLET_TAG } from '@game/systems/bulletSystem'
+import { ATTACK_TAG } from '@game/systems/damageSystem'
 
 const bulletDefinition = {
   ball: ballBulletDefinition,
   needle: needleBulletDefinition,
 }
-
 type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
 
 export class BulletFactory extends EntityFactory {
-  readonly HIT_BOX_WIDTH = 4
-  readonly HIT_BOX_HEIGHT = 4
-
-  readonly ATTACK_HIT_BOX_WIDTH = 4
-  readonly ATTACK_HIT_BOX_HEIGHT = 4
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(4, 4),
+  }
 
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
@@ -58,44 +58,7 @@ export class BulletFactory extends EntityFactory {
     const direction = new Vec2(Math.cos(this.angle), Math.sin(this.angle))
 
     const entity = new Entity()
-    const position = new PositionComponent(
-      shooterPosition.x - (direction.x * this.offset.x) / 2,
-      shooterPosition.y + this.offset.y
-    )
-    const bullet = new BulletComponent(this.life)
-    const collider = new ColliderComponent(entity)
 
-    const aabbBody = new AABBDef(
-      new Vec2(this.HIT_BOX_WIDTH, this.HIT_BOX_HEIGHT),
-      CategoryList.bulletBody
-    )
-    aabbBody.tag.add('bulletBody')
-    aabbBody.offset = new Vec2(-this.HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    aabbBody.maxClipTolerance = new Vec2(0, 0)
-    aabbBody.isSensor = true
-    collider.createCollider(aabbBody)
-
-    // 攻撃判定
-    const attack = new AttackComponent(1, true)
-
-    const attackHitBox = new AABBDef(
-      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
-      this.shooterType === 'player' ? CategoryList.player.attack : CategoryList.enemy.attack
-    )
-    attackHitBox.tag.add('AttackHitBox')
-    attackHitBox.offset = new Vec2(-this.ATTACK_HIT_BOX_WIDTH / 2, -this.ATTACK_HIT_BOX_HEIGHT / 2)
-    attackHitBox.isSensor = true
-    collider.createCollider(attackHitBox)
-
-    const body = new RigidBodyComponent(
-      0,
-      new Vec2(direction.x * this.speed, direction.y * this.speed),
-      new Vec2(),
-      0,
-      0
-    )
-
-    const sprite = parseAnimation(bulletDefinition[this.type].sprite)
     const radAngle = (this.angle / Math.PI) * 180
     const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
     const directions = [
@@ -116,17 +79,54 @@ export class BulletFactory extends EntityFactory {
       'RightUp',
       'RightUpDown',
     ]
-    sprite.changeTo(directions[index])
 
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-
-    entity.addComponent('Position', position)
-    entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
-    entity.addComponent('RigidBody', body)
-    entity.addComponent('Bullet', bullet)
-    entity.addComponent('Attack', attack)
+    entity.addComponent(
+      'Position',
+      new PositionComponent(
+        shooterPosition.x - (direction.x * this.offset.x) / 2,
+        shooterPosition.y + this.offset.y
+      )
+    )
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(bulletDefinition[this.type].sprite),
+          state: directions[index],
+        },
+      })
+    )
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.COLLIDER,
+              category: Category.BULLET,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [BULLET_TAG],
+            },
+            {
+              geometry: this.COLLIDER,
+              category: Category.ATTACK,
+              mask: new CategorySet(
+                this.shooterType === 'player' ? Category.ENEMY_HITBOX : Category.PLAYER_HITBOX
+              ),
+              tag: [ATTACK_TAG],
+            },
+          ],
+        })
+      )
+    )
+    entity.addComponent(
+      'RigidBody',
+      new RigidBodyComponent({ velocity: direction.mul(this.speed) })
+    )
+    entity.addComponent('Bullet', new BulletComponent(this.life))
+    entity.addComponent('Attack', new AttackComponent(1, true))
     return entity
   }
 }

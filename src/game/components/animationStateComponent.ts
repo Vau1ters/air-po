@@ -1,16 +1,19 @@
-import { Animation } from '@core/graphics/animation'
+import { Entity } from '@core/ecs/entity'
+import { AnimationSprite } from '@core/graphics/animation'
 import { EventNotifier } from '@utils/eventNotifier'
 
 export class AnimationStateComponent {
+  public animation: AnimationSprite
   private _state = ''
   private _isVisible = true
 
   public readonly changeState = new EventNotifier<string>()
   public readonly changeIsVisible = new EventNotifier<boolean>()
 
-  constructor(public animation: Animation) {
-    this.changeState.addObserver(x => animation.changeTo(x))
-    this.changeIsVisible.addObserver(x => animation.setVisible(x))
+  constructor(entity: Entity) {
+    this.animation = (entity.getComponent('Draw').children as [AnimationSprite])[0]
+    this.changeState.addObserver(x => this.animation.changeTo(x))
+    this.changeIsVisible.addObserver(x => this.animation.setVisible(x))
   }
 
   set isVisible(value: boolean) {

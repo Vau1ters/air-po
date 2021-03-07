@@ -1,8 +1,13 @@
 import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
+import { Category } from '@game/entities/category'
+import { assert } from '@utils/assertion'
+
+export const ATTACK_TAG = 'Attack'
+export const HITBOX_TAG = 'HitBox'
 
 export class DamageSystem extends System {
   private family: Family
@@ -22,7 +27,15 @@ export class DamageSystem extends System {
   private entityAdded(entity: Entity): void {
     const collider = entity.getComponent('Collider')
     for (const c of collider.colliders) {
-      if (c.tag.has('AttackHitBox')) {
+      if (c.tag.has(ATTACK_TAG)) {
+        assert(
+          c.category === Category.ATTACK,
+          `Collider with '${ATTACK_TAG}' tag must have ATTACK category`
+        )
+        assert(
+          c.mask.has(Category.PLAYER_HITBOX) || c.mask.has(Category.ENEMY_HITBOX),
+          `Collider with '${ATTACK_TAG}' tag must have HITBOX mask`
+        )
         c.callbacks.add(this.attackCollisionCallback)
       }
     }
@@ -32,19 +45,18 @@ export class DamageSystem extends System {
     if (entity.hasComponent('Collider')) {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
-        if (c.tag.has('AttackHitBox')) {
+        if (c.tag.has(ATTACK_TAG)) {
           c.callbacks.delete(this.attackCollisionCallback)
         }
       }
     }
   }
 
-  private attackCollisionCallback = (
-    attackerCollider: Collider,
-    targetCollider: Collider
-  ): void => {
-    const attacker = attackerCollider.entity
-    const target = targetCollider.entity
+  private attackCollisionCallback = (args: CollisionCallbackArgs): void => {
+    const {
+      me: { entity: attacker },
+      other: { entity: target },
+    } = args
 
     const attack = attacker.getComponent('Attack')
 

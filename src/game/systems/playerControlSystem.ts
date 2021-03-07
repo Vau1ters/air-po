@@ -2,7 +2,8 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { PLAYER_FOOT_TAG, PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 
 export class PlayerControlSystem extends System {
   private family: Family
@@ -18,10 +19,10 @@ export class PlayerControlSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        if (c.tag.has('playerFoot')) {
+        if (c.tag.has(PLAYER_FOOT_TAG)) {
           c.callbacks.add(PlayerControlSystem.footCollisionCallback)
         }
-        if (c.tag.has('playerSensor')) {
+        if (c.tag.has(PLAYER_SENSOR_TAG)) {
           c.callbacks.add(PlayerControlSystem.itemPickerCallback)
         }
       }
@@ -32,19 +33,24 @@ export class PlayerControlSystem extends System {
     // 何もしない
   }
 
-  private static footCollisionCallback(playerCollider: Collider, otherCollider: Collider): void {
-    const player = playerCollider.entity.getComponent('Player')
-    if (
-      !otherCollider.isSensor &&
-      playerCollider.entity.getComponent('RigidBody').velocity.y > -1e-2
-    ) {
-      player.landing = true
-    }
+  private static footCollisionCallback(args: CollisionCallbackArgs): void {
+    const {
+      me: { entity: playerEntity },
+    } = args
+
+    const rigidBody = playerEntity.getComponent('RigidBody')
+    if (rigidBody.velocity.y < -1e-2) return
+
+    const player = playerEntity.getComponent('Player')
+    player.landing = true
   }
 
-  private static itemPickerCallback(playerCollider: Collider, otherCollider: Collider): void {
-    const player = playerCollider.entity.getComponent('Player')
-    const other = otherCollider.entity
+  private static itemPickerCallback(args: CollisionCallbackArgs): void {
+    const {
+      me: { entity: playerEntity },
+      other: { entity: other },
+    } = args
+    const player = playerEntity.getComponent('Player')
     if (other.hasComponent('PickupTarget')) {
       player.pickupTarget.add(other) // this target reference will be removed in playerPickup
     }

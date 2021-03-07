@@ -1,6 +1,11 @@
 export class Vec2 {
   public constructor(public x = 0, public y = 0) {}
 
+  public assign(v: Vec2): void {
+    this.x = v.x
+    this.y = v.y
+  }
+
   public copy(): Vec2 {
     return new Vec2(this.x, this.y)
   }

@@ -2,8 +2,13 @@ import { System } from '@core/ecs/system'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Entity } from '@core/ecs/entity'
-import { Collider, AirCollider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { CollisionResultAirAABB } from '@core/collision/collision/Air_AABB'
 import { assert } from '@utils/assertion'
+import { Category } from '@game/entities/category'
+import { AIR_TAG } from './airSystem'
+
+export const AIR_HOLDER_TAG = 'airHolderBody'
 
 export class AirHolderSystem extends System {
   private family: Family
@@ -28,7 +33,15 @@ export class AirHolderSystem extends System {
     if (entity.hasComponent('Collider')) {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
-        if (c.tag.has('airHolderBody')) {
+        if (c.tag.has(AIR_HOLDER_TAG)) {
+          assert(
+            c.category === Category.AIR_HOLDER,
+            `Collider with '${AIR_HOLDER_TAG}' tag must have AIR_HOLDER category`
+          )
+          assert(
+            c.mask.has(Category.AIR),
+            `Collider with '${AIR_HOLDER_TAG}' tag must have AIR mask`
+          )
           c.callbacks.add(AirHolderSystem.airHolderSensor)
         }
       }
@@ -39,24 +52,21 @@ export class AirHolderSystem extends System {
     if (entity.hasComponent('Collider')) {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
-        if (c.tag.has('airHolderBody')) {
+        if (c.tag.has(AIR_HOLDER_TAG)) {
           c.callbacks.delete(AirHolderSystem.airHolderSensor)
         }
       }
     }
   }
 
-  private static airHolderSensor(airHolderCollider: Collider, otherCollider: Collider): void {
+  private static airHolderSensor(args: CollisionCallbackArgs): void {
+    const { me: airHolderCollider, other: otherCollider } = args
+    const { hitAirs } = args as CollisionResultAirAABB
     // collect air
-    if (otherCollider.tag.has('air')) {
-      assert(otherCollider instanceof AirCollider, 'Invaild collider')
-
+    if (otherCollider.tag.has(AIR_TAG)) {
       const position = airHolderCollider.entity.getComponent('Position')
       const airHolder = airHolderCollider.entity.getComponent('AirHolder')
 
-      const hitAirs: Entity[] = otherCollider.airFamily.entityArray.filter(
-        (a: Entity) => a.getComponent('Air').hit
-      )
       const nearestAir = hitAirs.reduce((a, b) => {
         const aa = a.getComponent('Air')
         const pa = a.getComponent('Position')
@@ -68,9 +78,9 @@ export class AirHolderSystem extends System {
           return b
         }
       })
-      const air = nearestAir.getComponent('Air')
-      const collectedQuantity = airHolder.collect(air.quantity)
-      air.decrease(collectedQuantity)
+      const airComponent = nearestAir.getComponent('Air')
+      const collectedQuantity = airHolder.collect(airComponent.quantity)
+      airComponent.decrease(collectedQuantity)
     }
   }
 }

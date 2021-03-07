@@ -3,7 +3,6 @@ export class AirComponent {
   private static readonly QUANTITY_ACTUALIZE_RATE = 0.5
   private _quantity: number
   private potentialQuantity: number
-  public hit = false
 
   public constructor(initialQuantity: number) {
     this._quantity = 0

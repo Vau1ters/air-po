@@ -4,22 +4,22 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import airGeyserDefinition from '@res/animation/airGeyser.json'
-import { AABBDef, ColliderComponent } from '@game/components/colliderComponent'
-import { CategoryList } from './category'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
+import { Category, CategorySet } from './category'
 import { Vec2 } from '@core/math/vec2'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIComponent } from '@game/components/aiComponent'
 import { airGeyserAI } from '@game/ai/entity/airGeyser/airGeyserAI'
 import { World } from '@core/ecs/world'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 
 export class AirGeyserFactory extends EntityFactory {
-  readonly INV_MASS = 0
-  readonly RESTITUTION = 0
-  readonly WIDTH = 10
-  readonly HEIGHT = 13
-  readonly OFFSET_X = -5
-  readonly OFFSET_Y = 3
+  private readonly COLLIDER = {
+    type: 'AABB' as const,
+    offset: new Vec2(0, 9),
+    size: new Vec2(10, 13),
+  }
 
   private position: Vec2 = new Vec2()
   private maxQuantity = 120
@@ -44,36 +44,40 @@ export class AirGeyserFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(this.position.x, this.position.y)
-    const draw = new DrawComponent(entity)
-    const collider = new ColliderComponent(entity)
 
-    const aabb = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.airGeyser)
-    aabb.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    collider.createCollider(aabb)
-
-    const rigidBody = new RigidBodyComponent(0, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    rigidBody.invMass = this.INV_MASS
-
-    const sprite = parseAnimation(airGeyserDefinition.sprite)
-
-    draw.addChild(sprite)
-
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(
-      airGeyserAI(entity, this.world, {
-        maxQuantity: this.maxQuantity,
-        increaseRate: this.increaseRate,
+    entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(airGeyserDefinition.sprite),
+        },
       })
     )
-
-    entity.addComponent('Position', position)
-    entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
-    entity.addComponent('RigidBody', rigidBody)
-    entity.addComponent('AI', ai)
-    entity.addComponent('AnimationState', animState)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity,
+          geometry: this.COLLIDER,
+          category: Category.TERRAIN,
+          mask: new CategorySet(Category.PHYSICS),
+          tag: [PHYSICS_TAG],
+        })
+      )
+    )
+    entity.addComponent('RigidBody', new RigidBodyComponent())
+    entity.addComponent(
+      'AI',
+      new AIComponent(
+        airGeyserAI(entity, this.world, {
+          maxQuantity: this.maxQuantity,
+          increaseRate: this.increaseRate,
+        })
+      )
+    )
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     return entity
   }
 }

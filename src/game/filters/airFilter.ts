@@ -3,6 +3,7 @@ import { Filter } from 'pixi.js'
 import { World } from '@core/ecs/world'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { Vec2 } from '@core/math/vec2'
+import { Air } from '@core/collision/geometry/air'
 
 export interface AirDefinition {
   center: {
@@ -13,8 +14,6 @@ export interface AirDefinition {
 }
 
 export class AirFilter extends Filter {
-  public static readonly EFFECTIVE_RADIUS = 200
-
   private family: Family
 
   public constructor(
@@ -27,7 +26,7 @@ export class AirFilter extends Filter {
       points: [],
       pointNum: 0,
       camera: [0, 0],
-      effectiveRadius: AirFilter.EFFECTIVE_RADIUS,
+      effectiveRadius: Air.EFFECTIVE_RADIUS,
       antiAlias: setting.antiAlias,
       inAirRate: 0,
     })
