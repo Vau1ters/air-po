@@ -55,8 +55,8 @@ export class GameWorldFactory {
     const collisionSystem = new CollisionSystem(world)
     world.addSystem(
       new GravitySystem(world),
-      collisionSystem,
       new PhysicsSystem(world),
+      collisionSystem,
       new AISystem(world),
       new PlayerControlSystem(world),
       new BulletSystem(world),
