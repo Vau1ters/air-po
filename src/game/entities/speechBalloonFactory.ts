@@ -1,15 +1,15 @@
 import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from './entityFactory'
 import { Filter, BitmapText, Sprite } from 'pixi.js'
-import fukidashiVertexShader from '@res/shaders/fukidashi.vert'
-import fukidashiFragmentShader from '@res/shaders/fukidashi.frag'
-import fukidashiTextFragmentShader from '@res/shaders/fukidashiText.frag'
-import { fukidashiAI } from '@game/ai/entity/fukidashi/fukidashiAI'
+import speechBalloonVertexShader from '@res/shaders/speechBalloon.vert'
+import speechBalloonFragmentShader from '@res/shaders/speechBalloon.frag'
+import speechBalloonTextFragmentShader from '@res/shaders/speechBalloonText.frag'
+import { speechBalloonAI } from '@game/ai/entity/speechBalloon/speechBalloonAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { UIComponent } from '@game/components/uiComponent'
 import { windowSize } from '@core/application'
 
-export class FukidashiFactory extends EntityFactory {
+export class SpeechBalloonFactory extends EntityFactory {
   constructor(private text: string, private target: Entity, private camera: Entity) {
     super()
   }
@@ -27,7 +27,7 @@ export class FukidashiFactory extends EntityFactory {
     sprite.height = windowSize.height * 0.4
     sprite.anchor.set(0.5)
     sprite.filters = [
-      new Filter(undefined, fukidashiFragmentShader, {
+      new Filter(undefined, speechBalloonFragmentShader, {
         displaySize: [sprite.width, sprite.height],
         tailSize,
         radius,
@@ -37,7 +37,7 @@ export class FukidashiFactory extends EntityFactory {
 
     const ui = new UIComponent()
     ui.filters = [
-      new Filter(fukidashiVertexShader, undefined, {
+      new Filter(speechBalloonVertexShader, undefined, {
         anchor: [0, 0],
         scale: 0,
         angle: 0,
@@ -52,7 +52,7 @@ export class FukidashiFactory extends EntityFactory {
     })
     text.name = 'text'
     text.roundPixels = true
-    text.filters = [new Filter(undefined, fukidashiTextFragmentShader)]
+    text.filters = [new Filter(undefined, speechBalloonTextFragmentShader)]
     text.zIndex = 1
     text.position.set(
       tailSize + padding - sprite.width * 0.5,
@@ -63,7 +63,7 @@ export class FukidashiFactory extends EntityFactory {
     ui.addChild(text)
 
     entity.addComponent('UI', ui)
-    entity.addComponent('AI', new AIComponent(fukidashiAI(entity, this.target, this.camera)))
+    entity.addComponent('AI', new AIComponent(speechBalloonAI(entity, this.target, this.camera)))
     return entity
   }
 }

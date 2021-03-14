@@ -8,8 +8,8 @@ import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { BitmapText, Sprite } from 'pixi.js'
 
-const chase = function*(fukidashi: Entity, target: Entity, camera: Entity): Behaviour<void> {
-  const ui = fukidashi.getComponent('UI')
+const chase = function*(speechBalloon: Entity, target: Entity, camera: Entity): Behaviour<void> {
+  const ui = speechBalloon.getComponent('UI')
   const background = ui.getChildByName('background') as Sprite
   const targetPositionOnWorld = target.getComponent('Position')
   const cameraPositionOnWorld = camera.getComponent('Position')
@@ -18,13 +18,13 @@ const chase = function*(fukidashi: Entity, target: Entity, camera: Entity): Beha
   const [backgroundFilter] = background.filters
 
   while (true) {
-    const fukidashiPositionOnScreen = new Vec2(ui.position.x, ui.position.y)
+    const speechBalloonPositionOnScreen = new Vec2(ui.position.x, ui.position.y)
     const centerPositionOnScreen = new Vec2(windowSize.width * 0.5, windowSize.height * 0.5)
 
-    const fukidashiPositionOnWorld = cameraPositionOnWorld.add(
-      fukidashiPositionOnScreen.sub(centerPositionOnScreen)
+    const speechBalloonPositionOnWorld = cameraPositionOnWorld.add(
+      speechBalloonPositionOnScreen.sub(centerPositionOnScreen)
     )
-    const target = targetPositionOnWorld.sub(fukidashiPositionOnWorld)
+    const target = targetPositionOnWorld.sub(speechBalloonPositionOnWorld)
     const direction = target.normalize()
 
     uiFilter.uniforms.anchor = [direction.x * 0.45 + 0.5, direction.y * 0.45 + 0.5]
@@ -38,20 +38,20 @@ const updateBitmapText = (bitmapText: BitmapText, newText: string): void => {
   bitmapText.updateText()
 }
 
-const animate = function*(fukidashi: Entity): Behaviour<void> {
-  const draw = fukidashi.getComponent('UI')
+const animate = function*(speechBalloon: Entity): Behaviour<void> {
+  const draw = speechBalloon.getComponent('UI')
   const bitmapText = draw.getChildByName('text') as BitmapText
   const [filter] = draw.filters
 
   const wholeText = bitmapText.text
   updateBitmapText(bitmapText, '')
 
-  const popInFukidashiScale = ease(Out.quad)(20, value => (filter.uniforms.scale = value))
-  const popInFukidashiAngle = ease(t => Math.sin(t * 24) * Math.exp(-t * t * 10) * 0.1)(
+  const popInspeechBalloonScale = ease(Out.quad)(20, value => (filter.uniforms.scale = value))
+  const popInspeechBalloonAngle = ease(t => Math.sin(t * 24) * Math.exp(-t * t * 10) * 0.1)(
     80,
     value => (filter.uniforms.angle = value)
   )
-  yield* parallelAll([popInFukidashiScale, popInFukidashiAngle])
+  yield* parallelAll([popInspeechBalloonScale, popInspeechBalloonAngle])
 
   while (bitmapText.text.length < wholeText.length) {
     yield* wait(4)
@@ -59,17 +59,17 @@ const animate = function*(fukidashi: Entity): Behaviour<void> {
   }
   yield* wait(100)
 
-  const popOutFukidashiScale = ease(In.quad)(20, value => (filter.uniforms.scale = value), {
+  const popOutspeechBalloonScale = ease(In.quad)(20, value => (filter.uniforms.scale = value), {
     from: 1,
     to: 0,
   })
-  yield* popOutFukidashiScale
+  yield* popOutspeechBalloonScale
 }
 
-export const fukidashiAI = function(
-  fukidashi: Entity,
+export const speechBalloonAI = function(
+  speechBalloon: Entity,
   target: Entity,
   camera: Entity
 ): Behaviour<void> {
-  return parallelAny([animate(fukidashi), chase(fukidashi, target, camera)])
+  return parallelAny([animate(speechBalloon), chase(speechBalloon, target, camera)])
 }
