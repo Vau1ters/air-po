@@ -10,22 +10,33 @@ import { windowSize } from '@core/application'
 
 export class PauseWorldFactory {
   public create(gameWorld: World): World {
-    const drawContainer = new Container()
     const alphaFilter = new filters.AlphaFilter(0)
-    drawContainer.filters = drawContainer.filters || [] // undefinedの場合は空配列を入れる
-    drawContainer.filters.push(alphaFilter)
+
+    const world = new World(pauseWorldAI(gameWorld, alphaFilter))
 
     const background = new Graphics()
     background.beginFill(0, 0.5)
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
-    drawContainer.addChild(background)
 
-    const world = new World(pauseWorldAI(gameWorld, alphaFilter))
+    const rootContainer = new Container()
+    rootContainer.filters = rootContainer.filters || [] // undefinedの場合は空配列を入れる
+    rootContainer.filters.push(alphaFilter)
+    world.stage.addChild(rootContainer)
 
-    world.stage.addChild(drawContainer)
+    const worldContainer = new Container()
+    rootContainer.addChild(worldContainer)
 
-    world.addSystem(new ControlSystem(world), new DrawSystem(world, drawContainer))
+    worldContainer.addChild(background)
+
+    const worldUIContainer = new Container()
+    worldUIContainer.zIndex = Infinity
+    worldContainer.addChild(worldUIContainer)
+
+    world.addSystem(
+      new ControlSystem(world),
+      new DrawSystem(world, worldContainer, worldUIContainer)
+    )
 
     const camera = new Entity()
     camera.addComponent('Camera', new CameraComponent())

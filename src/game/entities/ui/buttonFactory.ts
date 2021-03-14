@@ -4,7 +4,7 @@ import { Vec2 } from '@core/math/vec2'
 import { ButtonComponent } from '@game/components/buttonComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
-import { Graphics } from 'pixi.js'
+import { Container, Graphics } from 'pixi.js'
 import { EntityFactory } from '../entityFactory'
 
 export class ButtonFactory extends EntityFactory {
@@ -35,22 +35,17 @@ export class ButtonFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
 
-    const positionComponent = new PositionComponent(
-      this.position.x - this.size.x / 2,
-      this.position.y - this.size.y / 2
-    )
-
-    const drawComponent = new DrawComponent(entity)
+    const drawContainer = new Container()
     const g = new Graphics()
     g.beginFill(0xff00ff)
     g.drawRect(0, 0, this.size.x, this.size.y)
     g.endFill()
-    drawComponent.addChild(g)
-    drawComponent.interactive = true
-    drawComponent.buttonMode = true
-    drawComponent.addListener('click', () => this.buttonComponent.clickEvent.notify())
-    drawComponent.addListener('mouseover', () => this.buttonComponent.mouseoverEvent.notify())
-    drawComponent.addListener('mouseout', () => this.buttonComponent.mouseoutEvent.notify())
+    drawContainer.addChild(g)
+    drawContainer.interactive = true
+    drawContainer.buttonMode = true
+    drawContainer.addListener('click', () => this.buttonComponent.clickEvent.notify())
+    drawContainer.addListener('mouseover', () => this.buttonComponent.mouseoverEvent.notify())
+    drawContainer.addListener('mouseout', () => this.buttonComponent.mouseoutEvent.notify())
 
     this.buttonComponent.mouseoverEvent.addObserver((): void => {
       g.clear()
@@ -66,8 +61,20 @@ export class ButtonFactory extends EntityFactory {
     })
 
     entity.addComponent('Button', this.buttonComponent)
-    entity.addComponent('Position', positionComponent)
-    entity.addComponent('Draw', drawComponent)
+    entity.addComponent(
+      'Position',
+      new PositionComponent(this.position.x - this.size.x / 2, this.position.y - this.size.y / 2)
+    )
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: drawContainer,
+        },
+        type: 'WorldUI',
+      })
+    )
 
     return entity
   }
