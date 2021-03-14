@@ -5,8 +5,8 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
-import { CategoryList } from './category'
+import { buildColliders, ColliderComponent } from '@game/components/colliderComponent'
+import { Category, CategorySet } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
 import { HPComponent } from '@game/components/hpComponent'
 import { AIComponent } from '@game/components/aiComponent'
@@ -15,21 +15,24 @@ import { AnimationStateComponent } from '@game/components/animationStateComponen
 import snibeeDefinition from '@res/animation/snibee.json'
 import { World } from '@core/ecs/world'
 import { snibeeAI, SnibeeSetting } from '@game/ai/entity/snibee/snibeeAI'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { ATTACK_TAG } from '@game/systems/damageSystem'
 
 export class SnibeeFactory extends EntityFactory {
-  readonly MASS = 10
-  readonly RESTITUTION = 0
-  readonly WIDTH = 10
-  readonly HEIGHT = 13
-  readonly OFFSET_X = -5
-  readonly OFFSET_Y = -6
-  readonly CLIP_TOLERANCE_X = SnibeeSetting.maxVelocity / 60
-  readonly CLIP_TOLERANCE_Y = SnibeeSetting.maxVelocity / 60
+  private readonly BODY_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(10, 13),
+    maxClipToTolerance: new Vec2(SnibeeSetting.maxVelocity / 60, SnibeeSetting.maxVelocity / 60),
+  }
 
-  readonly ATTACK_HIT_BOX_WIDTH = 10
-  readonly ATTACK_HIT_BOX_HEIGHT = 13
-  readonly ATTACK_HIT_BOX_OFFSET_X = -5
-  readonly ATTACK_HIT_BOX_OFFSET_Y = -6
+  private readonly HIT_BOX_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(10, 13),
+  }
+
+  private readonly RIGID_BODY = {
+    mass: 10,
+  }
 
   public constructor(private world: World) {
     super()
@@ -37,61 +40,49 @@ export class SnibeeFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION, 0)
-    const direction = new HorizontalDirectionComponent('Right')
-    const collider = new ColliderComponent(entity)
-    const hp = new HPComponent(2, 2)
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.body)
-    aabbBody.tag.add('snibeeBody')
-    aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(aabbBody)
-
-    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.enemy.hitBox)
-    hitBox.tag.add('snibeeBody')
-    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    hitBox.isSensor = true
-    collider.createCollider(hitBox)
-
-    // 攻撃判定
-    const attack = new AttackComponent(1, false)
-
-    const attackHitBox = new AABBDef(
-      new Vec2(this.ATTACK_HIT_BOX_WIDTH, this.ATTACK_HIT_BOX_HEIGHT),
-      CategoryList.enemy.attack
+    entity.addComponent('AI', new AIComponent(snibeeAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(snibeeDefinition.sprite),
+        },
+      })
     )
-    attackHitBox.tag.add('AttackHitBox')
-    attackHitBox.offset = new Vec2(this.ATTACK_HIT_BOX_OFFSET_X, this.ATTACK_HIT_BOX_OFFSET_Y)
-    attackHitBox.isSensor = true
-    collider.createCollider(attackHitBox)
-
-    const sprite = parseAnimation(snibeeDefinition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-    direction.changeDirection.addObserver(x => {
-      if (x === 'Left') {
-        sprite.scale.x = -1
-      } else {
-        sprite.scale.x = 1
-      }
-    })
-
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(snibeeAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
-    entity.addComponent('HorizontalDirection', direction)
-    entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
-    entity.addComponent('Attack', attack)
-    entity.addComponent('HP', hp)
-    entity.addComponent('AnimationState', animState)
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PHYSICS_TAG],
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.ENEMY_HITBOX,
+            },
+            {
+              geometry: this.HIT_BOX_COLLIDER,
+              category: Category.ATTACK,
+              mask: new CategorySet(Category.PLAYER_HITBOX),
+              tag: [ATTACK_TAG],
+            },
+          ],
+        })
+      )
+    )
+    entity.addComponent('Attack', new AttackComponent(1, false))
+    entity.addComponent('HP', new HPComponent(2, 2))
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     return entity
   }
 }

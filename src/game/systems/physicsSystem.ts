@@ -2,35 +2,60 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider, AABBCollider } from '@game/components/colliderComponent'
-import { collide } from '@core/collision/collision'
-import { Category, CategorySet } from '@game/entities/category'
+import { Collider, CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { collide, WithHit } from '@core/collision/collision'
+import { AABB } from '@core/collision/geometry/AABB'
+import { OBB } from '@core/collision/geometry/OBB'
+import { CollisionResultOBBOBB } from '@core/collision/collision/OBB_OBB'
+import { Category } from '@game/entities/category'
 import { assert } from '@utils/assertion'
-import { BVH } from '@core/collision/bvh'
+
+export const PHYSICS_TAG = 'physics'
 
 export default class PhysicsSystem extends System {
-  private colliderFamily: Family
-  private rigidBodyFamily: Family
-  public bvhs = new Map<Category, BVH>()
-
-  private collidedList: Array<[Collider, Collider]> = []
+  private family: Family
 
   public constructor(world: World) {
     super(world)
 
-    this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
-    this.rigidBodyFamily = new FamilyBuilder(world).include('Position', 'RigidBody').build()
-  }
-
-  public init(): void {
-    for (const c of CategorySet.ALL) {
-      const bvh = new BVH()
-      this.bvhs.set(c, bvh)
-    }
+    this.family = new FamilyBuilder(world).include('Position', 'Collider', 'RigidBody').build()
+    this.family.entityAddedEvent.addObserver((entity: Entity) => {
+      for (const c of entity.getComponent('Collider').colliders) {
+        if (c.tag.has(PHYSICS_TAG)) {
+          switch (c.category) {
+            case Category.PHYSICS:
+              assert(
+                c.mask.has(Category.PHYSICS) || c.mask.has(Category.TERRAIN),
+                `Collider with '${PHYSICS_TAG}' tag and PHYSICS category must have PHYSICS or TERRAIN mask`
+              )
+              c.callbacks.add((args: CollisionCallbackArgs) => {
+                const { me, other } = args
+                this.solve(me, other)
+              })
+              break
+            case Category.TERRAIN:
+              assert(
+                c.mask.has(Category.PHYSICS),
+                `Collider with '${PHYSICS_TAG}' tag and TERRAIN category must have PHYSICS mask`
+              )
+              c.callbacks.add((args: CollisionCallbackArgs) => {
+                const { me, other } = args
+                this.solve(me, other)
+              })
+              break
+            default:
+              assert(
+                false,
+                `Collider with '${PHYSICS_TAG}' tag must have PHYSICS or TERRAIN category`
+              )
+          }
+        }
+      }
+    })
   }
 
   public update(delta: number): void {
-    for (const entity of this.rigidBodyFamily.entityIterator) {
+    for (const entity of this.family.entityIterator) {
       const position = entity.getComponent('Position')
       const body = entity.getComponent('RigidBody')
       body.velocity.x += body.acceleration.x * delta
@@ -39,152 +64,65 @@ export default class PhysicsSystem extends System {
       position.y += body.velocity.y * delta
       body.acceleration.x = body.acceleration.y = 0
     }
-    this.buildBVH()
-    this.collidedList.length = 0
-    this.broadPhase()
-    this.solve(this.collidedList)
   }
 
-  private buildBVH(): void {
-    const colliderMap = new Map<Category, Collider[]>()
-    for (const c of CategorySet.ALL) {
-      colliderMap.set(c, [])
-    }
-    for (const e of this.colliderFamily.entityIterator) {
-      const cs = e.getComponent('Collider').colliders
-      for (const c of cs) {
-        const colliders = colliderMap.get(c.category)
-        assert(colliders, `There are no collider with category '${c.category}'`)
-        colliders.push(c)
-      }
-    }
-    for (const [category, bvh] of this.bvhs) {
-      if (category === Category.STATIC_WALL && bvh.root) continue
-      const colliders = colliderMap.get(category)
-      assert(colliders, `There are no collider with category '${category}'`)
-      bvh.build(colliders)
-    }
-  }
+  // 互いに押し合う
+  private solve(c1: Collider, c2: Collider): void {
+    const { entity: entity1, geometry: g1 } = c1
+    const { entity: entity2, geometry: g2 } = c2
+    if (!entity1.hasComponent('RigidBody')) return
+    if (!entity2.hasComponent('RigidBody')) return
 
-  private broadPhase(): void {
-    for (const entity1 of this.colliderFamily.entityIterator) {
-      const collider1 = entity1.getComponent('Collider')
-      const position1 = entity1.getComponent('Position')
+    const body1 = entity1.getComponent('RigidBody')
+    const body2 = entity2.getComponent('RigidBody')
 
-      const collidedEntityIdSet = new Set<number>()
-      for (const c of collider1.colliders) {
-        if (c.category === Category.STATIC_WALL) continue // for performance
-        for (const m of c.mask) {
-          const bvh = this.bvhs.get(m)
-          assert(bvh, `There are no BVH with category '${m}'`)
-          const rs = bvh.query(c.bound.add(position1))
-          for (const r of rs) {
-            if (r.entity === entity1) continue
-            const entity2 = r.entity
-            if (collidedEntityIdSet.has(entity2.id)) continue
-            this.collide(entity1, entity2)
-            collidedEntityIdSet.add(entity2.id)
-          }
-        }
-      }
-    }
-  }
-
-  // 衝突判定
-  private collide(entity1: Entity, entity2: Entity): void {
     const position1 = entity1.getComponent('Position')
     const position2 = entity2.getComponent('Position')
-    const colliders1 = entity1.getComponent('Collider')
-    const colliders2 = entity2.getComponent('Collider')
 
-    for (const c1 of colliders1.colliders) {
-      for (const c2 of colliders2.colliders) {
-        const mask1 = c1.mask
-        const category1 = c1.category
-        const mask2 = c2.mask
-        const category2 = c2.category
-        if (!mask1.has(category2) || !mask2.has(category1)) continue
-        if (!c1.shouldCollide(c1, c2) || !c2.shouldCollide(c2, c1)) continue
+    if (!(g1 instanceof AABB) && !(g1 instanceof OBB)) return
+    if (!(g2 instanceof AABB) && !(g2 instanceof OBB)) return
 
-        if (collide(c1, c2, position1, position2)) {
-          if (
-            !(c1.isSensor || c2.isSensor) &&
-            entity1.hasComponent('RigidBody') &&
-            entity2.hasComponent('RigidBody')
-          ) {
-            this.collidedList.push([c1, c2])
-          }
-          for (const callback of c1.callbacks) {
-            callback(c1, c2)
-          }
-          for (const callback of c2.callbacks) {
-            callback(c2, c1)
-          }
-        }
-      }
+    let obb1 = g1 instanceof AABB ? g1.asOBB() : g1
+    let obb2 = g2 instanceof AABB ? g2.asOBB() : g2
+
+    // TODO:別クラスに分ける
+    obb1 = obb1.applyPosition(position1)
+    obb2 = obb2.applyPosition(position2)
+
+    const center1 = obb1.bound.center
+    const center2 = obb2.bound.center
+
+    const pDiff = center1.sub(center2)
+    const vDiff = body1.velocity.sub(body2.velocity)
+
+    const obbResult = collide(c1, c2, position1, position2) as WithHit<CollisionResultOBBOBB>
+
+    // これまでのsolveですでに衝突が解消されている可能性がある
+    if (!obbResult.hit) {
+      return
     }
-  }
 
-  private solve(collidedList: Array<[Collider, Collider]>): void {
-    // 互いに押し合う
-    for (const [c1, c2] of collidedList) {
-      const body1 = c1.entity.getComponent('RigidBody')
-      const body2 = c2.entity.getComponent('RigidBody')
+    const { clip, axis } = obbResult
 
-      const position1 = c1.entity.getComponent('Position')
-      const position2 = c2.entity.getComponent('Position')
-      // TODO:別クラスに分ける
-      if (c1 instanceof AABBCollider && c2 instanceof AABBCollider) {
-        const aabb1 = c1.aabb.add(position1)
-        const aabb2 = c2.aabb.add(position2)
-
-        const center1 = aabb1.center
-        const center2 = aabb2.center
-
-        const pDiff = center1.sub(center2)
-        const vDiff = body1.velocity.sub(body2.velocity)
-
-        const clip = aabb1.size
-          .add(aabb2.size)
-          .div(2)
-          .sub(pDiff.abs())
-
-        if (clip.x < 0 || clip.y < 0) {
-          // すでに衝突は解消されている
-          continue
-        }
-
-        const sumMass = body1.invMass + body2.invMass
-        if (sumMass === 0) continue
-        // 反発係数
-        const rest = 1 + body1.restitution * body2.restitution
-        // 埋まってる距離が短い方向に押し出す
-        if (Math.abs(clip.x) > Math.abs(clip.y)) {
-          // 縦方向
-          // 離れようとしているときに押し出さないようにする
-          if (vDiff.y * pDiff.y <= 0) {
-            body1.velocity.y += -vDiff.y * (body1.invMass / sumMass) * rest
-            body2.velocity.y += vDiff.y * (body2.invMass / sumMass) * rest
-          }
-          // 押し出し
-          let sign = 1
-          if (pDiff.y > 0) sign = -1
-          position1.y += sign * -clip.y * (body1.invMass / sumMass)
-          position2.y += sign * clip.y * (body2.invMass / sumMass)
-        } else {
-          // 横方向
-          // 離れようとしているときに押し出さないようにする
-          if (vDiff.x * pDiff.x <= 0) {
-            body1.velocity.x += -vDiff.x * (body1.invMass / sumMass) * rest
-            body2.velocity.x += vDiff.x * (body2.invMass / sumMass) * rest
-          }
-          // 押し出し
-          let sign = 1
-          if (pDiff.x > 0) sign = -1
-          position1.x += sign * -clip.x * (body1.invMass / sumMass)
-          position2.x += sign * clip.x * (body2.invMass / sumMass)
-        }
-      }
+    if (clip < 0) {
+      // すでに衝突は解消されている
+      return
     }
+
+    const sumMass = body1.invMass + body2.invMass
+    if (sumMass === 0) return
+    // 反発係数
+    const rest = 1 + body1.restitution * body2.restitution
+
+    // 離れようとしているときに押し出さないようにする
+    if (vDiff.dot(axis) * pDiff.dot(axis) <= 0) {
+      const dv = (vDiff.dot(axis) / sumMass) * rest
+      body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
+      body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
+    }
+
+    // 押し出し
+    position1.assign(position1.add(axis.mul((-clip * body1.invMass) / sumMass)))
+    position2.assign(position2.add(axis.mul((+clip * body2.invMass) / sumMass)))
   }
 }

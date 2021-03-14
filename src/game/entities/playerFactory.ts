@@ -3,10 +3,10 @@ import { EntityFactory } from './entityFactory'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef, Collider } from '@game/components/colliderComponent'
+import { ColliderComponent, Collider, buildColliders } from '@game/components/colliderComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from './category'
+import { Category, CategorySet } from './category'
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import { HPComponent } from '@game/components/hpComponent'
@@ -19,24 +19,38 @@ import playerDefinition from '@res/animation/player.json'
 import { World } from '@core/ecs/world'
 import { playerAI } from '@game/ai/entity/player/playerAI'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
+import { THROUGH_FLOOR_TAG } from './throughFloorFactory'
+
+export const PLAYER_SENSOR_TAG = 'PlayerSensor'
+export const PLAYER_FOOT_TAG = 'PlayerFoot'
 
 export class PlayerFactory extends EntityFactory {
-  readonly MASS = 10
-  readonly RESTITUTION = 0
-  readonly WIDTH = 10
-  readonly HEIGHT = 13
-  readonly OFFSET_X = -5
-  readonly OFFSET_Y = -6
-  readonly FOOT_WIDTH = this.WIDTH - 2
-  readonly FOOT_HEIGHT = 1
-  readonly FOOT_OFFSET_X = 1
-  readonly FOOT_OFFSET_Y = 13
-  readonly FOOT_CLIP_TOLERANCE_X = 2
-  readonly FOOT_CLIP_TOLERANCE_Y = 0
-  readonly CLIP_TOLERANCE_X = (this.WIDTH - this.FOOT_WIDTH) / 2 + this.FOOT_CLIP_TOLERANCE_X
-  readonly CLIP_TOLERANCE_Y = 4
-  readonly AIR_COLLECT_SPEED = 0.05
-  readonly AIR_CONSUME_SPEED = 0.025
+  private readonly BODY_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(13, 16),
+    maxClipToTolerance: new Vec2(3, 4),
+  }
+
+  private readonly FOOT_COLLIDER = {
+    type: 'AABB' as const,
+    offset: new Vec2(0, 8),
+    size: new Vec2(8, 1),
+    maxClipToTolerance: new Vec2(2, 0),
+  }
+
+  private readonly RIGID_BODY = {
+    mass: 10,
+    gravityScale: 1,
+  }
+
+  private readonly AIR_HOLDER = {
+    initialQuantity: 0,
+    maxQuantity: 0,
+    collectSpeed: 0.05,
+    consumeSpeed: 0.025,
+  }
 
   public constructor(private world: World) {
     super()
@@ -44,19 +58,8 @@ export class PlayerFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(200, 100)
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
     const player = new PlayerComponent()
-    const direction = new HorizontalDirectionComponent('Right')
-    const collider = new ColliderComponent(entity)
-    const airHolder = new AirHolderComponent({
-      initialQuantity: 0,
-      maxQuantity: 0,
-      collectSpeed: this.AIR_COLLECT_SPEED,
-      consumeSpeed: this.AIR_CONSUME_SPEED,
-    })
-    const hp = new HPComponent(3, 3)
-    const invincible = new InvincibleComponent()
+    const airHolder = new AirHolderComponent(this.AIR_HOLDER)
 
     const equipment = new EquipmentComponent()
     equipment.equipEvent.addObserver(type => {
@@ -70,68 +73,72 @@ export class PlayerFactory extends EntityFactory {
     equipment.equipEvent.notify('AirTank')
     equipment.equipEvent.notify('AirTank')
 
-    // TODO: カメラをプレイヤーから分離する
-    const camera = new CameraComponent()
-
     const shouldCollide = (me: Collider, other: Collider): boolean => {
-      if (player.throughFloorIgnoreCount > 0 && other.tag.has('throughFloor')) return false
+      if (player.throughFloorIgnoreCount > 0 && other.tag.has(THROUGH_FLOOR_TAG)) return false
       return true
     }
 
-    const aabbBody = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.body)
-    aabbBody.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    aabbBody.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    aabbBody.shouldCollide = shouldCollide
-    collider.createCollider(aabbBody)
-
-    const hitBox = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.hitBox)
-    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(hitBox)
-
-    const sensor = new AABBDef(new Vec2(this.WIDTH, this.HEIGHT), CategoryList.player.sensor)
-    sensor.tag.add('airHolderBody')
-    sensor.tag.add('playerSensor')
-    sensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    sensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    collider.createCollider(sensor)
-
-    const foot = new AABBDef(new Vec2(this.FOOT_WIDTH, this.FOOT_HEIGHT), CategoryList.player.foot)
-    foot.tag.add('playerFoot')
-    foot.offset = new Vec2(this.OFFSET_X + this.FOOT_OFFSET_X, this.OFFSET_Y + this.FOOT_OFFSET_Y)
-    foot.maxClipTolerance = new Vec2(this.FOOT_CLIP_TOLERANCE_X, this.FOOT_CLIP_TOLERANCE_Y)
-    foot.isSensor = true
-    foot.shouldCollide = shouldCollide
-    collider.createCollider(foot)
-
-    const sprite = parseAnimation(playerDefinition.sprite)
-    const draw = new DrawComponent(entity)
-    draw.addChild(sprite)
-    direction.changeDirection.addObserver(x => {
-      if (x === 'Left') {
-        sprite.scale.x = -1
-      } else {
-        sprite.scale.x = 1
-      }
-    })
-
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(playerAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
-    entity.addComponent('HorizontalDirection', direction)
-    entity.addComponent('HP', hp)
-    entity.addComponent('Invincible', invincible)
-    entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
+    entity.addComponent('AI', new AIComponent(playerAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
+    entity.addComponent('HP', new HPComponent(3, 3))
+    entity.addComponent('Invincible', new InvincibleComponent())
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(playerDefinition.sprite),
+        },
+      })
+    )
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PHYSICS_TAG],
+              condition: shouldCollide,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.PLAYER_HITBOX,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.AIR_HOLDER,
+              mask: new CategorySet(Category.AIR),
+              tag: [AIR_HOLDER_TAG],
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.ITEM, Category.EQUIPMENT, Category.SENSOR),
+              tag: [PLAYER_SENSOR_TAG],
+            },
+            {
+              geometry: this.FOOT_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.TERRAIN),
+              tag: [PLAYER_FOOT_TAG],
+              condition: shouldCollide,
+            },
+          ],
+        })
+      )
+    )
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Equipment', equipment)
-    entity.addComponent('Camera', camera)
-    entity.addComponent('AnimationState', animState)
+    // TODO: カメラをプレイヤーから分離する
+    entity.addComponent('Camera', new CameraComponent())
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     return entity
   }
 }

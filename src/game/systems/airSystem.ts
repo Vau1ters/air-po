@@ -3,12 +3,10 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { PositionComponent } from '@game/components/positionComponent'
-import { AirFilter } from '@game/filters/airFilter'
-import { AirDef, ColliderComponent, AirCollider } from '@game/components/colliderComponent'
-import { AABB } from '@core/collision/aabb'
-import { Vec2 } from '@core/math/vec2'
-import { assert } from '@utils/assertion'
-import { CategoryList } from '@game/entities/category'
+import { Category } from '@game/entities/category'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
+
+export const AIR_TAG = 'Air'
 
 export class AirSystem extends System {
   private family: Family
@@ -24,12 +22,21 @@ export class AirSystem extends System {
     this.family = new FamilyBuilder(world).include('Air', 'Position').build()
 
     this.entity = new Entity()
-    const collider = new ColliderComponent(this.entity)
-    const air = new AirDef(this.family, CategoryList.air)
-    air.tag.add('air')
-    air.isSensor = true
-    collider.createCollider(air)
-    this.entity.addComponent('Collider', collider)
+
+    this.entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity: this.entity,
+          geometry: {
+            type: 'Air',
+            world,
+          },
+          category: Category.AIR,
+          tag: [AIR_TAG],
+        })
+      )
+    )
     this.entity.addComponent('Position', new PositionComponent())
   }
 
@@ -41,7 +48,6 @@ export class AirSystem extends System {
     this.removeDeadAir()
     this.shrinkSmallAir()
     this.actualizeAir()
-    this.updateBounds()
   }
 
   removeDeadAir(): void {
@@ -69,20 +75,5 @@ export class AirSystem extends System {
       const air = entity.getComponent('Air')
       air.actualize()
     }
-  }
-
-  updateBounds(): void {
-    const airCollider = this.entity.getComponent('Collider').colliders[0]
-    assert(airCollider instanceof AirCollider, 'Invalid collider')
-
-    const aabbBounds: AABB[] = airCollider.airFamily.entityArray.map((e: Entity) => {
-      const p = e.getComponent('Position')
-      return new AABB(
-        p.sub(new Vec2(AirFilter.EFFECTIVE_RADIUS, AirFilter.EFFECTIVE_RADIUS)),
-        new Vec2(AirFilter.EFFECTIVE_RADIUS * 2, AirFilter.EFFECTIVE_RADIUS * 2)
-      )
-    })
-    if (aabbBounds.length === 0) return
-    airCollider.bound = aabbBounds.reduce((a, b) => a.merge(b))
   }
 }
