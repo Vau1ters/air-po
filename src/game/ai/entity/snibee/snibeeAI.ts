@@ -11,6 +11,7 @@ import { wait } from '@core/behaviour/wait'
 import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
 import { animateLoop, animate } from '@game/ai/entity/common/action/animate'
+import { repeat } from '@core/behaviour/repeat'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -94,20 +95,17 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
 const flutteringAI = function*(entity: Entity): Behaviour<void> {
   const rigidbody = entity.getComponent('RigidBody')
   yield* animate(entity, 'FlutteringLeft')
-  for (let x = 0; x < 10; x++) {
+  yield* repeat(10, () => {
     rigidbody.acceleration.x = 500
-    yield
-  }
+  })
   yield* animate(entity, 'FlutteringRight')
-  for (let x = 0; x < 20; x++) {
+  yield* repeat(20, () => {
     rigidbody.acceleration.x = -500
-    yield
-  }
+  })
   yield* animate(entity, 'FlutteringLeft')
-  for (let x = 0; x < 20; x++) {
+  yield* repeat(10, () => {
     rigidbody.acceleration.x = 500
-    yield
-  }
+  })
 }
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
