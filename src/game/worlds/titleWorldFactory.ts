@@ -10,24 +10,28 @@ import { titleWorldAI } from '@game/ai/world/title/titleWorldAI'
 
 export class TitleWorldFactory {
   public create(): World {
-    const gameWorldContainer = new Container()
+    const world = new World(titleWorldAI)
 
-    const drawContainer = new Container()
-    drawContainer.filterArea = application.screen
-    gameWorldContainer.addChild(drawContainer)
+    const rootContainer = new Container()
+    world.stage.addChild(rootContainer)
+
+    const worldContainer = new Container()
+    worldContainer.filterArea = application.screen
+    rootContainer.addChild(worldContainer)
 
     const background = new Graphics()
     background.beginFill(0xc0c0c0)
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
-    drawContainer.addChild(background)
+    worldContainer.addChild(background)
 
-    const world = new World(titleWorldAI)
-    world.stage.addChild(gameWorldContainer)
+    const worldUIContainer = new Container()
+    worldUIContainer.zIndex = Infinity
+    worldContainer.addChild(worldUIContainer)
 
     world.addSystem(
-      new DrawSystem(world, drawContainer),
-      new CameraSystem(world, drawContainer, background),
+      new DrawSystem(world, worldContainer, worldUIContainer),
+      new CameraSystem(world, worldContainer, background),
       new ControlSystem(world)
     )
 

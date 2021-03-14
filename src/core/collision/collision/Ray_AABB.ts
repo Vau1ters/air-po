@@ -1,17 +1,23 @@
-import { AABB } from './aabb'
 import { Vec2 } from '@core/math/vec2'
+import { AABB } from '../geometry/AABB'
+import { Ray } from '../geometry/ray'
+import { WithHit } from '../collision'
+
+export type CollisionResultRayAABB = {
+  hitPoint: Vec2
+}
 
 type Axis = 'x' | 'y'
 // 微小量
 const delta = 0.0001
 
-export const raycastToAABB = (ray: Ray, aabb: AABB): Vec2 | undefined => {
+export const collideRayAABB = (ray: Ray, aabb: AABB): WithHit<CollisionResultRayAABB> => {
   // Rayの原点がすでにAABB内にある
-  if (aabb.contains(ray.origin)) return ray.origin.copy()
+  if (aabb.contains(ray.origin)) return { hit: true, hitPoint: ray.origin.copy() }
 
   // AABBの各座標のmax/min
-  const minB = new Vec2(aabb.left, aabb.top)
-  const maxB = new Vec2(aabb.right, aabb.bottom)
+  const minB = aabb.min
+  const maxB = aabb.max
   // Rayの原点からAABBの辺に到達する時間
   const minT = new Vec2()
   const candidatePlane = new Vec2()
@@ -33,25 +39,21 @@ export const raycastToAABB = (ray: Ray, aabb: AABB): Vec2 | undefined => {
   }
 
   const hitPlane: Axis = minT.x >= minT.y ? 'x' : 'y'
-  const reachTime = minT[hitPlane]
+  const hitTime = minT[hitPlane]
   // Rayと逆方向なので当たらない
-  if (reachTime < 0) return undefined
+  if (hitTime < 0) return { hit: false }
 
   // 実際にRayを飛ばす
-  const reachPoint = new Vec2()
-  reachPoint.x = ray.origin.x + ray.direction.x * reachTime
-  reachPoint.y = ray.origin.y + ray.direction.y * reachTime
+  const hitPoint = new Vec2()
+  hitPoint.x = ray.origin.x + ray.direction.x * hitTime
+  hitPoint.y = ray.origin.y + ray.direction.y * hitTime
   // 飛ばしたRayが当たらなかったら
   if (
-    (hitPlane === 'y' && !(minB.x - delta <= reachPoint.x && reachPoint.x <= maxB.x + delta)) ||
-    (hitPlane === 'x' && !(minB.y - delta <= reachPoint.y && reachPoint.y <= maxB.y + delta))
+    (hitPlane === 'y' && !(minB.x - delta <= hitPoint.x && hitPoint.x <= maxB.x + delta)) ||
+    (hitPlane === 'x' && !(minB.y - delta <= hitPoint.y && hitPoint.y <= maxB.y + delta))
   ) {
-    return undefined
+    return { hit: false }
   }
 
-  return reachPoint
-}
-
-export class Ray {
-  public constructor(public origin = new Vec2(), public direction = new Vec2()) {}
+  return { hit: true, hitPoint }
 }

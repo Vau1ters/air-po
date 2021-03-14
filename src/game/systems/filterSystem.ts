@@ -5,11 +5,16 @@ import { AirFilter } from '@game/filters/airFilter'
 import { DarknessFilter } from '@game/filters/darknessFilter'
 import { windowSize } from '@core/application'
 import { Entity } from '@core/ecs/entity'
-import { AABBDef, Collider, ColliderComponent } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from '@game/entities/category'
+import { Category, CategorySet } from '@game/entities/category'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
+import {
+  buildCollider,
+  ColliderComponent,
+  CollisionCallbackArgs,
+} from '@game/components/colliderComponent'
+import { LIGHT_TAG } from './lightSystem'
 
 export class FilterSystem extends System {
   private airFilter: AirFilter
@@ -45,19 +50,29 @@ export class FilterSystem extends System {
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.lightSearcher = new Entity()
-    const aabbBody = new AABBDef(
-      new Vec2(windowSize.width, windowSize.height),
-      CategoryList.lightSearcher
+
+    this.lightSearcher.addComponent(
+      'Collider',
+      new ColliderComponent(
+        buildCollider({
+          entity: this.lightSearcher,
+          geometry: {
+            type: 'AABB',
+            offset: new Vec2(windowSize.width / 2, windowSize.height / 2),
+            size: new Vec2(windowSize.width, windowSize.height),
+          },
+          category: Category.SENSOR,
+          mask: new CategorySet(Category.LIGHT),
+          callbacks: [
+            (args: CollisionCallbackArgs): void => {
+              const { other } = args
+              if (!other.tag.has(LIGHT_TAG)) return
+              this.lights.push(other.entity)
+            },
+          ],
+        })
+      )
     )
-    aabbBody.tag.add('screen')
-    aabbBody.isSensor = true
-    const collider = new ColliderComponent(this.lightSearcher)
-    collider.createCollider(aabbBody)
-    collider.colliders[0].callbacks.add((me: Collider, other: Collider) => {
-      if (!other.tag.has('light')) return
-      this.lights.push(other.entity)
-    })
-    this.lightSearcher.addComponent('Collider', collider)
     this.lightSearcher.addComponent('Position', new PositionComponent())
 
     container.filters = [this.airFilter, this.darknessFilter]

@@ -3,18 +3,11 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Container, Graphics } from 'pixi.js'
 import { windowSize } from '@core/application'
-import { MouseController } from './controlSystem'
-import { Vec2 } from '@core/math/vec2'
-import { Ray } from '@core/collision/ray'
-import { CategoryList } from '@game/entities/category'
 import { Entity } from '@core/ecs/entity'
-import PhysicsSystem from './physicsSystem'
 
 export default class UiSystem extends System {
   private playerFamily: Family
   private hpFamily: Family
-
-  private physicsSystem: PhysicsSystem
 
   private uiContainer: Container = new Container()
   private gameWorldUiContainer: Container = new Container()
@@ -22,20 +15,10 @@ export default class UiSystem extends System {
   private hpGauge: Graphics = new Graphics()
   private playerHpGauge: Graphics = new Graphics()
   private playerAirGauge: Graphics = new Graphics()
-  private laserSight: Graphics = new Graphics()
 
-  public constructor(
-    world: World,
-    uiContainer: Container,
-    gameWorldUiContainer: Container,
-    physicsSystem: PhysicsSystem
-  ) {
+  public constructor(world: World, uiContainer: Container, gameWorldUiContainer: Container) {
     super(world)
 
-    this.physicsSystem = physicsSystem
-
-    this.laserSight.position.set(0)
-    this.gameWorldUiContainer.addChild(this.laserSight)
     this.hpGauge.position.set(0)
     this.gameWorldUiContainer.addChild(this.hpGauge)
 
@@ -55,7 +38,6 @@ export default class UiSystem extends System {
     for (const player of this.playerFamily.entityIterator) {
       this.renderPlayerHp(player)
       this.renderPlayerAir(player)
-      this.renderLaserSight(player)
     }
     this.renderNpcHp()
   }
@@ -106,38 +88,6 @@ export default class UiSystem extends System {
       )
       this.playerAirGauge.endFill()
     }
-  }
-
-  private renderLaserSight(player: Entity): void {
-    const position = player.getComponent('Position')
-    const mousePosition = MouseController.position
-    const direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
-    const candidatePoints: Vec2[] = []
-    for (const [category, bvh] of this.physicsSystem.bvhs) {
-      if (
-        CategoryList.bulletBody.mask.has(category) ||
-        CategoryList.player.attack.mask.has(category)
-      ) {
-        const result = bvh.queryRaycast(new Ray(position, direction))
-        candidatePoints.push(...result.map(item => item[1]))
-      }
-    }
-    // candidatePointsが空配列だとエラーになるので、遠いところに点を置く
-    const farPoint = position.add(
-      direction.mul(
-        Math.abs(Math.min(windowSize.width / direction.x, windowSize.height / direction.y))
-      )
-    )
-    const hitPoint = candidatePoints.reduce((pre: Vec2, next: Vec2) => {
-      if (position.sub(next).length() < position.sub(pre).length()) return next
-      return pre
-    }, farPoint)
-    this.laserSight.clear()
-    this.laserSight.lineStyle(0.5, 0xff0000)
-    this.laserSight.moveTo(position.x, position.y)
-    this.laserSight.lineTo(hitPoint.x, hitPoint.y)
-    this.laserSight.beginFill(0xff0000)
-    this.laserSight.drawCircle(hitPoint.x, hitPoint.y, 2)
   }
 
   private renderNpcHp(): void {

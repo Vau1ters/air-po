@@ -1,4 +1,4 @@
-import { Animation, AnimationDefinition } from './animation'
+import { AnimationSprite, AnimationDefinition } from './animation'
 import { textureStore } from './art'
 import { checkMembers } from '@utils/assertion'
 
@@ -9,9 +9,9 @@ type SpriteSetting = {
   default: string
 }
 
-const cache: Record<string, () => Animation> = {}
+const cache: Record<string, () => AnimationSprite> = {}
 
-export function parseAnimation(json: SpriteSetting): Animation {
+export function parseAnimation(json: SpriteSetting): AnimationSprite {
   if (!cache[json.name]) {
     checkMembers(json, { name: 'string', state: 'any', speed: 'any', default: 'string' }, 'sprite')
 
@@ -33,7 +33,7 @@ export function parseAnimation(json: SpriteSetting): Animation {
         waitFrames: speed[stateName],
       }
     }
-    cache[name] = (): Animation => new Animation(animatedTexture, defaultState)
+    cache[name] = (): AnimationSprite => new AnimationSprite(animatedTexture, defaultState)
   }
   return cache[json.name]()
 }
