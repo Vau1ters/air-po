@@ -44,7 +44,7 @@ const updateDraw = function*(player: Entity, laser: Entity): Behaviour<void> {
 
   for (const closestHitPoint of getClosestHitPoint) {
     g.clear()
-    g.lineStyle(0.5, 0xff0000)
+    g.lineStyle(1, 0xff0000)
     g.moveTo(ray.origin.x, ray.origin.y)
     g.lineTo(closestHitPoint.x, closestHitPoint.y)
     g.beginFill(0xff0000)
