@@ -21,11 +21,10 @@ export class AirFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(this.position.x, this.position.y)
-    const air = new AirComponent(this.quantity)
 
-    entity.addComponent('Position', position)
-    entity.addComponent('Air', air)
+    entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
+    entity.addComponent('Air', new AirComponent(this.quantity))
+
     return entity
   }
 }

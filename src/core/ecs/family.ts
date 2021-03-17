@@ -57,8 +57,10 @@ export class Family {
   }
 
   private onEntityRemoved(entity: Entity): void {
-    this.entities.delete(entity)
-    this.entityRemovedEvent.notify(entity)
+    if (this.includesEntity(entity)) {
+      this.entities.delete(entity)
+      this.entityRemovedEvent.notify(entity)
+    }
   }
 
   private onEntityChanged(entity: Entity): void {

@@ -4,8 +4,9 @@ import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
-import { AABBCollider, Collider } from '@game/components/colliderComponent'
 import { PositionComponent } from '@game/components/positionComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { AABB } from '@core/collision/geometry/AABB'
 
 export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
   const player = new FamilyBuilder(world).include('Player').build().entityArray[0]
@@ -18,15 +19,19 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
   himo.tint = 0x22ff22
   draw.addChild(himo)
 
-  const [gripAABB, _, __, rootAABB, wallDetectionAABB] = entity.getComponent('Collider')
-    .colliders as Array<AABBCollider>
+  const [gripCollider, _, __, rootCollider, wallDetectionCollider] = entity.getComponent(
+    'Collider'
+  ).colliders
+  const gripAABB = gripCollider.geometry as AABB
+  const rootAABB = rootCollider.geometry as AABB
+  const wallDetectionAABB = wallDetectionCollider.geometry as AABB
 
   const targetWall = ((): { update: () => void; get: () => PositionComponent | undefined } => {
     let walls: Array<Entity> = []
     let targetWall: PositionComponent | undefined = undefined
 
-    wallDetectionAABB.callbacks.add((_: Collider, other: Collider) => {
-      walls.push(other.entity)
+    wallDetectionCollider.callbacks.add((args: CollisionCallbackArgs) => {
+      walls.push(args.other.entity)
     })
 
     const findAppropriateWall = (): PositionComponent | undefined => {
@@ -34,7 +39,7 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
       return walls
         .map(wall => {
           const p = wall.getComponent('Position')
-          const v = p.sub(wallDetectionAABB.bound.center)
+          const v = p.sub(wallDetectionAABB.center)
           return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
         })
         .filter(w => w.value > 0)
@@ -93,19 +98,14 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
         points[i].y = -y
       }
     }
-    gripAABB.bound.position.x = points.map(p => p.x).reduce((a, b) => Math.min(a, b))
-    gripAABB.bound.position.y = points.map(p => p.y).reduce((a, b) => Math.min(a, b))
-    gripAABB.bound.size.x =
-      points.map(p => p.x).reduce((a, b) => Math.max(a, b)) - gripAABB.bound.position.x + 1
-    gripAABB.bound.size.y =
-      points.map(p => p.y).reduce((a, b) => Math.max(a, b)) - gripAABB.bound.position.y
+    gripAABB.assign(AABB.fromPoints(points.map(p => new Vec2(p.x, p.y))))
 
     const lp = points[points.length - 1]
-    rootAABB.bound.position.x = lp.x - rootAABB.bound.size.x / 2
-    rootAABB.bound.position.y = lp.y - rootAABB.bound.size.y
+    rootAABB.center.x = lp.x
+    rootAABB.center.y = lp.y - rootAABB.size.y / 2
 
-    wallDetectionAABB.bound.position.x = lp.x - wallDetectionAABB.bound.size.x / 2
-    wallDetectionAABB.bound.position.y = lp.y - wallDetectionAABB.bound.size.y / 2
+    wallDetectionAABB.center.x = lp.x
+    wallDetectionAABB.center.y = lp.y
 
     const rigidBody = entity.getComponent('RigidBody')
 

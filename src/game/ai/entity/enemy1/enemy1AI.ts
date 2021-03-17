@@ -8,6 +8,7 @@ import { animate, animateLoop } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
+import { HITBOX_TAG } from '@game/systems/damageSystem'
 
 const enemy1Walk = function*(entity: Entity, direction: Direction): Behaviour<void> {
   yield* parallelAny([animateLoop(entity, 'Walk'), move(entity, direction, 0.3, 200)])
@@ -24,7 +25,7 @@ const enemy1Move = function*(entity: Entity): Behaviour<void> {
 
 export const enemy1AI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), enemy1Move(entity))
-  entity.getComponent('Collider').removeByTag('AttackHitBox')
+  entity.getComponent('Collider').removeByTag(HITBOX_TAG)
   yield* emitAir(entity, world, 50)
   yield* animate(entity, 'Dying')
   yield* kill(entity, world)

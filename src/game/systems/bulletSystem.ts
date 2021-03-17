@@ -2,7 +2,11 @@ import { System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { Category } from '@game/entities/category'
+import { assert } from '@utils/assertion'
+
+export const BULLET_TAG = 'bulletBody'
 
 export class BulletSystem extends System {
   private family: Family
@@ -10,7 +14,7 @@ export class BulletSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world).include('Bullet', 'Collider', 'Position').build()
+    this.family = new FamilyBuilder(world).include('Bullet', 'Collider').build()
     this.family.entityAddedEvent.addObserver(entity => this.entityAdded(entity))
   }
 
@@ -18,8 +22,16 @@ export class BulletSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        if (c.tag.has('bulletBody')) {
-          c.callbacks.add((bullet): void => this.bulletCollisionCallback(bullet))
+        if (c.tag.has(BULLET_TAG)) {
+          assert(
+            c.category === Category.BULLET,
+            `Collider with '${BULLET_TAG}' tag must have BULLET category`
+          )
+          assert(
+            c.mask.has(Category.TERRAIN),
+            `Collider with '${BULLET_TAG}' tag must have TERRAIN mask`
+          )
+          c.callbacks.add((args: CollisionCallbackArgs) => this.bulletCollisionCallback(args))
         }
       }
     }
@@ -35,9 +47,10 @@ export class BulletSystem extends System {
     }
   }
 
-  private bulletCollisionCallback(bullet: Collider): void {
-    if (bullet.entity.hasComponent('Bullet')) {
-      this.world.removeEntity(bullet.entity)
-    }
+  private bulletCollisionCallback(args: CollisionCallbackArgs): void {
+    const {
+      me: { entity: bullet },
+    } = args
+    this.world.removeEntity(bullet)
   }
 }

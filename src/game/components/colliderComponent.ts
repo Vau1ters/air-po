@@ -1,196 +1,132 @@
+import { CollisionResult } from '@core/collision/collision'
+import { AABB } from '@core/collision/geometry/AABB'
+import { Air } from '@core/collision/geometry/air'
+import { GeometryForCollision } from '@core/collision/geometry/geometry'
+import { OBB } from '@core/collision/geometry/OBB'
+import { Ray } from '@core/collision/geometry/ray'
 import { Entity } from '@core/ecs/entity'
-import { Family } from '@core/ecs/family'
-import { AABB } from '@core/collision/aabb'
+import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { Circle } from '@core/collision/circle'
-import { assert } from '@utils/assertion'
-import { Category, CategorySet } from '../entities/category'
+import { Category } from '@game/entities/category'
 
-export interface Collider {
-  entity: Entity
-  isSensor: boolean
-  callbacks: Set<(me: Collider, other: Collider) => void>
-  shouldCollide: (me: Collider, other: Collider) => boolean
-  tag: Set<string>
-  category: Category
-  mask: CategorySet
-  bound: AABB
+export type CollisionCondition = (me: Collider, other: Collider) => boolean
+export type CollisionCallbackArgs = CollisionResult & {
+  me: Collider
+  other: Collider
 }
+export type CollisionCallback = (args: CollisionCallbackArgs) => void
 
-type ShouldCollide = (me: Collider, other: Collider) => boolean
-
-export class AABBCollider implements Collider {
-  public bound: AABB
-
-  public constructor(
+export class Collider {
+  constructor(
     public entity: Entity,
-    public aabb: AABB,
-    public maxClipTolerance: Vec2,
-    public isSensor: boolean,
-    public callbacks: Set<(me: Collider, other: Collider) => void>,
-    public shouldCollide: ShouldCollide,
-    public tag: Set<string>,
-    public category: Category,
-    public mask: CategorySet
-  ) {
-    this.bound = aabb
+    public bound: AABB,
+    public geometry: GeometryForCollision,
+    public option: ColliderOption
+  ) {}
+
+  get condition(): CollisionCondition {
+    return this.option.condition
+  }
+
+  get callbacks(): Set<CollisionCallback> {
+    return this.option.callbacks
+  }
+
+  get tag(): Set<string> {
+    return this.option.tag
+  }
+
+  get category(): Category {
+    return this.option.category
+  }
+
+  get mask(): Set<Category> {
+    return this.option.mask
   }
 }
 
-export class CircleCollider implements Collider {
-  public bound: AABB
-
-  public constructor(
-    public entity: Entity,
-    public circle: Circle,
-    public isSensor: boolean,
-    public callbacks: Set<(me: Collider, other: Collider) => void>,
-    public shouldCollide: ShouldCollide,
-    public tag: Set<string>,
-    public category: Category,
-    public mask: CategorySet
-  ) {
-    this.bound = this.buildAABBBound()
-  }
-
-  public set radius(radius: number) {
-    this.circle.radius = radius
-    this.bound = this.buildAABBBound()
-  }
-
-  private buildAABBBound(): AABB {
-    return new AABB(
-      this.circle.position.sub(new Vec2(this.circle.radius, this.circle.radius)),
-      new Vec2(this.circle.radius, this.circle.radius).mul(2)
-    )
-  }
-}
-
-export class AirCollider implements Collider {
-  public bound: AABB
-
-  public constructor(
-    public entity: Entity,
-    public airFamily: Family,
-    public isSensor: boolean,
-    public callbacks: Set<(me: Collider, other: Collider) => void>,
-    public shouldCollide: ShouldCollide,
-    public tag: Set<string>,
-    public category: Category,
-    public mask: CategorySet
-  ) {
-    this.bound = new AABB()
-  }
-}
-
-export interface ColliderDef {
-  isSensor: boolean
-  callbacks: Set<(me: Collider, other: Collider) => void>
+export type ColliderOption = {
+  condition: CollisionCondition
+  callbacks: Set<CollisionCallback>
   tag: Set<string>
   category: Category
   mask: Set<Category>
 }
 
-export type CategoryMask = {
+type GeometryBuildOption =
+  | {
+      type: 'AABB'
+      offset?: Vec2
+      size?: Vec2
+      maxClipToTolerance?: Vec2
+    }
+  | {
+      type: 'OBB'
+      offset?: Vec2
+      size?: Vec2
+      angle?: number
+    }
+  | {
+      type: 'Ray'
+      origin?: Vec2
+      direction?: Vec2
+    }
+  | {
+      type: 'Air'
+      world: World
+    }
+
+type ColliderBuildOption = {
+  condition?: CollisionCondition
+  callbacks?: CollisionCallback[]
+  tag?: string[]
   category: Category
-  mask: CategorySet
+  mask?: Set<Category>
+  geometry: GeometryBuildOption
 }
 
-export class AABBDef implements ColliderDef {
-  public offset = new Vec2()
-  public maxClipTolerance = new Vec2()
-  public isSensor = false
-  public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide: ShouldCollide = (): boolean => true
-  public tag: Set<string> = new Set()
-  public category: Category
-  public mask: CategorySet
-
-  public constructor(public size: Vec2, categoryMask: CategoryMask) {
-    this.category = categoryMask.category
-    this.mask = categoryMask.mask
+const buildGeometry = (option: GeometryBuildOption): GeometryForCollision => {
+  switch (option.type) {
+    case 'AABB':
+      return new AABB(option.offset, option.size, option.maxClipToTolerance)
+    case 'OBB':
+      return new OBB(new AABB(option.offset, option.size), option.angle)
+    case 'Ray':
+      return new Ray(option.origin, option.direction)
+    case 'Air':
+      return new Air(option.world)
   }
 }
 
-export class CircleDef implements ColliderDef {
-  public offset = new Vec2()
-  public isSensor = false
-  public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide: ShouldCollide = (): boolean => true
-  public tag: Set<string> = new Set()
-  public category: Category
-  public mask: CategorySet
-
-  public constructor(public radius: number, categoryMask: CategoryMask) {
-    this.category = categoryMask.category
-    this.mask = categoryMask.mask
-  }
+export const buildCollider = (option: { entity: Entity } & ColliderBuildOption): Collider => {
+  const geometry = buildGeometry(option.geometry)
+  return new Collider(option.entity, geometry.createBound(), geometry, {
+    condition: option.condition ?? ((): boolean => true),
+    callbacks: new Set<CollisionCallback>(option.callbacks),
+    tag: new Set<string>(option.tag),
+    category: option.category,
+    mask: option.mask ?? new Set<Category>(),
+  })
 }
 
-export class AirDef implements ColliderDef {
-  public isSensor = false
-  public callbacks: Set<(me: Collider, other: Collider) => void> = new Set()
-  public shouldCollide: ShouldCollide = (): boolean => true
-  public tag: Set<string> = new Set()
-  public category: Category
-  public mask: CategorySet
-
-  public constructor(public airFamily: Family, categoryMask: CategoryMask) {
-    this.category = categoryMask.category
-    this.mask = categoryMask.mask
-  }
-}
+export const buildColliders = (options: {
+  entity: Entity
+  colliders: ColliderBuildOption[]
+}): Collider[] =>
+  options.colliders.map((option: ColliderBuildOption) =>
+    buildCollider({ entity: options.entity, ...option })
+  )
 
 export class ColliderComponent {
-  public readonly colliders = new Array<Collider>()
-  public constructor(public entity: Entity) {}
+  public readonly colliders: Array<Collider>
 
-  public createCollider(def: ColliderDef): void {
-    if (def instanceof AABBDef) {
-      const collider = new AABBCollider(
-        this.entity,
-        new AABB(def.offset, def.size),
-        def.maxClipTolerance,
-        def.isSensor,
-        def.callbacks,
-        def.shouldCollide,
-        def.tag,
-        def.category,
-        def.mask
-      )
-      this.colliders.push(collider)
-    } else if (def instanceof CircleDef) {
-      const collider = new CircleCollider(
-        this.entity,
-        new Circle(def.offset, def.radius),
-        def.isSensor,
-        def.callbacks,
-        def.shouldCollide,
-        def.tag,
-        def.category,
-        def.mask
-      )
-      this.colliders.push(collider)
-    } else if (def instanceof AirDef) {
-      const collider = new AirCollider(
-        this.entity,
-        def.airFamily,
-        def.isSensor,
-        def.callbacks,
-        def.shouldCollide,
-        def.tag,
-        def.category,
-        def.mask
-      )
-      this.colliders.push(collider)
-    } else {
-      assert(false, 'This definition is not implemented.')
-    }
+  constructor(...colliders: Array<Collider>) {
+    this.colliders = colliders
   }
 
   public removeByTag(tag: string): void {
     while (true) {
-      const idx = this.colliders.findIndex(c => c.tag.has(tag))
+      const idx = this.colliders.findIndex(c => c.option.tag.has(tag))
       if (idx === -1) return
       this.colliders.splice(idx, 1)
     }

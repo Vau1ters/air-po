@@ -1,13 +1,90 @@
 export enum Category {
-  STATIC_WALL,
-  DYNAMIC_WALL,
-  PHYSICS,
-  PLAYER_HITBOX,
-  ATTACK,
-  HITBOX,
-  ITEM,
+  /*
+  AIR category is used for
+    - being collected by AIR_HOLDER
+    - being detected by some sensors
+  Process above is done in AirHolderSystem and others
+  */
   AIR,
+  /*
+  AIR_HOLDER category is used for
+    - collecting airs
+  Process above is done in AirHolderSystem
+  Collider with AIR_HOLDER category must have
+    - 'AIR_HOLDER_TAG' tag
+    - 'AIR' mask
+  */
+  AIR_HOLDER,
+  /*
+  BULLET category is used for
+    - remove entity from world when contacting a collider with PHYSICS category
+  Process above is done in BulletSystem
+  Collider with BULLET category must have
+    - 'BULLET_TAG' tag
+    - 'TERRAIN' mask
+  */
+  BULLET,
+  /*
+  PHYSICS category is used for
+    - updating velocity and position
+    - solve contact
+  Process above is done in PhysicsSystem
+  Collider with PHYSICS category must have
+    - 'PHYSICS_TAG' tag
+    - 'PHYSICS' or 'TERRAIN' mask
+  */
+  PHYSICS,
+  /*
+  TERRAIN category is used for
+    - solve contact
+  Process above is done in PhysicsSystem
+  Collider with TERRAIN category must have
+    - 'PHYSICS_TAG' tag
+    - 'PHYSICS' mask
+  */
+  TERRAIN,
+  /*
+  ATTACK category is used for
+    - sending damage
+  Process above is done in DamageSystem
+  Collider with ATTACK category must have
+    - 'ATTACK_TAG' tag
+    - 'HITBOX' mask
+  */
+  ATTACK,
+  /*
+  PLAYER_HITBOX and ENEMY_HITBOX category is used for
+    - receiving damage
+  Process above is done in DamageSystem
+  */
+  PLAYER_HITBOX,
+  ENEMY_HITBOX,
+  /*
+  ITEM category is used for
+    - being detected by player as item
+  Process above is done in PlayerControlSystem
+  */
+  ITEM,
+  /*
+  EQUIPMENT category is used for
+    - being detected by player as quipment
+  Process above is done in EventSensorSystem
+  */
+  EQUIPMENT,
+  /*
+  SENSOR category is used for
+    - being detected by player as sensor
+  Process above is done in EventSensorSystem
+  */
   SENSOR,
+  /*
+  LIGHT category is used for
+    - increasing intensity when contacting AIR
+  Process above is done in LightSystem
+  Collider with LIGHT category must have
+    - 'LIGHT_TAG' tag
+    - 'AIR' mask
+  */
   LIGHT,
   DRAW,
 }
@@ -44,117 +121,4 @@ export class CategorySet extends Set<Category> {
     categories.forEach(x => categorySet.delete(x))
     return categorySet
   }
-}
-
-export const CategoryList = {
-  balloonVine: {
-    grip: {
-      category: Category.ITEM,
-      mask: new CategorySet(Category.SENSOR),
-    },
-    body: {
-      category: Category.HITBOX,
-      mask: new CategorySet(Category.ATTACK),
-    },
-    root: {
-      category: Category.PHYSICS,
-      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL, Category.PHYSICS),
-    },
-    wallSensor: {
-      category: Category.SENSOR,
-      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-    },
-    airSensor: {
-      category: Category.SENSOR,
-      mask: new CategorySet(Category.AIR),
-    },
-  },
-  bulletBody: {
-    category: Category.PHYSICS,
-    mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-  },
-  dandelionFluff: {
-    category: Category.ITEM,
-    mask: new CategorySet(Category.SENSOR),
-  },
-  enemy: {
-    body: {
-      category: Category.PHYSICS,
-      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-    },
-    hitBox: {
-      category: Category.HITBOX,
-      mask: new CategorySet(Category.ATTACK),
-    },
-    attack: {
-      category: Category.ATTACK,
-      mask: new CategorySet(Category.PLAYER_HITBOX),
-    },
-  },
-  moss: {
-    light: {
-      category: Category.LIGHT,
-      mask: new CategorySet(Category.SENSOR),
-    },
-    airSensor: {
-      category: Category.SENSOR,
-      mask: new CategorySet(Category.AIR),
-    },
-  },
-  airGeyser: {
-    category: Category.DYNAMIC_WALL,
-    mask: new CategorySet(Category.PHYSICS),
-  },
-  player: {
-    body: {
-      category: Category.PHYSICS,
-      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-    },
-    hitBox: {
-      category: Category.PLAYER_HITBOX,
-      mask: new CategorySet(Category.ATTACK, Category.SENSOR),
-    },
-    sensor: {
-      category: Category.SENSOR,
-      mask: new CategorySet(Category.ITEM, Category.AIR, Category.SENSOR),
-    },
-    foot: {
-      category: Category.PHYSICS,
-      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-    },
-    attack: {
-      category: Category.ATTACK,
-      mask: new CategorySet(Category.HITBOX),
-    },
-  },
-  vine: {
-    body: {
-      category: Category.DYNAMIC_WALL,
-      mask: new CategorySet(Category.PHYSICS),
-    },
-    wallSensor: {
-      category: Category.SENSOR,
-      mask: new CategorySet(Category.STATIC_WALL, Category.DYNAMIC_WALL),
-    },
-    airSensor: {
-      category: Category.SENSOR,
-      mask: new CategorySet(Category.AIR),
-    },
-  },
-  wall: {
-    category: Category.STATIC_WALL,
-    mask: new CategorySet(Category.SENSOR, Category.PHYSICS),
-  },
-  air: {
-    category: Category.AIR,
-    mask: new CategorySet(Category.SENSOR),
-  },
-  lightSearcher: {
-    category: Category.SENSOR,
-    mask: new CategorySet(Category.LIGHT),
-  },
-  eventSensor: {
-    category: Category.SENSOR,
-    mask: new CategorySet(Category.SENSOR),
-  },
 }

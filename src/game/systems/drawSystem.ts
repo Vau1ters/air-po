@@ -4,9 +4,10 @@ import { World } from '@core/ecs/world'
 import { Container } from 'pixi.js'
 import { Entity } from '@core/ecs/entity'
 import { windowSize } from '@core/application'
-import { AABB } from '@core/collision/aabb'
+import { AABB } from '@core/collision/geometry/AABB'
 import { Vec2 } from '@core/math/vec2'
 import { BVH } from '@core/collision/bvh'
+import { ContainerType } from '@game/components/drawComponent'
 
 export default class DrawSystem extends System {
   private drawFamily: Family
@@ -15,15 +16,16 @@ export default class DrawSystem extends System {
   private cameraFamily: Family
 
   private preVisibleEntities: Entity[] = []
-  private container: Container = new Container()
   private dynamicBVH: BVH
   private staticBVH: BVH
   private staticBVHInitialized = false
 
-  public constructor(world: World, stage: Container) {
+  public constructor(
+    world: World,
+    private worldContainer: Container,
+    private worldUIContainer: Container
+  ) {
     super(world)
-
-    stage.addChild(this.container)
 
     this.drawFamily = new FamilyBuilder(world).include('Draw').build()
 
@@ -55,14 +57,21 @@ export default class DrawSystem extends System {
   }
 
   public onContainerAdded(entity: Entity): void {
-    const container = entity.getComponent('Draw')
-    this.container.addChild(container)
+    const draw = entity.getComponent('Draw')
+    this.getContainer(draw.type).addChild(draw)
   }
 
   public onContainerRemoved(entity: Entity): void {
-    if (entity.hasComponent('Draw')) {
-      const container = entity.getComponent('Draw')
-      this.container.removeChild(container)
+    const draw = entity.getComponent('Draw')
+    this.getContainer(draw.type).removeChild(draw)
+  }
+
+  private getContainer(type: ContainerType): Container {
+    switch (type) {
+      case 'World':
+        return this.worldContainer
+      case 'WorldUI':
+        return this.worldUIContainer
     }
   }
 
@@ -113,6 +122,6 @@ export default class DrawSystem extends System {
     const sw = windowSize.width
     const sh = windowSize.height
     const cpos = camera.getComponent('Position')
-    return new AABB(new Vec2(-sw / 2, -sh / 2).add(cpos), new Vec2(sw, sh))
+    return new AABB(cpos.copy(), new Vec2(sw, sh))
   }
 }

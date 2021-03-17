@@ -3,7 +3,14 @@ import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 
-export type KeyActionType = 'MoveLeft' | 'MoveRight' | 'MoveUp' | 'MoveDown' | 'Jump' | 'Jet'
+export type KeyActionType =
+  | 'MoveLeft'
+  | 'MoveRight'
+  | 'MoveUp'
+  | 'MoveDown'
+  | 'Jump'
+  | 'Jet'
+  | 'Pause'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveLeft: 'A',
   MoveRight: 'D',
@@ -11,6 +18,7 @@ export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveDown: 'S',
   Jump: 'W',
   Jet: 'Shift',
+  Pause: 'Escape',
 }
 
 export class KeyController {
@@ -118,8 +126,7 @@ export class KeyController {
     return KeyController.isKeyPressing(KeyConfig[action])
   }
 
-  // 毎フレーム呼び出す
-  public static onUpdateFinished(): void {
+  public static reset(): void {
     for (const keyCode of this.keyPressedMap.keys()) {
       this.keyPressedMap.set(keyCode, false)
     }
@@ -187,8 +194,7 @@ export class MouseController {
     return new Vec2(position.x / scale.x, position.y / scale.y)
   }
 
-  // 毎フレーム呼び出す
-  public static onUpdateFinished(): void {
+  public static reset(): void {
     for (const button of this.mousePressedMap.keys()) {
       this.mousePressedMap.set(button, false)
     }
@@ -204,7 +210,7 @@ export class ControlSystem extends System {
   }
 
   public update(): void {
-    KeyController.onUpdateFinished()
-    MouseController.onUpdateFinished()
+    KeyController.reset()
+    MouseController.reset()
   }
 }

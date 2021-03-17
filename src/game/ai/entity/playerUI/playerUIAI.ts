@@ -1,13 +1,8 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
-import { Ray } from '@core/collision/ray'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Vec2 } from '@core/math/vec2'
-import { CategoryList } from '@game/entities/category'
-import { MouseController } from '@game/systems/controlSystem'
-import PhysicsSystem from '@game/systems/physicsSystem'
 import { Graphics } from 'pixi.js'
 
 const airGaugeUiSetting = {
@@ -58,58 +53,13 @@ function renderPlayerAir(player: Entity, airGauge: Graphics): void {
   }
 }
 
-function renderLaserSight(
-  player: Entity,
-  laserSight: Graphics,
-  physicsSystem: PhysicsSystem
-): void {
-  const position = player.getComponent('Position')
-  const mousePosition = MouseController.position
-  const center = new Vec2(windowSize.width / 2, windowSize.height / 2)
-  const direction = mousePosition.sub(center)
-  const candidatePoints: Vec2[] = []
-  for (const [category, bvh] of physicsSystem.bvhs) {
-    if (
-      CategoryList.bulletBody.mask.has(category) ||
-      CategoryList.player.attack.mask.has(category)
-    ) {
-      const result = bvh.queryRaycast(new Ray(position, direction))
-      candidatePoints.push(...result.map(item => item[1]))
-    }
-  }
-  // candidatePointsが空配列だとエラーになるので、遠いところに点を置く
-  const farPoint = position.add(
-    direction.mul(
-      Math.abs(Math.min(windowSize.width / direction.x, windowSize.height / direction.y))
-    )
-  )
-  const hitPoint = candidatePoints
-    .reduce((pre: Vec2, next: Vec2) => {
-      if (position.sub(next).length() < position.sub(pre).length()) return next
-      return pre
-    }, farPoint)
-    .sub(position)
-    .add(center)
-  laserSight.clear()
-  laserSight.lineStyle(0.5, 0xff0000)
-  laserSight.moveTo(center.x, center.y)
-  laserSight.lineTo(hitPoint.x, hitPoint.y)
-  laserSight.beginFill(0xff0000)
-  laserSight.drawCircle(hitPoint.x, hitPoint.y, 2)
-}
-
-export const playerUIAI = function*(
-  entity: Entity,
-  world: World,
-  physicsSystem: PhysicsSystem
-): Behaviour<void> {
+export const playerUIAI = function*(entity: Entity, world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
-  const [hpGauge, airGauge, laserSight] = entity.getComponent('UI').children
+  const [hpGauge, airGauge] = entity.getComponent('UI').children
   while (true) {
     for (const player of playerFamily.entityIterator) {
       renderPlayerHp(player, hpGauge as Graphics)
       renderPlayerAir(player, airGauge as Graphics)
-      renderLaserSight(player, laserSight as Graphics, physicsSystem)
     }
     yield
   }

@@ -2,7 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { wait } from '@core/behaviour/wait'
 import { Container, ObservablePoint, Sprite, Texture } from 'pixi.js'
 
-class AnimationSprite extends Sprite {
+class AnimationSpriteFrame extends Sprite {
   public constructor(private textures: Array<Texture>, private waitFrames = 10) {
     super(textures[0])
   }
@@ -26,15 +26,15 @@ export type AnimationDefinition = {
   }
 }
 
-export class Animation extends Container {
+export class AnimationSprite extends Container {
   private currentState: string
-  private animationSprites: { [key: string]: AnimationSprite } = {}
+  private animationSprites: { [key: string]: AnimationSpriteFrame } = {}
 
   public constructor(definition: AnimationDefinition, initialState: string) {
     super()
 
     for (const [key, { textures, waitFrames }] of Object.entries(definition)) {
-      const sprite = new AnimationSprite(textures, waitFrames)
+      const sprite = new AnimationSpriteFrame(textures, waitFrames)
       sprite.visible = false
       sprite.anchor.set(0.5)
       this.animationSprites[key] = sprite
@@ -66,7 +66,7 @@ export class Animation extends Container {
     return this.currentAnimationSprite.anchor
   }
 
-  private get currentAnimationSprite(): AnimationSprite {
+  private get currentAnimationSprite(): AnimationSpriteFrame {
     return this.animationSprites[this.currentState]
   }
 }

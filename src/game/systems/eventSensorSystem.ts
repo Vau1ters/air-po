@@ -1,10 +1,11 @@
 import { Map, MapBuilder } from '@game/map/mapBuilder'
-import { Collider } from '@game/components/colliderComponent'
+import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
+import { PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
@@ -20,10 +21,10 @@ export class EventSensorSystem extends System {
   public update(): void {}
 
   private onSensorAdded(entity: Entity): void {
-    const event = entity.getComponent('Sensor').event
+    const { event } = entity.getComponent('Sensor')
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(async (_, other: Collider) => {
-        if (!other.tag.has('playerSensor')) return
+      c.callbacks.add(async (args: CollisionCallbackArgs) => {
+        if (!args.other.tag.has(PLAYER_SENSOR_TAG)) return
         await this.fireEvent(event)
       })
     }
@@ -49,7 +50,7 @@ export class EventSensorSystem extends System {
   }
 
   private async equipItemEvent(equipmentType: EquipmentTypes, equipmentId: number): Promise<void> {
-    const player = this.playerFamily.entityArray[0]
+    const [player] = this.playerFamily.entityArray
     const equipmentComponent = player.getComponent('Equipment')
     equipmentComponent.equipEvent.notify(equipmentType)
     this.world.removeEntityById(equipmentId)

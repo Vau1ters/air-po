@@ -6,11 +6,13 @@ import { Entity } from '@core/ecs/entity'
 
 export default class UiSystem extends System {
   private uiContainer: Container = new Container()
+  private gameWorldUiContainer: Container = new Container()
 
-  public constructor(world: World, uiContainer: Container) {
+  public constructor(world: World, uiContainer: Container, gameWorldUiContainer: Container) {
     super(world)
 
     uiContainer.addChild(this.uiContainer)
+    gameWorldUiContainer.addChild(this.gameWorldUiContainer)
 
     const uiFamily = new FamilyBuilder(world).include('UI').build()
     uiFamily.entityAddedEvent.addObserver(entity => this.onContainerAdded(entity))

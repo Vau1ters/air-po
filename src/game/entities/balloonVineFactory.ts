@@ -4,8 +4,8 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, AABBDef } from '@game/components/colliderComponent'
-import { CategoryList } from './category'
+import { buildColliders, ColliderComponent } from '@game/components/colliderComponent'
+import { Category, CategorySet } from './category'
 import { HPComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { AIComponent } from '@game/components/aiComponent'
@@ -16,26 +16,41 @@ import { AirHolderComponent } from '@game/components/airHolderComponent'
 import balloonvineDefinition from '@res/animation/balloonvine.json'
 import { World } from '@core/ecs/world'
 import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
+import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 
 export class BalloonVineFactory extends EntityFactory {
-  private readonly BODY_WIDTH = 10
-  private readonly BODY_HEIGHT = 13
-  private readonly ROOT_WIDTH = 5
-  private readonly ROOT_HEIGHT = 5
-  private readonly WALL_WIDTH = 2
-  private readonly WALL_HEIGHT = 10
-  private readonly OFFSET_X = -5
-  private readonly OFFSET_Y = -6
-  private readonly CLIP_TOLERANCE_X = 2
-  private readonly CLIP_TOLERANCE_Y = 2
+  private readonly GRIP_COLLIDER = {
+    type: 'AABB' as const,
+    maxClipToTolerance: new Vec2(2, 2),
+  }
 
-  private readonly INITIAL_AIR_QUANTITY = 0
-  private readonly MAX_AIR_QUANTITY = 10
-  private readonly AIR_COLLECT_SPEED = 10
-  private readonly AIR_CONSUME_SPEED = 0
+  private readonly BODY_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(10, 13),
+    maxClipToTolerance: new Vec2(2, 2),
+  }
 
-  private readonly MASS = 0.0001
-  private readonly RESTITUTION = 0
+  private readonly ROOT_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(5, 5),
+  }
+
+  private readonly TERRAIN_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(2, 10),
+  }
+
+  private readonly AIR_HOLDER = {
+    initialQuantity: 0,
+    maxQuantity: 10,
+    collectSpeed: 10,
+    consumeSpeed: 0,
+  }
+
+  private readonly RIGID_BODY = {
+    mass: 0.0001,
+    gravityScale: 1,
+  }
 
   constructor(private world: World) {
     super()
@@ -43,84 +58,60 @@ export class BalloonVineFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    const position = new PositionComponent(0, 0)
-    const collider = new ColliderComponent(entity)
-    const hp = new HPComponent(1, 1)
-    const invincible = new InvincibleComponent()
-    const airHolder = new AirHolderComponent({
-      initialQuantity: this.INITIAL_AIR_QUANTITY,
-      maxQuantity: this.MAX_AIR_QUANTITY,
-      collectSpeed: this.AIR_COLLECT_SPEED,
-      consumeSpeed: this.AIR_CONSUME_SPEED,
-    })
-    const pickup = new PickupTargetComponent(false)
 
-    const body = new RigidBodyComponent(this.MASS, new Vec2(), new Vec2(), this.RESTITUTION)
-
-    const grip = new AABBDef(new Vec2(0, 0), CategoryList.balloonVine.grip)
-    grip.tag.add('balloonVine')
-    grip.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    grip.isSensor = true
-    collider.createCollider(grip)
-
-    const hitBox = new AABBDef(
-      new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT),
-      CategoryList.balloonVine.body
+    entity.addComponent('AI', new AIComponent(balloonvineAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(balloonvineDefinition.sprite),
+          zIndex: 1,
+        },
+      })
     )
-    hitBox.tag.add('balloonVine')
-    hitBox.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    hitBox.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    hitBox.isSensor = true
-    collider.createCollider(hitBox)
-
-    const airSensor = new AABBDef(
-      new Vec2(this.BODY_WIDTH, this.BODY_HEIGHT),
-      CategoryList.balloonVine.airSensor
+    entity.addComponent(
+      'Collider',
+      new ColliderComponent(
+        ...buildColliders({
+          entity,
+          colliders: [
+            {
+              geometry: this.GRIP_COLLIDER,
+              category: Category.ITEM,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.ENEMY_HITBOX,
+            },
+            {
+              geometry: this.BODY_COLLIDER,
+              category: Category.AIR_HOLDER,
+              mask: new CategorySet(Category.AIR),
+              tag: [AIR_HOLDER_TAG],
+            },
+            {
+              geometry: this.ROOT_COLLIDER,
+              category: Category.PHYSICS,
+              mask: new CategorySet(Category.TERRAIN),
+            },
+            {
+              geometry: this.TERRAIN_COLLIDER,
+              category: Category.SENSOR,
+              mask: new CategorySet(Category.TERRAIN),
+            },
+          ],
+        })
+      )
     )
-    airSensor.tag.add('airHolderBody')
-    airSensor.offset = new Vec2(this.OFFSET_X, this.OFFSET_Y)
-    airSensor.maxClipTolerance = new Vec2(this.CLIP_TOLERANCE_X, this.CLIP_TOLERANCE_Y)
-    airSensor.isSensor = true
-    collider.createCollider(airSensor)
 
-    const rootAABB = new AABBDef(
-      new Vec2(this.ROOT_WIDTH, this.ROOT_HEIGHT),
-      CategoryList.balloonVine.root
-    )
-    rootAABB.tag.add('balloonVine')
-    rootAABB.maxClipTolerance = new Vec2(0, 0)
-    rootAABB.isSensor = false
-    collider.createCollider(rootAABB)
-
-    const wallAABB = new AABBDef(
-      new Vec2(this.WALL_WIDTH, this.WALL_HEIGHT),
-      CategoryList.balloonVine.wallSensor
-    )
-    wallAABB.tag.add('balloonVine')
-    wallAABB.maxClipTolerance = new Vec2(0, 0)
-    wallAABB.isSensor = true
-    collider.createCollider(wallAABB)
-
-    const sprite = parseAnimation(balloonvineDefinition.sprite)
-    sprite.zIndex = 1
-    const draw = new DrawComponent(entity)
-    draw.sortableChildren = true
-    draw.addChild(sprite)
-
-    const animState = new AnimationStateComponent(sprite)
-
-    const ai = new AIComponent(balloonvineAI(entity, this.world))
-
-    entity.addComponent('AI', ai)
-    entity.addComponent('Position', position)
-    entity.addComponent('RigidBody', body)
-    entity.addComponent('Draw', draw)
-    entity.addComponent('Collider', collider)
-    entity.addComponent('HP', hp)
-    entity.addComponent('Invincible', invincible)
-    entity.addComponent('PickupTarget', pickup)
-    entity.addComponent('AnimationState', animState)
-    entity.addComponent('AirHolder', airHolder)
+    entity.addComponent('HP', new HPComponent(1, 1))
+    entity.addComponent('Invincible', new InvincibleComponent())
+    entity.addComponent('PickupTarget', new PickupTargetComponent(false))
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
     return entity
   }
 }
