@@ -1,5 +1,7 @@
 import myFont from '@res/font/myFont.fnt'
 import myFontImage from '@res/font/myFont_0.png'
+import gotFont from '@res/font/got.fnt'
+import gotFontImage from '@res/font/got.png'
 import { BitmapFont, Texture } from 'pixi.js'
 
 const load = (font: string, image: string): void => {
@@ -10,4 +12,5 @@ const load = (font: string, image: string): void => {
 
 export const init = (): void => {
   load(myFont, myFontImage)
+  load(gotFont, gotFontImage)
 }

@@ -47,7 +47,7 @@ export class SpeechBalloonFactory extends EntityFactory {
     ui.sortableChildren = true
 
     const text = new BitmapText(this.text, {
-      fontName: '����S�V�b�N',
+      fontName: 'got',
       fontSize: 8,
     })
     text.name = 'text'
