@@ -13,7 +13,7 @@ export const playerTalk = function*(entity: Entity, world: World): Behaviour<voi
   }
   while (true) {
     if (KeyController.isKeyPressed('X')) {
-      talk('わーい！うんち！うんち！')
+      talk('わーい!うんち!うんち!')
     }
     if (KeyController.isKeyPressed('C')) {
       talk('a\nu\nd\nj')

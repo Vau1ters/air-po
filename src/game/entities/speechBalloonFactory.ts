@@ -36,7 +36,7 @@ export class SpeechBalloonFactory extends EntityFactory {
       }),
     ]
 
-    const ui = new DrawComponent({ entity, type: 'WorldUI' })
+    const ui = new DrawComponent({ entity, type: 'UI' })
     ui.filters = [
       new Filter(speechBalloonVertexShader, undefined, {
         anchor: [0, 0],
@@ -44,7 +44,6 @@ export class SpeechBalloonFactory extends EntityFactory {
         angle: 0,
       }),
     ]
-    ui.position.set(windowSize.width * 0.5, sprite.height * 0.5)
     ui.sortableChildren = true
 
     const text = new BitmapText(this.text, {
@@ -65,7 +64,10 @@ export class SpeechBalloonFactory extends EntityFactory {
 
     entity.addComponent('Draw', ui)
     entity.addComponent('AI', new AIComponent(speechBalloonAI(entity, this.target, this.camera)))
-    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent(
+      'Position',
+      new PositionComponent(windowSize.width * 0.5, sprite.height * 0.5)
+    )
     return entity
   }
 }

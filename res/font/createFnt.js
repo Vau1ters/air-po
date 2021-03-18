@@ -4,12 +4,11 @@ const imageWidth = 128
 const imageHeight = 128
 const textWidth = 8
 const textHeight = 8
-const chars = '                                 !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz                                      。「」、・をぁぃぅぇぉゃゅょっーあいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん゛゜'
+const chars = '                                 !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz           ヲァィゥェォャュョッ アイウエオカキクケコサシスセソ 。「」、・をぁぃぅぇぉゃゅょっーあいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん゛゜タチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン'
 const fontName = 'got'
 
 const xn = imageWidth / textWidth
 const yn = imageHeight / textHeight
-const count = xn * yn
 
 const result = []
 for (let i = 0; i < chars.length; i++) {
