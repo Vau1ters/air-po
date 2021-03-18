@@ -2,13 +2,13 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { playerUIAI } from '@game/ai/entity/playerUI/playerUIAI'
 import { AIComponent } from '@game/components/aiComponent'
-import { UIComponent } from '@game/components/uiComponent'
-import CollisionSystem from '@game/systems/collisionSystem'
+import { DrawComponent } from '@game/components/drawComponent'
+import { PositionComponent } from '@game/components/positionComponent'
 import { Graphics } from 'pixi.js'
 import { EntityFactory } from './entityFactory'
 
 export class PlayerUIFactory extends EntityFactory {
-  public constructor(private world: World, private collisionSystem: CollisionSystem) {
+  public constructor(private world: World) {
     super()
   }
 
@@ -21,12 +21,13 @@ export class PlayerUIFactory extends EntityFactory {
     const airGauge: Graphics = new Graphics()
     airGauge.position.set(6, 20)
 
-    const ui = new UIComponent()
+    const ui = new DrawComponent({ entity, type: 'UI' })
     ui.addChild(hpGauge)
     ui.addChild(airGauge)
 
-    entity.addComponent('UI', ui)
+    entity.addComponent('Draw', ui)
     entity.addComponent('AI', new AIComponent(playerUIAI(entity, this.world)))
+    entity.addComponent('Position', new PositionComponent())
 
     return entity
   }

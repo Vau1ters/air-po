@@ -6,8 +6,9 @@ import speechBalloonFragmentShader from '@res/shaders/speechBalloon.frag'
 import speechBalloonTextFragmentShader from '@res/shaders/speechBalloonText.frag'
 import { speechBalloonAI } from '@game/ai/entity/speechBalloon/speechBalloonAI'
 import { AIComponent } from '@game/components/aiComponent'
-import { UIComponent } from '@game/components/uiComponent'
 import { windowSize } from '@core/application'
+import { DrawComponent } from '@game/components/drawComponent'
+import { PositionComponent } from '@game/components/positionComponent'
 
 export class SpeechBalloonFactory extends EntityFactory {
   constructor(private text: string, private target: Entity, private camera: Entity) {
@@ -35,7 +36,7 @@ export class SpeechBalloonFactory extends EntityFactory {
       }),
     ]
 
-    const ui = new UIComponent()
+    const ui = new DrawComponent({ entity, type: 'WorldUI' })
     ui.filters = [
       new Filter(speechBalloonVertexShader, undefined, {
         anchor: [0, 0],
@@ -62,8 +63,9 @@ export class SpeechBalloonFactory extends EntityFactory {
     ui.addChild(sprite)
     ui.addChild(text)
 
-    entity.addComponent('UI', ui)
+    entity.addComponent('Draw', ui)
     entity.addComponent('AI', new AIComponent(speechBalloonAI(entity, this.target, this.camera)))
+    entity.addComponent('Position', new PositionComponent())
     return entity
   }
 }

@@ -6,14 +6,12 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 
 export default class CameraSystem extends System {
   private target: Container
-  private ignore: Container
 
   private cameraFamily: Family
 
-  public constructor(world: World, target: Container, ignore: Container) {
+  public constructor(world: World, target: Container) {
     super(world)
     this.target = target
-    this.ignore = ignore
 
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
   }
@@ -24,7 +22,6 @@ export default class CameraSystem extends System {
       const offsetX = windowSize.width / 2 - position.x
       const offsetY = windowSize.height / 2 - position.y
       this.target.position.set(+offsetX, +offsetY)
-      this.ignore.position.set(-offsetX, -offsetY)
     }
   }
 }

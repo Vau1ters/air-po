@@ -9,7 +9,7 @@ import { Vec2 } from '@core/math/vec2'
 import { BitmapText, Sprite } from 'pixi.js'
 
 const chase = function*(speechBalloon: Entity, target: Entity, camera: Entity): Behaviour<void> {
-  const ui = speechBalloon.getComponent('UI')
+  const ui = speechBalloon.getComponent('Draw')
   const background = ui.getChildByName('background') as Sprite
   const targetPositionOnWorld = target.getComponent('Position')
   const cameraPositionOnWorld = camera.getComponent('Position')
@@ -39,7 +39,7 @@ const updateBitmapText = (bitmapText: BitmapText, newText: string): void => {
 }
 
 const animate = function*(speechBalloon: Entity): Behaviour<void> {
-  const draw = speechBalloon.getComponent('UI')
+  const draw = speechBalloon.getComponent('Draw')
   const bitmapText = draw.getChildByName('text') as BitmapText
   const [filter] = draw.filters
 

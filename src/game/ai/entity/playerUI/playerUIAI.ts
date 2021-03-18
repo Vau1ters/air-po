@@ -55,7 +55,7 @@ function renderPlayerAir(player: Entity, airGauge: Graphics): void {
 
 export const playerUIAI = function*(entity: Entity, world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
-  const [hpGauge, airGauge] = entity.getComponent('UI').children
+  const [hpGauge, airGauge] = entity.getComponent('Draw').children
   while (true) {
     for (const player of playerFamily.entityIterator) {
       renderPlayerHp(player, hpGauge as Graphics)
