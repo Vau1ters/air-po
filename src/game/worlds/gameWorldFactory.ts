@@ -20,7 +20,6 @@ import { FilterSystem } from '@game/systems/filterSystem'
 import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
-import { PlayerUIFactory } from '@game/entities/playerUIFactory'
 import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
 
@@ -80,8 +79,6 @@ export class GameWorldFactory {
       new EventSensorSystem(world),
       new HPSystem(world, worldUIContainer)
     )
-
-    world.addEntity(new PlayerUIFactory(world).create())
 
     const mapBuilder = new MapBuilder(world)
     mapBuilder.build(map, playerSpawnerID)
