@@ -13,10 +13,12 @@ export const playerTalk = function*(entity: Entity, world: World): Behaviour<voi
   }
   while (true) {
     if (KeyController.isKeyPressed('X')) {
-      talk('わーい!うんち!うんち!')
+      talk('おににかなぼう\nかわいいこにはたびをさせよ\nうまのみみにねんぶつ')
     }
     if (KeyController.isKeyPressed('C')) {
-      talk('a\nu\nd\nj')
+      talk(
+        'いろはにほへどちりぬるを\nわかよたれそつねならむ\nうゐのおくやまけふこえて\nあさきゆめみしゑいもせす'
+      )
     }
     if (KeyController.isKeyPressed('V')) {
       talk('Windows　でコンピュータのせかいがひろがります。')
