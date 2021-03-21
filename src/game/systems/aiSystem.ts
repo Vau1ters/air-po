@@ -1,6 +1,7 @@
 import { System } from '@core/ecs/system'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
+import { Entity } from '@core/ecs/entity'
 
 export default class AISystem extends System {
   private family: Family
@@ -9,12 +10,16 @@ export default class AISystem extends System {
     super(world)
 
     this.family = new FamilyBuilder(world).include('AI').build()
+
+    this.family.entityAddedEvent.addObserver((entity: Entity) => {
+      const ai = entity.getComponent('AI')
+      world.processManager.addProcess(ai.proc)
+    })
+    this.family.entityRemovedEvent.addObserver((entity: Entity) => {
+      const ai = entity.getComponent('AI')
+      world.processManager.removeProcess(ai.proc)
+    })
   }
 
-  public update(): void {
-    for (const entity of this.family.entityIterator) {
-      const ai = entity.getComponent('AI')
-      ai.execute()
-    }
-  }
+  public update(): void {}
 }

@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
     "baseUrl": "./",
     "paths": {
       "@res/*": ["res/*"],

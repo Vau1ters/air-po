@@ -1,13 +1,21 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { Process } from '@utils/proc'
 
 export class AIComponent {
-  private root: Behaviour<void>
+  public readonly proc: Process
 
-  public constructor(root: Behaviour<void>) {
-    this.root = root
-  }
-
-  public execute(): void {
-    this.root.next()
+  public constructor(
+    arg: Behaviour<void> | { behaviour: Behaviour<void>; name?: string; dependencies?: string[] }
+  ) {
+    if ('behaviour' in arg) {
+      const { behaviour, name, dependencies } = arg as {
+        behaviour: Behaviour<void>
+        name: string
+        dependencies?: string[]
+      }
+      this.proc = new Process(() => behaviour.next(), name, dependencies ?? [])
+    } else {
+      this.proc = new Process(() => arg.next(), '')
+    }
   }
 }

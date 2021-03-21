@@ -1,4 +1,4 @@
-import { System } from '@core/ecs/system'
+import { dependsOn, System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
@@ -54,6 +54,7 @@ export default class PhysicsSystem extends System {
     })
   }
 
+  @dependsOn('GravitySystem:update')
   public update(delta: number): void {
     for (const entity of this.family.entityIterator) {
       const position = entity.getComponent('Position')
