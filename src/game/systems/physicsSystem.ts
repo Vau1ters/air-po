@@ -58,6 +58,8 @@ export default class PhysicsSystem extends System {
     for (const entity of this.family.entityIterator) {
       const position = entity.getComponent('Position')
       const body = entity.getComponent('RigidBody')
+      body.acceleration.x -= body.airResistance * body.velocity.x
+      body.acceleration.y -= body.airResistance * body.velocity.y
       body.velocity.x += body.acceleration.x * delta
       body.velocity.y += body.acceleration.y * delta
       position.x += body.velocity.x * delta
