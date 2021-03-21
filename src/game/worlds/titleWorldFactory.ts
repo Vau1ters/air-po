@@ -12,26 +12,32 @@ export class TitleWorldFactory {
   public create(): World {
     const world = new World(titleWorldAI)
 
-    const rootContainer = new Container()
-    world.stage.addChild(rootContainer)
+    const cameraContainer = new Container()
 
     const worldContainer = new Container()
     worldContainer.filterArea = application.screen
-    rootContainer.addChild(worldContainer)
 
     const background = new Graphics()
     background.beginFill(0xc0c0c0)
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
-    worldContainer.addChild(background)
+
+    const uiContainer = new Container()
+    uiContainer.zIndex = Infinity
 
     const worldUIContainer = new Container()
     worldUIContainer.zIndex = Infinity
-    worldContainer.addChild(worldUIContainer)
+
+    world.stage.addChild(background)
+    world.stage.addChild(cameraContainer)
+    world.stage.addChild(uiContainer)
+
+    cameraContainer.addChild(worldUIContainer)
+    cameraContainer.addChild(worldContainer)
 
     world.addSystem(
-      new DrawSystem(world, worldContainer, worldUIContainer),
-      new CameraSystem(world, worldContainer, background),
+      new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
+      new CameraSystem(world, cameraContainer),
       new ControlSystem(world)
     )
 

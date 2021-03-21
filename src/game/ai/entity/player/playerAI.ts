@@ -12,6 +12,7 @@ import { playerItemAction } from './playerItemAction'
 import { invincibleTime } from '../common/action/invincibleTime'
 import { animate, animateLoop } from '../common/action/animate'
 import { wait } from '@core/behaviour/wait'
+import { playerTalk } from './playerTalk'
 
 export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
   yield* parallelAll([
@@ -20,6 +21,7 @@ export const playerControl = function*(entity: Entity, world: World): Behaviour<
     playerJet(entity, world),
     playerPickup(entity),
     playerItemAction(entity),
+    playerTalk(entity, world),
     animateLoop(entity),
     invincibleTime(entity),
   ])

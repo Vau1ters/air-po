@@ -5,7 +5,7 @@ import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
 import { AnimationSprite } from '@core/graphics/animation'
 
-export type ContainerType = 'World' | 'WorldUI'
+export type ContainerType = 'World' | 'WorldUI' | 'UI'
 
 type DrawComponentOption = {
   entity: Entity
@@ -37,15 +37,18 @@ export class DrawComponent extends Container {
 
   createCollider(): Collider {
     const localBounds = this.getLocalBounds()
+    const shouldDrawAnyway = this.type === 'UI'
+    const VERY_BIG_NUMBER = 1000_000_007
     return buildCollider({
       entity: this.entity,
       geometry: {
         type: 'AABB',
-        offset: new Vec2(
-          localBounds.x + localBounds.width / 2,
-          localBounds.y + localBounds.height / 2
-        ),
-        size: new Vec2(localBounds.width, localBounds.height),
+        offset: shouldDrawAnyway
+          ? new Vec2()
+          : new Vec2(localBounds.x + localBounds.width / 2, localBounds.y + localBounds.height / 2),
+        size: shouldDrawAnyway
+          ? new Vec2(VERY_BIG_NUMBER, VERY_BIG_NUMBER)
+          : new Vec2(localBounds.width, localBounds.height),
       },
       category: Category.DRAW,
     })

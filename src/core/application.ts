@@ -22,7 +22,9 @@ export const initializeApplication = (): void => {
 
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()
-    const scale = Math.min(rect.width / windowSize.width, rect.height / windowSize.height)
+    const scale = Math.floor(
+      Math.min(rect.width / windowSize.width, rect.height / windowSize.height)
+    )
     application.view.style.setProperty('width', `${windowSize.width * scale}px`)
     application.view.style.setProperty('height', `${windowSize.height * scale}px`)
   }

@@ -23,7 +23,8 @@ export default class DrawSystem extends System {
   public constructor(
     world: World,
     private worldContainer: Container,
-    private worldUIContainer: Container
+    private worldUIContainer: Container,
+    private uiContainer: Container
   ) {
     super(world)
 
@@ -72,6 +73,8 @@ export default class DrawSystem extends System {
         return this.worldContainer
       case 'WorldUI':
         return this.worldUIContainer
+      case 'UI':
+        return this.uiContainer
     }
   }
 

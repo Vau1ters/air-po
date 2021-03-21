@@ -37,6 +37,11 @@ module.exports = {
         loader: 'url-loader',
       },
       {
+        test: /\.fnt$/,
+        exclude: /node_modules/,
+        loader: 'raw-loader',
+      },
+      {
         test: /\.html$/,
         exclude: /node_modules/,
         loader: 'html-loader',

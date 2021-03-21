@@ -10,8 +10,12 @@ export class Vec2 {
     return new Vec2(this.x, this.y)
   }
 
-  public add(other: Vec2): Vec2 {
-    return new Vec2(this.x + other.x, this.y + other.y)
+  public add(other: number | Vec2): Vec2 {
+    if (other instanceof Vec2) {
+      return new Vec2(this.x + other.x, this.y + other.y)
+    } else {
+      return new Vec2(this.x + other, this.y + other)
+    }
   }
 
   public addFrom(other: Vec2): void {
@@ -23,8 +27,12 @@ export class Vec2 {
     return new Vec2(Math.abs(this.x), Math.abs(this.y))
   }
 
-  public sub(other: Vec2): Vec2 {
-    return new Vec2(this.x - other.x, this.y - other.y)
+  public sub(other: number | Vec2): Vec2 {
+    if (other instanceof Vec2) {
+      return new Vec2(this.x - other.x, this.y - other.y)
+    } else {
+      return new Vec2(this.x - other, this.y - other)
+    }
   }
 
   public subFrom(other: Vec2): void {
@@ -32,12 +40,20 @@ export class Vec2 {
     this.y -= other.y
   }
 
-  public mul(scalar: number): Vec2 {
-    return new Vec2(this.x * scalar, this.y * scalar)
+  public mul(m: number | Vec2): Vec2 {
+    if (m instanceof Vec2) {
+      return new Vec2(this.x * m.x, this.y * m.y)
+    } else {
+      return new Vec2(this.x * m, this.y * m)
+    }
   }
 
-  public div(divisor: number): Vec2 {
-    return new Vec2(this.x / divisor, this.y / divisor)
+  public div(d: number | Vec2): Vec2 {
+    if (d instanceof Vec2) {
+      return new Vec2(this.x / d.x, this.y / d.y)
+    } else {
+      return new Vec2(this.x / d, this.y / d)
+    }
   }
 
   public dot(other: Vec2): number {
