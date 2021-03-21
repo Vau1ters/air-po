@@ -43,6 +43,7 @@ export class PlayerFactory extends EntityFactory {
   private readonly RIGID_BODY = {
     mass: 10,
     gravityScale: 1,
+    airResistance: 3.0,
   }
 
   private readonly AIR_HOLDER = {
