@@ -32,6 +32,7 @@ export class SnibeeFactory extends EntityFactory {
 
   private readonly RIGID_BODY = {
     mass: 10,
+    airResistance: 0.5,
   }
 
   public constructor(private world: World) {
