@@ -15,14 +15,16 @@ export const initializeApplication = (): void => {
   container.appendChild(application.view)
 
   application.stage.sortableChildren = true
+  application.renderer.autoDensity = true
 
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
+  PIXI.settings.ROUND_PIXELS = true
 
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()
     const scale = Math.min(rect.width / windowSize.width, rect.height / windowSize.height)
-    application.stage.scale.set(scale)
-    application.renderer.resize(windowSize.width * scale, windowSize.height * scale)
+    application.view.style.setProperty('width', `${windowSize.width * scale}px`)
+    application.view.style.setProperty('height', `${windowSize.height * scale}px`)
   }
   onResizeCallback()
   window.addEventListener('resize', onResizeCallback)
