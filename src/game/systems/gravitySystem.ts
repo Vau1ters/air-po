@@ -4,7 +4,7 @@ import { World } from '@core/ecs/world'
 
 export default class GravitySystem extends System {
   private family: Family
-  public static readonly acceleration = 800
+  public static readonly acceleration = 600
 
   public constructor(world: World) {
     super(world)

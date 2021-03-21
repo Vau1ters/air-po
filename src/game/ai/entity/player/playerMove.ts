@@ -6,7 +6,7 @@ import { parallelAll } from '@core/behaviour/composite'
 
 const SETTING = {
   WALK_POWER: 600,
-  JUMP_SPEED: 360,
+  JUMP_SPEED: 280,
   THROUGH_FLOOR_IGNORE_COUNT: 20,
 }
 
