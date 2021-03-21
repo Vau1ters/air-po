@@ -1,5 +1,6 @@
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
+import { INFINITY_COORDINATE } from '@core/math/constants'
 import { Vec2 } from '@core/math/vec2'
 import { Graphics } from 'pixi.js'
 import { AABB } from './AABB'
@@ -14,7 +15,7 @@ export class Air implements GeometryForCollision {
   }
 
   createBound(): AABB {
-    return new AABB(new Vec2(), new Vec2(Infinity, Infinity))
+    return new AABB(new Vec2(), new Vec2(INFINITY_COORDINATE, INFINITY_COORDINATE))
   }
 
   applyPosition(): GeometryForCollision {
