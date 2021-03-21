@@ -269,55 +269,55 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"wall.json"
+         "source":"tileset/wall.json"
         }, 
         {
          "firstgid":33,
-         "source":"enemy1.json"
+         "source":"tileset/enemy1.json"
         }, 
         {
          "firstgid":50,
-         "source":"player.json"
+         "source":"tileset/player.json"
         }, 
         {
          "firstgid":53,
-         "source":"balloonvine.json"
+         "source":"tileset/balloonvine.json"
         }, 
         {
          "firstgid":55,
-         "source":"snibee.json"
+         "source":"tileset/snibee.json"
         }, 
         {
          "firstgid":57,
-         "source":"dandelion.json"
+         "source":"tileset/dandelion.json"
         }, 
         {
          "firstgid":58,
-         "source":"vine.json"
+         "source":"tileset/vine.json"
         }, 
         {
          "firstgid":64,
-         "source":"moss.json"
+         "source":"tileset/moss.json"
         }, 
         {
          "firstgid":65,
-         "source":"sensor.json"
+         "source":"tileset/sensor.json"
         }, 
         {
          "firstgid":66,
-         "source":"airGeyser.json"
+         "source":"tileset/airGeyser.json"
         }, 
         {
          "firstgid":74,
-         "source":"throughFloor.json"
+         "source":"tileset/throughFloor.json"
         }, 
         {
          "firstgid":75,
-         "source":"equipment.json"
+         "source":"tileset/equipment.json"
         }, 
         {
          "firstgid":76,
-         "source":"slime1.json"
+         "source":"tileset/slime1.json"
         }],
  "tilewidth":8,
  "type":"map",
