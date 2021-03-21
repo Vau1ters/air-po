@@ -26,6 +26,10 @@ export class BulletFactory extends EntityFactory {
     type: 'AABB' as const,
     size: new Vec2(4, 4),
   }
+  private readonly PLAYER_ATTACK_COLLIDER = {
+    type: 'AABB' as const,
+    size: new Vec2(8, 8),
+  }
 
   public shooter?: Entity
   public shooterType: ShooterType = 'player'
@@ -110,7 +114,7 @@ export class BulletFactory extends EntityFactory {
               tag: [BULLET_TAG],
             },
             {
-              geometry: this.COLLIDER,
+              geometry: this.shooterType === 'player' ? this.PLAYER_ATTACK_COLLIDER : this.COLLIDER,
               category: Category.ATTACK,
               mask: new CategorySet(
                 this.shooterType === 'player' ? Category.ENEMY_HITBOX : Category.PLAYER_HITBOX
