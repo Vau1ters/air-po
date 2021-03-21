@@ -4,7 +4,7 @@ const imageWidth = 128
 const imageHeight = 128
 const textWidth = 8
 const textHeight = 8
-const chars = '                                 !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz           ヲァィゥェォャュョッ アイウエオカキクケコサシスセソ 。「」、・をぁぃぅぇぉゃゅょっーあいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん゛゜タチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン'
+const chars = '                                 !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz     ゐゑヰヱ  ヲァィゥェォャュョッ アイウエオカキクケコサシスセソ 。「」、・をぁぃぅぇぉゃゅょっーあいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん゛゜タチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン'
 const fontName = 'got'
 
 const xn = imageWidth / textWidth

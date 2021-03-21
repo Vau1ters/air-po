@@ -134,10 +134,10 @@
     <char id="32" x="104" y="56" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
     <char id="32" x="112" y="56" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
     <char id="32" x="120" y="56" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
-    <char id="32" x="0" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
-    <char id="32" x="8" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
-    <char id="32" x="16" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
-    <char id="32" x="24" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+    <char id="12432" x="0" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+    <char id="12433" x="8" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+    <char id="12528" x="16" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+    <char id="12529" x="24" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
     <char id="32" x="32" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
     <char id="32" x="40" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
     <char id="12530" x="48" y="64" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
