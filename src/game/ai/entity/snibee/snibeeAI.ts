@@ -20,7 +20,6 @@ export const SnibeeSetting = {
   coolTimeRange: 30,
   angleRange: Math.PI / 6.0,
   maxVelocity: 200, // px/s
-  airResistance: 0.5,
 }
 
 const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
@@ -40,15 +39,13 @@ const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
         v.x += (Math.random() - 0.5) * 10
         v.y += (Math.random() - 0.5) * 10
       } else if (rv.length() > SnibeeSetting.exteriorDistance) {
-        a.x = rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).x
-        a.y = rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).y
+        a.x = rv.normalize().mul(SnibeeSetting.maxVelocity * rb.airResistance).x
+        a.y = rv.normalize().mul(SnibeeSetting.maxVelocity * rb.airResistance).y
       } else if (rv.length() < SnibeeSetting.interiorDistance) {
-        a.x = -rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).x
-        a.y = -rv.normalize().mul(SnibeeSetting.maxVelocity * SnibeeSetting.airResistance).y
+        a.x = -rv.normalize().mul(SnibeeSetting.maxVelocity * rb.airResistance).x
+        a.y = -rv.normalize().mul(SnibeeSetting.maxVelocity * rb.airResistance).y
       }
     }
-    a.x -= v.x * SnibeeSetting.airResistance
-    a.y -= v.y * SnibeeSetting.airResistance
 
     // 常にプレイヤーの方向を向く
     direction.looking = rv.x > 0 ? 'Right' : 'Left'
