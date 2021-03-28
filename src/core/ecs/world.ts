@@ -4,10 +4,12 @@ import { EventNotifier } from '@utils/eventNotifier'
 import { Container } from 'pixi.js'
 import { application } from '../application'
 import { Behaviour } from '../behaviour/behaviour'
+import { ProcessManager } from '@utils/proc'
 
 export class World {
   private readonly entities: Set<Entity>
   private readonly systems: Set<System>
+  public readonly processManager: ProcessManager
   public readonly stage: Container
   public readonly entityAddedEvent: EventNotifier<Entity>
   public readonly entityRemovedEvent: EventNotifier<Entity>
@@ -18,9 +20,7 @@ export class World {
     if (this.paused) return
     const { done } = this.behaviour.next()
 
-    this.systems.forEach(system => {
-      system.update(1 / 60)
-    })
+    this.processManager.execute()
 
     if (!!done === true) {
       this.end()
@@ -30,6 +30,7 @@ export class World {
   public constructor(behaviour: (world: World) => Behaviour<void>) {
     this.entities = new Set()
     this.systems = new Set()
+    this.processManager = new ProcessManager()
     this.stage = new Container()
     this.entityAddedEvent = new EventNotifier()
     this.entityRemovedEvent = new EventNotifier()
@@ -126,12 +127,14 @@ export class World {
     for (const system of systems) {
       system.init()
       this.systems.add(system)
+      this.processManager.addProcess(system.updateProcess)
     }
   }
 
   public removeSystem(...systems: System[]): void {
     for (const system of systems) {
       this.systems.delete(system)
+      this.processManager.removeProcess(system.updateProcess)
     }
   }
 }

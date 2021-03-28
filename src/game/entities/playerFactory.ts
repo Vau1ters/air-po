@@ -78,7 +78,16 @@ export class PlayerFactory extends EntityFactory {
       return true
     }
 
-    entity.addComponent('AI', new AIComponent(playerAI(entity, this.world)))
+    entity.addComponent(
+      'AI',
+      new AIComponent({
+        behaviour: playerAI(entity, this.world),
+        name: 'Player:AI',
+        dependency: {
+          before: ['ControlSystem:update'],
+        },
+      })
+    )
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('HP', new HPComponent(3, 3))

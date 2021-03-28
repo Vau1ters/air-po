@@ -1,4 +1,4 @@
-import { System } from '@core/ecs/system'
+import { dependsOn, System } from '@core/ecs/system'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
@@ -37,6 +37,9 @@ export default class CollisionSystem extends System {
     this.needsStaticInitialize = true
   }
 
+  @dependsOn({
+    after: ['PhysicsSystem:update'],
+  })
   public update(): void {
     if (this.needsStaticInitialize) {
       this.needsStaticInitialize = false

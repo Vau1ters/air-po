@@ -14,6 +14,8 @@ export default class CameraSystem extends System {
     this.target = target
 
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
+    const [camera] = this.cameraFamily.entityArray
+    this.updateProcess.dependency.after?.push(camera.getComponent('AI').proc.name ?? '')
   }
 
   public update(): void {
