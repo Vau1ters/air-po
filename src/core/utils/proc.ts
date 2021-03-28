@@ -39,16 +39,20 @@ export class ProcessManager {
     }
     for (const proc of this.processList) {
       for (const name2 of proc.dependency.before ?? []) {
-        const proc2 = this.processList.find(proc2 => proc2.name === name2)
-        assert(proc2, `undefined process name: ${name2}`)
+        const processes = this.processList.filter(proc2 => proc2.name === name2)
+        assert(processes.length > 0, `undefined process name: ${name2}`)
         // proc must be executed before proc2
-        dependencyMap.get(proc2)?.push(proc)
+        for (const proc2 of processes) {
+          dependencyMap.get(proc2)?.push(proc)
+        }
       }
       for (const name2 of proc.dependency.after ?? []) {
-        const proc2 = this.processList.find(proc2 => proc2.name === name2)
-        assert(proc2, `undefined process name: ${name2}`)
+        const processes = this.processList.filter(proc2 => proc2.name === name2)
+        assert(processes.length > 0, `undefined process name: ${name2}`)
         // proc must be executed after proc2
-        dependencyMap.get(proc)?.push(proc2)
+        for (const proc2 of processes) {
+          dependencyMap.get(proc)?.push(proc2)
+        }
       }
     }
     // TODO: detect circuic reference
