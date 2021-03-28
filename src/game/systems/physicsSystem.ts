@@ -54,7 +54,9 @@ export default class PhysicsSystem extends System {
     })
   }
 
-  @dependsOn('GravitySystem:update')
+  @dependsOn({
+    after: ['GravitySystem:update'],
+  })
   public update(delta: number): void {
     for (const entity of this.family.entityIterator) {
       const position = entity.getComponent('Position')

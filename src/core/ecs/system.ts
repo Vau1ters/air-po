@@ -1,10 +1,10 @@
-import { Process } from '@utils/proc'
+import { Dependency, Process } from '@utils/proc'
 import { World } from './world'
 
-const dependenciesMap = new Map<string, string[]>()
-export function dependsOn(...dependencies: string[]) {
+const dependenciesMap = new Map<string, Dependency>()
+export function dependsOn(dependency: Dependency) {
   return function(target: System, _: string, __: PropertyDescriptor): void {
-    dependenciesMap.set(target.constructor.name, dependencies)
+    dependenciesMap.set(target.constructor.name, dependency)
   }
 }
 

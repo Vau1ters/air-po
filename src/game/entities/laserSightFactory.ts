@@ -45,7 +45,10 @@ export class LaserSightFactory extends EntityFactory {
       'AI',
       new AIComponent({
         behaviour: laserSightAI(this.player, entity, this.world),
-        dependencies: ['Player:AI', 'PhysicsSystem:update'],
+        name: 'LaserSight:AI',
+        dependency: {
+          after: ['Player:AI', 'PhysicsSystem:update'],
+        },
       })
     )
     entity.addComponent('Position', new PositionComponent())

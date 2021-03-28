@@ -37,7 +37,9 @@ export default class CollisionSystem extends System {
     this.needsStaticInitialize = true
   }
 
-  @dependsOn('PhysicsSystem:update')
+  @dependsOn({
+    after: ['PhysicsSystem:update'],
+  })
   public update(): void {
     if (this.needsStaticInitialize) {
       this.needsStaticInitialize = false
