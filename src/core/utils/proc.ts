@@ -15,8 +15,13 @@ export class Process {
 
 export class ProcessManager {
   private processList: Process[] = []
+  private hasChanged = true
 
   public execute(): void {
+    if (this.hasChanged) {
+      this.hasChanged = false
+      this.updateProcessList()
+    }
     for (const proc of this.processList) {
       proc.execute()
     }
@@ -24,12 +29,12 @@ export class ProcessManager {
 
   public addProcess(proc: Process): void {
     this.processList.push(proc)
-    this.updateProcessList()
+    this.hasChanged = true
   }
 
   public removeProcess(proc: Process): void {
     this.processList.splice(this.processList.indexOf(proc), 1)
-    this.updateProcessList()
+    this.hasChanged = true
   }
 
   private updateProcessList(): void {
