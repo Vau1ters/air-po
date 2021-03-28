@@ -6,6 +6,7 @@ import { Ray } from '@core/collision/geometry/ray'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
+import { INFINITY_COORDINATE } from '@core/math/constants'
 import { Vec2 } from '@core/math/vec2'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { MouseController } from '@game/systems/controlSystem'
@@ -29,7 +30,7 @@ const getClosestHitPointGenerator = function*(
   while (true) {
     const closestHitPoint = hitPoints.reduce(
       (a, b) => (a.sub(ray.origin).length() < b.sub(ray.origin).length() ? a : b),
-      ray.origin.add(ray.direction.mul(Infinity))
+      ray.origin.add(ray.direction.mul(INFINITY_COORDINATE))
     )
     hitPoints = []
     yield closestHitPoint

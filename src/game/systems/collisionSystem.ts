@@ -90,7 +90,7 @@ export default class CollisionSystem extends System {
     const dynamicResult = this.dynamicBVHs.get(category)?.query(bound)
     assert(staticResult !== undefined, `There are no BVH with category '${category}'`)
     assert(dynamicResult !== undefined, `There are no BVH with category '${category}'`)
-    return staticResult?.concat(dynamicResult)
+    return staticResult.concat(dynamicResult)
   }
 
   // 衝突判定
