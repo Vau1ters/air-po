@@ -17,9 +17,7 @@ bulletFactory.offset.y = 1
 
 export const playerGunShoot = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
-    while (!MouseController.isMousePressed('Left')) {
-      yield
-    }
+    while (!MouseController.isMousePressed('Left')) yield
 
     // 空気の消費
     const airHolder = entity.getComponent('AirHolder')
