@@ -1,4 +1,4 @@
-import { System } from '@core/ecs/system'
+import { dependsOn, System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { Container } from 'pixi.js'
 import { AirFilter } from '@game/filters/airFilter'
@@ -83,6 +83,9 @@ export class FilterSystem extends System {
     this.world.addEntity(this.lightSearcher)
   }
 
+  @dependsOn({
+    after: ['CameraSystem:update'],
+  })
   public update(): void {
     if (this.cameraFamily.entityArray.length === 0) return
     const [camera] = this.cameraFamily.entityArray
