@@ -60,24 +60,25 @@ export class ProcessManager {
         }
       }
     }
-    // TODO: detect circuic reference
-    let remainingProcessList = this.processList
-    const newProcessList: Process[] = []
-    while (remainingProcessList.length > 0) {
-      const nextRemainingProcessList = remainingProcessList.filter(proc => {
-        if (dependencyMap.get(proc)?.every(proc2 => newProcessList.includes(proc2))) {
-          newProcessList.push(proc)
-          return false
+    // TODO: detect circular reference
+    const remainingProcessSet = new Set<Process>(this.processList)
+    const finishedProcessSet = new Set<Process>()
+    this.processList = []
+    while (remainingProcessSet.size > 0) {
+      let hasChanged = false
+      for (const proc of remainingProcessSet) {
+        if (dependencyMap.get(proc)?.every(proc2 => finishedProcessSet.has(proc2))) {
+          this.processList.push(proc)
+          finishedProcessSet.add(proc)
+          remainingProcessSet.delete(proc)
+          hasChanged = true
         }
-        return true
-      })
+      }
       assert(
-        nextRemainingProcessList.length < remainingProcessList.length,
-        `cannot resolve dependency: ${remainingProcessList.map(proc => proc.name)}`
+        hasChanged,
+        `cannot resolve dependency: ${Array.from(remainingProcessSet).map(proc => proc.name)}`
       )
-      remainingProcessList = nextRemainingProcessList
     }
-    this.processList = newProcessList
 
     for (const proc of this.processList) {
       for (const name2 of proc.dependency.before ?? []) {
