@@ -30,7 +30,9 @@ const manageAir = function*(
     }
 
     if (airComponent.quantity < options.maxQuantity) {
-      airComponent.increase(options.increaseRate)
+      airComponent.increase(
+        Math.min(options.increaseRate, options.maxQuantity - airComponent.quantity)
+      )
     }
     yield
   }

@@ -70,12 +70,15 @@ export class AirGeyserFactory extends EntityFactory {
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent(
       'AI',
-      new AIComponent(
-        airGeyserAI(entity, this.world, {
+      new AIComponent({
+        behaviour: airGeyserAI(entity, this.world, {
           maxQuantity: this.maxQuantity,
           increaseRate: this.increaseRate,
-        })
-      )
+        }),
+        dependency: {
+          after: ['AirHolderSystem:update'],
+        },
+      })
     )
     entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     return entity
