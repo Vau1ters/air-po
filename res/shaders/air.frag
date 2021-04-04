@@ -10,7 +10,7 @@ uniform float pointNum;
 uniform vec2 displaySize;
 uniform float effectiveRadius;
 uniform float inAirRate;
-uniform vec2 camera;
+uniform ivec2 camera;
 uniform bool enableAntiAlias;
 uniform vec4 inputSize;
 uniform vec4 outputFrame;
@@ -64,7 +64,7 @@ bool shouldAntiAlias(ivec2 coord) {
 void main() {
   vec4 color = texture2D(uSampler, vTextureCoord);
   vec2 uv = vTextureCoord / (inputSize.zw * outputFrame.zw);
-  ivec2 coord = ivec2(uv * displaySize) + ivec2(ceil(camera));
+  ivec2 coord = ivec2(uv * displaySize) + camera;
   if (enableAntiAlias) {
     color *= shouldAntiAlias(coord) ? (1. + air(coord)) * .5 : air(coord);
   } else {
