@@ -38,6 +38,8 @@ export class PauseWorldFactory {
       new DrawSystem(world, worldContainer, worldUIContainer)
     )
 
+    console.log('POj')
+
     const camera = new Entity()
     camera.addComponent('Camera', new CameraComponent())
     camera.addComponent('Position', new PositionComponent(160, 120))
