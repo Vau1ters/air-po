@@ -2,15 +2,16 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
-import { isAlive } from '../common/condition/isAlive'
-import { kill } from '../common/action/kill'
-import { emitAir } from '../common/action/emitAir'
+import { isAlive } from '@game/ai/entity/common/condition/isAlive'
+import { kill } from '@game/ai/entity/common/action/kill'
+import { emitAir } from '@game/ai/entity/common/action/emitAir'
 import { FamilyBuilder } from '@core/ecs/family'
 import { BulletFactory } from '@game/entities/bulletFactory'
 import { wait } from '@core/behaviour/wait'
 import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
-import { animateLoop } from '../common/action/animate'
+import { animateLoop, animate } from '@game/ai/entity/common/action/animate'
+import { repeat } from '@core/behaviour/repeat'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -88,8 +89,31 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   ])
 }
 
+const flutteringAI = function*(entity: Entity): Behaviour<void> {
+  const rigidbody = entity.getComponent('RigidBody')
+  yield* animate(entity, 'FlutteringLeft')
+  yield* repeat(10, () => {
+    rigidbody.acceleration.x = 500
+  })
+  yield* animate(entity, 'FlutteringRight')
+  yield* repeat(20, () => {
+    rigidbody.acceleration.x = -500
+  })
+  yield* animate(entity, 'FlutteringLeft')
+  yield* repeat(10, () => {
+    rigidbody.acceleration.x = 500
+  })
+}
+
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
+  entity.getComponent('Collider').removeByTag('AttackHitBox')
+  entity.getComponent('Collider').removeByTag('snibeeBody')
+  yield* animate(entity, 'Dying')
+  entity.getComponent('RigidBody').velocity.x = 0
+  entity.getComponent('RigidBody').velocity.y = -3
+  entity.getComponent('RigidBody').gravityScale = 0.05
   yield* emitAir(entity, world, 50)
+  yield* flutteringAI(entity)
   yield* kill(entity, world)
 }
