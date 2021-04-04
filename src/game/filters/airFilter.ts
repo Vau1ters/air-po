@@ -47,6 +47,6 @@ export class AirFilter extends Filter {
       this.uniforms.inAirRate = Math.max(this.uniforms.inAirRate - 0.05, 0)
     }
     this.family.entityArray[0].getComponent('AirHolder').inAir = false
-    this.uniforms.camera = [Math.floor(camera.x), Math.floor(camera.y)]
+    this.uniforms.camera = [Math.ceil(camera.x), Math.ceil(camera.y)]
   }
 }
