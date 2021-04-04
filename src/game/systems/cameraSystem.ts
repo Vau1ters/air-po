@@ -21,8 +21,8 @@ export default class CameraSystem extends System {
   public update(): void {
     for (const camera of this.cameraFamily.entityIterator) {
       const position = camera.getComponent('Position')
-      const offsetX = windowSize.width / 2 - Math.floor(position.x)
-      const offsetY = windowSize.height / 2 - Math.floor(position.y)
+      const offsetX = windowSize.width / 2 - position.x
+      const offsetY = windowSize.height / 2 - position.y
       this.target.position.set(+offsetX, +offsetY)
     }
   }
