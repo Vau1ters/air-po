@@ -5,7 +5,7 @@ import * as Sound from '@core/sound/sound'
 import { parallelAll } from '@core/behaviour/composite'
 
 const SETTING = {
-  WALK_POWER: 600,
+  WALK_POWER: 10,
   WALK_SPEED: 100,
   JUMP_SPEED: 280,
   THROUGH_FLOOR_IGNORE_COUNT: 20,
@@ -49,16 +49,12 @@ const playerWalk = function*(entity: Entity): Behaviour<void> {
       KeyController.isActionPressing('MoveLeft')
     ) {
       if (KeyController.isActionPressing('MoveRight')) {
-        if (body.velocity.x < SETTING.WALK_SPEED) {
-          body.velocity.x = Math.min(body.velocity.x + SETTING.WALK_POWER, SETTING.WALK_SPEED)
-        }
+        body.velocity.x = Math.min(body.velocity.x + SETTING.WALK_POWER, SETTING.WALK_SPEED)
         if (player.landing) animState.state = 'Walking'
         direction.looking = 'Right'
       }
       if (KeyController.isActionPressing('MoveLeft')) {
-        if (body.velocity.x > -SETTING.WALK_SPEED) {
-          body.velocity.x = Math.max(body.velocity.x - SETTING.WALK_POWER, -SETTING.WALK_SPEED)
-        }
+        body.velocity.x = Math.max(body.velocity.x - SETTING.WALK_POWER, -SETTING.WALK_SPEED)
         if (player.landing) animState.state = 'Walking'
         direction.looking = 'Left'
       }
