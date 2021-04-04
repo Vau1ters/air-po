@@ -6,6 +6,7 @@ import { parallelAll } from '@core/behaviour/composite'
 
 const SETTING = {
   WALK_POWER: 600,
+  WALK_SPEED: 100,
   JUMP_SPEED: 280,
   THROUGH_FLOOR_IGNORE_COUNT: 20,
 }
@@ -48,12 +49,16 @@ const playerWalk = function*(entity: Entity): Behaviour<void> {
       KeyController.isActionPressing('MoveLeft')
     ) {
       if (KeyController.isActionPressing('MoveRight')) {
-        if (body.velocity.x < 100) body.acceleration.x += SETTING.WALK_POWER
+        if (body.velocity.x < SETTING.WALK_SPEED) {
+          body.velocity.x = Math.min(body.velocity.x + SETTING.WALK_POWER, SETTING.WALK_SPEED)
+        }
         if (player.landing) animState.state = 'Walking'
         direction.looking = 'Right'
       }
       if (KeyController.isActionPressing('MoveLeft')) {
-        if (body.velocity.x > -100) body.acceleration.x -= SETTING.WALK_POWER
+        if (body.velocity.x > -SETTING.WALK_SPEED) {
+          body.velocity.x = Math.max(body.velocity.x - SETTING.WALK_POWER, -SETTING.WALK_SPEED)
+        }
         if (player.landing) animState.state = 'Walking'
         direction.looking = 'Left'
       }
@@ -61,8 +66,12 @@ const playerWalk = function*(entity: Entity): Behaviour<void> {
       yield
     }
 
-    if (body.velocity.x > 0) body.acceleration.x -= SETTING.WALK_POWER
-    if (body.velocity.x < 0) body.acceleration.x += SETTING.WALK_POWER
+    if (body.velocity.x > 0) {
+      body.velocity.x = Math.max(body.velocity.x - SETTING.WALK_POWER, 0)
+    } else if (body.velocity.x < 0) {
+      body.velocity.x = Math.min(body.velocity.x + SETTING.WALK_POWER, 0)
+    }
+
     if (player.landing) animState.state = 'Standing'
     yield
   }
