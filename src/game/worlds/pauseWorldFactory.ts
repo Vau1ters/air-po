@@ -33,12 +33,13 @@ export class PauseWorldFactory {
     worldUIContainer.zIndex = Infinity
     worldContainer.addChild(worldUIContainer)
 
+    const uiContainer = new Container()
+    rootContainer.addChild(uiContainer)
+
     world.addSystem(
       new ControlSystem(world),
-      new DrawSystem(world, worldContainer, worldUIContainer)
+      new DrawSystem(world, worldContainer, worldUIContainer, uiContainer)
     )
-
-    console.log('POj')
 
     const camera = new Entity()
     camera.addComponent('Camera', new CameraComponent())
