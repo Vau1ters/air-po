@@ -1,4 +1,9 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { parallelAll, parallelAny } from '@core/behaviour/composite'
+import { ease } from '@core/behaviour/easing/easing'
+import { In } from '@core/behaviour/easing/functions'
+import { loop } from '@core/behaviour/loop'
+import { suspendable } from '@core/behaviour/suspendable'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Graphics } from 'pixi.js'
@@ -15,31 +20,23 @@ export const laserSightLockEffectAI = function*(
     g.beginFill(0xff0000)
     g.drawRect(x - w / 2, y - w / 2, w, w)
   }
-  let a = 0
-  let s = 10
-  const draw = (): void => {
+
+  const state = { angle: 0, radius: 10 }
+  const angleEase = loop(frame => (state.angle = frame * 0.1))
+  const radiusIn = ease(In.linear)(10, radius => (state.radius = radius), { from: 10, to: 5 })
+  const radiusOut = ease(In.linear)(10, radius => (state.radius = radius), { from: 5, to: 10 })
+  const draw = loop(() => {
     lock.getComponent('Position').assign(target.getComponent('Position'))
     g.clear()
     for (let i = 0; i < 4; i++) {
-      drawRect(Math.cos(a + (i * Math.PI) / 2) * s, Math.sin(a + (i * Math.PI) / 2) * s)
+      drawRect(
+        Math.cos(state.angle + (i * Math.PI) / 2) * state.radius,
+        Math.sin(state.angle + (i * Math.PI) / 2) * state.radius
+      )
     }
-  }
-  for (let t = 0; t < 10; t++) {
-    a += 0.1
-    s -= 0.5
-    draw()
-    yield
-  }
-  while (!isDespawning()) {
-    a += 0.1
-    draw()
-    yield
-  }
-  for (let t = 0; t < 10; t++) {
-    a += 0.1
-    s += 0.5
-    draw()
-    yield
-  }
+  })
+  yield* parallelAny([angleEase, radiusIn, draw])
+  yield* suspendable(() => !isDespawning(), parallelAll([angleEase, draw]))
+  yield* parallelAny([angleEase, radiusOut, draw])
   world.removeEntity(lock)
 }
