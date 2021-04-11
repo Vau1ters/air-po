@@ -54,8 +54,8 @@ export class GameWorldFactory {
     filterContainer.addChild(background)
     filterContainer.addChild(cameraContainer)
 
-    cameraContainer.addChild(worldContainer)
     cameraContainer.addChild(worldUIContainer)
+    cameraContainer.addChild(worldContainer)
     cameraContainer.addChild(debugContainer)
 
     const collisionSystem = new CollisionSystem(world)
