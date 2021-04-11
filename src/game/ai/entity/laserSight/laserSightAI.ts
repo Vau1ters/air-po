@@ -68,18 +68,27 @@ const updateInvisibleRay = function*(laser: Entity, world: World): Behaviour<voi
 const updateVisibleRay = function*(laser: Entity, world: World, state: State): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
   const [g] = laser.getComponent('Draw').children as [Graphics]
+  const targetPos = new Vec2()
+  let chasing = 0
   while (true) {
     const [player] = playerFamily.entityArray
     const mousePosition = MouseController.position
     const start = player.getComponent('Position')
 
-    const end = ((): Vec2 => {
-      if (state.lock) {
-        return state.lock.target.getComponent('Position')
-      } else {
-        return start.add(mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2)))
-      }
-    })()
+    if (state.lock) {
+      targetPos.assign(state.lock.target.getComponent('Position'))
+    }
+
+    const end0 = start.add(mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2)))
+    const end1 = targetPos
+
+    if (state.lock) {
+      chasing = Math.min(chasing + 0.3, 1)
+    } else {
+      chasing = Math.max(chasing - 0.3, 0)
+    }
+
+    const end = end0.add(end1.sub(end0).mul(chasing))
 
     player.getComponent('Player').targetPosition = end
 
