@@ -45,6 +45,7 @@ export class BalloonVineFactory extends EntityFactory {
     maxQuantity: 10,
     collectSpeed: 10,
     consumeSpeed: 0,
+    shouldDamageInSuffocation: false,
   }
 
   private readonly RIGID_BODY = {

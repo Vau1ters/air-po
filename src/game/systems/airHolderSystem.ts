@@ -9,6 +9,7 @@ import { Category } from '@game/entities/category'
 import { AIR_TAG } from './airSystem'
 
 export const AIR_HOLDER_TAG = 'airHolderBody'
+export const SUFFOCATION_DAMAGE_INTERVAL = 180
 
 export class AirHolderSystem extends System {
   private family: Family
@@ -26,6 +27,15 @@ export class AirHolderSystem extends System {
       // air consume
       const airHolder = entity.getComponent('AirHolder')
       airHolder.consume()
+      if (airHolder.shouldDamageInSuffocation && airHolder.quantity === 0) {
+        if (airHolder.suffocationDamageCount++ === SUFFOCATION_DAMAGE_INTERVAL) {
+          airHolder.suffocationDamageCount = 0
+          entity.getComponent('HP').decrease(1)
+          entity.getComponent('Invincible').setInvincible()
+        }
+      } else {
+        airHolder.suffocationDamageCount = 0
+      }
     }
   }
 
