@@ -8,10 +8,8 @@ import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { INFINITY_COORDINATE } from '@core/math/constants'
 import { Vec2 } from '@core/math/vec2'
-import { AIComponent } from '@game/components/aiComponent'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { DrawComponent } from '@game/components/drawComponent'
-import { PositionComponent } from '@game/components/positionComponent'
+import { LaserSightLockFactory } from '@game/entities/laserSightLockFactory'
 import { MouseController } from '@game/systems/controlSystem'
 import { Graphics } from 'pixi.js'
 
@@ -111,56 +109,7 @@ const updateLock = function*(
 
   const spawnLock = (target: Entity): Lock => {
     let despawning = false
-    const lock = new Entity()
-    lock.addComponent('Position', new PositionComponent())
-    lock.addComponent(
-      'Draw',
-      new DrawComponent({
-        entity: lock,
-        type: 'WorldUI',
-        child: { sprite: new Graphics() },
-      })
-    )
-    lock.addComponent(
-      'AI',
-      new AIComponent(
-        (function*(): Behaviour<void> {
-          const [g] = lock.getComponent('Draw').children as [Graphics]
-          const drawRect = (x: number, y: number): void => {
-            const w = 2
-            g.beginFill(0xff0000)
-            g.drawRect(x - w / 2, y - w / 2, w, w)
-          }
-          let a = 0
-          let s = 10
-          const draw = (): void => {
-            lock.getComponent('Position').assign(target.getComponent('Position'))
-            g.clear()
-            for (let i = 0; i < 4; i++) {
-              drawRect(Math.cos(a + (i * Math.PI) / 2) * s, Math.sin(a + (i * Math.PI) / 2) * s)
-            }
-          }
-          for (let t = 0; t < 10; t++) {
-            a += 0.1
-            s -= 0.5
-            draw()
-            yield
-          }
-          while (!despawning) {
-            a += 0.1
-            draw()
-            yield
-          }
-          for (let t = 0; t < 10; t++) {
-            a += 0.1
-            s += 0.5
-            draw()
-            yield
-          }
-          world.removeEntity(lock)
-        })()
-      )
-    )
+    const lock = new LaserSightLockFactory(target, () => despawning, world).create()
     world.addEntity(lock)
     return {
       lock,
