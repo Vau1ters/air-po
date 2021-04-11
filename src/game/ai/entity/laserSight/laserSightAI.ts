@@ -140,7 +140,12 @@ const updateLock = function*(
         state.lock = undefined
       }
     } else {
-      if (entity && entity.hasComponent('HP') && !MouseController.isMousePressing('Right')) {
+      if (
+        entity &&
+        entity.hasComponent('HP') &&
+        entity.getComponent('HP').hp > 0 &&
+        !MouseController.isMousePressing('Right')
+      ) {
         state.lock = spawnLock(entity)
       }
     }
