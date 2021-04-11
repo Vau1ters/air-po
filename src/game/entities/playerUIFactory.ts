@@ -19,11 +19,15 @@ export class PlayerUIFactory extends EntityFactory {
     hpGauge.position.set(0, 0)
 
     const airGauge: Graphics = new Graphics()
-    airGauge.position.set(6, 20)
+    airGauge.position.set(0, 0)
+
+    const weaponGraphics: Graphics = new Graphics()
+    weaponGraphics.position.set(0, 0)
 
     const ui = new DrawComponent({ entity, type: 'UI' })
     ui.addChild(hpGauge)
     ui.addChild(airGauge)
+    ui.addChild(weaponGraphics)
 
     entity.addComponent('Draw', ui)
     entity.addComponent('AI', new AIComponent(playerUIAI(entity, this.world)))
