@@ -8,7 +8,12 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from '../entityFactory'
 
 export class MapObjectFactory extends EntityFactory {
-  constructor(private pos: Vec2, private name: string, protected world: World) {
+  constructor(
+    private pos: Vec2,
+    private name: string,
+    protected frame: number,
+    protected world: World
+  ) {
     super()
   }
 

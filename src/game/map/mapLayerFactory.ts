@@ -16,8 +16,8 @@ import { assert } from '@utils/assertion'
 import { Random } from '@utils/random'
 import { TileSet, TileLayer } from './mapBuilder'
 
-type Build = (pos: Vec2, tileSize: Vec2, layer: TileLayer) => void
-type Builder = { firstgid: number; builder: Build }
+type Build = (pos: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
+type Builder = { firstgid: number; build: Build }
 
 export class MapLayerFactory {
   private builders: Array<Builder>
@@ -28,11 +28,11 @@ export class MapLayerFactory {
   }
 
   public build(layer: TileLayer, tileSize: Vec2): void {
-    const findBuilder = (tileId: number): Build => {
+    const findBuilder = (tileId: number): Builder => {
       for (let i = 0; i < this.builders.length; i++) {
         if (tileId < this.builders[i].firstgid) continue
         if (i < this.builders.length - 1 && this.builders[i + 1].firstgid <= tileId) continue
-        return this.builders[i].builder
+        return this.builders[i]
       }
       assert(false, `Could not find appropriate builder for tileId ${tileId}`)
     }
@@ -41,7 +41,8 @@ export class MapLayerFactory {
       for (let y = 0; y < layer.height; y++) {
         const tileId = this.getTileId(layer, x, y)
         if (tileId === 0) continue
-        findBuilder(tileId)(new Vec2(x, y), tileSize, layer)
+        const builder = findBuilder(tileId)
+        builder.build(new Vec2(x, y), tileSize, tileId - builder.firstgid, layer)
       }
     }
   }
@@ -49,7 +50,7 @@ export class MapLayerFactory {
   private loadBuilders(tileSets: Array<TileSet>): Array<Builder> {
     const builders = new Array<Builder>()
     const factories: {
-      [keys: string]: new (pos: Vec2, name: string, world: World) => MapObjectFactory
+      [keys: string]: new (pos: Vec2, name: string, frame: number, world: World) => MapObjectFactory
     } = {
       airGeyser: AirGeyserFactory,
       balloonvine: BalloonVineFactory,
@@ -69,14 +70,14 @@ export class MapLayerFactory {
         case 'wall':
           builders.push({
             firstgid,
-            builder: (pos: Vec2, tileSize: Vec2, layer: TileLayer) =>
+            build: (pos: Vec2, tileSize: Vec2, _: number, layer: TileLayer) =>
               this.buildWall(layer, pos, tileSize, objectSize, firstgid),
           })
           break
         default:
           builders.push({
             firstgid,
-            builder: (pos: Vec2, tileSize: Vec2) =>
+            build: (pos: Vec2, tileSize: Vec2, frame: number) =>
               this.world.addEntity(
                 new factories[name](
                   new Vec2(
@@ -84,6 +85,7 @@ export class MapLayerFactory {
                     pos.y * tileSize.y - objectSize.y / 2
                   ),
                   name,
+                  frame,
                   this.world
                 ).create()
               ),

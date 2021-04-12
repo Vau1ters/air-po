@@ -90,6 +90,8 @@ export class BalloonVineFactory extends MapObjectFactory {
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
+
+    if (this.frame === 1) entity.getComponent('AirHolder').quantity = this.AIR_HOLDER.maxQuantity
     return entity
   }
 }

@@ -129,6 +129,7 @@ export class MapBuilder {
       const airGeyserFactory = new AirGeyserFactory(
         new Vec2(airGeyserData.x, airGeyserData.y),
         'airGeyser',
+        0,
         this.world
       )
       const maxQuantity = airGeyserData.properties?.find(
@@ -200,6 +201,7 @@ export class MapBuilder {
     const player = new PlayerFactory(
       new Vec2(x + width / 2, y - height),
       'player',
+      0,
       this.world
     ).create()
     this.world.addEntity(player)
