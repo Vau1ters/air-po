@@ -1,15 +1,15 @@
 import { Entity } from '@core/ecs/entity'
-import { EntityFactory } from './entityFactory'
+import { textureStore } from '@core/graphics/art'
+import { Vec2 } from '@core/math/vec2'
+import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
+import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
-import { DrawComponent } from '@game/components/drawComponent'
-import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
-import { Vec2 } from '@core/math/vec2'
-import { Category, CategorySet } from './category'
-import { textureStore } from '@core/graphics/art'
-import { Sprite } from 'pixi.js'
 import { StaticComponent } from '@game/components/staticComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { Sprite } from 'pixi.js'
+import { Category, CategorySet } from '../category'
+import { EntityFactory } from '../entityFactory'
 
 export class WallFactory extends EntityFactory {
   private readonly COLLIDER = {
@@ -19,6 +19,10 @@ export class WallFactory extends EntityFactory {
 
   public tileId = 0
   public shouldCollide = true
+
+  constructor(private pos: Vec2) {
+    super()
+  }
 
   public create(): Entity {
     const entity = new Entity()
@@ -51,7 +55,7 @@ export class WallFactory extends EntityFactory {
         },
       })
     )
-    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
     entity.addComponent('Static', new StaticComponent())
 
     return entity

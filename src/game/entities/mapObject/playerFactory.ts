@@ -1,32 +1,26 @@
 import { Entity } from '@core/ecs/entity'
-import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '@game/components/positionComponent'
-import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
-import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, Collider, buildColliders } from '@game/components/colliderComponent'
-import { PlayerComponent } from '@game/components/playerComponent'
 import { Vec2 } from '@core/math/vec2'
-import { Category, CategorySet } from './category'
-import { HorizontalDirectionComponent } from '@game/components/directionComponent'
+import { playerAI } from '@game/ai/entity/player/playerAI'
+import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
+import { CameraComponent } from '@game/components/cameraComponent'
+import { Collider, ColliderComponent, buildColliders } from '@game/components/colliderComponent'
+import { HorizontalDirectionComponent } from '@game/components/directionComponent'
+import { EquipmentComponent } from '@game/components/equipmentComponent'
 import { HPComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
-import { AIComponent } from '@game/components/aiComponent'
-import { parseAnimation } from '@core/graphics/animationParser'
-import { CameraComponent } from '@game/components/cameraComponent'
-import { AnimationStateComponent } from '@game/components/animationStateComponent'
-import playerDefinition from '@res/animation/player.json'
-import { World } from '@core/ecs/world'
-import { playerAI } from '@game/ai/entity/player/playerAI'
-import { EquipmentComponent } from '@game/components/equipmentComponent'
-import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { PlayerComponent } from '@game/components/playerComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
+import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { Category, CategorySet } from '../category'
+import { MapObjectFactory } from './mapObjectFactory'
 import { THROUGH_FLOOR_TAG } from './throughFloorFactory'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
 
-export class PlayerFactory extends EntityFactory {
+export class PlayerFactory extends MapObjectFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(13, 16),
@@ -53,12 +47,8 @@ export class PlayerFactory extends EntityFactory {
     consumeSpeed: 0.025,
   }
 
-  public constructor(private world: World) {
-    super()
-  }
-
   public create(): Entity {
-    const entity = new Entity()
+    const entity = super.create()
     const player = new PlayerComponent()
     const airHolder = new AirHolderComponent(this.AIR_HOLDER)
 
@@ -89,19 +79,9 @@ export class PlayerFactory extends EntityFactory {
         },
       })
     )
-    entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent('HP', new HPComponent(3, 3))
     entity.addComponent('Invincible', new InvincibleComponent())
-    entity.addComponent(
-      'Draw',
-      new DrawComponent({
-        entity,
-        child: {
-          sprite: parseAnimation(playerDefinition.sprite),
-        },
-      })
-    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -147,7 +127,6 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Equipment', equipment)
     // TODO: カメラをプレイヤーから分離する
     entity.addComponent('Camera', new CameraComponent())
-    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
     return entity
   }

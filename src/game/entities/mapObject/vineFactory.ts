@@ -1,24 +1,20 @@
 import { Entity } from '@core/ecs/entity'
-import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '@game/components/positionComponent'
-import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
-import { DrawComponent } from '@game/components/drawComponent'
-import { buildColliders, ColliderComponent } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
-import { Category, CategorySet } from './category'
-import vineDefinition from '@res/animation/vine.json'
-import { VineComponent } from '@game/components/vineComponent'
-import { AIComponent } from '@game/components/aiComponent'
-import { vineAI } from '@game/ai/entity/vine/vineAI'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { addTag } from '@game/ai/entity/vine/changeVineLength'
+import { vineAI } from '@game/ai/entity/vine/vineAI'
+import { AIComponent } from '@game/components/aiComponent'
+import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { VineComponent } from '@game/components/vineComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { Category, CategorySet } from '../category'
+import { MapObjectFactory } from './mapObjectFactory'
 
 export const VINE_TAG = 'Vine'
 export const VINE_TERRAIN_SENSOR_TAG = 'VineWallSensor'
 export const VINE_AIR_SENSOR_TAG = 'VineAirSensor'
 
-export class VineFactory extends EntityFactory {
+export class VineFactory extends MapObjectFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(16, 16),
@@ -34,12 +30,8 @@ export class VineFactory extends EntityFactory {
     size: new Vec2(6, 6),
   }
 
-  public constructor() {
-    super()
-  }
-
   public create(): Entity {
-    const entity = new Entity()
+    const entity = super.create()
 
     entity.addComponent(
       'Collider',
@@ -71,17 +63,6 @@ export class VineFactory extends EntityFactory {
     )
     entity.addComponent('AI', new AIComponent(vineAI(entity)))
     entity.addComponent('RigidBody', new RigidBodyComponent())
-    entity.addComponent('Position', new PositionComponent())
-    entity.addComponent(
-      'Draw',
-      new DrawComponent({
-        entity,
-        child: {
-          sprite: parseAnimation(vineDefinition.sprite),
-          state: 'Root0',
-        },
-      })
-    )
     entity.addComponent('Vine', new VineComponent(entity, 0))
 
     addTag(entity)

@@ -1,19 +1,15 @@
 import { Entity } from '@core/ecs/entity'
-import { EntityFactory } from './entityFactory'
-import { PositionComponent } from '@game/components/positionComponent'
-import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
-import { DrawComponent } from '@game/components/drawComponent'
-import { ColliderComponent, Collider, buildCollider } from '@game/components/colliderComponent'
 import { Vec2 } from '@core/math/vec2'
-import { Category, CategorySet } from './category'
-import throughFloorDefinition from '@res/animation/throughFloor.json'
-import { parseAnimation } from '@core/graphics/animationParser'
+import { ColliderComponent, buildCollider, Collider } from '@game/components/colliderComponent'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { StaticComponent } from '@game/components/staticComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { Category, CategorySet } from '../category'
+import { MapObjectFactory } from './mapObjectFactory'
 
 export const THROUGH_FLOOR_TAG = 'ThroughFloor'
 
-export class ThroughFloorFactory extends EntityFactory {
+export class ThroughFloorFactory extends MapObjectFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(0, -2),
@@ -21,19 +17,9 @@ export class ThroughFloorFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const entity = new Entity()
+    const entity = super.create()
 
     entity.addComponent('Static', new StaticComponent())
-    entity.addComponent('Position', new PositionComponent())
-    entity.addComponent(
-      'Draw',
-      new DrawComponent({
-        entity,
-        child: {
-          sprite: parseAnimation(throughFloorDefinition.sprite),
-        },
-      })
-    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
