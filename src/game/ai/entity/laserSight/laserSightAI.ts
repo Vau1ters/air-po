@@ -132,8 +132,7 @@ const getLaserSightStateGenerator = function*(
 
       const { entity: currentHittingEntity } = value
       if (
-        currentHittingEntity &&
-        currentHittingEntity.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
+        currentHittingEntity?.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
         (isDistantEnough(ray, entity) || !shouldLockEntity(entity, ray))
       ) {
         return
