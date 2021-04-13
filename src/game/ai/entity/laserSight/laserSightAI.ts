@@ -78,15 +78,15 @@ const isDistantEnough = (ray: Ray, entity: Entity): boolean => {
   return ray.distance(entity.getComponent('Position')) > 20
 }
 const shouldLockEntity = (entity: Entity, ray: Ray): boolean => {
-  return (
-    entity.hasComponent('HP') &&
-    entity.getComponent('HP').hp > 0 &&
+  const isEntityAlive = entity.hasComponent('HP') && entity.getComponent('HP').hp > 0
+  const isEntityCloseEnough =
     entity
       .getComponent('Position')
       .sub(ray.origin)
-      .length() < 160 && // 離れすぎてたらロックしない
-    !MouseController.isMousePressing('Right')
-  )
+      .length() < 160
+  const forceFreeAiming = MouseController.isMousePressing('Right')
+
+  return isEntityAlive && isEntityCloseEnough && !forceFreeAiming
 }
 const spawnLock = (target: Entity, world: World): Lock => {
   let despawning = false
@@ -191,9 +191,8 @@ const updateVisibleRay = function*(laser: Entity, world: World): Behaviour<void>
   const playerFamily = new FamilyBuilder(world).include('Player').build()
   const [g] = laser.getComponent('Draw').children as [Graphics]
   const [player] = playerFamily.entityArray
-  const getLaserSightState = getLaserSightStateGenerator(player, laser, world)
 
-  for (const state of getLaserSightState) {
+  for (const state of getLaserSightStateGenerator(player, laser, world)) {
     const mousePosition = MouseController.position
     const start = player.getComponent('Position')
 
