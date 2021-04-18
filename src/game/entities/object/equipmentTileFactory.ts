@@ -8,11 +8,14 @@ import { SensorComponent } from '@game/components/sensorComponent'
 import { Category, CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
 import equipmentDefinition from '@res/animation/equipment.json'
+import { assert } from '@utils/assertion'
 
 export class EquipmentTileFactory extends ObjectEntityFactory {
-  private equipmentType: EquipmentTypes = 'AirTank'
-
   public create(): Entity {
+    const equipmentType = this.object.properties?.find(prop => prop.name === 'type')
+      ?.value as EquipmentTypes
+    assert(equipmentType, `Equipment must have string property 'type'`)
+
     const entity = super.create()
 
     entity.addComponent(
@@ -21,7 +24,7 @@ export class EquipmentTileFactory extends ObjectEntityFactory {
         entity,
         child: {
           sprite: parseAnimation(equipmentDefinition.sprite),
-          state: this.equipmentType,
+          state: equipmentType,
         },
       })
     )
@@ -39,16 +42,8 @@ export class EquipmentTileFactory extends ObjectEntityFactory {
         })
       )
     )
-    entity.addComponent(
-      'Sensor',
-      new SensorComponent(`equipItem ${this.equipmentType} ${entity.id}`)
-    )
+    entity.addComponent('Sensor', new SensorComponent(`equipItem ${equipmentType} ${entity.id}`))
 
     return entity
-  }
-
-  public setEquipmentType(type: EquipmentTypes): this {
-    this.equipmentType = type
-    return this
   }
 }

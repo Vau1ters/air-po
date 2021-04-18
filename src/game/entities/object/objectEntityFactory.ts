@@ -4,17 +4,11 @@ import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
+import { MapObject } from '@game/map/mapBuilder'
 import { EntityFactory } from '../entityFactory'
 
-export type MapObjectInfo = {
-  x: number
-  y: number
-  width: number
-  height: number
-}
-
 export class ObjectEntityFactory extends EntityFactory {
-  constructor(private name: string, protected object: MapObjectInfo, protected world: World) {
+  constructor(private name: string, protected object: MapObject, protected world: World) {
     super()
   }
 

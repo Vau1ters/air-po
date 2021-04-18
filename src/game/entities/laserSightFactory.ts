@@ -10,7 +10,7 @@ import { Category, CategorySet } from './category'
 import { EntityFactory } from './entityFactory'
 
 export class LaserSightFactory extends EntityFactory {
-  constructor(private player: Entity, private world: World) {
+  constructor(private world: World) {
     super()
   }
 
@@ -44,7 +44,7 @@ export class LaserSightFactory extends EntityFactory {
     entity.addComponent(
       'AI',
       new AIComponent({
-        behaviour: laserSightAI(this.player, entity, this.world),
+        behaviour: laserSightAI(entity, this.world),
         name: 'LaserSight:AI',
         dependency: {
           after: ['Player:AI', 'PhysicsSystem:update'],

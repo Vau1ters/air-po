@@ -39,6 +39,7 @@ export class BalloonVineFactory extends TileEntityFactory {
     maxQuantity: 10,
     collectSpeed: 10,
     consumeSpeed: 0,
+    shouldDamageInSuffocation: false,
   }
 
   private readonly RIGID_BODY = {

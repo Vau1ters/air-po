@@ -2,13 +2,15 @@ import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
+import { assert } from '@utils/assertion'
 import { Category, CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
 
 export class EventSensorFactory extends ObjectEntityFactory {
-  private event = ''
-
   public create(): Entity {
+    const event = this.object.properties?.find(prop => prop.name === 'event')?.value as string
+    assert(event, `Sensor must have string property 'event'`)
+
     const entity = super.create()
 
     entity.addComponent(
@@ -25,13 +27,8 @@ export class EventSensorFactory extends ObjectEntityFactory {
         })
       )
     )
-    entity.addComponent('Sensor', new SensorComponent(this.event))
+    entity.addComponent('Sensor', new SensorComponent(event))
 
     return entity
-  }
-
-  public setEvent(event: string): EventSensorFactory {
-    this.event = event
-    return this
   }
 }
