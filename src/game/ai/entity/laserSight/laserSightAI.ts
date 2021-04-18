@@ -8,7 +8,6 @@ import { Ray } from '@core/collision/geometry/ray'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { INFINITY_COORDINATE } from '@core/math/constants'
 import { Vec2 } from '@core/math/vec2'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { LaserSightLockFactory } from '@game/entities/laserSightLockFactory'
@@ -71,7 +70,8 @@ const getClosestHitGenerator = function*(
       hitInfo = []
       yield closestHit
     } else {
-      yield { point: ray.origin.add(ray.direction.mul(INFINITY_COORDINATE)) }
+      // イージングで吹っ飛ばないように無限遠点の距離を短く設定している
+      yield { point: ray.origin.add(ray.direction.normalize().mul(300)) }
     }
   }
 }
@@ -137,7 +137,7 @@ const getLaserSightStateGenerator = function*(
     state: LockingAimState
   ): Behaviour<void> {
     const easeOutChase = ease(Out.quad)(
-      3,
+      6,
       value => {
         state.chasing = value
       },
@@ -147,7 +147,7 @@ const getLaserSightStateGenerator = function*(
       }
     )
     const easeInChase = ease(In.quad)(
-      3,
+      6,
       value => {
         state.chasing = value
       },
