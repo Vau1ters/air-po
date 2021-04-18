@@ -5,8 +5,6 @@ import { MouseController } from '@game/systems/controlSystem'
 import { BulletFactory } from '@game/entities/bulletFactory'
 import * as Sound from '@core/sound/sound'
 import { wait } from '@core/behaviour/wait'
-import { Vec2 } from '@core/math/vec2'
-import { windowSize } from '@core/application'
 
 const SETTING = {
   CONSUME_SPEED: 2,
@@ -28,7 +26,7 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
       // 弾を打つ
       bulletFactory.setShooter(entity, 'player')
       bulletFactory.setDirection(
-        MouseController.position.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+        entity.getComponent('Player').targetPosition.sub(entity.getComponent('Position'))
       )
       world.addEntity(bulletFactory.create())
     }
