@@ -15,10 +15,7 @@ const manageAir = function*(
   }
 ): Behaviour<void> {
   const position = entity.getComponent('Position')
-  const airEntity = new AirFactory()
-    .setQuantity(AirSystem.AIR_SHRINK_QUANTITY_THRESHOLD * 2)
-    .setPosition(position.x, position.y)
-    .create()
+  const airEntity = new AirFactory(position, AirSystem.AIR_SHRINK_QUANTITY_THRESHOLD * 2).create()
   world.addEntity(airEntity)
   while (true) {
     const airComponent = airEntity.getComponent('Air')

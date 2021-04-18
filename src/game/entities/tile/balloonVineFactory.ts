@@ -1,24 +1,18 @@
-import { EntityFactory } from './entityFactory'
 import { Entity } from '@core/ecs/entity'
-import { PositionComponent } from '@game/components/positionComponent'
-import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { Vec2 } from '@core/math/vec2'
-import { DrawComponent } from '@game/components/drawComponent'
-import { buildColliders, ColliderComponent } from '@game/components/colliderComponent'
-import { Category, CategorySet } from './category'
+import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
+import { AIComponent } from '@game/components/aiComponent'
+import { AirHolderComponent } from '@game/components/airHolderComponent'
+import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 import { HPComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
-import { AIComponent } from '@game/components/aiComponent'
-import { parseAnimation } from '@core/graphics/animationParser'
-import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
-import { AirHolderComponent } from '@game/components/airHolderComponent'
-import balloonvineDefinition from '@res/animation/balloonvine.json'
-import { World } from '@core/ecs/world'
-import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
+import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
+import { Category, CategorySet } from '../category'
+import { TileEntityFactory } from './tileEntityFactory'
 
-export class BalloonVineFactory extends EntityFactory {
+export class BalloonVineFactory extends TileEntityFactory {
   private readonly GRIP_COLLIDER = {
     type: 'AABB' as const,
     maxClipToTolerance: new Vec2(2, 2),
@@ -53,26 +47,11 @@ export class BalloonVineFactory extends EntityFactory {
     gravityScale: 1,
   }
 
-  constructor(private world: World) {
-    super()
-  }
-
   public create(): Entity {
-    const entity = new Entity()
+    const entity = super.create()
 
     entity.addComponent('AI', new AIComponent(balloonvineAI(entity, this.world)))
-    entity.addComponent('Position', new PositionComponent())
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
-    entity.addComponent(
-      'Draw',
-      new DrawComponent({
-        entity,
-        child: {
-          sprite: parseAnimation(balloonvineDefinition.sprite),
-          zIndex: 1,
-        },
-      })
-    )
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -111,8 +90,9 @@ export class BalloonVineFactory extends EntityFactory {
     entity.addComponent('HP', new HPComponent(1, 1))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
-    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
+
+    if (this.frame === 1) entity.getComponent('AirHolder').quantity = this.AIR_HOLDER.maxQuantity
     return entity
   }
 }
