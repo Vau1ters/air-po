@@ -37,6 +37,7 @@ export class KinokoFactory extends TileEntityFactory {
     maxQuantity: 1,
     collectSpeed: 1,
     consumeSpeed: 0,
+    shouldDamageInSuffocation: false,
   }
 
   private readonly JUMP_ACCEL = 500
