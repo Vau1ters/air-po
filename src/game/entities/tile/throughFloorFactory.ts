@@ -5,11 +5,11 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { StaticComponent } from '@game/components/staticComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { MapObjectFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './mapObjectFactory'
 
 export const THROUGH_FLOOR_TAG = 'ThroughFloor'
 
-export class ThroughFloorFactory extends MapObjectFactory {
+export class ThroughFloorFactory extends TileEntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(0, -2),

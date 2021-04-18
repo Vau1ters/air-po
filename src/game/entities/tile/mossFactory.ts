@@ -4,9 +4,9 @@ import { ColliderComponent, buildColliders } from '@game/components/colliderComp
 import { LightComponent } from '@game/components/lightComponent'
 import { LIGHT_TAG } from '@game/systems/lightSystem'
 import { Category, CategorySet } from '../category'
-import { MapObjectFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './mapObjectFactory'
 
-export class MossFactory extends MapObjectFactory {
+export class MossFactory extends TileEntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(8, 8),

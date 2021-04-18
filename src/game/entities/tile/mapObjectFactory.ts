@@ -7,7 +7,7 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from '../entityFactory'
 
-export class MapObjectFactory extends EntityFactory {
+export class TileEntityFactory extends EntityFactory {
   constructor(
     private pos: Vec2,
     private name: string,

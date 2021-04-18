@@ -8,13 +8,13 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { VineComponent } from '@game/components/vineComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { MapObjectFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './mapObjectFactory'
 
 export const VINE_TAG = 'Vine'
 export const VINE_TERRAIN_SENSOR_TAG = 'VineWallSensor'
 export const VINE_AIR_SENSOR_TAG = 'VineAirSensor'
 
-export class VineFactory extends MapObjectFactory {
+export class VineFactory extends TileEntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(16, 16),

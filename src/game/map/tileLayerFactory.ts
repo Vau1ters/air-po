@@ -1,17 +1,17 @@
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { AirGeyserFactory } from '@game/entities/mapObject/airGeyserFactory'
-import { BalloonVineFactory } from '@game/entities/mapObject/balloonVineFactory'
-import { DandelionFactory } from '@game/entities/mapObject/dandelionFactory'
-import { Enemy1Factory } from '@game/entities/mapObject/enemy1Factory'
-import { KinokoFactory } from '@game/entities/mapObject/kinokoFactory'
-import { MapObjectFactory } from '@game/entities/mapObject/mapObjectFactory'
-import { MossFactory } from '@game/entities/mapObject/mossFactory'
-import { Slime1Factory } from '@game/entities/mapObject/slime1Factory'
-import { SnibeeFactory } from '@game/entities/mapObject/snibeeFactory'
-import { ThroughFloorFactory } from '@game/entities/mapObject/throughFloorFactory'
-import { VineFactory } from '@game/entities/mapObject/vineFactory'
-import { WallFactory } from '@game/entities/mapObject/wallFactory'
+import { AirGeyserFactory } from '@game/entities/tile/airGeyserFactory'
+import { BalloonVineFactory } from '@game/entities/tile/balloonVineFactory'
+import { DandelionFactory } from '@game/entities/tile/dandelionFactory'
+import { Enemy1Factory } from '@game/entities/tile/enemy1Factory'
+import { KinokoFactory } from '@game/entities/tile/kinokoFactory'
+import { TileEntityFactory } from '@game/entities/tile/mapObjectFactory'
+import { MossFactory } from '@game/entities/tile/mossFactory'
+import { Slime1Factory } from '@game/entities/tile/slime1Factory'
+import { SnibeeFactory } from '@game/entities/tile/snibeeFactory'
+import { ThroughFloorFactory } from '@game/entities/tile/throughFloorFactory'
+import { VineFactory } from '@game/entities/tile/vineFactory'
+import { WallFactory } from '@game/entities/tile/wallFactory'
 import { assert } from '@utils/assertion'
 import { Random } from '@utils/random'
 import { TileSet, TileLayer } from './mapBuilder'
@@ -50,7 +50,12 @@ export class TileLayerFactory {
   private loadBuilders(tileSets: Array<TileSet>): Array<Builder> {
     const builders = new Array<Builder>()
     const factories: {
-      [keys: string]: new (pos: Vec2, name: string, frame: number, world: World) => MapObjectFactory
+      [keys: string]: new (
+        pos: Vec2,
+        name: string,
+        frame: number,
+        world: World
+      ) => TileEntityFactory
     } = {
       airGeyser: AirGeyserFactory,
       balloonvine: BalloonVineFactory,

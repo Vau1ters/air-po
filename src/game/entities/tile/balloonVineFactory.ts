@@ -10,9 +10,9 @@ import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { Category, CategorySet } from '../category'
-import { MapObjectFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './mapObjectFactory'
 
-export class BalloonVineFactory extends MapObjectFactory {
+export class BalloonVineFactory extends TileEntityFactory {
   private readonly GRIP_COLLIDER = {
     type: 'AABB' as const,
     maxClipToTolerance: new Vec2(2, 2),

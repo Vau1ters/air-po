@@ -11,7 +11,7 @@ import {
   VINE_TERRAIN_SENSOR_TAG,
   VINE_AIR_SENSOR_TAG,
   VINE_TAG,
-} from '@game/entities/mapObject/vineFactory'
+} from '@game/entities/tile/vineFactory'
 
 const canExtend = (args: CollisionCallbackArgs): void => {
   const { me } = args
