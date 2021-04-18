@@ -2,7 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAny } from '@core/behaviour/composite'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { AirComponent } from '@game/components/airComponent'
+import { AirFactory } from '@game/entities/airFactory'
 import { AirSystem } from '@game/systems/airSystem'
 import { animateLoop } from '../common/action/animate'
 
@@ -15,9 +15,7 @@ const manageAir = function*(
   }
 ): Behaviour<void> {
   const position = entity.getComponent('Position')
-  const airEntity = new Entity()
-  airEntity.addComponent('Position', position)
-  airEntity.addComponent('Air', new AirComponent(AirSystem.AIR_SHRINK_QUANTITY_THRESHOLD * 2))
+  const airEntity = new AirFactory(position, AirSystem.AIR_SHRINK_QUANTITY_THRESHOLD * 2).create()
   world.addEntity(airEntity)
   while (true) {
     const airComponent = airEntity.getComponent('Air')
