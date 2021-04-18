@@ -1,6 +1,6 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
-import { parallelAll } from '@core/behaviour/composite'
+import { parallelAll, parallelAny } from '@core/behaviour/composite'
 import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
 import { CollisionResultRayAABB } from '@core/collision/collision/Ray_AABB'
@@ -21,16 +21,17 @@ type HitResult = {
   entity?: Entity
 }
 type Lock = { lock: Entity; despawn: () => void }
-type LaserSightState =
-  | {
-      state: 'Locking'
-      target: Entity
-      chasing: number
-    }
-  | {
-      state: 'Free'
-      point: Vec2
-    }
+type LockingAimState = {
+  state: 'Locking'
+  target: Entity
+  chasing: number
+  hitResult: HitResult
+}
+type FreeAimState = {
+  state: 'Free'
+  hitResult: HitResult
+}
+type LaserSightState = LockingAimState | FreeAimState
 
 const updateInvisibleRay = function*(laser: Entity, world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -109,28 +110,26 @@ const getLaserSightStateGenerator = function*(
   const [collider] = laser.getComponent('Collider').colliders
   const ray = collider.geometry as Ray
 
-  const freeAimGenerator = function*(): Generator<LaserSightState, Entity> {
-    while (true) {
-      const { value } = getClosestHit.next()
-      assert(value instanceof Object, 'Unexpected error')
-
-      const { entity, point } = value
-
-      if (entity && shouldLockEntity(entity, ray)) return entity
-
-      yield {
-        state: 'Free',
-        point,
-      }
+  const setHitResultGenerator = function*(state: LaserSightState): Behaviour<void> {
+    for (const hitResult of getClosestHit) {
+      state.hitResult.entity = hitResult.entity
+      state.hitResult.point = hitResult.point
+      yield
     }
   }
 
-  const lockingAimGenerator = function*(entity: Entity): Generator<void> {
+  const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
     while (true) {
-      const { value } = getClosestHit.next()
-      assert(value instanceof Object, 'Unexpected error')
+      const { entity } = state.hitResult
+      if (entity && shouldLockEntity(entity, ray)) return
 
-      const { entity: currentHittingEntity } = value
+      yield
+    }
+  }
+
+  const lockingAimGenerator = function*(entity: Entity, state: LockingAimState): Behaviour<void> {
+    while (true) {
+      const { entity: currentHittingEntity } = state.hitResult
       if (
         currentHittingEntity?.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
         (isDistantEnough(ray, entity) || !shouldLockEntity(entity, ray))
@@ -141,16 +140,10 @@ const getLaserSightStateGenerator = function*(
       yield
     }
   }
-
-  while (true) {
-    const entity = yield* freeAimGenerator()
-
-    const lock = spawnLock(entity, world)
-    const state: LaserSightState = {
-      state: 'Locking',
-      target: entity,
-      chasing: 0,
-    }
+  const lockingAimWithEasingGenerator = function*(
+    entity: Entity,
+    state: LockingAimState
+  ): Behaviour<void> {
     const easeOutChase = ease(Out.quad)(
       3,
       value => {
@@ -172,15 +165,45 @@ const getLaserSightStateGenerator = function*(
       }
     )
 
-    for (const _ of easeOutChase) {
-      yield state
+    yield* easeOutChase
+    yield* lockingAimGenerator(entity, state)
+    yield* easeInChase
+  }
+
+  const hitResult: HitResult = {
+    point: new Vec2(),
+  }
+  while (true) {
+    const freeAimState: FreeAimState = {
+      state: 'Free',
+      hitResult,
     }
-    for (const _ of lockingAimGenerator(entity)) {
-      yield state
+    for (const _ of parallelAny([
+      setHitResultGenerator(freeAimState),
+      freeAimGenerator(freeAimState),
+    ])) {
+      yield freeAimState
     }
-    for (const _ of easeInChase) {
-      yield state
+    yield freeAimState
+
+    const { entity } = hitResult
+    assert(entity, 'Unexpected Error')
+
+    const lockingAimState: LockingAimState = {
+      state: 'Locking',
+      target: entity,
+      chasing: 0,
+      hitResult,
     }
+    const lock = spawnLock(entity, world)
+
+    for (const _ of parallelAny([
+      setHitResultGenerator(lockingAimState),
+      lockingAimWithEasingGenerator(entity, lockingAimState),
+    ])) {
+      yield lockingAimState
+    }
+    yield lockingAimState
 
     lock.despawn()
   }
@@ -192,19 +215,13 @@ const updateVisibleRay = function*(laser: Entity, world: World): Behaviour<void>
   const [player] = playerFamily.entityArray
 
   for (const state of getLaserSightStateGenerator(player, laser, world)) {
-    const mousePosition = MouseController.position
     const start = player.getComponent('Position')
 
-    const end = new Vec2()
-    if (state.state === 'Free') {
-      end.assign(state.point)
-    } else {
-      const end0 = start.add(
-        mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
-      )
+    const end = state.hitResult.point.copy()
+    if (state.state === 'Locking') {
       const end1 = state.target.getComponent('Position')
 
-      end.assign(end0.add(end1.sub(end0).mul(state.chasing)))
+      end.assign(end.add(end1.sub(end).mul(state.chasing)))
     }
 
     player.getComponent('Player').targetPosition = end
@@ -220,6 +237,6 @@ const updateVisibleRay = function*(laser: Entity, world: World): Behaviour<void>
   }
 }
 
-export const laserSightAI = (player: Entity, laser: Entity, world: World): Behaviour<void> => {
+export const laserSightAI = (laser: Entity, world: World): Behaviour<void> => {
   return parallelAll([updateInvisibleRay(laser, world), updateVisibleRay(laser, world)])
 }
