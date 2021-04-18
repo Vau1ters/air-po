@@ -70,6 +70,11 @@ export class DamageSystem extends System {
     }
     targetHP.decrease(attack.damage)
 
+    if (targetHP.hp <= 0) {
+      target.getComponent('Collider').removeByTag(ATTACK_TAG)
+      target.getComponent('Collider').removeByTag(HITBOX_TAG)
+    }
+
     // if manually remove by adding callback to do it,
     // the order of call can influence the result
     // to ignore that, damage system also has a responsibility to remove entity
