@@ -4,48 +4,36 @@ import { AirFactory } from '@game/entities/object/airFactory'
 import { AirGeyserFactory } from '@game/entities/object/airGeyserFactory'
 import { EquipmentTileFactory } from '@game/entities/object/equipmentTileFactory'
 import { EventSensorFactory } from '@game/entities/object/eventSensorFactory'
+import { ObjectEntityFactory } from '@game/entities/object/objectEntityFactory'
 import { PlayerFactory } from '@game/entities/object/playerFactory'
 import { PlayerUIFactory } from '@game/entities/playerUIFactory'
 import { ObjectLayer, MapObject } from './mapBuilder'
 
-type Builder = (name: string, object: MapObject) => void
+type Builder = new (name: string, object: MapObject, world: World) => ObjectEntityFactory
 
 export class ObjectLayerFactory {
   private builders: { [keys: string]: Builder }
   constructor(private world: World, private playerSpawnerID: number) {
     this.builders = {
-      air: (name: string, object: MapObject): void => this.buildAir(name, object),
-      airGeyser: (name: string, object: MapObject): void => this.buildAirGeyser(name, object),
-      sensor: (name: string, object: MapObject): void => this.buildSensor(name, object),
-      equipment: (name: string, object: MapObject): void => this.buildEquipment(name, object),
-      player: (name: string, object: MapObject): void => this.buildPlayer(name, object),
+      air: AirFactory,
+      airGeyser: AirGeyserFactory,
+      sensor: EventSensorFactory,
+      equipment: EquipmentTileFactory,
     }
   }
 
   public build(layer: ObjectLayer): void {
     for (const object of layer.objects) {
-      this.builders[layer.name](layer.name, object)
+      switch (layer.name) {
+        case 'player':
+          this.buildPlayer(layer.name, object)
+          break
+        default:
+          this.world.addEntity(
+            new this.builders[layer.name](layer.name, object, this.world).create()
+          )
+      }
     }
-  }
-
-  private buildAir(name: string, object: MapObject): void {
-    const air = new AirFactory(name, object, this.world).create()
-    this.world.addEntity(air)
-  }
-
-  private buildAirGeyser(name: string, object: MapObject): void {
-    const airGeyserFactory = new AirGeyserFactory(name, object, this.world)
-    this.world.addEntity(airGeyserFactory.create())
-  }
-
-  private buildSensor(name: string, object: MapObject): void {
-    const sensor = new EventSensorFactory(name, object, this.world).create()
-    this.world.addEntity(sensor)
-  }
-
-  private buildEquipment(name: string, object: MapObject): void {
-    const equipment = new EquipmentTileFactory(name, object, this.world).create()
-    this.world.addEntity(equipment)
   }
 
   private buildPlayer(name: string, object: MapObject): void {

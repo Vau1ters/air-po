@@ -5,7 +5,7 @@ import { AirComponent } from '@game/components/airComponent'
 
 export const emitAir = function*(entity: Entity, world: World, quantity: number): Behaviour<void> {
   const air = new Entity()
-  air.addComponent('Position', entity.getComponent('Position'))
+  air.addComponent('Position', entity.getComponent('Position').copy())
   air.addComponent('Air', new AirComponent(quantity))
   world.addEntity(air)
 }
