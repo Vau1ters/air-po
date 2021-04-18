@@ -3,7 +3,6 @@ import { Vec2 } from '@core/math/vec2'
 import { BalloonVineFactory } from '@game/entities/tile/balloonVineFactory'
 import { DandelionFactory } from '@game/entities/tile/dandelionFactory'
 import { Enemy1Factory } from '@game/entities/tile/enemy1Factory'
-import { KinokoFactory } from '@game/entities/tile/kinokoFactory'
 import { MossFactory } from '@game/entities/tile/mossFactory'
 import { Slime1Factory } from '@game/entities/tile/slime1Factory'
 import { SnibeeFactory } from '@game/entities/tile/snibeeFactory'
@@ -59,7 +58,6 @@ export class TileLayerFactory {
       balloonvine: BalloonVineFactory,
       dandelion: DandelionFactory,
       enemy1: Enemy1Factory,
-      kinoko: KinokoFactory,
       moss: MossFactory,
       slime1: Slime1Factory,
       snibee: SnibeeFactory,
