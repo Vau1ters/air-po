@@ -1,6 +1,6 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
-import { parallelAll, parallelAny } from '@core/behaviour/composite'
+import { parallelAll } from '@core/behaviour/composite'
 import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
 import { CollisionResultRayAABB } from '@core/collision/collision/Ray_AABB'
@@ -110,14 +110,6 @@ const getLaserSightStateGenerator = function*(
   const [collider] = laser.getComponent('Collider').colliders
   const ray = collider.geometry as Ray
 
-  const setHitResultGenerator = function*(state: LaserSightState): Behaviour<void> {
-    for (const hitResult of getClosestHit) {
-      state.hitResult.entity = hitResult.entity
-      state.hitResult.point = hitResult.point
-      yield
-    }
-  }
-
   const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
     while (true) {
       const { entity } = state.hitResult
@@ -173,18 +165,24 @@ const getLaserSightStateGenerator = function*(
   const hitResult: HitResult = {
     point: new Vec2(),
   }
+  const assignHitResult = (): void => {
+    const { value } = getClosestHit.next()
+    assert(value instanceof Object, 'Unexpected Error')
+
+    hitResult.entity = value.entity
+    hitResult.point = value.point
+  }
+
   while (true) {
     const freeAimState: FreeAimState = {
       state: 'Free',
       hitResult,
     }
-    for (const _ of parallelAny([
-      setHitResultGenerator(freeAimState),
-      freeAimGenerator(freeAimState),
-    ])) {
+    for (const _ of freeAimGenerator(freeAimState)) {
+      assignHitResult()
+
       yield freeAimState
     }
-    yield freeAimState
 
     const { entity } = hitResult
     assert(entity, 'Unexpected Error')
@@ -197,13 +195,11 @@ const getLaserSightStateGenerator = function*(
     }
     const lock = spawnLock(entity, world)
 
-    for (const _ of parallelAny([
-      setHitResultGenerator(lockingAimState),
-      lockingAimWithEasingGenerator(entity, lockingAimState),
-    ])) {
+    for (const _ of lockingAimWithEasingGenerator(entity, lockingAimState)) {
+      assignHitResult()
+
       yield lockingAimState
     }
-    yield lockingAimState
 
     lock.despawn()
   }
