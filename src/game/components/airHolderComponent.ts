@@ -3,6 +3,8 @@ export class AirHolderComponent {
   public maxQuantity: number
   private consumeSpeed: number
   private collectSpeed: number
+  public readonly shouldDamageInSuffocation: boolean
+  public suffocationDamageCount: number
   public inAir: boolean
 
   public constructor(airSetting: {
@@ -10,11 +12,14 @@ export class AirHolderComponent {
     maxQuantity: number
     consumeSpeed: number
     collectSpeed: number
+    shouldDamageInSuffocation: boolean
   }) {
     this.quantity = airSetting.initialQuantity
     this.maxQuantity = airSetting.maxQuantity
     this.consumeSpeed = airSetting.consumeSpeed
     this.collectSpeed = airSetting.collectSpeed
+    this.shouldDamageInSuffocation = airSetting.shouldDamageInSuffocation
+    this.suffocationDamageCount = 0
     this.inAir = false
   }
 
