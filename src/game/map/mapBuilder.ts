@@ -293,7 +293,7 @@ export class MapBuilder {
     playerPosition.x = x + width / 2
     playerPosition.y = y - height
     this.world.addEntity(player)
-    this.world.addEntity(new LaserSightFactory(player, this.world).create())
+    this.world.addEntity(new LaserSightFactory(this.world).create())
     this.world.addEntity(new PlayerUIFactory(this.world).create())
   }
 
