@@ -5,7 +5,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { StaticComponent } from '@game/components/staticComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './tileEntityFactory'
 
 export const THROUGH_FLOOR_TAG = 'ThroughFloor'
 

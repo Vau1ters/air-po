@@ -10,7 +10,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { ATTACK_TAG } from '@game/systems/damageSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './tileEntityFactory'
 
 export class SnibeeFactory extends TileEntityFactory {
   private readonly BODY_COLLIDER = {

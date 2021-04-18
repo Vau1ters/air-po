@@ -6,9 +6,9 @@ import { ColliderComponent, buildCollider } from '@game/components/colliderCompo
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { ObjectEntityFactory } from './objectEntityFactory'
 
-export class AirGeyserFactory extends TileEntityFactory {
+export class AirGeyserFactory extends ObjectEntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(0, 9),

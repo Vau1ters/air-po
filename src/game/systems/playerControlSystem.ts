@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { PLAYER_FOOT_TAG, PLAYER_SENSOR_TAG } from '@game/entities/tile/playerFactory'
+import { PLAYER_FOOT_TAG, PLAYER_SENSOR_TAG } from '@game/entities/object/playerFactory'
 
 export class PlayerControlSystem extends System {
   private family: Family

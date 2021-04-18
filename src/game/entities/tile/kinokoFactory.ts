@@ -13,7 +13,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './tileEntityFactory'
 
 export class KinokoFactory extends TileEntityFactory {
   private readonly WALL_COLLIDER = {

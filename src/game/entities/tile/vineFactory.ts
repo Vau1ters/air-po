@@ -8,7 +8,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { VineComponent } from '@game/components/vineComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './tileEntityFactory'
 
 export const VINE_TAG = 'Vine'
 export const VINE_TERRAIN_SENSOR_TAG = 'VineWallSensor'

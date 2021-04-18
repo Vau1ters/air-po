@@ -4,7 +4,7 @@ import { ColliderComponent, buildColliders } from '@game/components/colliderComp
 import { LightComponent } from '@game/components/lightComponent'
 import { LIGHT_TAG } from '@game/systems/lightSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './tileEntityFactory'
 
 export class MossFactory extends TileEntityFactory {
   private readonly COLLIDER = {

@@ -1,15 +1,14 @@
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { AirGeyserFactory } from '@game/entities/tile/airGeyserFactory'
 import { BalloonVineFactory } from '@game/entities/tile/balloonVineFactory'
 import { DandelionFactory } from '@game/entities/tile/dandelionFactory'
 import { Enemy1Factory } from '@game/entities/tile/enemy1Factory'
 import { KinokoFactory } from '@game/entities/tile/kinokoFactory'
-import { TileEntityFactory } from '@game/entities/tile/mapObjectFactory'
 import { MossFactory } from '@game/entities/tile/mossFactory'
 import { Slime1Factory } from '@game/entities/tile/slime1Factory'
 import { SnibeeFactory } from '@game/entities/tile/snibeeFactory'
 import { ThroughFloorFactory } from '@game/entities/tile/throughFloorFactory'
+import { TileEntityFactory } from '@game/entities/tile/tileEntityFactory'
 import { VineFactory } from '@game/entities/tile/vineFactory'
 import { WallFactory } from '@game/entities/tile/wallFactory'
 import { assert } from '@utils/assertion'
@@ -57,7 +56,6 @@ export class TileLayerFactory {
         world: World
       ) => TileEntityFactory
     } = {
-      airGeyser: AirGeyserFactory,
       balloonvine: BalloonVineFactory,
       dandelion: DandelionFactory,
       enemy1: Enemy1Factory,
@@ -87,7 +85,7 @@ export class TileLayerFactory {
                 new factories[name](
                   new Vec2(
                     pos.x * tileSize.x + objectSize.x / 2,
-                    pos.y * tileSize.y - objectSize.y / 2
+                    (pos.y + 1) * tileSize.y - objectSize.y / 2
                   ),
                   name,
                   frame,
@@ -109,7 +107,7 @@ export class TileLayerFactory {
     firstgid: number
   ): void {
     const factory = new WallFactory(
-      new Vec2(pos.x * tileSize.x + objectSize.x / 2, pos.y * tileSize.y - objectSize.y / 2)
+      new Vec2(pos.x * tileSize.x + objectSize.x / 2, (pos.y + 1) * tileSize.y - objectSize.y / 2)
     )
     const cells = []
     for (let j = 0; j < 3; j++) {

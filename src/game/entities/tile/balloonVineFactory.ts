@@ -10,7 +10,7 @@ import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
+import { TileEntityFactory } from './tileEntityFactory'
 
 export class BalloonVineFactory extends TileEntityFactory {
   private readonly GRIP_COLLIDER = {

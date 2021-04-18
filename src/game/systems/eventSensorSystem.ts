@@ -5,7 +5,7 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
-import { PLAYER_SENSOR_TAG } from '@game/entities/tile/playerFactory'
+import { PLAYER_SENSOR_TAG } from '@game/entities/object/playerFactory'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family

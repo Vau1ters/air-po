@@ -14,13 +14,13 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
-import { TileEntityFactory } from './mapObjectFactory'
-import { THROUGH_FLOOR_TAG } from './throughFloorFactory'
+import { THROUGH_FLOOR_TAG } from '../tile/throughFloorFactory'
+import { ObjectEntityFactory } from './objectEntityFactory'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
 
-export class PlayerFactory extends TileEntityFactory {
+export class PlayerFactory extends ObjectEntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(13, 16),
