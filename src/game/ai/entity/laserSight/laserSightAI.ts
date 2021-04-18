@@ -63,16 +63,13 @@ const getClosestHitGenerator = function*(
   })
 
   while (true) {
-    if (hitInfo.length > 0) {
-      const closestHit = hitInfo.reduce((a, b) =>
-        a.point.sub(ray.origin).length() < b.point.sub(ray.origin).length() ? a : b
-      )
-      hitInfo = []
-      yield closestHit
-    } else {
+    const closestHit = hitInfo.reduce(
+      (a, b) => (a.point.sub(ray.origin).length() < b.point.sub(ray.origin).length() ? a : b),
       // イージングで吹っ飛ばないように無限遠点の距離を短く設定している
-      yield { point: ray.origin.add(ray.direction.normalize().mul(300)) }
-    }
+      { point: ray.origin.add(ray.direction.normalize().mul(300)) }
+    )
+    hitInfo = []
+    yield closestHit
   }
 }
 const isDistantEnough = (ray: Ray, entity: Entity): boolean => {
