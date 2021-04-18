@@ -9,7 +9,7 @@ import { AirGeyserFactory } from '@game/entities/mapObject/airGeyserFactory'
 import { PlayerFactory } from '@game/entities/mapObject/playerFactory'
 import { PlayerUIFactory } from '@game/entities/playerUIFactory'
 import { assert } from '@utils/assertion'
-import { MapLayerFactory } from './mapLayerFactory'
+import { TileLayerFactory } from './tileLayerFactory'
 
 type CustomProperty = {
   name: string
@@ -83,16 +83,16 @@ export class MapBuilder {
   public constructor(private world: World) {}
 
   public build(map: Map, playerSpawnerID: number): void {
-    const mapLayerFactory = new MapLayerFactory(this.world, map.tilesets)
+    const tileLayerFactory = new TileLayerFactory(this.world, map.tilesets)
     const tileSize = new Vec2(map.tilewidth, map.tileheight)
     for (const layer of map.layers) {
       switch (layer.name) {
-        case 'air':
-          this.buildAir(layer as ObjectLayer)
-          break
         case 'map':
         case 'moss':
-          mapLayerFactory.build(layer as TileLayer, tileSize)
+          tileLayerFactory.build(layer as TileLayer, tileSize)
+          break
+        case 'air':
+          this.buildAir(layer as ObjectLayer)
           break
         case 'sensor':
           this.buildSensor(layer as ObjectLayer)

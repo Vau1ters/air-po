@@ -19,7 +19,7 @@ import { TileSet, TileLayer } from './mapBuilder'
 type Build = (pos: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
 type Builder = { firstgid: number; build: Build }
 
-export class MapLayerFactory {
+export class TileLayerFactory {
   private builders: Array<Builder>
   private rand = new Random()
 
