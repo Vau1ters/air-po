@@ -41,7 +41,7 @@ export class ObjectLayerFactory {
       return
     const player = new PlayerFactory(name, object, this.world).create()
     this.world.addEntity(player)
-    this.world.addEntity(new LaserSightFactory(player, this.world).create())
+    this.world.addEntity(new LaserSightFactory(this.world).create())
     this.world.addEntity(new PlayerUIFactory(this.world).create())
   }
 }

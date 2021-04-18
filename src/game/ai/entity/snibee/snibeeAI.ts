@@ -107,8 +107,6 @@ const flutteringAI = function*(entity: Entity): Behaviour<void> {
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
-  entity.getComponent('Collider').removeByTag('AttackHitBox')
-  entity.getComponent('Collider').removeByTag('snibeeBody')
   yield* animate(entity, 'Dying')
   entity.getComponent('RigidBody').velocity.x = 0
   entity.getComponent('RigidBody').velocity.y = -3
