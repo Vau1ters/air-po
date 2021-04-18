@@ -1,7 +1,7 @@
 import { CollisionResultAABBAABB } from '@core/collision/collision/AABB_AABB'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { kinokoAI } from '@game/ai/entity/kinoko/kinokoAI'
+import { mushroomAI } from '@game/ai/entity/mushroom/mushroomAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import {
@@ -15,7 +15,7 @@ import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
 import { TileEntityFactory } from './tileEntityFactory'
 
-export class KinokoFactory extends TileEntityFactory {
+export class MushroomFactory extends TileEntityFactory {
   private readonly WALL_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(20, 64),
@@ -76,7 +76,7 @@ export class KinokoFactory extends TileEntityFactory {
     )
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
-    entity.addComponent('AI', new AIComponent(kinokoAI(entity)))
+    entity.addComponent('AI', new AIComponent(mushroomAI(entity)))
 
     const [floorCollider] = entity.getComponent('Collider').colliders
     floorCollider.callbacks.add((args: CollisionCallbackArgs) => {

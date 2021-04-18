@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { animate } from '../common/action/animate'
 import { hasAir } from '../common/condition/hasAir'
 
-export const kinokoAI = function*(entity: Entity): Behaviour<void> {
+export const mushroomAI = function*(entity: Entity): Behaviour<void> {
   while (true) {
     if (hasAir(entity)()) {
       yield* animate(entity, 'Open')

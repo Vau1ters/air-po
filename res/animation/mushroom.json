@@ -1,6 +1,6 @@
 {
   "sprite": {
-    "name": "kinoko",
+    "name": "mushroom",
     "state": {
       "Open": [0],
       "Close": [1]
