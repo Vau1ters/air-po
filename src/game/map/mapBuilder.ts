@@ -95,3 +95,11 @@ export class MapBuilder {
     }
   }
 }
+
+export function getTileId(layer: TileLayer, x: number, y: number): number {
+  if (x < 0) return 0
+  if (y < 0) return 0
+  if (x >= layer.width) return 0
+  if (y >= layer.height) return 0
+  return layer.data[x + y * layer.width]
+}

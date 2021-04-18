@@ -15,10 +15,14 @@ export class AirGeyserFactory extends ObjectEntityFactory {
     size: new Vec2(10, 13),
   }
 
-  public maxQuantity = 120
-  public increaseRate = 0.2
-
   public create(): Entity {
+    const maxQuantity =
+      (this.object.properties?.find(property => property.name === 'maxQuantity')
+        ?.value as number) ?? 120
+    const increaseRate =
+      (this.object.properties?.find(property => property.name === 'increaseRate')
+        ?.value as number) ?? 0.2
+
     const entity = super.create()
 
     entity.addComponent(
@@ -38,8 +42,8 @@ export class AirGeyserFactory extends ObjectEntityFactory {
       'AI',
       new AIComponent({
         behaviour: airGeyserAI(entity, this.world, {
-          maxQuantity: this.maxQuantity,
-          increaseRate: this.increaseRate,
+          maxQuantity,
+          increaseRate,
         }),
         dependency: {
           after: ['AirHolderSystem:update'],
