@@ -51,6 +51,7 @@ export class PlayerFactory extends EntityFactory {
     maxQuantity: 0,
     collectSpeed: 0.05,
     consumeSpeed: 0.025,
+    shouldDamageInSuffocation: true,
   }
 
   public constructor(private world: World) {
