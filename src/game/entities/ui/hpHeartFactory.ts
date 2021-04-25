@@ -4,7 +4,7 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
-import hpHeartDefinition from '@res/animation/hpHeart.json'
+import hpHeartDefinition from '@res/animation/uiHpHeart.json'
 
 export class HpHeartFactory extends EntityFactory {
   constructor(private index: number) {

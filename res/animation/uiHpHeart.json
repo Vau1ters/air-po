@@ -1,6 +1,6 @@
 {
   "sprite": {
-    "name": "hpHeart",
+    "name": "uiHpHeart",
     "state": {
       "Full": [0],
       "Empty": [9],
