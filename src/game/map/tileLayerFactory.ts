@@ -64,7 +64,7 @@ export class TileLayerFactory {
       snibee: SnibeeFactory,
       throughFloor: ThroughFloorFactory,
       vine: VineFactory,
-      risupon: RespawnFlagFactory,
+      respawn: RespawnFlagFactory,
     }
     for (const { firstgid, source } of tileSets) {
       const { name, tilewidth, tileheight } = require(`../../../res/map/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires

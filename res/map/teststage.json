@@ -375,7 +375,7 @@
         }, 
         {
          "firstgid":114,
-         "source":"tileset\/risupon.json"
+         "source":"tileset\/respawn.json"
         }],
  "tilewidth":8,
  "type":"map",
