@@ -1,5 +1,7 @@
+import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { assert } from '@utils/assertion'
 import { ObjectLayerFactory } from './objectLayerFactory'
 import { TileLayerFactory } from './tileLayerFactory'
 
@@ -72,10 +74,12 @@ export type Map = {
 }
 
 export class MapBuilder {
-  public constructor(private world: World) {}
+  private objectLayerFactory: ObjectLayerFactory
+  public constructor(private world: World) {
+    this.objectLayerFactory = new ObjectLayerFactory(this.world)
+  }
 
-  public build(map: Map, playerSpawnerID: number): void {
-    const objectLayerFactory = new ObjectLayerFactory(this.world, playerSpawnerID)
+  public build(map: Map): void {
     const tileLayerFactory = new TileLayerFactory(this.world, map.tilesets)
     const tileSize = new Vec2(map.tilewidth, map.tileheight)
     for (const layer of map.layers) {
@@ -89,9 +93,24 @@ export class MapBuilder {
         case 'equipment':
         case 'airGeyser':
         case 'player':
-          objectLayerFactory.build(layer as ObjectLayer)
+          this.objectLayerFactory.build(layer as ObjectLayer)
           break
       }
+    }
+  }
+
+  public spawnPlayer(id: number): void {
+    const spawner = this.objectLayerFactory.playerSpanwners.get(id)
+    assert(spawner, `player spawner ID '${id}' is not found`)
+    spawner()
+  }
+
+  public respawnPlayer(player: Entity): void {
+    const respawn = player.getComponent('Player').lastRespawnFlag
+    if (respawn) {
+      this.objectLayerFactory.buildPlayer(respawn.getComponent('Position'))
+    } else {
+      this.spawnPlayer(0)
     }
   }
 }

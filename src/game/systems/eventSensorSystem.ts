@@ -46,7 +46,8 @@ export class EventSensorSystem extends System {
     const map = (await import(`../../../res/map/${newMapName}.json`)) as Map
     this.world.reset()
     const mapBuilder = new MapBuilder(this.world)
-    mapBuilder.build(map, spawnerID)
+    mapBuilder.build(map)
+    mapBuilder.spawnPlayer(spawnerID)
   }
 
   private async equipItemEvent(equipmentType: EquipmentTypes, equipmentId: number): Promise<void> {

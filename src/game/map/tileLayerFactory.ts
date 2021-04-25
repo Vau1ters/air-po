@@ -13,6 +13,7 @@ import { VineFactory } from '@game/entities/tile/vineFactory'
 import { WallFactory } from '@game/entities/tile/wallFactory'
 import { assert } from '@utils/assertion'
 import { TileSet, TileLayer, getTileId } from './mapBuilder'
+import { RespawnFlagFactory } from '@game/entities/tile/respawnFlagFactory'
 
 type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
 type Builder = { firstgid: number; build: Build }
@@ -63,6 +64,7 @@ export class TileLayerFactory {
       snibee: SnibeeFactory,
       throughFloor: ThroughFloorFactory,
       vine: VineFactory,
+      risupon: RespawnFlagFactory,
     }
     for (const { firstgid, source } of tileSets) {
       const { name, tilewidth, tileheight } = require(`../../../res/map/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires

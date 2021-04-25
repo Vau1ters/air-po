@@ -7,4 +7,5 @@ export class PlayerComponent {
   public possessingEntity: Entity | undefined = undefined
   public throughFloorIgnoreCount = 0
   public targetPosition = new Vec2()
+  public lastRespawnFlag?: Entity
 }

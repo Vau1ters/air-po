@@ -22,9 +22,11 @@ import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
 import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
+import { Entity } from '@core/ecs/entity'
 
 export class GameWorldFactory {
-  public create(map: Map, playerSpawnerID: number): World {
+  private mapBuilder?: MapBuilder
+  public create(map: Map): World {
     const world = new World(gameWorldAI)
 
     const filterContainer = new Container()
@@ -80,9 +82,17 @@ export class GameWorldFactory {
       new HPSystem(world, worldUIContainer)
     )
 
-    const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map, playerSpawnerID)
+    this.mapBuilder = new MapBuilder(world)
+    this.mapBuilder.build(map)
 
     return world
+  }
+
+  spawnPlayer(spawnerID: number): void {
+    this.mapBuilder?.spawnPlayer(spawnerID)
+  }
+
+  respawnPlayer(player: Entity): void {
+    this.mapBuilder?.respawnPlayer(player)
   }
 }

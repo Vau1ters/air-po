@@ -1,4 +1,5 @@
 import { Entity } from '@core/ecs/entity'
+import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { playerAI } from '@game/ai/entity/player/playerAI'
 import { AIComponent } from '@game/components/aiComponent'
@@ -11,6 +12,7 @@ import { HPComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { MapObject } from '@game/map/mapBuilder'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
@@ -46,6 +48,10 @@ export class PlayerFactory extends ObjectEntityFactory {
     collectSpeed: 0.05,
     consumeSpeed: 0.025,
     shouldDamageInSuffocation: true,
+  }
+
+  constructor(arg: MapObject | Vec2, world: World) {
+    super('player', 'width' in arg ? ObjectEntityFactory.calcPosition(arg) : arg, world)
   }
 
   public create(): Entity {
