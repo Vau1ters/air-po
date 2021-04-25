@@ -7,8 +7,9 @@ import slime1Setting from '@res/map/tileset/slime1.json'
 import sensorSetting from '@res/map/tileset/sensor.json'
 import playerSetting from '@res/map/tileset/player.json'
 import needleBulletSetting from '@res/map/tileset/needleBullet.json'
-import mossSetting from '@res/map/tileset/moss.json'
 import mushroomSetting from '@res/map/tileset/mushroom.json'
+import mossSetting from '@res/map/tileset/moss.json'
+import hpHeartSetting from '@res/map/tileset/hpHeart.json'
 import equipmentSetting from '@res/map/tileset/equipment.json'
 import enemy1Setting from '@res/map/tileset/enemy1.json'
 import dandelionSetting from '@res/map/tileset/dandelion.json'
@@ -24,9 +25,10 @@ import slime1Img from '@res/image/slime1.png'
 import sensorImg from '@res/image/sensor.png'
 import playerImg from '@res/image/player.png'
 import needleBulletImg from '@res/image/needleBullet.png'
-import mossImg from '@res/image/moss.png'
 import mushroomImg from '@res/image/mushroom.png'
+import mossImg from '@res/image/moss.png'
 import jetEffectImg from '@res/image/jetEffect.png'
+import hpHeartImg from '@res/image/hpHeart.png'
 import equipmentImg from '@res/image/equipment.png'
 import enemy1Img from '@res/image/enemy1.png'
 import dandelionHeadImg from '@res/image/dandelion_head.png'
@@ -103,9 +105,10 @@ export const init = async (): Promise<void> => {
   textureStore.sensor = await buildAnimationTexture(sensorImg, sensorSetting)
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
-  textureStore.moss = await buildAnimationTexture(mossImg, mossSetting)
   textureStore.mushroom = await buildAnimationTexture(mushroomImg, mushroomSetting)
+  textureStore.moss = await buildAnimationTexture(mossImg, mossSetting)
   textureStore.jetEffect = await buildSingleTexture(jetEffectImg)
+  textureStore.hpHeart = await buildAnimationTexture(hpHeartImg, hpHeartSetting)
   textureStore.equipment = await buildAnimationTexture(equipmentImg, equipmentSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
   textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
