@@ -22,10 +22,12 @@ import { EventSensorSystem } from '@game/systems/eventSensorSystem'
 import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
 import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
+import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import { Entity } from '@core/ecs/entity'
 
 export class GameWorldFactory {
   private mapBuilder?: MapBuilder
+
   public create(map: Map): World {
     const world = new World(gameWorldAI)
 
@@ -71,6 +73,7 @@ export class GameWorldFactory {
       new InvincibleSystem(world),
       new DamageSystem(world),
       new FilterSystem(world, filterContainer),
+      new FilterEffectSystem(world, world.stage),
       new AirSystem(world),
       new LightSystem(world),
       new AirHolderSystem(world),
