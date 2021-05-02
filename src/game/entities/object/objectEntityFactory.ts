@@ -13,10 +13,13 @@ export class ObjectEntityFactory extends EntityFactory {
   }
 
   create(): Entity {
-    const { x, y, width, height } = this.object
+    const { x, y, width, height, ellipse } = this.object
 
     const entity = new Entity()
-    entity.addComponent('Position', new PositionComponent(x + width / 2, y - height / 2))
+    entity.addComponent(
+      'Position',
+      new PositionComponent(x + width / 2, ellipse ? y + height / 2 : y - height / 2)
+    )
 
     try {
       const { sprite } = require(`../../../../res/animation/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
