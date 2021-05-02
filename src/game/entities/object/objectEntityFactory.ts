@@ -1,6 +1,7 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { parseAnimation } from '@core/graphics/animationParser'
+import { Vec2 } from '@core/math/vec2'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
@@ -13,13 +14,9 @@ export class ObjectEntityFactory extends EntityFactory {
   }
 
   create(): Entity {
-    const { x, y, width, height, ellipse } = this.object
-
     const entity = new Entity()
-    entity.addComponent(
-      'Position',
-      new PositionComponent(x + width / 2, ellipse ? y + height / 2 : y - height / 2)
-    )
+    const pos = ObjectEntityFactory.calcPosition(this.object)
+    entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
 
     try {
       const { sprite } = require(`../../../../res/animation/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
@@ -37,5 +34,10 @@ export class ObjectEntityFactory extends EntityFactory {
       return entity
     }
     return entity
+  }
+
+  public static calcPosition(object: MapObject): Vec2 {
+    const { x, y, width, height, ellipse } = object
+    return new Vec2(x + width / 2, ellipse ? y + height / 2 : y - height / 2)
   }
 }

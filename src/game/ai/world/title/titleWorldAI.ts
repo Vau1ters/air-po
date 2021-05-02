@@ -49,6 +49,8 @@ export const titleWorldAI = function*(world: World): Behaviour<void> {
     ]
   )
 
-  const gameWorld = new GameWorldFactory().create(map, 0)
+  const gameWorldFactory = new GameWorldFactory()
+  const gameWorld = gameWorldFactory.create(map)
+  gameWorldFactory.spawnPlayer(0)
   gameWorld.start()
 }
