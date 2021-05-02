@@ -6,10 +6,13 @@
 import snibeeDie from '@res/sound/snibeeDie.ogg'
 import snibee from '@res/sound/snibee.ogg'
 import shot from '@res/sound/shot.ogg'
+import pon from '@res/sound/pon.ogg'
 import playerWalk from '@res/sound/playerWalk.ogg'
 import playerLanding from '@res/sound/playerLanding.ogg'
 import playerJump from '@res/sound/playerJump.ogg'
 import playerHit from '@res/sound/playerHit.ogg'
+import peti from '@res/sound/peti.ogg'
+import getAirTank from '@res/sound/getAirTank.ogg'
 import foot from '@res/sound/foot.ogg'
 import fire from '@res/sound/fire.ogg'
 import enemyHit from '@res/sound/enemyHit.ogg'
@@ -47,10 +50,13 @@ export const init = async (): Promise<void> => {
   soundStore.snibeeDie = await load(snibeeDie)
   soundStore.snibee = await load(snibee)
   soundStore.shot = await load(shot)
+  soundStore.pon = await load(pon)
   soundStore.playerWalk = await load(playerWalk)
   soundStore.playerLanding = await load(playerLanding)
   soundStore.playerJump = await load(playerJump)
   soundStore.playerHit = await load(playerHit)
+  soundStore.peti = await load(peti)
+  soundStore.getAirTank = await load(getAirTank)
   soundStore.foot = await load(foot)
   soundStore.fire = await load(fire)
   soundStore.enemyHit = await load(enemyHit)
