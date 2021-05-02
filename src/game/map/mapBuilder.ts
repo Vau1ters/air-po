@@ -81,8 +81,8 @@ export class MapBuilder {
   public constructor(private world: World) {}
 
   public build(map: Map): void {
-    const tileLayerFactory = new TileLayerFactory(this, this.world, map.tilesets)
     const objectLayerFactory = new ObjectLayerFactory(this.world)
+    const tileLayerFactory = new TileLayerFactory(this, this.world, map.tilesets)
     const tileSize = new Vec2(map.tilewidth, map.tileheight)
     for (const layer of map.layers) {
       switch (layer.name) {
