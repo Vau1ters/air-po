@@ -6,6 +6,7 @@ import throughFloorSetting from '@res/map/tileset/throughFloor.json'
 import snibeeSetting from '@res/map/tileset/snibee.json'
 import slime1Setting from '@res/map/tileset/slime1.json'
 import sensorSetting from '@res/map/tileset/sensor.json'
+import respawnSetting from '@res/map/tileset/respawn.json'
 import playerSetting from '@res/map/tileset/player.json'
 import needleBulletSetting from '@res/map/tileset/needleBullet.json'
 import mushroomSetting from '@res/map/tileset/mushroom.json'
@@ -29,6 +30,7 @@ import throughFloorImg from '@res/image/throughFloor.png'
 import snibeeImg from '@res/image/snibee.png'
 import slime1Img from '@res/image/slime1.png'
 import sensorImg from '@res/image/sensor.png'
+import respawnImg from '@res/image/respawn.png'
 import playerImg from '@res/image/player.png'
 import needleBulletImg from '@res/image/needleBullet.png'
 import mushroomImg from '@res/image/mushroom.png'
@@ -114,6 +116,7 @@ export const init = async (): Promise<void> => {
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
   textureStore.slime1 = await buildAnimationTexture(slime1Img, slime1Setting)
   textureStore.sensor = await buildAnimationTexture(sensorImg, sensorSetting)
+  textureStore.respawn = await buildAnimationTexture(respawnImg, respawnSetting)
   textureStore.player = await buildAnimationTexture(playerImg, playerSetting)
   textureStore.needleBullet = await buildAnimationTexture(needleBulletImg, needleBulletSetting)
   textureStore.mushroom = await buildAnimationTexture(mushroomImg, mushroomSetting)

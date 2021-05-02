@@ -42,7 +42,8 @@ export class TitleWorldFactory {
     )
 
     const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map, 0)
+    mapBuilder.build(map)
+    mapBuilder.spawnPlayer(0)
 
     return world
   }
