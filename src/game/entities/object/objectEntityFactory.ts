@@ -15,7 +15,6 @@ export class ObjectEntityFactory extends EntityFactory {
 
   create(): Entity {
     const entity = new Entity()
-
     const pos = ObjectEntityFactory.calcPosition(this.object)
     entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
 
@@ -38,7 +37,7 @@ export class ObjectEntityFactory extends EntityFactory {
   }
 
   public static calcPosition(object: MapObject): Vec2 {
-    const { x, y, width, height } = object
-    return new Vec2(x + width / 2, y - height / 2)
+    const { x, y, width, height, ellipse } = object
+    return new Vec2(x + width / 2, ellipse ? y + height / 2 : y - height / 2)
   }
 }
