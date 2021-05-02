@@ -41,10 +41,11 @@ const player = function*(world: World): Behaviour<void> {
   world.addEntity(player)
 
   const position = player.getComponent('Position')
+  const draw = player.getComponent('Draw')
 
   while (position.y < 160) {
     position.y += 1
-    player.getComponent('Draw').angle += 5
+    draw.angle += 5
     yield
   }
 }

@@ -1,8 +1,8 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { chain } from '@core/behaviour/composite'
+import { ease } from '@core/behaviour/easing/easing'
 import { In } from '@core/behaviour/easing/functions'
-import { stream } from '@core/behaviour/easing/stream'
 import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
@@ -27,33 +27,27 @@ export const Text = (world: World, text: string): Behaviour<void> => {
   world.addEntity(entity)
 
   return chain([
-    stream(
+    ease(In.linear)(
+      5 * text.length,
       (value: number) => {
         t.text = text.substring(0, Math.floor(value))
         t.updateText()
       },
-      0,
-      [
-        {
-          easing: In.linear,
-          duration: 5 * text.length,
-          to: text.length,
-        },
-      ]
+      {
+        from: 0,
+        to: text.length,
+      }
     ),
     wait(60),
-    stream(
+    ease(In.linear)(
+      120,
       (value: number) => {
         t.alpha = value
       },
-      1,
-      [
-        {
-          easing: In.linear,
-          duration: 120,
-          to: 0,
-        },
-      ]
+      {
+        from: 1,
+        to: 0,
+      }
     ),
   ])
 }

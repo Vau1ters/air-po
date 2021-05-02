@@ -1,7 +1,7 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
+import { ease } from '@core/behaviour/easing/easing'
 import { In } from '@core/behaviour/easing/functions'
-import { stream } from '@core/behaviour/easing/stream'
 import { World } from '@core/ecs/world'
 import { Graphics } from 'pixi.js'
 
@@ -12,17 +12,14 @@ export const FadeOut = (world: World): Behaviour<void> => {
   black.endFill()
   black.alpha = 0
   world.stage.addChild(black)
-  return stream(
+  return ease(In.linear)(
+    30,
     (value: number) => {
       black.alpha = value
     },
-    0,
-    [
-      {
-        easing: In.linear,
-        duration: 30,
-        to: 1,
-      },
-    ]
+    {
+      from: 0,
+      to: 1,
+    }
   )
 }

@@ -51,14 +51,5 @@ export const normalizeText = (text: string): string => {
     ペ: 'ヘ゜',
     ポ: 'ホ゜',
   }
-  let result = ''
-  for (let i = 0; i < text.length; i++) {
-    const c = text.charAt(i)
-    if (c in table) {
-      result += table[c]
-    } else {
-      result += c
-    }
-  }
-  return result
+  return text.split('').reduce((c, acc) => acc + (table[c] ?? c), '')
 }
