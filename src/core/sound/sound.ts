@@ -29,19 +29,33 @@ export const play = (name: string): void => {
   if (sound !== undefined) sound.play()
 }
 
-const load = (url: string): Promise<PIXI.Sound> => {
+export const loopPlay = (name: string, start: number, end: number) => {
+  const sound = soundStore[name]
+  if (sound !== undefined) sound.play()
+}
+
+function po(obj) {
+  console.log(obj === { a: true })
+}
+po({ a: true })
+
+const load = (url: string, options?: any): Promise<PIXI.Sound> => {
   return new Promise((resolve, reject) => {
-    PIXI.Sound.from({
+    const defaultOption = {
       url: url,
       preload: true,
-      loaded: (err, sound) => {
+    }
+    const option = Object.assign(defaultOption, options)
+    const loadOption = {
+      loaded: (err: any, sound: any) => {
         if (err) {
           reject()
         } else {
           resolve(sound)
         }
       },
-    })
+    }
+    PIXI.Sound.from(Object.assign(option, loadOption))
   })
 }
 
