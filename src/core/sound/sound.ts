@@ -34,11 +34,6 @@ export const loopPlay = (name: string, start: number, end: number) => {
   if (sound !== undefined) sound.play()
 }
 
-function po(obj) {
-  console.log(obj === { a: true })
-}
-po({ a: true })
-
 const load = (url: string, options?: any): Promise<PIXI.Sound> => {
   return new Promise((resolve, reject) => {
     const defaultOption = {
