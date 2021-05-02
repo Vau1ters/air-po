@@ -9,13 +9,15 @@ import { MapObject } from '@game/map/mapBuilder'
 import { EntityFactory } from '../entityFactory'
 
 export class ObjectEntityFactory extends EntityFactory {
-  constructor(private name: string, protected pos: Vec2, protected world: World) {
+  constructor(private name: string, protected object: MapObject, protected world: World) {
     super()
   }
 
   create(): Entity {
     const entity = new Entity()
-    entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
+
+    const pos = ObjectEntityFactory.calcPosition(this.object)
+    entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
 
     try {
       const { sprite } = require(`../../../../res/animation/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires

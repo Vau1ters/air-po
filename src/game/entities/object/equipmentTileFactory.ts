@@ -9,14 +9,8 @@ import { Category, CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
 import equipmentDefinition from '@res/animation/equipment.json'
 import { assert } from '@utils/assertion'
-import { World } from '@core/ecs/world'
-import { MapObject } from '@game/map/mapBuilder'
 
 export class EquipmentTileFactory extends ObjectEntityFactory {
-  constructor(name: string, private object: MapObject, world: World) {
-    super(name, ObjectEntityFactory.calcPosition(object), world)
-  }
-
   public create(): Entity {
     const equipmentType = this.object.properties?.find(prop => prop.name === 'type')
       ?.value as EquipmentTypes

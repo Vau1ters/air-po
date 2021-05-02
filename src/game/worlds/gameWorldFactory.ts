@@ -29,7 +29,7 @@ export class GameWorldFactory {
   private mapBuilder?: MapBuilder
 
   public create(map: Map): World {
-    const world = new World(gameWorldAI)
+    const world = new World(gameWorldAI(map))
 
     const filterContainer = new Container()
 
