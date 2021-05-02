@@ -21,12 +21,12 @@ const playerJump = function*(entity: Entity): Behaviour<void> {
     while (!player.landing) yield
 
     animState.state = 'Standing'
-    Sound.play('foot')
+    Sound.play('playerLanding')
 
     while (player.landing) {
       if (KeyController.isActionPressing('Jump')) {
         body.velocity.y = -SETTING.JUMP_SPEED
-        Sound.play('jump')
+        Sound.play('playerJump')
       }
 
       yield
