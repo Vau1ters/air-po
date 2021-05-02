@@ -12,6 +12,7 @@ import playerLanding from '@res/sound/playerLanding.ogg'
 import playerJump from '@res/sound/playerJump.ogg'
 import playerHit from '@res/sound/playerHit.ogg'
 import peti from '@res/sound/peti.ogg'
+import mushroom from '@res/sound/mushroom.ogg'
 import getAirTank from '@res/sound/getAirTank.ogg'
 import foot from '@res/sound/foot.ogg'
 import fire from '@res/sound/fire.ogg'
@@ -56,6 +57,7 @@ export const init = async (): Promise<void> => {
   soundStore.playerJump = await load(playerJump)
   soundStore.playerHit = await load(playerHit)
   soundStore.peti = await load(peti)
+  soundStore.mushroom = await load(mushroom)
   soundStore.getAirTank = await load(getAirTank)
   soundStore.foot = await load(foot)
   soundStore.fire = await load(fire)
