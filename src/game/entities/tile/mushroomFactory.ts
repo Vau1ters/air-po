@@ -21,10 +21,16 @@ export class MushroomFactory extends TileEntityFactory {
     size: new Vec2(20, 64),
   }
 
+  private readonly JUMP_COLLIDER = {
+    type: 'AABB' as const,
+    offset: new Vec2(0, -24),
+    size: new Vec2(88, 16),
+  }
+
   private readonly FLOOR_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(0, -16),
-    size: new Vec2(88, 32),
+    offset: new Vec2(0, -8),
+    size: new Vec2(88, 16),
   }
 
   private readonly AIR_HOLDER_COLLIDER = {
@@ -52,6 +58,13 @@ export class MushroomFactory extends TileEntityFactory {
           entity,
           colliders: [
             {
+              geometry: this.JUMP_COLLIDER,
+              category: Category.TERRAIN,
+              mask: new CategorySet(Category.PHYSICS),
+              tag: [PHYSICS_TAG],
+              condition: (): boolean => entity.getComponent('AirHolder').quantity > 0,
+            },
+            {
               geometry: this.FLOOR_COLLIDER,
               category: Category.TERRAIN,
               mask: new CategorySet(Category.PHYSICS),
@@ -78,11 +91,11 @@ export class MushroomFactory extends TileEntityFactory {
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
     entity.addComponent('AI', new AIComponent(mushroomAI(entity)))
 
-    const [floorCollider] = entity.getComponent('Collider').colliders
-    floorCollider.callbacks.add((args: CollisionCallbackArgs) => {
+    const [jumpCollider] = entity.getComponent('Collider').colliders
+    jumpCollider.callbacks.add((args: CollisionCallbackArgs) => {
       const { other } = args
       const { axis } = args as CollisionResultAABBAABB
-      if (axis.y !== 1) return
+      if (Math.abs(axis.y) !== 1) return
       other.entity.getComponent('RigidBody').velocity.y -= this.JUMP_ACCEL
     })
 
