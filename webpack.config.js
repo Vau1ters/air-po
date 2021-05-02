@@ -1,69 +1,69 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin')
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const TsconfigPathsWebpackPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
+  mode: "development",
+  entry: "./src/index.ts",
   output: {
     path: `${__dirname}/dist`,
-    filename: 'bundle.js',
+    filename: "bundle.js",
   },
   devServer: {
-    contentBase: './public',
+    contentBase: "./public",
     port: 3000,
   },
   module: {
     rules: [
       {
-        enforce: 'pre',
+        enforce: "pre",
         test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
+        loader: "eslint-loader",
       },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'ts-loader',
+        loader: "ts-loader",
       },
       {
         test: /\.png$/,
         exclude: /node_modules/,
-        loader: 'url-loader',
+        loader: "url-loader",
       },
       {
-        test: /\.wav$/,
+        test: /\.ogg$/,
         exclude: /node_modules/,
-        loader: 'url-loader',
+        loader: "url-loader",
       },
       {
         test: /\.fnt$/,
         exclude: /node_modules/,
-        loader: 'raw-loader',
+        loader: "raw-loader",
       },
       {
         test: /\.html$/,
         exclude: /node_modules/,
-        loader: 'html-loader',
+        loader: "html-loader",
       },
       {
         test: /\.(vert|frag)$/,
         exclude: /node_modules/,
-        loader: 'raw-loader',
+        loader: "raw-loader",
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: [".ts", ".js"],
     plugins: [
       new TsconfigPathsWebpackPlugin({
-        configFile: 'tsconfig.json',
+        configFile: "tsconfig.json",
       }),
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: "./public/index.html",
     }),
   ],
-}
+};

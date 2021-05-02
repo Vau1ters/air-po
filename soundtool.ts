@@ -36,7 +36,7 @@ export const init = async (): Promise<void> => {
 }
 `
 const importText = (filename: string): string => {
-  return `import ${filename} from '@res/sound/${filename}.wav'`
+  return `import ${filename} from '@res/sound/${filename}.ogg'`
 }
 const loadFormatText = (filename: string): string => {
   return `soundStore.${filename} = await load(${filename})`
