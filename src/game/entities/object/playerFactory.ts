@@ -1,26 +1,32 @@
 import { Entity } from '@core/ecs/entity'
+import { World } from '@core/ecs/world'
+import { parseAnimation } from '@core/graphics/animationParser'
 import { Vec2 } from '@core/math/vec2'
 import { playerAI } from '@game/ai/entity/player/playerAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
+import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
 import { Collider, ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
+import { DrawComponent } from '@game/components/drawComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 import { HPComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
+import { PositionComponent } from '@game/components/positionComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
+import { EntityFactory } from '../entityFactory'
 import { THROUGH_FLOOR_TAG } from '../tile/throughFloorFactory'
-import { ObjectEntityFactory } from './objectEntityFactory'
+import { sprite } from '@res/animation/player.json'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
 
-export class PlayerFactory extends ObjectEntityFactory {
+export class PlayerFactory extends EntityFactory {
   private readonly BODY_COLLIDER = {
     type: 'AABB' as const,
     size: new Vec2(13, 16),
@@ -48,8 +54,27 @@ export class PlayerFactory extends ObjectEntityFactory {
     shouldDamageInSuffocation: true,
   }
 
+  constructor(private pos: Vec2, private world: World) {
+    super()
+  }
+
   public create(): Entity {
-    const entity = super.create()
+    const entity = new Entity()
+
+    entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
+
+    entity.addComponent(
+      'Draw',
+      new DrawComponent({
+        entity,
+        child: {
+          sprite: parseAnimation(sprite),
+        },
+      })
+    )
+
+    entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+
     const player = new PlayerComponent()
     const airHolder = new AirHolderComponent(this.AIR_HOLDER)
 
