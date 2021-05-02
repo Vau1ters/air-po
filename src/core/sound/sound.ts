@@ -24,17 +24,12 @@ import airJet from '@res/sound/airJet.wav'
 import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}
-export const play = (name: string): void => {
+export const play = (name: string, options?: PIXI.Options): void => {
   const sound = soundStore[name]
-  if (sound !== undefined) sound.play()
+  if (sound !== undefined) sound.play(options)
 }
 
-export const loopPlay = (name: string, start: number, end: number) => {
-  const sound = soundStore[name]
-  if (sound !== undefined) sound.play()
-}
-
-const load = (url: string, options?: any): Promise<PIXI.Sound> => {
+const load = (url: string, options?: PIXI.Options): Promise<PIXI.Sound> => {
   return new Promise((resolve, reject) => {
     const defaultOption = {
       url: url,
@@ -42,12 +37,8 @@ const load = (url: string, options?: any): Promise<PIXI.Sound> => {
     }
     const option = Object.assign(defaultOption, options)
     const loadOption = {
-      loaded: (err: any, sound: any) => {
-        if (err) {
-          reject()
-        } else {
-          resolve(sound)
-        }
+      loaded: (err: boolean, sound: PIXI.Sound): void => {
+        err ? reject() : resolve(sound)
       },
     }
     PIXI.Sound.from(Object.assign(option, loadOption))
