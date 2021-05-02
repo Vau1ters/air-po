@@ -4,13 +4,11 @@ import { Container, Graphics } from 'pixi.js'
 import DrawSystem from '@game/systems/drawSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { MapBuilder } from '@game/map/mapBuilder'
-import map from '@res/map/root.json'
-import { titleWorldAI } from '@game/ai/world/title/titleWorldAI'
+import { openingWorldAI } from '@game/ai/world/opening/openingWorldAI'
 
-export class TitleWorldFactory {
+export class OpeningWorldFactory {
   public create(): World {
-    const world = new World(titleWorldAI)
+    const world = new World(openingWorldAI)
 
     const cameraContainer = new Container()
 
@@ -18,7 +16,7 @@ export class TitleWorldFactory {
     worldContainer.filterArea = application.screen
 
     const background = new Graphics()
-    background.beginFill(0xc0c0c0)
+    background.beginFill(0)
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
 
@@ -40,9 +38,6 @@ export class TitleWorldFactory {
       new CameraSystem(world, cameraContainer),
       new ControlSystem(world)
     )
-
-    const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map, 0)
 
     return world
   }
