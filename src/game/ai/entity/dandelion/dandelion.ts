@@ -6,10 +6,10 @@ import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 
 const FLUFF_EMIT_INTERVAL = 200
-const HEAD_OFFSET_Y = -48
+const HEAD_OFFSET_Y = -96
 const ROOT_OFFSET_Y = 160
 const HIMO_WIDTH = 0.3
-const HIMO_COLOR = 0x22ff22
+const HIMO_COLOR = 0x22cc22
 const HIMO_POINT_NUM = 10
 const HEAD_OSCILLATION_TIME_SCALE = 0.03
 
@@ -24,6 +24,8 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
   const himo = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, HIMO_WIDTH)
   himo.tint = HIMO_COLOR
+  himo.zIndex = -100
+  draw.sortableChildren = true
   draw.addChild(himo)
 
   const headOrigin = new Vec2(headPosition.x, headPosition.y)

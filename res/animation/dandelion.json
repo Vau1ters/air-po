@@ -1,10 +1,12 @@
 {
   "sprite": {
-    "name": "dandelionHead",
+    "name": "dandelion",
     "state": {
-      "Normal": [0]
+      "Normal": [0, 1, 2, 3, 4, 5, 6]
     },
-    "speed": {},
+    "speed": {
+      "Normal": 20
+    },
     "default": "Normal"
   }
 }
