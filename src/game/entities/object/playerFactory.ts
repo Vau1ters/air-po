@@ -12,7 +12,6 @@ import { HPComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
-import { MapObject } from '@game/map/mapBuilder'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
@@ -50,8 +49,8 @@ export class PlayerFactory extends ObjectEntityFactory {
     shouldDamageInSuffocation: true,
   }
 
-  constructor(arg: MapObject | Vec2, world: World) {
-    super('player', 'width' in arg ? ObjectEntityFactory.calcPosition(arg) : arg, world)
+  constructor(pos: Vec2, world: World) {
+    super('player', pos, world)
   }
 
   public create(): Entity {

@@ -12,7 +12,7 @@ import { TileEntityFactory } from '@game/entities/tile/tileEntityFactory'
 import { VineFactory } from '@game/entities/tile/vineFactory'
 import { WallFactory } from '@game/entities/tile/wallFactory'
 import { assert } from '@utils/assertion'
-import { TileSet, TileLayer, getTileId } from './mapBuilder'
+import { TileSet, TileLayer, getTileId, MapBuilder } from './mapBuilder'
 import { RespawnFlagFactory } from '@game/entities/tile/respawnFlagFactory'
 
 type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
@@ -21,7 +21,7 @@ type Builder = { firstgid: number; build: Build }
 export class TileLayerFactory {
   private builders: Array<Builder>
 
-  constructor(private world: World, tileSets: Array<TileSet>) {
+  constructor(private builder: MapBuilder, private world: World, tileSets: Array<TileSet>) {
     this.builders = this.loadBuilders(tileSets)
   }
 
@@ -52,7 +52,8 @@ export class TileLayerFactory {
         pos: Vec2,
         name: string,
         frame: number,
-        world: World
+        world: World,
+        builder: MapBuilder
       ) => TileEntityFactory
     } = {
       balloonvine: BalloonVineFactory,
@@ -93,7 +94,8 @@ export class TileLayerFactory {
                   this.calcPosition(index, tileSize, objectSize),
                   name,
                   frame,
-                  this.world
+                  this.world,
+                  this.builder
                 ).create()
               ),
           })

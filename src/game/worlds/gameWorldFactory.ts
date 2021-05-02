@@ -96,6 +96,6 @@ export class GameWorldFactory {
   }
 
   respawnPlayer(player: Entity): void {
-    this.mapBuilder?.respawnPlayer(player)
+    this.mapBuilder?.spawnPlayer(player.getComponent('Player').spawnerID)
   }
 }

@@ -35,7 +35,7 @@ export class ObjectEntityFactory extends EntityFactory {
     return entity
   }
 
-  protected static calcPosition(object: MapObject): Vec2 {
+  public static calcPosition(object: MapObject): Vec2 {
     const { x, y, width, height } = object
     return new Vec2(x + width / 2, y - height / 2)
   }
