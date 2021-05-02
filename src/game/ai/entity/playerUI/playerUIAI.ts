@@ -14,8 +14,35 @@ import HpHeartDefinition from '@res/animation/uiHpHeart.json'
 import WeaponBackgroundDefinition from '@res/animation/uiWeaponBackground.json'
 import WeaponGunDefinition from '@res/animation/uiWeaponGun.json'
 
+const UI_SETTING = {
+  WEAPON: {
+    x: 26,
+    y: 22,
+    paddingX: 1,
+    paddingY: 1,
+  },
+  HP: {
+    x: 47,
+    y: 22,
+    shiftX: 10,
+    animationDelay: 16,
+  },
+  AIR_TANK: {
+    x: 53,
+    y: 32,
+    shiftX: 8,
+    paddingX: -3,
+    paddingY: 2,
+  },
+}
+
 const renderPlayerWeapon = function*(world: World): Behaviour<void> {
-  const weaponGun = new UIComponentFactory(WeaponGunDefinition.sprite).setPosition(27, 23).create()
+  const weaponGun = new UIComponentFactory(WeaponGunDefinition.sprite)
+    .setPosition(
+      UI_SETTING.WEAPON.x + UI_SETTING.WEAPON.paddingX,
+      UI_SETTING.WEAPON.y + UI_SETTING.WEAPON.paddingY
+    )
+    .create()
   world.addEntity(weaponGun)
 }
 
@@ -42,7 +69,10 @@ const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> 
   while (true) {
     while (renderingState.entities.length < hp.maxHp) {
       const hpHeart = new UIComponentFactory(HpHeartDefinition.sprite)
-        .setPosition(47 + renderingState.entities.length * 10, 22)
+        .setPosition(
+          UI_SETTING.HP.x + renderingState.entities.length * UI_SETTING.HP.shiftX,
+          UI_SETTING.HP.y
+        )
         .create()
       renderingState.entities.push(hpHeart)
       world.addEntity(hpHeart)
@@ -59,7 +89,7 @@ const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> 
         healingAnimation(hpHeart, index === hpHearts.length - 1)
       )
       renderingState.hp = hp.hp
-      yield* sequent(animations, 16)
+      yield* sequent(animations, UI_SETTING.HP.animationDelay)
     }
 
     if (renderingState.hp > hp.hp) {
@@ -68,7 +98,7 @@ const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> 
         .reverse()
         .map(hpHeart => damagingAnimation(hpHeart))
       renderingState.hp = hp.hp
-      yield* sequent(animations, 16)
+      yield* sequent(animations, UI_SETTING.HP.animationDelay)
     }
 
     yield
@@ -84,15 +114,22 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
     tankTail: Entity
   } = {
     tankBodies: [],
-    tankTail: new UIComponentFactory(AirtankTailDefinition.sprite).setPosition(53, 32).create(),
+    tankTail: new UIComponentFactory(AirtankTailDefinition.sprite)
+      .setPosition(UI_SETTING.AIR_TANK.x, UI_SETTING.AIR_TANK.y)
+      .create(),
   }
   const tankTailPosition = renderingState.tankTail.getComponent('Position')
 
   const weaponBackground = new UIComponentFactory(WeaponBackgroundDefinition.sprite)
-    .setPosition(26, 22)
+    .setPosition(UI_SETTING.WEAPON.x, UI_SETTING.WEAPON.y)
     .create()
 
-  const airGauge = new UIComponentFactory(AirDefinition.sprite).setPosition(50, 34).create()
+  const airGauge = new UIComponentFactory(AirDefinition.sprite)
+    .setPosition(
+      UI_SETTING.AIR_TANK.x + UI_SETTING.AIR_TANK.paddingX,
+      UI_SETTING.AIR_TANK.y + UI_SETTING.AIR_TANK.paddingY
+    )
+    .create()
   const airGaugeDraw = airGauge.getComponent('Draw')
 
   world.addEntity(airGauge)
@@ -102,7 +139,10 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
   while (true) {
     while (renderingState.tankBodies.length + 1 < airTank.count) {
       const tankBody = new UIComponentFactory(AirtankBodyDefinition.sprite)
-        .setPosition(renderingState.tankBodies.length * 8 + 53, 32)
+        .setPosition(
+          UI_SETTING.AIR_TANK.x + renderingState.tankBodies.length * UI_SETTING.AIR_TANK.shiftX,
+          UI_SETTING.AIR_TANK.y
+        )
         .create()
       renderingState.tankBodies.push(tankBody)
       world.addEntity(tankBody)
@@ -112,12 +152,13 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
       assert(lastTankBody, 'Tried to remove air tank but current tank count is 0.')
       world.removeEntity(lastTankBody)
     }
-    tankTailPosition.x = 53 + renderingState.tankBodies.length * 8
+    tankTailPosition.x =
+      UI_SETTING.AIR_TANK.x + renderingState.tankBodies.length * UI_SETTING.AIR_TANK.shiftX
 
     // 割合計算
     const maxQuantity = airTank.quantity * airTank.count
     const rate = Math.max(0, Math.min(1, holder.quantity / maxQuantity))
-    airGaugeDraw.width = rate * 8 * airTank.count
+    airGaugeDraw.width = rate * UI_SETTING.AIR_TANK.shiftX * airTank.count
 
     yield
   }
