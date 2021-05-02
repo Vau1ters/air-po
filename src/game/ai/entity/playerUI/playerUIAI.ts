@@ -15,7 +15,7 @@ import WeaponBackgroundDefinition from '@res/animation/uiWeaponBackground.json'
 import WeaponGunDefinition from '@res/animation/uiWeaponGun.json'
 
 const renderPlayerWeapon = function*(world: World): Behaviour<void> {
-  const weaponGun = new UIComponentFactory(WeaponGunDefinition.sprite).setPosition(26, 22).create()
+  const weaponGun = new UIComponentFactory(WeaponGunDefinition.sprite).setPosition(27, 23).create()
   world.addEntity(weaponGun)
 }
 
@@ -89,10 +89,10 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
   const tankTailPosition = renderingState.tankTail.getComponent('Position')
 
   const weaponBackground = new UIComponentFactory(WeaponBackgroundDefinition.sprite)
-    .setPosition(24, 20)
+    .setPosition(26, 22)
     .create()
 
-  const airGauge = new UIComponentFactory(AirDefinition.sprite).setPosition(50, 33).create()
+  const airGauge = new UIComponentFactory(AirDefinition.sprite).setPosition(50, 34).create()
   const airGaugeDraw = airGauge.getComponent('Draw')
 
   world.addEntity(airGauge)
