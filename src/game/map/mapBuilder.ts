@@ -76,15 +76,13 @@ export type Map = {
 }
 
 export class MapBuilder {
-  private objectLayerFactory: ObjectLayerFactory
   private playerSpanwners = new Map<number, Vec2>()
 
-  public constructor(private world: World) {
-    this.objectLayerFactory = new ObjectLayerFactory(this.world)
-  }
+  public constructor(private world: World) {}
 
   public build(map: Map): void {
     const tileLayerFactory = new TileLayerFactory(this, this.world, map.tilesets)
+    const objectLayerFactory = new ObjectLayerFactory(this.world)
     const tileSize = new Vec2(map.tilewidth, map.tileheight)
     for (const layer of map.layers) {
       switch (layer.name) {
@@ -97,7 +95,7 @@ export class MapBuilder {
         case 'equipment':
         case 'airGeyser':
         case 'player':
-          this.objectLayerFactory.build(this, layer as ObjectLayer)
+          objectLayerFactory.build(this, layer as ObjectLayer)
           break
       }
     }
