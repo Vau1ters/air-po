@@ -2,7 +2,7 @@ import { AnimationSprite, AnimationDefinition } from './animation'
 import { textureStore } from './art'
 import { checkMembers } from '@utils/assertion'
 
-type SpriteSetting = {
+export type SpriteSetting = {
   name: string
   state: { [key: string]: Array<number> }
   speed: { [key: string]: number }
@@ -11,7 +11,7 @@ type SpriteSetting = {
 
 const cache: Record<string, () => AnimationSprite> = {}
 
-export function parseAnimation(json: SpriteSetting): AnimationSprite {
+export function parseAnimation(json: SpriteSetting, anchor = { x: 0.5, y: 0.5 }): AnimationSprite {
   if (!cache[json.name]) {
     checkMembers(json, { name: 'string', state: 'any', speed: 'any', default: 'string' }, 'sprite')
 
@@ -33,7 +33,7 @@ export function parseAnimation(json: SpriteSetting): AnimationSprite {
         waitFrames: speed[stateName],
       }
     }
-    cache[name] = (): AnimationSprite => new AnimationSprite(animatedTexture, defaultState)
+    cache[name] = (): AnimationSprite => new AnimationSprite(animatedTexture, defaultState, anchor)
   }
   return cache[json.name]()
 }
