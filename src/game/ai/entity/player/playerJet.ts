@@ -6,6 +6,7 @@ import { World } from '@core/ecs/world'
 import { JetEffectFactory } from '@game/entities/jetEffectFactory'
 import GravitySystem from '@game/systems/gravitySystem'
 import { wait } from '@core/behaviour/wait'
+import * as Sound from '@core/sound/sound'
 
 const SETTING = {
   CONSUME_SPEED: 0.1,
@@ -59,6 +60,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
       if (Math.random() < 0.5) {
+        Sound.play('fire', { volume: 0.5 })
         const jetEffectFactory = new JetEffectFactory(world)
         jetEffectFactory.setShooter(entity)
         const jetEffect = jetEffectFactory.create()
