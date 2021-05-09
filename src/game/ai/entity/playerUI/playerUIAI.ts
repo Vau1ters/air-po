@@ -80,7 +80,7 @@ const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> 
     }
     while (renderingState.entities.length > hp.maxHp) {
       const lastHpHeart = renderingState.entities.pop()
-      assert(lastHpHeart, 'Tried to remove hp gauge but current maxHp is 0.')
+      assert(lastHpHeart, `Tried to remove hp gauge but current maxHp is ${hp.maxHp}.`)
       world.removeEntity(lastHpHeart)
     }
 
@@ -159,7 +159,7 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
     }
     while (renderingState.tankBodies.length + 1 > airTank.count) {
       const lastTankBody = renderingState.tankBodies.pop()
-      assert(lastTankBody, 'Tried to remove air tank but current tank count is 0.')
+      assert(lastTankBody, `Tried to remove air tank but current tank count is ${airTank.count}.`)
       world.removeEntity(lastTankBody)
     }
     tankTailPosition.x =
