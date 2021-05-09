@@ -10,6 +10,7 @@ import { UIComponentFactory } from '@game/entities/ui/uiComponentFactory'
 import AirDefinition from '@res/animation/uiAir.json'
 import AirtankTailDefinition from '@res/animation/uiAirtankTail.json'
 import AirtankBodyDefinition from '@res/animation/uiAirtankBody.json'
+import AirtankBgDefinition from '@res/animation/uiAirtankBg.json'
 import HpHeartDefinition from '@res/animation/uiHpHeart.json'
 import WeaponBackgroundDefinition from '@res/animation/uiWeaponBackground.json'
 import WeaponGunDefinition from '@res/animation/uiWeaponGun.json'
@@ -109,6 +110,14 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
   const holder = player.getComponent('AirHolder')
   const airTank = player.getComponent('Equipment').airTank
 
+  const airtankBg = new UIComponentFactory(AirtankBgDefinition.sprite)
+    .setPosition(
+      UI_SETTING.AIR_TANK.x + UI_SETTING.AIR_TANK.paddingX,
+      UI_SETTING.AIR_TANK.y + UI_SETTING.AIR_TANK.paddingY
+    )
+    .create()
+  const airtankBgDraw = airtankBg.getComponent('Draw')
+
   const renderingState: {
     tankBodies: Entity[]
     tankTail: Entity
@@ -132,6 +141,7 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
     .create()
   const airGaugeDraw = airGauge.getComponent('Draw')
 
+  world.addEntity(airtankBg)
   world.addEntity(airGauge)
   world.addEntity(weaponBackground)
   world.addEntity(renderingState.tankTail)
@@ -155,6 +165,7 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
     tankTailPosition.x =
       UI_SETTING.AIR_TANK.x + renderingState.tankBodies.length * UI_SETTING.AIR_TANK.shiftX
 
+    airtankBgDraw.width = UI_SETTING.AIR_TANK.shiftX * airTank.count
     // 割合計算
     const maxQuantity = airTank.quantity * airTank.count
     const rate = Math.max(0, Math.min(1, holder.quantity / maxQuantity))
