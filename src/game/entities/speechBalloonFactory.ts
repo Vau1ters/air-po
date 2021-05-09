@@ -7,8 +7,8 @@ import speechBalloonTextFragmentShader from '@res/shaders/speechBalloonText.frag
 import { speechBalloonAI } from '@game/ai/entity/speechBalloon/speechBalloonAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { windowSize } from '@core/application'
-import { DrawComponent } from '@game/components/drawComponent'
-import { PositionComponent } from '@game/components/positionComponent'
+import { normalizeText } from '@utils/text'
+import { TextFactory } from './textFactory'
 
 export class SpeechBalloonFactory extends EntityFactory {
   constructor(private text: string, private target: Entity, private camera: Entity) {
@@ -16,7 +16,10 @@ export class SpeechBalloonFactory extends EntityFactory {
   }
 
   create(): Entity {
-    const entity = new Entity()
+    const entity = new TextFactory({
+      text: normalizeText(this.text),
+      fontSize: 8,
+    }).create()
 
     const tailSize = 20
     const radius = 10
@@ -36,7 +39,7 @@ export class SpeechBalloonFactory extends EntityFactory {
       }),
     ]
 
-    const ui = new DrawComponent({ entity, type: 'UI' })
+    const ui = entity.getComponent('Draw')
     ui.filters = [
       new Filter(speechBalloonVertexShader, undefined, {
         anchor: [0, 0],
@@ -46,10 +49,7 @@ export class SpeechBalloonFactory extends EntityFactory {
     ]
     ui.sortableChildren = true
 
-    const text = new BitmapText(this.normalize(this.text), {
-      fontName: 'got',
-      fontSize: 8,
-    })
+    const [text] = ui.children as [BitmapText]
     text.name = 'text'
     text.roundPixels = true
     text.filters = [new Filter(undefined, speechBalloonTextFragmentShader)]
@@ -59,80 +59,11 @@ export class SpeechBalloonFactory extends EntityFactory {
       tailSize + padding - sprite.height * 0.5
     )
 
-    ui.addChild(sprite)
-    ui.addChild(text)
+    ui.addChildAt(sprite, 0)
 
-    entity.addComponent('Draw', ui)
     entity.addComponent('AI', new AIComponent(speechBalloonAI(entity, this.target, this.camera)))
-    entity.addComponent(
-      'Position',
-      new PositionComponent(windowSize.width * 0.5, sprite.height * 0.5)
-    )
+    entity.getComponent('Position').x = windowSize.width * 0.5
+    entity.getComponent('Position').y = sprite.height * 0.5
     return entity
-  }
-
-  private normalize(text: string): string {
-    const table: { [key: string]: string } = {
-      が: 'か゛',
-      ぎ: 'き゛',
-      ぐ: 'く゛',
-      げ: 'け゛',
-      ご: 'こ゛',
-      ざ: 'さ゛',
-      じ: 'し゛',
-      ず: 'す゛',
-      ぜ: 'せ゛',
-      ぞ: 'そ゛',
-      だ: 'た゛',
-      ぢ: 'ち゛',
-      づ: 'つ゛',
-      で: 'て゛',
-      ど: 'と゛',
-      ば: 'は゛',
-      び: 'ひ゛',
-      ぶ: 'ふ゛',
-      べ: 'へ゛',
-      ぼ: 'ほ゛',
-      ぱ: 'は゜',
-      ぴ: 'ひ゜',
-      ぷ: 'ふ゜',
-      ぺ: 'へ゜',
-      ぽ: 'ほ゜',
-      ガ: 'カ゛',
-      ギ: 'キ゛',
-      グ: 'ク゛',
-      ゲ: 'ケ゛',
-      ゴ: 'コ゛',
-      ザ: 'サ゛',
-      ジ: 'シ゛',
-      ズ: 'ズ゛',
-      ゼ: 'ゼ゛',
-      ゾ: 'ゾ゛',
-      ダ: 'タ゛',
-      ヂ: 'チ゛',
-      ヅ: 'ツ゛',
-      デ: 'テ゛',
-      ド: 'ト゛',
-      バ: 'ハ゛',
-      ビ: 'ヒ゛',
-      ブ: 'フ゛',
-      ベ: 'ヘ゛',
-      ボ: 'ホ゛',
-      パ: 'ハ゜',
-      ピ: 'ヒ゜',
-      プ: 'フ゜',
-      ペ: 'ヘ゜',
-      ポ: 'ホ゜',
-    }
-    let result = ''
-    for (let i = 0; i < text.length; i++) {
-      const c = text.charAt(i)
-      if (c in table) {
-        result += table[c]
-      } else {
-        result += c
-      }
-    }
-    return result
   }
 }
