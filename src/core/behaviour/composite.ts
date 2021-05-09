@@ -17,3 +17,10 @@ export const parallelAny = function*(behaviourList: Array<Behaviour<any>>): Beha
     yield
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const chain = function*(behaviourList: Array<Behaviour<any>>): Behaviour<void> {
+  for (const behaviour of behaviourList) {
+    yield* behaviour
+  }
+}
