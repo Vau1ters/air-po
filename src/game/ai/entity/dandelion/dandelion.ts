@@ -8,9 +8,9 @@ import * as PIXI from 'pixi.js'
 const FLUFF_EMIT_INTERVAL = 200
 const HEAD_OFFSET_Y = -96
 const ROOT_OFFSET_Y = 160
-const HIMO_WIDTH = 0.3
-const HIMO_COLOR = 0x22cc22
-const HIMO_POINT_NUM = 10
+const ROPE_WIDTH = 0.3
+const ROPE_COLOR = 0x22cc22
+const ROPE_POINT_NUM = 10
 const HEAD_OSCILLATION_TIME_SCALE = 0.03
 
 export const dandelionBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
@@ -20,13 +20,13 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   headPosition.y += HEAD_OFFSET_Y
   const rootPosition = headPosition.add(new Vec2(0, ROOT_OFFSET_Y))
 
-  const points = new Array<PIXI.Point>(HIMO_POINT_NUM)
+  const points = new Array<PIXI.Point>(ROPE_POINT_NUM)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
-  const himo = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, HIMO_WIDTH)
-  himo.tint = HIMO_COLOR
-  himo.zIndex = -100
+  const rope = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, ROPE_WIDTH)
+  rope.tint = ROPE_COLOR
+  rope.zIndex = -100
   draw.sortableChildren = true
-  draw.addChild(himo)
+  draw.addChild(rope)
 
   const headOrigin = new Vec2(headPosition.x, headPosition.y)
   const n = headPosition.sub(rootPosition).normalize()
@@ -38,7 +38,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
     headPosition.y = headOrigin.y - d * n.x
   }
 
-  function updateHimo(): void {
+  function updateRope(): void {
     const dx = rootPosition.x - headPosition.x
     const dy = rootPosition.y - headPosition.y
     const a = dy / Math.sqrt(Math.abs(dx))
@@ -62,7 +62,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
 
   while (true) {
     updateHead()
-    updateHimo()
+    updateRope()
     updateFluff()
     yield
   }
