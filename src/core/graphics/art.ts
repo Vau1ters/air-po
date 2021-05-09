@@ -31,6 +31,7 @@ import mossImg from '@res/image/moss.png'
 import jetEffectImg from '@res/image/jetEffect.png'
 import equipmentImg from '@res/image/equipment.png'
 import enemy1Img from '@res/image/enemy1.png'
+import dandelionStemImg from '@res/image/dandelion_stem.png'
 import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 import dandelionImg from '@res/image/dandelion.png'
 import balloonvineImg from '@res/image/balloonvine.png'
@@ -110,6 +111,7 @@ export const init = async (): Promise<void> => {
   textureStore.jetEffect = await buildSingleTexture(jetEffectImg)
   textureStore.equipment = await buildAnimationTexture(equipmentImg, equipmentSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
+  textureStore.dandelionStem = await buildSingleTexture(dandelionStemImg)
   textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
   textureStore.dandelion = await buildAnimationTexture(dandelionImg, dandelionSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
