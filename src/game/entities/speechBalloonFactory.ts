@@ -7,9 +7,8 @@ import speechBalloonTextFragmentShader from '@res/shaders/speechBalloonText.frag
 import { speechBalloonAI } from '@game/ai/entity/speechBalloon/speechBalloonAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { windowSize } from '@core/application'
-import { DrawComponent } from '@game/components/drawComponent'
-import { PositionComponent } from '@game/components/positionComponent'
 import { normalizeText } from '@utils/text'
+import { TextFactory } from './textFactory'
 
 export class SpeechBalloonFactory extends EntityFactory {
   constructor(private text: string, private target: Entity, private camera: Entity) {
@@ -17,7 +16,10 @@ export class SpeechBalloonFactory extends EntityFactory {
   }
 
   create(): Entity {
-    const entity = new Entity()
+    const entity = new TextFactory({
+      text: normalizeText(this.text),
+      fontSize: 8,
+    }).create()
 
     const tailSize = 20
     const radius = 10
@@ -37,7 +39,7 @@ export class SpeechBalloonFactory extends EntityFactory {
       }),
     ]
 
-    const ui = new DrawComponent({ entity, type: 'UI' })
+    const ui = entity.getComponent('Draw')
     ui.filters = [
       new Filter(speechBalloonVertexShader, undefined, {
         anchor: [0, 0],
@@ -47,10 +49,7 @@ export class SpeechBalloonFactory extends EntityFactory {
     ]
     ui.sortableChildren = true
 
-    const text = new BitmapText(normalizeText(this.text), {
-      fontName: 'got',
-      fontSize: 8,
-    })
+    const [text] = ui.children as [BitmapText]
     text.name = 'text'
     text.roundPixels = true
     text.filters = [new Filter(undefined, speechBalloonTextFragmentShader)]
@@ -60,15 +59,11 @@ export class SpeechBalloonFactory extends EntityFactory {
       tailSize + padding - sprite.height * 0.5
     )
 
-    ui.addChild(sprite)
-    ui.addChild(text)
+    ui.addChildAt(sprite, 0)
 
-    entity.addComponent('Draw', ui)
     entity.addComponent('AI', new AIComponent(speechBalloonAI(entity, this.target, this.camera)))
-    entity.addComponent(
-      'Position',
-      new PositionComponent(windowSize.width * 0.5, sprite.height * 0.5)
-    )
+    entity.getComponent('Position').x = windowSize.width * 0.5
+    entity.getComponent('Position').y = sprite.height * 0.5
     return entity
   }
 }

@@ -4,27 +4,20 @@ import { chain } from '@core/behaviour/composite'
 import { ease } from '@core/behaviour/easing/easing'
 import { In } from '@core/behaviour/easing/functions'
 import { wait } from '@core/behaviour/wait'
-import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { DrawComponent } from '@game/components/drawComponent'
-import { PositionComponent } from '@game/components/positionComponent'
+import { TextFactory } from '@game/entities/textFactory'
 import { BitmapText } from 'pixi.js'
 
 export const Text = (world: World, text: string): Behaviour<void> => {
-  const entity = new Entity()
-  const ui = new DrawComponent({ entity, type: 'UI' })
-  const t = new BitmapText(text, {
-    fontName: 'got',
+  const entity = new TextFactory({
+    text,
     fontSize: 16,
-  })
-
-  ui.addChild(t)
-  entity.addComponent(
-    'Position',
-    new PositionComponent(windowSize.width / 2 - t.width / 2, windowSize.height / 2)
-  )
-  entity.addComponent('Draw', ui)
+  }).create()
   world.addEntity(entity)
+
+  const [t] = entity.getComponent('Draw').children as [BitmapText]
+  entity.getComponent('Position').x = windowSize.width / 2 - t.width / 2
+  entity.getComponent('Position').y = windowSize.height / 2
 
   return chain([
     ease(In.linear)(
