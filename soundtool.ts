@@ -10,9 +10,11 @@ const fileText = `
 import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}
-export const play = (name: string): void => {
+export const play = (name: string, option?: PIXI.PlayOptions): void => {
+  option = option ? option : {}
   const sound = soundStore[name]
-  if (sound !== undefined) sound.play()
+  if (sound !== undefined) sound.play(option)
+  else console.log(name, ':is not found')
 }
 
 const load = (url: string): Promise<PIXI.Sound> => {

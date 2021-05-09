@@ -5,6 +5,10 @@
 // IMPORT
 import snibeeDie from '@res/sound/snibeeDie.ogg'
 import snibee from '@res/sound/snibee.ogg'
+import slime4 from '@res/sound/slime4.ogg'
+import slime3 from '@res/sound/slime3.ogg'
+import slime2 from '@res/sound/slime2.ogg'
+import slime1 from '@res/sound/slime1.ogg'
 import shot from '@res/sound/shot.ogg'
 import pon from '@res/sound/pon.ogg'
 import playerWalk from '@res/sound/playerWalk.ogg'
@@ -29,6 +33,7 @@ export const play = (name: string, option?: PIXI.PlayOptions): void => {
   option = option ? option : {}
   const sound = soundStore[name]
   if (sound !== undefined) sound.play(option)
+  else console.log(name, ':is not found')
 }
 
 const load = (url: string): Promise<PIXI.Sound> => {
@@ -51,6 +56,10 @@ export const init = async (): Promise<void> => {
   // LOAD_RESOURCE
   soundStore.snibeeDie = await load(snibeeDie)
   soundStore.snibee = await load(snibee)
+  soundStore.slime4 = await load(slime4)
+  soundStore.slime3 = await load(slime3)
+  soundStore.slime2 = await load(slime2)
+  soundStore.slime1 = await load(slime1)
   soundStore.shot = await load(shot)
   soundStore.pon = await load(pon)
   soundStore.playerWalk = await load(playerWalk)
