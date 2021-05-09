@@ -14,6 +14,7 @@ import { WallFactory } from '@game/entities/tile/wallFactory'
 import { assert } from '@utils/assertion'
 import { TileSet, TileLayer, getTileId, MapBuilder } from './mapBuilder'
 import { RespawnFlagFactory } from '@game/entities/tile/respawnFlagFactory'
+import { Boss1Factory } from '@game/entities/tile/boss1Factory'
 
 type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
 type Builder = { firstgid: number; build: Build }
@@ -57,6 +58,7 @@ export class TileLayerFactory {
       ) => TileEntityFactory
     } = {
       balloonvine: BalloonVineFactory,
+      boss1: Boss1Factory,
       dandelion: DandelionFactory,
       enemy1: Enemy1Factory,
       mushroom: MushroomFactory,

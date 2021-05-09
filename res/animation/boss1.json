@@ -1,0 +1,11 @@
+{
+  "sprite": {
+    "name": "boss1",
+    "state": {
+      "Close": [0],
+      "Open": [1]
+    },
+    "speed": {},
+    "default": "Close"
+  }
+}
