@@ -20,8 +20,7 @@ const createNextWorld = async (): Promise<World> => {
     case StoryStatus.Stage:
       assert(playData.mapName !== undefined, 'save data is broken')
       return new GameWorldFactory().create(
-        (await import(`../../../../../res/map/${playData.mapName}.json`)) as Map,
-        0
+        (await import(`../../../../../res/map/${playData.mapName}.json`)) as Map
       )
   }
 }

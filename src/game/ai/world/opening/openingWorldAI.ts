@@ -61,6 +61,6 @@ export const openingWorldAI = function*(world: World): Behaviour<void> {
 
   savePlayData({ status: StoryStatus.Stage, mapName: 'root' })
 
-  const gameWorld = new GameWorldFactory().create(map, 0)
+  const gameWorld = new GameWorldFactory().create(map)
   gameWorld.start()
 }

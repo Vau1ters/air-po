@@ -1,5 +1,9 @@
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { LaserSightFactory } from '@game/entities/laserSightFactory'
+import { PlayerFactory } from '@game/entities/object/playerFactory'
+import { PlayerUIFactory } from '@game/entities/playerUIFactory'
+import { assert } from '@utils/assertion'
 import { ObjectLayerFactory } from './objectLayerFactory'
 import { TileLayerFactory } from './tileLayerFactory'
 
@@ -72,11 +76,13 @@ export type Map = {
 }
 
 export class MapBuilder {
+  private playerSpanwners = new Map<number, Vec2>()
+
   public constructor(private world: World) {}
 
-  public build(map: Map, playerSpawnerID: number): void {
-    const objectLayerFactory = new ObjectLayerFactory(this.world, playerSpawnerID)
-    const tileLayerFactory = new TileLayerFactory(this.world, map.tilesets)
+  public build(map: Map): void {
+    const objectLayerFactory = new ObjectLayerFactory(this.world)
+    const tileLayerFactory = new TileLayerFactory(this, this.world, map.tilesets)
     const tileSize = new Vec2(map.tilewidth, map.tileheight)
     for (const layer of map.layers) {
       switch (layer.name) {
@@ -89,10 +95,24 @@ export class MapBuilder {
         case 'equipment':
         case 'airGeyser':
         case 'player':
-          objectLayerFactory.build(layer as ObjectLayer)
+          objectLayerFactory.build(this, layer as ObjectLayer)
           break
       }
     }
+  }
+
+  public registerSpawner(id: number, pos: Vec2): void {
+    assert(this.playerSpanwners.has(id) === false, `Multiple player spawner ID detected: ${id}`)
+    this.playerSpanwners.set(id, pos)
+  }
+
+  public spawnPlayer(id: number): void {
+    const pos = this.playerSpanwners.get(id)
+    assert(pos, `player spawner ID '${id}' is not found`)
+
+    this.world.addEntity(new PlayerFactory(pos, this.world).create())
+    this.world.addEntity(new LaserSightFactory(this.world).create())
+    this.world.addEntity(new PlayerUIFactory(this.world).create())
   }
 }
 
