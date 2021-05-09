@@ -15,9 +15,9 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
 
   const points = new Array<PIXI.Point>(10)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
-  const himo = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, 0.1)
-  himo.tint = 0x22ff22
-  draw.addChild(himo)
+  const rope = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, 0.1)
+  rope.tint = 0x22ff22
+  draw.addChild(rope)
 
   const [gripCollider, _, __, rootCollider, wallDetectionCollider] = entity.getComponent(
     'Collider'
