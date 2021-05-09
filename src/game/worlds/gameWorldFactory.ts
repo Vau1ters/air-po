@@ -87,7 +87,6 @@ export class GameWorldFactory {
 
     this.mapBuilder = new MapBuilder(world)
     this.mapBuilder.build(map)
-    this.mapBuilder.spawnPlayer(0)
 
     return world
   }
