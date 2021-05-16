@@ -5,8 +5,8 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import DandelionStem from '@res/image/dandelion_stem.png'
-import { Category } from '@game/entities/category'
 import { RaySearcherFactory } from '@game/entities/raySearcherFactory'
+import { Category } from '@game/entities/category'
 import { raySearchGenerator } from '../raySearcher/raySearcherAI'
 import { assert } from '@utils/assertion'
 
@@ -22,7 +22,11 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
 
   headPosition.y += HEAD_OFFSET_Y
 
-  const raySearcher = new RaySearcherFactory().addCategoryToMask(Category.TERRAIN).create()
+  const raySearcher = new RaySearcherFactory()
+    .setRayOrigin(headPosition)
+    .setRayDirection(new Vec2(0, 1))
+    .addCategoryToMask(Category.TERRAIN)
+    .create()
   world.addEntity(raySearcher)
   const getClosestHit = raySearchGenerator(raySearcher, { maximumDistance: ROOT_OFFSET_Y })
 
@@ -32,6 +36,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   assert(closestHit instanceof Object, 'dandelion ai fails ray searching')
   const rootPosition = headPosition.copy()
   rootPosition.y = closestHit.point.y
+  world.removeEntity(raySearcher)
 
   const points = new Array<PIXI.Point>(ROPE_POINT_NUM)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
