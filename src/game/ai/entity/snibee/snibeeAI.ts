@@ -10,7 +10,7 @@ import { BulletFactory } from '@game/entities/bulletFactory'
 import { wait } from '@core/behaviour/wait'
 import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
-import { animateLoop, animate } from '@game/ai/entity/common/action/animate'
+import { animate } from '@game/ai/entity/common/action/animate'
 import { repeat } from '@core/behaviour/repeat'
 
 export const SnibeeSetting = {
@@ -85,21 +85,21 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* parallelAll([
     moveAI(entity, playerEntity),
     shootAI(entity, world, playerEntity),
-    animateLoop(entity, 'Alive'),
+    animate({ entity, state: 'Alive', loopCount: Infinity }),
   ])
 }
 
 const flutteringAI = function*(entity: Entity): Behaviour<void> {
   const rigidbody = entity.getComponent('RigidBody')
-  yield* animate(entity, 'FlutteringLeft')
+  yield* animate({ entity, state: 'FlutteringLeft' })
   yield* repeat(10, () => {
     rigidbody.acceleration.x = 500
   })
-  yield* animate(entity, 'FlutteringRight')
+  yield* animate({ entity, state: 'FlutteringRight' })
   yield* repeat(20, () => {
     rigidbody.acceleration.x = -500
   })
-  yield* animate(entity, 'FlutteringLeft')
+  yield* animate({ entity, state: 'FlutteringLeft' })
   yield* repeat(10, () => {
     rigidbody.acceleration.x = 500
   })
@@ -107,7 +107,7 @@ const flutteringAI = function*(entity: Entity): Behaviour<void> {
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
-  yield* animate(entity, 'Dying')
+  yield* animate({ entity, state: 'Dying' })
   entity.getComponent('RigidBody').velocity.x = 0
   entity.getComponent('RigidBody').velocity.y = -3
   entity.getComponent('RigidBody').gravityScale = 0.05

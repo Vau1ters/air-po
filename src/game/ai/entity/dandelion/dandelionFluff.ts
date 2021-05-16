@@ -3,7 +3,7 @@ import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
-import { animateLoop, animate } from '../common/action/animate'
+import { animate } from '../common/action/animate'
 
 const INITIAL_VELOCITY = new Vec2(1, 2)
 const BUOYANCY = 0.005
@@ -39,9 +39,9 @@ export const dandelionFluffBehaviour = function*(entity: Entity, world: World): 
 }
 
 export const dandelionAnimation = function*(entity: Entity): Behaviour<void> {
-  yield* animate(entity, 'Open')
+  yield* animate({ entity, state: 'Open' })
   for (let i = OPEN_WAIT_FRAME; i >= ROTATE_WAIT_FRAME; i--) {
-    yield* animateLoop(entity, 'Rotate', i, OPEN_WAIT_FRAME - i + 1)
+    yield* animate({ entity, state: 'Rotate', loopCount: OPEN_WAIT_FRAME - i + 1, waitFrames: i })
   }
-  yield* animateLoop(entity, 'Rotate')
+  yield* animate({ entity, state: 'Rotate', loopCount: Infinity })
 }
