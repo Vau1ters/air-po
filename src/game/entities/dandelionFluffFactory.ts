@@ -56,6 +56,7 @@ export class DandelionFluffFactory extends EntityFactory {
     )
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
     entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.getComponent('Draw').zIndex = -100
     return entity
   }
 }
