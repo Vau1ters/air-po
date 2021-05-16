@@ -1,6 +1,7 @@
 // IMPORT
 import wallSetting from '@res/map/tileset/wall.json'
 import vineSetting from '@res/map/tileset/vine.json'
+import uiHpHeartSetting from '@res/map/tileset/uiHpHeart.json'
 import throughFloorSetting from '@res/map/tileset/throughFloor.json'
 import snibeeSetting from '@res/map/tileset/snibee.json'
 import slime1Setting from '@res/map/tileset/slime1.json'
@@ -18,6 +19,13 @@ import ballBulletSetting from '@res/map/tileset/ballBullet.json'
 import airGeyserSetting from '@res/map/tileset/airGeyser.json'
 import wallImg from '@res/image/wall.png'
 import vineImg from '@res/image/vine.png'
+import uiWeaponGunImg from '@res/image/uiWeaponGun.png'
+import uiWeaponBackgroundImg from '@res/image/uiWeaponBackground.png'
+import uiHpHeartImg from '@res/image/uiHpHeart.png'
+import uiAirtankTailImg from '@res/image/uiAirtankTail.png'
+import uiAirtankBodyImg from '@res/image/uiAirtankBody.png'
+import uiAirtankBgImg from '@res/image/uiAirtankBg.png'
+import uiAirImg from '@res/image/uiAir.png'
 import titleImg from '@res/image/title.png'
 import throughFloorImg from '@res/image/throughFloor.png'
 import snibeeImg from '@res/image/snibee.png'
@@ -98,6 +106,13 @@ export const init = async (): Promise<void> => {
   // LOAD_RESOURCE
   textureStore.wall = await buildAnimationTexture(wallImg, wallSetting)
   textureStore.vine = await buildAnimationTexture(vineImg, vineSetting)
+  textureStore.uiWeaponGun = await buildSingleTexture(uiWeaponGunImg)
+  textureStore.uiWeaponBackground = await buildSingleTexture(uiWeaponBackgroundImg)
+  textureStore.uiHpHeart = await buildAnimationTexture(uiHpHeartImg, uiHpHeartSetting)
+  textureStore.uiAirtankTail = await buildSingleTexture(uiAirtankTailImg)
+  textureStore.uiAirtankBody = await buildSingleTexture(uiAirtankBodyImg)
+  textureStore.uiAirtankBg = await buildSingleTexture(uiAirtankBgImg)
+  textureStore.uiAir = await buildSingleTexture(uiAirImg)
   textureStore.title = await buildSingleTexture(titleImg)
   textureStore.throughFloor = await buildAnimationTexture(throughFloorImg, throughFloorSetting)
   textureStore.snibee = await buildAnimationTexture(snibeeImg, snibeeSetting)
