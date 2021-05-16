@@ -2,7 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 
-const FLUFF_GRUB_POSITION = new Vec2(0, 0.8)
+const FLUFF_GRUB_POSITION = new Vec2(0, 7.0)
 const PLAYER_TO_FLUFF_VELOCITY_CONTRIBUTION = 0.003
 const FLUFF_STICK_SCALE = 0.5
 const FLUFF_RELEASE_DISTANCE = 10

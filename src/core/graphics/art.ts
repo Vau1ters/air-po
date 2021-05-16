@@ -12,6 +12,7 @@ import mushroomSetting from '@res/map/tileset/mushroom.json'
 import mossSetting from '@res/map/tileset/moss.json'
 import equipmentSetting from '@res/map/tileset/equipment.json'
 import enemy1Setting from '@res/map/tileset/enemy1.json'
+import dandelionFluffSetting from '@res/map/tileset/dandelion_fluff.json'
 import dandelionSetting from '@res/map/tileset/dandelion.json'
 import balloonvineSetting from '@res/map/tileset/balloonvine.json'
 import ballBulletSetting from '@res/map/tileset/ballBullet.json'
@@ -112,7 +113,10 @@ export const init = async (): Promise<void> => {
   textureStore.equipment = await buildAnimationTexture(equipmentImg, equipmentSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
   textureStore.dandelionStem = await buildSingleTexture(dandelionStemImg)
-  textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
+  textureStore.dandelionFluff = await buildAnimationTexture(
+    dandelionFluffImg,
+    dandelionFluffSetting
+  )
   textureStore.dandelion = await buildAnimationTexture(dandelionImg, dandelionSetting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)
   textureStore.ballBullet = await buildAnimationTexture(ballBulletImg, ballBulletSetting)

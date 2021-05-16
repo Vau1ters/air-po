@@ -2,9 +2,13 @@
   "sprite": {
     "name": "dandelionFluff",
     "state": {
-      "Normal": [0]
+      "Open": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "Rotate": [11, 12, 13, 14]
     },
-    "speed": {},
-    "default": "Normal"
+    "speed": {
+      "Open": 5,
+      "Rotate": 2
+    },
+    "default": "Open"
   }
 }

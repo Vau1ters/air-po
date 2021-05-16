@@ -11,10 +11,14 @@ class AnimationSpriteFrame extends Sprite {
     this.texture = this.textures[number]
   }
 
-  public *animate(): Behaviour<void> {
+  public *animate(waitFrames?: number): Behaviour<void> {
     for (const texture of this.textures) {
       this.texture = texture
-      yield* wait(this.waitFrames)
+      if (waitFrames) {
+        yield* wait(waitFrames)
+      } else {
+        yield* wait(this.waitFrames)
+      }
     }
   }
 }
@@ -44,8 +48,8 @@ export class AnimationSprite extends Container {
     this.currentAnimationSprite.visible = true
   }
 
-  public *animate(): Behaviour<void> {
-    yield* this.currentAnimationSprite.animate()
+  public *animate(waitFrame?: number): Behaviour<void> {
+    yield* this.currentAnimationSprite.animate(waitFrame)
   }
 
   public setVisible(isVisible: boolean): void {
