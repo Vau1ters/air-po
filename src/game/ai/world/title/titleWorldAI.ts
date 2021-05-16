@@ -7,6 +7,7 @@ import { MouseController } from '@game/systems/controlSystem'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import map from '@res/map/teststage.json'
 import { Sprite } from 'pixi.js'
+import * as Sound from '@core/sound/sound'
 
 export const titleWorldAI = function*(world: World): Behaviour<void> {
   const titleImage = new Sprite(textureStore.title[0])
@@ -14,6 +15,7 @@ export const titleWorldAI = function*(world: World): Behaviour<void> {
   world.stage.addChild(titleImage)
 
   while (!MouseController.isMousePressed('Left')) yield
+  Sound.play('start')
 
   yield* stream(
     (value: number) => {

@@ -3,6 +3,7 @@
 // you can update this file by type "yarn soundtool" command.
 
 // IMPORT
+import start from '@res/sound/start.ogg'
 import snibeeDie from '@res/sound/snibeeDie.ogg'
 import snibee from '@res/sound/snibee.ogg'
 import slime4 from '@res/sound/slime4.ogg'
@@ -54,6 +55,7 @@ const load = (url: string): Promise<PIXI.Sound> => {
 
 export const init = async (): Promise<void> => {
   // LOAD_RESOURCE
+  soundStore.start = await load(start)
   soundStore.snibeeDie = await load(snibeeDie)
   soundStore.snibee = await load(snibee)
   soundStore.slime4 = await load(slime4)
