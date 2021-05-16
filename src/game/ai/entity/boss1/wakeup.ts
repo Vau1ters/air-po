@@ -10,7 +10,6 @@ export const wakeup = function*(state: StemState): Behaviour<void> {
     const b = 20
     const s = Math.sin(a)
     const c = Math.cos(a)
-    state.shape = t => new Vec2(Math.sin(b * t), 30 * t * c - s * Math.cos(b * t))
     yield
   }
 }

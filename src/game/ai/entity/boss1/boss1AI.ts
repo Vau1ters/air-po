@@ -13,12 +13,12 @@ import { wakeup } from './wakeup'
 
 const boss1Move = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   yield* sleep(boss, world)
-  yield* wakeup(state)
+  // yield* wakeup(state)
   yield* attack(state, boss, world)
 }
 
 export const boss1AI = function*(boss: Entity, world: World): Behaviour<void> {
-  const state = { shape: () => new Vec2() }
+  const state = { stem: () => new Vec2(), arms: [() => new Vec2(), () => new Vec2()] }
   yield* suspendable(isAlive(boss), parallelAll([stem(state, boss), boss1Move(state, boss, world)]))
   // yield* animate(entity, 'Dying')
   yield* kill(boss, world)
