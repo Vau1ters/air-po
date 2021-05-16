@@ -60,7 +60,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
       if (Math.random() < 0.5) {
-        Sound.play('fire', { volume: 0.5 })
+        Sound.play('airJet', { volume: 0.5 })
         const jetEffectFactory = new JetEffectFactory(world)
         jetEffectFactory.setShooter(entity)
         const jetEffect = jetEffectFactory.create()
