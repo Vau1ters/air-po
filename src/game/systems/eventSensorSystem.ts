@@ -6,6 +6,7 @@ import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { PLAYER_SENSOR_TAG } from '@game/entities/object/playerFactory'
+import * as Sound from '@core/sound/sound'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
@@ -54,6 +55,7 @@ export class EventSensorSystem extends System {
     const [player] = this.playerFamily.entityArray
     const equipmentComponent = player.getComponent('Equipment')
     equipmentComponent.equipEvent.notify(equipmentType)
+    Sound.play('getAirTank')
     this.world.removeEntityById(equipmentId)
   }
 }

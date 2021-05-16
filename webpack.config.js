@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -32,7 +32,7 @@ module.exports = {
         loader: 'url-loader',
       },
       {
-        test: /\.wav$/,
+        test: /\.ogg$/,
         exclude: /node_modules/,
         loader: 'url-loader',
       },

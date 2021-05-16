@@ -107,6 +107,7 @@ const flutteringAI = function*(entity: Entity): Behaviour<void> {
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
+  Sound.play('snibeeDie')
   yield* animate({ entity, state: 'Dying' })
   entity.getComponent('RigidBody').velocity.x = 0
   entity.getComponent('RigidBody').velocity.y = -3

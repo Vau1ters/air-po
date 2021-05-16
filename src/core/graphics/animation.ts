@@ -34,13 +34,20 @@ export class AnimationSprite extends Container {
   private currentState: string
   private animationSprites: { [key: string]: AnimationSpriteFrame } = {}
 
-  public constructor(definition: AnimationDefinition, initialState: string) {
+  public constructor(
+    definition: AnimationDefinition,
+    initialState: string,
+    anchor = {
+      x: 0.5,
+      y: 0.5,
+    }
+  ) {
     super()
 
     for (const [key, { textures, waitFrames }] of Object.entries(definition)) {
       const sprite = new AnimationSpriteFrame(textures, waitFrames)
       sprite.visible = false
-      sprite.anchor.set(0.5)
+      sprite.anchor.set(anchor.x, anchor.y)
       this.animationSprites[key] = sprite
       this.addChild(sprite)
     }
