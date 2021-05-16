@@ -65,6 +65,7 @@ export class BalloonVineFactory extends TileEntityFactory {
             {
               geometry: this.BODY_COLLIDER,
               category: Category.ENEMY_HITBOX,
+              condition: (): boolean => entity.getComponent('PickupTarget').isPossessed === false,
             },
             {
               geometry: this.BODY_COLLIDER,
