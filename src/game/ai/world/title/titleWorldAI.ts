@@ -4,6 +4,7 @@ import { textureStore } from '@core/graphics/art'
 import { loadPlayData, StoryStatus } from '@game/playdata/playdata'
 import { MouseController } from '@game/systems/controlSystem'
 import { Sprite } from 'pixi.js'
+import * as Sound from '@core/sound/sound'
 import { LogoBlinking } from './logoBlinking'
 import { OpeningWorldFactory } from '@game/worlds/openingWorldFactory'
 import { assert } from '@utils/assertion'
@@ -34,6 +35,7 @@ export const titleWorldAI = function*(world: World): Behaviour<void> {
   world.stage.addChild(titleImage)
 
   while (!MouseController.isMousePressed('Left')) yield
+  Sound.play('start')
 
   yield* LogoBlinking(titleImage)
 
