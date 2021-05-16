@@ -31,7 +31,7 @@ import PIXI from 'pixi-sound'
 
 export const soundStore: { [key: string]: PIXI.Sound } = {}
 export const play = (name: string, option?: PIXI.PlayOptions): void => {
-  option = option ? option : {}
+  option = option ?? { volume: 0.1 }
   const sound = soundStore[name]
   if (sound !== undefined) sound.play(option)
   else console.log(name, ':is not found')
