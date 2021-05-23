@@ -67,7 +67,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
       anim.y = vine.sprites[vine.sprites.length - 1].y + 16
       draw.addChild(anim)
       vine.sprites.push(anim)
-      anim.changeTo('Stalk2')
+      anim.state = 'Stalk2'
     }
   }
 
@@ -82,7 +82,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
   }
   frame = `${frame}${(vine.length - 1) % 3}`
 
-  vine.sprites[vine.sprites.length - 1].changeTo(frame)
+  vine.sprites[vine.sprites.length - 1].state = frame
 }
 
 export const changeVineLength = function*(entity: Entity): Behaviour<void> {
