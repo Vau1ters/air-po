@@ -9,9 +9,7 @@ export class AnimationStateComponent {
   }
 
   set isVisible(value: boolean) {
-    if (value != this.animation.isVisible) {
-      this.animation.isVisible = value
-    }
+    this.animation.isVisible = value
   }
 
   get isVisible(): boolean {
