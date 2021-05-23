@@ -37,6 +37,7 @@ export class GameWorldFactory {
 
     const worldContainer = new Container()
     worldContainer.filterArea = application.screen
+    worldContainer.sortableChildren = true
 
     const background = new PIXI.Graphics()
     background.beginFill(0xc0c0c0)

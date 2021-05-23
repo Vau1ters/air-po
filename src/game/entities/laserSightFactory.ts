@@ -2,12 +2,11 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { laserSightAI } from '@game/ai/entity/laserSight/laserSightAI'
 import { AIComponent } from '@game/components/aiComponent'
-import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { PositionComponent } from '@game/components/positionComponent'
 import { Graphics } from 'pixi.js'
-import { Category, CategorySet } from './category'
+import { Category } from './category'
 import { EntityFactory } from './entityFactory'
+import { RaySearcherFactory } from './raySearcherFactory'
 
 export class LaserSightFactory extends EntityFactory {
   constructor(private world: World) {
@@ -15,7 +14,9 @@ export class LaserSightFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const entity = new Entity()
+    const entity = new RaySearcherFactory()
+      .addCategoryToMask(Category.ENEMY_HITBOX, Category.TERRAIN)
+      .create()
 
     const g = new Graphics()
     g.position.set(0)
@@ -31,17 +32,6 @@ export class LaserSightFactory extends EntityFactory {
       })
     )
     entity.addComponent(
-      'Collider',
-      new ColliderComponent(
-        buildCollider({
-          entity,
-          geometry: { type: 'Ray' },
-          category: Category.SENSOR,
-          mask: new CategorySet(Category.ENEMY_HITBOX, Category.TERRAIN),
-        })
-      )
-    )
-    entity.addComponent(
       'AI',
       new AIComponent({
         behaviour: laserSightAI(entity, this.world),
@@ -51,7 +41,6 @@ export class LaserSightFactory extends EntityFactory {
         },
       })
     )
-    entity.addComponent('Position', new PositionComponent())
 
     return entity
   }

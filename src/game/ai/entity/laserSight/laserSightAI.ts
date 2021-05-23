@@ -3,32 +3,27 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
 import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
-import { CollisionResultRayAABB } from '@core/collision/collision/Ray_AABB'
 import { Ray } from '@core/collision/geometry/ray'
 import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { LaserSightLockFactory } from '@game/entities/laserSightLockFactory'
 import { MouseController } from '@game/systems/controlSystem'
 import { assert } from '@utils/assertion'
 import { Graphics } from 'pixi.js'
+import { RayHitResult, raySearchGenerator } from '../raySearcher/raySearcherAI'
 
-type HitResult = {
-  point: Vec2
-  entity?: Entity
-}
 type Lock = { lock: Entity; despawn: () => void }
 type LockingAimState = {
   state: 'Locking'
   target: Entity
   chasing: number
-  hitResult: HitResult
+  hitResult: RayHitResult
 }
 type FreeAimState = {
   state: 'Free'
-  hitResult: HitResult
+  hitResult: RayHitResult
 }
 type LaserSightState = LockingAimState | FreeAimState
 
@@ -54,31 +49,6 @@ const updateInvisibleRay = function*(laser: Entity, world: World): Behaviour<voi
   }
 }
 
-const getClosestHitGenerator = function*(
-  player: Entity,
-  laser: Entity
-): Generator<HitResult, void> {
-  const [collider] = laser.getComponent('Collider').colliders
-  const ray = collider.geometry as Ray
-
-  let hitInfo: Array<HitResult> = []
-  collider.callbacks.add((args: CollisionCallbackArgs) => {
-    const { other } = args
-    const { hitPoint } = args as CollisionResultRayAABB
-    if (other.entity === player) return
-    hitInfo.push({ point: hitPoint, entity: other.entity })
-  })
-
-  while (true) {
-    const closestHit = hitInfo.reduce(
-      (a, b) => (a.point.sub(ray.origin).length() < b.point.sub(ray.origin).length() ? a : b),
-      // イージングで吹っ飛ばないように無限遠点の距離を短く設定している
-      { point: ray.origin.add(ray.direction.normalize().mul(300)) }
-    )
-    hitInfo = []
-    yield closestHit
-  }
-}
 const isDistantEnough = (ray: Ray, entity: Entity): boolean => {
   return ray.distance(entity.getComponent('Position')) > 20
 }
@@ -106,7 +76,7 @@ const getLaserSightStateGenerator = function*(
   laser: Entity,
   world: World
 ): Generator<LaserSightState, void> {
-  const getClosestHit = getClosestHitGenerator(player, laser)
+  const getClosestHit = raySearchGenerator(laser, { ignoreEntity: player, maximumDistance: 300 })
   const [collider] = laser.getComponent('Collider').colliders
   const ray = collider.geometry as Ray
 
@@ -162,7 +132,7 @@ const getLaserSightStateGenerator = function*(
     yield* easeInChase
   }
 
-  const hitResult: HitResult = {
+  const hitResult: RayHitResult = {
     point: new Vec2(),
   }
   const assignHitResult = (): void => {

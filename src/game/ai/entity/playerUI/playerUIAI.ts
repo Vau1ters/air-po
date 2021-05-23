@@ -58,13 +58,13 @@ const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> 
   }
 
   const healingAnimation = function*(hpHeart: Entity, isLast: boolean): Behaviour<void> {
-    yield* animate(hpHeart, 'Healing')
-    if (isLast) yield* animate(hpHeart, 'Sweat')
-    yield* animate(hpHeart, 'Full')
+    yield* animate({ entity: hpHeart, state: 'Healing' })
+    if (isLast) yield* animate({ entity: hpHeart, state: 'Sweat' })
+    yield* animate({ entity: hpHeart, state: 'Full' })
   }
   const damagingAnimation = function*(hpHeart: Entity): Behaviour<void> {
-    yield* animate(hpHeart, 'Damaging')
-    yield* animate(hpHeart, 'Empty')
+    yield* animate({ entity: hpHeart, state: 'Damaging' })
+    yield* animate({ entity: hpHeart, state: 'Empty' })
   }
 
   while (true) {

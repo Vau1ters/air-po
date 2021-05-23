@@ -4,13 +4,16 @@ import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
+import DandelionStem from '@res/image/dandelion_stem.png'
+import { RaySearcherFactory } from '@game/entities/raySearcherFactory'
+import { Category } from '@game/entities/category'
+import { raySearchGenerator } from '../raySearcher/raySearcherAI'
+import { assert } from '@utils/assertion'
 
 const FLUFF_EMIT_INTERVAL = 200
-const HEAD_OFFSET_Y = -48
+const HEAD_OFFSET_Y = -96
 const ROOT_OFFSET_Y = 160
-const HIMO_WIDTH = 0.3
-const HIMO_COLOR = 0x22ff22
-const HIMO_POINT_NUM = 10
+const ROPE_POINT_NUM = 10
 const HEAD_OSCILLATION_TIME_SCALE = 0.03
 
 export const dandelionBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
@@ -18,13 +21,29 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   const draw = entity.getComponent('Draw')
 
   headPosition.y += HEAD_OFFSET_Y
-  const rootPosition = headPosition.add(new Vec2(0, ROOT_OFFSET_Y))
 
-  const points = new Array<PIXI.Point>(HIMO_POINT_NUM)
+  const raySearcher = new RaySearcherFactory()
+    .setRayOrigin(headPosition)
+    .setRayDirection(new Vec2(0, 1))
+    .addCategoryToMask(Category.TERRAIN)
+    .create()
+  world.addEntity(raySearcher)
+  const getClosestHit = raySearchGenerator(raySearcher, { maximumDistance: ROOT_OFFSET_Y })
+
+  yield
+
+  const { value: closestHit } = getClosestHit.next()
+  assert(closestHit instanceof Object, 'dandelion ai fails ray searching')
+  const rootPosition = headPosition.copy()
+  rootPosition.y = closestHit.point.y
+  world.removeEntity(raySearcher)
+
+  const points = new Array<PIXI.Point>(ROPE_POINT_NUM)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
-  const himo = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, HIMO_WIDTH)
-  himo.tint = HIMO_COLOR
-  draw.addChild(himo)
+  const rope = new PIXI.SimpleRope(PIXI.Texture.from(DandelionStem), points)
+  rope.zIndex = -100
+  draw.sortableChildren = true
+  draw.addChild(rope)
 
   const headOrigin = new Vec2(headPosition.x, headPosition.y)
   const n = headPosition.sub(rootPosition).normalize()
@@ -36,13 +55,13 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
     headPosition.y = headOrigin.y - d * n.x
   }
 
-  function updateHimo(): void {
+  function updateRope(): void {
     const dx = rootPosition.x - headPosition.x
     const dy = rootPosition.y - headPosition.y
-    const a = dy / Math.sqrt(Math.abs(dx))
     for (let i = 0; i < points.length; i++) {
-      const x = (i / points.length) * dx
-      const y = a * Math.sqrt(Math.abs(x))
+      const t = i / (points.length - 1)
+      const x = t * t * dx
+      const y = t * dy
       points[i].x = x
       points[i].y = y
     }
@@ -60,7 +79,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
 
   while (true) {
     updateHead()
-    updateHimo()
+    updateRope()
     updateFluff()
     yield
   }

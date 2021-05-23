@@ -4,7 +4,7 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { AirFactory } from '@game/entities/airFactory'
 import { AirSystem } from '@game/systems/airSystem'
-import { animateLoop } from '../common/action/animate'
+import { animate } from '../common/action/animate'
 
 const manageAir = function*(
   entity: Entity,
@@ -43,5 +43,12 @@ export const airGeyserAI = function(
     increaseRate: number
   }
 ): Behaviour<void> {
-  return parallelAny([animateLoop(entity, 'Default'), manageAir(entity, world, options)])
+  return parallelAny([
+    animate({
+      entity,
+      state: 'Default',
+      loopCount: Infinity,
+    }),
+    manageAir(entity, world, options),
+  ])
 }

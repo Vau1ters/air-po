@@ -14,6 +14,8 @@ import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 import { FLUFF_TAG } from '@game/ai/entity/player/playerItemAction'
 
+const EMIT_POS_DIFF = new Vec2(0, 16)
+
 export class DandelionFluffFactory extends EntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
@@ -30,7 +32,7 @@ export class DandelionFluffFactory extends EntityFactory {
     entity.addComponent('AI', new AIComponent(dandelionFluffAI(entity, this.world)))
     entity.addComponent(
       'Position',
-      new PositionComponent().add(this.parent.getComponent('Position'))
+      new PositionComponent().add(this.parent.getComponent('Position').add(EMIT_POS_DIFF))
     )
     entity.addComponent(
       'Collider',
@@ -54,6 +56,7 @@ export class DandelionFluffFactory extends EntityFactory {
     )
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
     entity.addComponent('AnimationState', new AnimationStateComponent(entity))
+    entity.getComponent('Draw').zIndex = -100
     return entity
   }
 }

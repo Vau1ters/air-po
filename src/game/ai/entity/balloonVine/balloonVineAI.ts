@@ -13,9 +13,9 @@ import { balloonVineBehaviour } from './balloonVine'
 const changeState = function*(entity: Entity): Behaviour<void> {
   while (true) {
     if (hasAir(entity)()) {
-      yield* animate(entity, 'Alive')
+      yield* animate({ entity, state: 'Alive' })
     } else {
-      yield* animate(entity, 'Dead')
+      yield* animate({ entity, state: 'Dead' })
     }
     yield
   }

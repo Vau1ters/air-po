@@ -13,6 +13,7 @@ import mushroomSetting from '@res/map/tileset/mushroom.json'
 import mossSetting from '@res/map/tileset/moss.json'
 import equipmentSetting from '@res/map/tileset/equipment.json'
 import enemy1Setting from '@res/map/tileset/enemy1.json'
+import dandelionFluffSetting from '@res/map/tileset/dandelion_fluff.json'
 import dandelionSetting from '@res/map/tileset/dandelion.json'
 import boss1Setting from '@res/map/tileset/boss1.json'
 import balloonvineSetting from '@res/map/tileset/balloonvine.json'
@@ -40,7 +41,7 @@ import mossImg from '@res/image/moss.png'
 import jetEffectImg from '@res/image/jetEffect.png'
 import equipmentImg from '@res/image/equipment.png'
 import enemy1Img from '@res/image/enemy1.png'
-import dandelionHeadImg from '@res/image/dandelion_head.png'
+import dandelionStemImg from '@res/image/dandelion_stem.png'
 import dandelionFluffImg from '@res/image/dandelion_fluff.png'
 import dandelionImg from '@res/image/dandelion.png'
 import boss1Img from '@res/image/boss1.png'
@@ -128,8 +129,11 @@ export const init = async (): Promise<void> => {
   textureStore.jetEffect = await buildSingleTexture(jetEffectImg)
   textureStore.equipment = await buildAnimationTexture(equipmentImg, equipmentSetting)
   textureStore.enemy1 = await buildAnimationTexture(enemy1Img, enemy1Setting)
-  textureStore.dandelionHead = await buildSingleTexture(dandelionHeadImg)
-  textureStore.dandelionFluff = await buildSingleTexture(dandelionFluffImg)
+  textureStore.dandelionStem = await buildSingleTexture(dandelionStemImg)
+  textureStore.dandelionFluff = await buildAnimationTexture(
+    dandelionFluffImg,
+    dandelionFluffSetting
+  )
   textureStore.dandelion = await buildAnimationTexture(dandelionImg, dandelionSetting)
   textureStore.boss1 = await buildAnimationTexture(boss1Img, boss1Setting)
   textureStore.balloonvine = await buildAnimationTexture(balloonvineImg, balloonvineSetting)

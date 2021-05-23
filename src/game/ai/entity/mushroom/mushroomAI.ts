@@ -6,9 +6,9 @@ import { hasAir } from '../common/condition/hasAir'
 export const mushroomAI = function*(entity: Entity): Behaviour<void> {
   while (true) {
     if (hasAir(entity)()) {
-      yield* animate(entity, 'Open')
+      yield* animate({ entity, state: 'Open' })
     } else {
-      yield* animate(entity, 'Close')
+      yield* animate({ entity, state: 'Close' })
     }
     yield
   }

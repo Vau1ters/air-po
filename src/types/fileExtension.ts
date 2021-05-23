@@ -3,7 +3,7 @@ declare module '*.png' {
   export = value
 }
 
-declare module '*.wav' {
+declare module '*.ogg' {
   const value: string
   export = value
 }

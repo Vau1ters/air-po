@@ -29,7 +29,7 @@ export class DrawComponent extends Container {
       }
       if (option.child.state) {
         const sprite = option.child.sprite as AnimationSprite
-        sprite.changeTo(option.child.state)
+        sprite.state = option.child.state
       }
     }
     this.visible = false
