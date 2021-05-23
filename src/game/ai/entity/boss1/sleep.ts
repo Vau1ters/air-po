@@ -22,7 +22,7 @@ export const sleep = function*(boss: Entity, world: World): Behaviour<void> {
         fixedCameraAI(
           cameraEntity,
           bossPos.add(CAMERA_OFFSET),
-          () => boss.getComponent('HP').hp <= 0
+          (): boolean => boss.getComponent('HP').hp <= 0
         )
       )
       return

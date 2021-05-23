@@ -7,7 +7,7 @@ import { wait } from './wait'
 
 export const attack = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   while (true) {
-    yield* wait(state, boss, world)
+    yield* wait(state)
     yield* shot(state, boss, world)
   }
 }

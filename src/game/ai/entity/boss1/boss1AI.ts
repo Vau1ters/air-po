@@ -9,7 +9,6 @@ import { isAlive } from '../common/condition/isAlive'
 import { attack } from './attack'
 import { sleep } from './sleep'
 import { stem, StemState } from './stem'
-import { wakeup } from './wakeup'
 
 const boss1Move = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   yield* sleep(boss, world)
@@ -18,7 +17,10 @@ const boss1Move = function*(state: StemState, boss: Entity, world: World): Behav
 }
 
 export const boss1AI = function*(boss: Entity, world: World): Behaviour<void> {
-  const state = { stem: () => new Vec2(), arms: [() => new Vec2(), () => new Vec2()] }
+  const state = {
+    stem: (): Vec2 => new Vec2(),
+    arms: [(): Vec2 => new Vec2(), (): Vec2 => new Vec2()],
+  }
   yield* suspendable(isAlive(boss), parallelAll([stem(state, boss), boss1Move(state, boss, world)]))
   // yield* animate(entity, 'Dying')
   yield* kill(boss, world)

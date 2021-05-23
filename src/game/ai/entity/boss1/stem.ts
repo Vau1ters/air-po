@@ -11,7 +11,9 @@ export type StemState = {
   arms: Array<StemShape>
 }
 
-export const composite = (a: StemShape, b: StemShape, s: number) => (t: number) =>
+export const composite = (a: StemShape, b: StemShape, s: number): ((t: number) => Vec2) => (
+  t: number
+): Vec2 =>
   a(t)
     .mul(1 - s)
     .add(b(t).mul(s))
@@ -21,11 +23,13 @@ export const transiteShape = function*(
   duration: number
 ): Generator<StemShape, void, StemShape> {
   let currentShape = shape
-  let i = 0
-  while (true) {
+  for (let i = 0; i < duration; i++) {
     const nextShape = yield currentShape
-    const t = Math.min(i++ / duration, 1)
+    const t = i / duration
     currentShape = composite(shape, nextShape, t * t * (3 - 2 * t))
+  }
+  while (true) {
+    currentShape = yield currentShape
   }
 }
 
@@ -47,7 +51,7 @@ export const stem = function*(state: StemState, boss: Entity): Behaviour<void> {
 
   boss.getComponent('Draw').sortableChildren = true
   const stemPoints = addStem(boss, 0.4)
-  const armPointsList = state.arms.map(arm => addStem(boss, 0.2))
+  const armPointsList = state.arms.map(_ => addStem(boss, 0.2))
 
   while (true) {
     const { stem } = state

@@ -19,7 +19,7 @@ export class Boss1Factory extends TileEntityFactory {
   private readonly ROOT_COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(0, 50),
-    size: new Vec2(8, 8),
+    size: new Vec2(8, 0),
   }
 
   private readonly RIGID_BODY = {
