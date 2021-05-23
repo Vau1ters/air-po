@@ -10,6 +10,11 @@ import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
 import { isPlayerAlive } from '../common/condition/isPlayerAlive'
 import { Map } from '@game/map/mapBuilder'
+import { Entity } from '@core/ecs/entity'
+import { Vec2 } from '@core/math/vec2'
+import { DrawComponent } from '@game/components/drawComponent'
+import background1Definition from '@res/setting/background1.json'
+import { parseAnimation } from '@core/graphics/animationParser'
 
 const game = function*(world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -27,6 +32,19 @@ const game = function*(world: World): Behaviour<void> {
 
 export const gameWorldAI = (map: Map) =>
   function*(world: World): Behaviour<void> {
+    const bg = new Entity()
+    bg.addComponent('Background', { scrollSpeed: new Vec2(0.9, 0.9) })
+    bg.addComponent('Position', new Vec2())
+    const drawComponent = new DrawComponent({
+      entity: bg,
+      child: {
+        sprite: parseAnimation(background1Definition),
+      },
+    })
+    drawComponent.zIndex = -Infinity
+    bg.addComponent('Draw', drawComponent)
+    world.addEntity(bg)
+
     yield* FadeIn(world)
 
     yield* parallelAll([game(world), Text(world, 'そうなんちてん')])
