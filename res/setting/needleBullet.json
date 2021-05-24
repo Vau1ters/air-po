@@ -1,6 +1,13 @@
 {
-  "sprite": {
-    "name": "needleBullet",
+  "name": "needleBullet",
+  "path": "needleBullet.png",
+  "texture": {
+    "size": {
+      "width": 8,
+      "height": 8
+    }
+  },
+  "animation": {
     "state": {
       "RightDown": [0],
       "RightDownDown": [1],
@@ -19,7 +26,6 @@
       "Right": [14],
       "RightDownUp": [15]
     },
-    "speed": {},
     "default": "Right"
   }
 }

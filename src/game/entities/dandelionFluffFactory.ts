@@ -8,7 +8,7 @@ import { AIComponent } from '@game/components/aiComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
-import dandelionFluffDefinition from '@res/animation/dandelion_fluff.json'
+import dandelionFluffDefinition from '@res/setting/dandelionFluff.json'
 import { World } from '@core/ecs/world'
 import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
@@ -50,7 +50,7 @@ export class DandelionFluffFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(dandelionFluffDefinition.sprite),
+          sprite: parseAnimation(dandelionFluffDefinition),
         },
       })
     )

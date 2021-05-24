@@ -1,6 +1,13 @@
 {
-  "sprite": {
-    "name": "enemy1",
+  "name": "enemy1",
+  "path": "enemy1.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
     "state": {
       "Idle": [0, 1, 2, 3],
       "Walk": [4, 5, 6, 7],

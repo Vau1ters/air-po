@@ -1,0 +1,16 @@
+{
+  "name": "equipment",
+  "path": "equipment.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "AirTank": [0]
+    },
+    "default": "AirTank"
+  }
+}

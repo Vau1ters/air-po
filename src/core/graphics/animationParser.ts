@@ -1,28 +1,40 @@
 import { AnimationSprite, AnimationDefinition } from './animation'
 import { textureStore } from './art'
-import { checkMembers } from '@utils/assertion'
+import { assert } from '@utils/assertion'
 
-export type SpriteSetting = {
+export type AnimationSetting = {
   name: string
-  state: { [key: string]: Array<number> }
-  speed: { [key: string]: number }
-  default: string
+  animation?: {
+    state: { [key: string]: Array<number> }
+    speed?: { [key: string]: number }
+    default: string
+  }
+}
+
+// 一枚絵をアニメーションとして扱うための設定
+const DEFAULT_ANIMATION_SETTING = {
+  state: { Default: [0] },
+  speed: {},
+  default: 'Default',
 }
 
 const cache: Record<string, () => AnimationSprite> = {}
 
-export function parseAnimation(json: SpriteSetting, anchor = { x: 0.5, y: 0.5 }): AnimationSprite {
+export const parseAnimation = (
+  json: AnimationSetting,
+  anchor = { x: 0.5, y: 0.5 }
+): AnimationSprite => {
   if (!cache[json.name]) {
-    checkMembers(json, { name: 'string', state: 'any', speed: 'any', default: 'string' }, 'sprite')
+    const animationSetting = json.animation ?? DEFAULT_ANIMATION_SETTING
 
     const name = json.name
-    if (!textureStore[name]) throw new Error(`"${name}" is not contained in textureStore`)
+    assert(textureStore[name], `"${name}" is not contained in textureStore`)
 
-    const state: { [key: string]: number[] } = json.state
-    const speed: { [key: string]: number } = json.speed
+    const state: { [key: string]: number[] } = animationSetting.state
+    const speed: { [key: string]: number } = animationSetting.speed ?? {}
 
-    const defaultState = json.default
-    if (!state[defaultState]) throw new Error(`"${defaultState}" is not contained in state`)
+    const defaultState = animationSetting.default
+    assert(state[defaultState], `"${defaultState}" is not contained in state`)
 
     const textures = textureStore[name]
     const animatedTexture: AnimationDefinition = {}

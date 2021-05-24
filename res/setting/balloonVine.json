@@ -1,0 +1,17 @@
+{
+  "name": "balloonVine",
+  "path": "balloonVine.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "Dead": [0],
+      "Alive": [1]
+    },
+    "default": "Dead"
+  }
+}
