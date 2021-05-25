@@ -72,37 +72,3 @@ ${loadList.join('\n')}
 }
 `
 fs.writeFile(outputPath, generatedText, () => {})
-
-// const importText = (filename: string, ext: string): string => {
-//   const camelFilename = snakeToCamel(filename)
-//   return ext === 'png'
-//     ? `import ${camelFilename}Img from '@${artPath}/${filename}.${ext}'`
-//     : `import ${camelFilename}Setting from '@${settingPath}/${filename}.${ext}'`
-// }
-// const loadImgText = (filename: string): string => {
-//   return `textureStore.${filename} = await buildSingleTexture(${filename}Img)`
-// }
-// const imgDir = fs.readdirSync(artPath, { withFileTypes: true })
-// const settingDir = fs.readdirSync(settingPath, { withFileTypes: true })
-
-// imgDir.forEach(e => {
-//   const [filename, ext] = e.name.split('.')
-//   const camelFilename = snakeToCamel(filename)
-//   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
-//   generatedText = generatedText.replace(
-//     loadReg,
-//     `// LOAD_RESOURCE\n  ${loadImgText(camelFilename)}`
-//   )
-// })
-// settingDir.forEach(e => {
-//   const [filename, ext] = e.name.split('.')
-//   const camelFilename = snakeToCamel(filename)
-//   const singleTextureLoadReg = new RegExp('buildSingleTexture\\(' + `${camelFilename}Img\\)`)
-//   generatedText = generatedText.replace(importReg, `// IMPORT\n${importText(filename, ext)}`)
-//   generatedText = generatedText.replace(
-//     singleTextureLoadReg,
-//     `buildAnimationTexture(${camelFilename}Img, ${camelFilename}Setting)`
-//   )
-// })
-
-// fs.writeFile(outputPath, generatedText, () => {})
