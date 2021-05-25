@@ -18,12 +18,12 @@ fs.readdirSync(settingDir, { withFileTypes: true }).forEach(e => {
 })
 
 const generatedText = `
-// IMPORT
-${importList.join('\n')}
-
 /*+.† NOTIFICATION †.+*/
 // this file is automatically written by arttool.
 // you can update this file by type "yarn arttool" command.
+
+// IMPORT
+${importList.join('\n')}
 
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 

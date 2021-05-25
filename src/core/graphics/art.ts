@@ -1,3 +1,7 @@
+/*+.† NOTIFICATION †.+*/
+// this file is automatically written by arttool.
+// you can update this file by type "yarn arttool" command.
+
 // IMPORT
 import airGeyserSetting from '@res/setting/airGeyser.json'
 import airGeyserImg from '@res/image/airGeyser.png'
@@ -51,10 +55,6 @@ import vineSetting from '@res/setting/vine.json'
 import vineImg from '@res/image/vine.png'
 import wallSetting from '@res/setting/wall.json'
 import wallImg from '@res/image/wall.png'
-
-/*+.† NOTIFICATION †.+*/
-// this file is automatically written by arttool.
-// you can update this file by type "yarn arttool" command.
 
 import { BaseTexture, Rectangle, Texture } from 'pixi.js'
 
