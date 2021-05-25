@@ -1,18 +1,18 @@
 import * as fs from 'fs'
 
 const outputPath = 'src/core/graphics/art.ts'
-const artPath = 'res/image'
-const settingPath = 'res/setting'
+const artDir = 'res/image'
+const settingDir = 'res/setting'
 
 const importList: string[] = []
 const loadList: string[] = []
 
-fs.readdirSync(settingPath, { withFileTypes: true }).forEach(e => {
-  const stgPath = e.name
-  const { name, path: imgPath } = require(`./${settingPath}/${stgPath}`) // eslint-disable-line  @typescript-eslint/no-var-requires
+fs.readdirSync(settingDir, { withFileTypes: true }).forEach(e => {
+  const settingFile = e.name
+  const { name, path: imageFile } = require(`./${settingDir}/${settingFile}`) // eslint-disable-line  @typescript-eslint/no-var-requires
 
-  importList.push(`import ${name}Setting from '@${settingPath}/${stgPath}'`)
-  importList.push(`import ${name}Img from '@${artPath}/${imgPath}'`)
+  importList.push(`import ${name}Setting from '@${settingDir}/${settingFile}'`)
+  importList.push(`import ${name}Img from '@${artDir}/${imageFile}'`)
 
   loadList.push(`textureStore.${name} = await buildTextureCache(${name}Img, ${name}Setting)`)
 })
