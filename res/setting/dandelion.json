@@ -1,0 +1,19 @@
+{
+  "name": "dandelion",
+  "path": "dandelion.png",
+  "texture": {
+    "size": {
+      "width": 80,
+      "height": 80
+    }
+  },
+  "animation": {
+    "state": {
+      "Normal": [0, 1, 2, 3, 4, 5, 6]
+    },
+    "speed": {
+      "Normal": 18
+    },
+    "default": "Normal"
+  }
+}

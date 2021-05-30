@@ -6,7 +6,7 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { MouseController } from '@game/systems/controlSystem'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import map from '@res/map/root.json'
-import { sprite as playerAnimation } from '@res/animation/player.json'
+import playerDefinition from '@res/setting/player.json'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
 import { parallelAny } from '@core/behaviour/composite'
@@ -32,7 +32,7 @@ const player = function*(world: World): Behaviour<void> {
     new DrawComponent({
       entity: player,
       child: {
-        sprite: parseAnimation(playerAnimation),
+        sprite: parseAnimation(playerDefinition),
         state: 'Dying',
       },
     })

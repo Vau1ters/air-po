@@ -19,13 +19,13 @@ export class ObjectEntityFactory extends EntityFactory {
     entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
 
     try {
-      const { sprite } = require(`../../../../res/animation/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
+      const definition = require(`../../../../res/setting/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
       entity.addComponent(
         'Draw',
         new DrawComponent({
           entity,
           child: {
-            sprite: parseAnimation(sprite),
+            sprite: parseAnimation(definition),
           },
         })
       )

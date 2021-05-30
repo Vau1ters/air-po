@@ -18,7 +18,7 @@ export class TileEntityFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const { sprite } = require(`../../../../res/animation/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
+    const definition = require(`../../../../res/setting/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
     const entity = new Entity()
     entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
     entity.addComponent(
@@ -26,7 +26,7 @@ export class TileEntityFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(sprite),
+          sprite: parseAnimation(definition),
         },
       })
     )

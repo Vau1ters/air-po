@@ -21,7 +21,7 @@ const changeState = function*(entity: Entity): Behaviour<void> {
   }
 }
 
-export const balloonvineAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const balloonVineAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(
     isAlive(entity),
     parallelAll([balloonVineBehaviour(entity, world), changeState(entity)])

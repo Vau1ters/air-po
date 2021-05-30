@@ -6,8 +6,8 @@ import { BulletComponent } from '@game/components/bulletComponent'
 import { Vec2 } from '@core/math/vec2'
 import { Category, CategorySet } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
-import ballBulletDefinition from '@res/animation/ballBullet.json'
-import needleBulletDefinition from '@res/animation/needleBullet.json'
+import ballBulletDefinition from '@res/setting/ballBullet.json'
+import needleBulletDefinition from '@res/setting/needleBullet.json'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
@@ -96,7 +96,7 @@ export class BulletFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(bulletDefinition[this.type].sprite),
+          sprite: parseAnimation(bulletDefinition[this.type]),
           state: directions[index],
         },
       })

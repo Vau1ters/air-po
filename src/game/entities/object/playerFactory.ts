@@ -20,7 +20,7 @@ import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
 import { EntityFactory } from '../entityFactory'
 import { THROUGH_FLOOR_TAG } from '../tile/throughFloorFactory'
-import { sprite } from '@res/animation/player.json'
+import playerDefinition from '@res/setting/player.json'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
@@ -67,7 +67,7 @@ export class PlayerFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(sprite),
+          sprite: parseAnimation(playerDefinition),
         },
       })
     )

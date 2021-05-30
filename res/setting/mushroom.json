@@ -1,0 +1,17 @@
+{
+  "name": "mushroom",
+  "path": "mushroom.png",
+  "texture": {
+    "size": {
+      "width": 88,
+      "height": 64
+    }
+  },
+  "animation": {
+    "state": {
+      "Open": [0],
+      "Close": [1]
+    },
+    "default": "Open"
+  }
+}
