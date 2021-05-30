@@ -7,7 +7,7 @@ import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
 import { Category, CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
-import equipmentDefinition from '@res/animation/equipment.json'
+import equipmentDefinition from '@res/setting/equipment.json'
 import { assert } from '@utils/assertion'
 
 export class EquipmentTileFactory extends ObjectEntityFactory {
@@ -23,7 +23,7 @@ export class EquipmentTileFactory extends ObjectEntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(equipmentDefinition.sprite),
+          sprite: parseAnimation(equipmentDefinition),
           state: equipmentType,
         },
       })

@@ -2,7 +2,7 @@ import { EntityFactory } from '../entityFactory'
 import { Entity } from '@core/ecs/entity'
 import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { parseAnimation, SpriteSetting } from '@core/graphics/animationParser'
+import { parseAnimation, AnimationSetting } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { Vec2 } from '@core/math/vec2'
 
@@ -10,7 +10,7 @@ export class UIComponentFactory extends EntityFactory {
   private position: Vec2 = new Vec2(0, 0)
   private anchor: Vec2 = new Vec2(0, 0)
 
-  constructor(private spriteSetting: SpriteSetting) {
+  constructor(private spriteSetting: AnimationSetting) {
     super()
   }
 

@@ -1,7 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { VineComponent } from '@game/components/vineComponent'
-import vineDefinition from '@res/animation/vine.json'
+import vineDefinition from '@res/setting/vine.json'
 import { DrawComponent } from '@game/components/drawComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
 import { ColliderComponent, CollisionCallbackArgs } from '@game/components/colliderComponent'
@@ -63,7 +63,7 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
   if (diff < 0) {
     // 短いので長くする
     for (let i = 0; i < -diff; i++) {
-      const anim = parseAnimation(vineDefinition.sprite)
+      const anim = parseAnimation(vineDefinition)
       anim.y = vine.sprites[vine.sprites.length - 1].y + 16
       draw.addChild(anim)
       vine.sprites.push(anim)

@@ -1,6 +1,13 @@
 {
-  "sprite": {
-    "name": "slime1",
+  "name": "slime1",
+  "path": "slime1.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
     "state": {
       "Idling": [3, 4, 0, 1, 2],
       "Landing": [5, 6, 7],

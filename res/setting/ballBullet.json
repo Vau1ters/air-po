@@ -1,6 +1,13 @@
 {
-  "sprite": {
-    "name": "ballBullet",
+  "name": "ballBullet",
+  "path": "ballBullet.png",
+  "texture": {
+    "size": {
+      "width": 4,
+      "height": 4
+    }
+  },
+  "animation": {
     "state": {
       "RightDown": [0],
       "RightDownDown": [0],
@@ -19,7 +26,6 @@
       "Right": [7],
       "RightDownUp": [7]
     },
-    "speed": {},
     "default": "Right"
   }
 }

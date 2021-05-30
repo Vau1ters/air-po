@@ -1,6 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { balloonvineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
+import { balloonVineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
@@ -50,7 +50,7 @@ export class BalloonVineFactory extends TileEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('AI', new AIComponent(balloonvineAI(entity, this.world)))
+    entity.addComponent('AI', new AIComponent(balloonVineAI(entity, this.world)))
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
     entity.addComponent(
       'Collider',

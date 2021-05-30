@@ -1,6 +1,13 @@
 {
-  "sprite": {
-    "name": "vine",
+  "name": "vine",
+  "path": "vine.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
     "state": {
       "Root0": [0],
       "Root1": [1],
@@ -9,7 +16,6 @@
       "Stalk1": [4],
       "Stalk2": [5]
     },
-    "speed": {},
     "default": "Root0"
   }
 }

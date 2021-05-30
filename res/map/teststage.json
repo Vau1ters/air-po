@@ -314,7 +314,7 @@
  "nextobjectid":35,
  "orientation":"orthogonal",
  "renderorder":"right-up",
- "tiledversion":"2021.03.23",
+ "tiledversion":"1.4.3",
  "tileheight":8,
  "tilesets":[
         {
@@ -331,7 +331,7 @@
         }, 
         {
          "firstgid":53,
-         "source":"tileset\/balloonvine.json"
+         "source":"tileset\/balloonVine.json"
         }, 
         {
          "firstgid":55,
@@ -379,6 +379,6 @@
         }],
  "tilewidth":8,
  "type":"map",
- "version":1.5,
+ "version":1.4,
  "width":100
 }

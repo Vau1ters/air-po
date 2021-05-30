@@ -56,7 +56,7 @@ export class TileLayerFactory {
         builder: MapBuilder
       ) => TileEntityFactory
     } = {
-      balloonvine: BalloonVineFactory,
+      balloonVine: BalloonVineFactory,
       dandelion: DandelionFactory,
       enemy1: Enemy1Factory,
       mushroom: MushroomFactory,
