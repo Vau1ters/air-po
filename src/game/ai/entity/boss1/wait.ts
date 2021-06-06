@@ -19,9 +19,9 @@ const spiral = (n: number, r0: number, r1: number, a0: number, a1: number): Arra
 }
 
 export const wait = function*(state: StemState): Behaviour<void> {
-  const transiteStem = transiteShape(state.stem, 10)
-  const transiteArmL = transiteShape(state.arms[0], 10)
-  const transiteArmR = transiteShape(state.arms[1], 10)
+  const transiteStem = transiteShape(state.stem, 60)
+  const transiteArmL = transiteShape(state.arms[0], 60)
+  const transiteArmR = transiteShape(state.arms[1], 60)
   for (let i = 0; i < 300; i++) {
     const t = (i / 100) % 1
     const stem = spline(
