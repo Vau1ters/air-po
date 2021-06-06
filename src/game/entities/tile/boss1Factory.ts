@@ -9,6 +9,7 @@ import { TileEntityFactory } from './tileEntityFactory'
 import { boss1AI } from '@game/ai/entity/boss1/boss1AI'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
+import { InvincibleComponent } from '@game/components/invincibleComponent'
 
 export class Boss1Factory extends TileEntityFactory {
   private readonly BODY_COLLIDER = {
@@ -32,6 +33,7 @@ export class Boss1Factory extends TileEntityFactory {
 
     entity.addComponent('AI', new AIComponent(boss1AI(entity, this.world)))
     entity.addComponent('RigidBody', new RigidBodyComponent(this.RIGID_BODY))
+    entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -53,7 +55,7 @@ export class Boss1Factory extends TileEntityFactory {
         })
       )
     )
-    entity.addComponent('HP', new HPComponent(300, 300))
+    entity.addComponent('HP', new HPComponent(10, 10))
     return entity
   }
 }

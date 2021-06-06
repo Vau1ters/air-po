@@ -1,4 +1,5 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
@@ -6,7 +7,7 @@ import { shakeCameraAI } from '../camera/shakeCameraAI'
 import { spline } from './spline'
 import { StemShape, StemState, transiteShape } from './stem'
 
-export const down = function*(state: StemState, world: World): Behaviour<void> {
+export const down = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   const [camera] = new FamilyBuilder(world).include('Camera').build().entityArray
   const transiteStem = transiteShape(state.stem, 100)
   const transiteArmL = transiteShape(state.arms[0], 100)
@@ -55,6 +56,7 @@ export const down = function*(state: StemState, world: World): Behaviour<void> {
       return new Vec2(base(t).x, base(t).y - 4 * f(t))
     }
   }
+
   for (let i = 0; i < 400; i++) {
     const t = i / 100
     const stem = spline(

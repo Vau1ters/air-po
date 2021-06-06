@@ -3,6 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { Boss1GeyserFactory } from '@game/entities/tile/boss1GeyserFactory'
 import { fixedCameraAI } from '../camera/fixedCameraAI'
 
 const CAMERA_OFFSET = new Vec2(-96, -48)
