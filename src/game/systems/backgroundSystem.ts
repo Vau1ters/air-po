@@ -2,6 +2,7 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { dependsOn, System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { TilingSprite } from 'pixi.js'
 
 export default class BackgroundSystem extends System {
   private backgroundFamily: Family
@@ -28,9 +29,13 @@ export default class BackgroundSystem extends System {
 
       for (const background of this.backgroundFamily.entityIterator) {
         const bgComponent = background.getComponent('Background')
-        const bgPosition = background.getComponent('Position')
-        bgPosition.x = this.cameraStartPosition.x + cameraDiff.x * bgComponent.scrollSpeed.x
-        bgPosition.y = this.cameraStartPosition.y + cameraDiff.y * bgComponent.scrollSpeed.y
+        const draw = background.getComponent('Draw')
+        const [bgSprite] = draw.children as TilingSprite[]
+        bgSprite.position.set(cameraPosition.x, cameraPosition.y)
+        bgSprite.tilePosition.set(
+          -cameraDiff.x * bgComponent.scrollSpeed.x,
+          -cameraDiff.y * bgComponent.scrollSpeed.y
+        )
       }
     }
   }

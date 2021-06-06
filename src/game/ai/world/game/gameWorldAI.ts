@@ -15,7 +15,8 @@ import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
 import background1Definition from '@res/setting/background1.json'
 import background2Definition from '@res/setting/background2.json'
-import { parseAnimation } from '@core/graphics/animationParser'
+import { TilingSprite } from 'pixi.js'
+import { textureStore } from '@core/graphics/art'
 
 const game = function*(world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -34,12 +35,14 @@ const game = function*(world: World): Behaviour<void> {
 export const gameWorldAI = (map: Map) =>
   function*(world: World): Behaviour<void> {
     const bg1 = new Entity()
-    bg1.addComponent('Background', { scrollSpeed: new Vec2(0.9, 0.9) })
+    bg1.addComponent('Background', { scrollSpeed: new Vec2(0.1, 0.1) })
     bg1.addComponent('Position', new Vec2())
+    const sprite1 = new TilingSprite(textureStore[background1Definition.name][0], 1600, 1200)
+    sprite1.anchor.set(0.5)
     const drawComponent1 = new DrawComponent({
       entity: bg1,
       child: {
-        sprite: parseAnimation(background1Definition),
+        sprite: sprite1,
       },
     })
     drawComponent1.zIndex = -Infinity
@@ -47,12 +50,14 @@ export const gameWorldAI = (map: Map) =>
     world.addEntity(bg1)
 
     const bg2 = new Entity()
-    bg2.addComponent('Background', { scrollSpeed: new Vec2(0.3, 0.2) })
+    bg2.addComponent('Background', { scrollSpeed: new Vec2(0.7, 0.8) })
     bg2.addComponent('Position', new Vec2())
+    const sprite2 = new TilingSprite(textureStore[background2Definition.name][0], 1600, 1200)
+    sprite2.anchor.set(0.5)
     const drawComponent2 = new DrawComponent({
       entity: bg2,
       child: {
-        sprite: parseAnimation(background2Definition),
+        sprite: sprite2,
       },
     })
     drawComponent2.zIndex = -Infinity
