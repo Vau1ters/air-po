@@ -1,7 +1,7 @@
 import { World } from '@core/ecs/world'
 import { AirFactory } from '@game/entities/object/airFactory'
 import { AirGeyserFactory } from '@game/entities/object/airGeyserFactory'
-import { BackgroundFactory } from '@game/entities/object/backgroundFactory'
+import { createBackground } from '@game/entities/object/backgroundFactory'
 import { EquipmentTileFactory } from '@game/entities/object/equipmentTileFactory'
 import { EventSensorFactory } from '@game/entities/object/eventSensorFactory'
 import { ObjectEntityFactory } from '@game/entities/object/objectEntityFactory'
@@ -19,7 +19,6 @@ export class ObjectLayerFactory {
       airGeyser: AirGeyserFactory,
       sensor: EventSensorFactory,
       equipment: EquipmentTileFactory,
-      background: BackgroundFactory,
     }
   }
 
@@ -33,6 +32,9 @@ export class ObjectLayerFactory {
             | undefined
           assert(spawnerID !== undefined, 'player spawner ID is not set')
           builder.registerSpawner(spawnerID, ObjectEntityFactory.calcPosition(object))
+          break
+        case 'background':
+          createBackground(object, this.world)
           break
         default:
           this.world.addEntity(

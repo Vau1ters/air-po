@@ -5,7 +5,7 @@ export type EquipmentTypes = 'AirTank'
 export class EquipmentComponent {
   public airTank = {
     count: 0,
-    quantity: 400000000,
+    quantity: 40,
   }
   public equipEvent = new EventNotifier<EquipmentTypes>()
 }
