@@ -24,7 +24,6 @@ export class ObjectLayerFactory {
   }
 
   public build(builder: MapBuilder, layer: ObjectLayer): void {
-    console.log(layer.name)
     for (const object of layer.objects) {
       let spawnerID: number | undefined
       switch (layer.name) {

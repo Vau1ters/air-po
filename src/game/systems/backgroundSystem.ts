@@ -1,3 +1,4 @@
+import { windowSize } from '@core/application'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { dependsOn, System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
@@ -33,9 +34,14 @@ export default class BackgroundSystem extends System {
           const draw = background.getComponent('Draw')
           const [bgSprite] = draw.children as TilingSprite[]
           bgSprite.position.set(cameraPosition.x, cameraPosition.y)
+          const scrollOffsetX = -cameraDiff.x * bgComponent.scrollSpeed.x
+          const scrollOffsetY = -cameraDiff.y * bgComponent.scrollSpeed.y
+          const minScrollOffsetY = (-bgSprite.height + windowSize.height) / 2
+          const maxScrollOffsetY = (bgSprite.height - windowSize.height) / 2
           bgSprite.tilePosition.set(
-            -cameraDiff.x * bgComponent.scrollSpeed.x,
-            -cameraDiff.y * bgComponent.scrollSpeed.y
+            scrollOffsetX,
+            // 縦方向にループさせないため、上限と下限をいい感じにする
+            Math.max(minScrollOffsetY, Math.min(maxScrollOffsetY, scrollOffsetY))
           )
         }
       }
