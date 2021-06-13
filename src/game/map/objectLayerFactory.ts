@@ -1,6 +1,7 @@
 import { World } from '@core/ecs/world'
 import { AirFactory } from '@game/entities/object/airFactory'
 import { AirGeyserFactory } from '@game/entities/object/airGeyserFactory'
+import { BackgroundFactory } from '@game/entities/object/backgroundFactory'
 import { EquipmentTileFactory } from '@game/entities/object/equipmentTileFactory'
 import { EventSensorFactory } from '@game/entities/object/eventSensorFactory'
 import { ObjectEntityFactory } from '@game/entities/object/objectEntityFactory'
@@ -18,10 +19,12 @@ export class ObjectLayerFactory {
       airGeyser: AirGeyserFactory,
       sensor: EventSensorFactory,
       equipment: EquipmentTileFactory,
+      background: BackgroundFactory,
     }
   }
 
   public build(builder: MapBuilder, layer: ObjectLayer): void {
+    console.log(layer.name)
     for (const object of layer.objects) {
       let spawnerID: number | undefined
       switch (layer.name) {

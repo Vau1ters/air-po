@@ -95,6 +95,7 @@ export class MapBuilder {
         case 'equipment':
         case 'airGeyser':
         case 'player':
+        case 'background':
           objectLayerFactory.build(this, layer as ObjectLayer)
           break
       }

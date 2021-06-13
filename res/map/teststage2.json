@@ -12,6 +12,29 @@
  "layers":[
         {
          "draworder":"topdown",
+         "id":11,
+         "name":"background",
+         "objects":[
+                {
+                 "height":0,
+                 "id":31,
+                 "name":"horizon",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":264,
+                 "y":368
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":8,
          "name":"sensor",
          "objects":[
@@ -240,8 +263,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":31,
+ "nextlayerid":12,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "renderorder":"right-up",
  "tiledversion":"1.4.3",
