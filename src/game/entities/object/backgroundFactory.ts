@@ -11,9 +11,9 @@ import { ObjectEntityFactory } from './objectEntityFactory'
 
 type BackgroundLayer = 'CloseupView' | 'MiddleView' | 'DistantView'
 const BACKGROUND_Z_INDEX = {
-  CloseupView: -1,
-  MiddleView: -2,
-  DistantView: -3,
+  CloseupView: -101,
+  MiddleView: -102,
+  DistantView: -103,
 }
 
 class BackgroundFactory extends EntityFactory {
