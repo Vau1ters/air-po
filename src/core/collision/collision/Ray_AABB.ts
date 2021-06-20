@@ -13,7 +13,7 @@ const delta = 0.0001
 
 export const collideRayAABB = (ray: Ray, aabb: AABB): WithHit<CollisionResultRayAABB> => {
   // Rayの原点がすでにAABB内にある
-  if (aabb.contains(ray.origin)) return { hit: true, hitPoint: ray.origin.copy() }
+  if (aabb.contains(ray.start)) return { hit: true, hitPoint: ray.start.copy() }
 
   // AABBの各座標のmax/min
   const minB = aabb.min
@@ -25,15 +25,15 @@ export const collideRayAABB = (ray: Ray, aabb: AABB): WithHit<CollisionResultRay
   const axes: Axis[] = ['x', 'y']
   for (const axis of axes) {
     if (
-      (minB[axis] <= ray.origin[axis] && ray.origin[axis] <= maxB[axis]) ||
+      (minB[axis] <= ray.start[axis] && ray.start[axis] <= maxB[axis]) ||
       ray.direction[axis] === 0
     ) {
       minT[axis] = -1
-    } else if (ray.origin[axis] < minB[axis]) {
-      minT[axis] = (minB[axis] - ray.origin[axis]) / ray.direction[axis]
+    } else if (ray.start[axis] < minB[axis]) {
+      minT[axis] = (minB[axis] - ray.start[axis]) / (ray.end[axis] - ray.start[axis])
       candidatePlane[axis] = minB[axis]
-    } else if (ray.origin[axis] > maxB[axis]) {
-      minT[axis] = (maxB[axis] - ray.origin[axis]) / ray.direction[axis]
+    } else if (ray.start[axis] > maxB[axis]) {
+      minT[axis] = (maxB[axis] - ray.start[axis]) / (ray.end[axis] - ray.start[axis])
       candidatePlane[axis] = maxB[axis]
     }
   }
@@ -42,11 +42,13 @@ export const collideRayAABB = (ray: Ray, aabb: AABB): WithHit<CollisionResultRay
   const hitTime = minT[hitPlane]
   // Rayと逆方向なので当たらない
   if (hitTime < 0) return { hit: false }
+  // 遠すぎて当たらない
+  if (hitTime > 1) return { hit: false }
 
   // 実際にRayを飛ばす
   const hitPoint = new Vec2()
-  hitPoint.x = ray.origin.x + ray.direction.x * hitTime
-  hitPoint.y = ray.origin.y + ray.direction.y * hitTime
+  hitPoint.x = ray.start.x + (ray.end.x - ray.start.x) * hitTime
+  hitPoint.y = ray.start.y + (ray.end.y - ray.start.y) * hitTime
   // 飛ばしたRayが当たらなかったら
   if (
     (hitPlane === 'y' && !(minB.x - delta <= hitPoint.x && hitPoint.x <= maxB.x + delta)) ||

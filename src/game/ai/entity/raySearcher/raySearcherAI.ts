@@ -30,9 +30,9 @@ export const raySearchGenerator = function*(
 
   while (true) {
     const closestHit = hitInfo.reduce(
-      (a, b) => (a.point.sub(ray.origin).length() < b.point.sub(ray.origin).length() ? a : b),
+      (a, b) => (a.point.sub(ray.start).length() < b.point.sub(ray.start).length() ? a : b),
       {
-        point: ray.origin.add(
+        point: ray.start.add(
           ray.direction.normalize().mul(options?.maximumDistance ?? INFINITY_COORDINATE)
         ),
       }

@@ -68,8 +68,8 @@ type GeometryBuildOption =
     }
   | {
       type: 'Ray'
-      origin?: Vec2
-      direction?: Vec2
+      start?: Vec2
+      end?: Vec2
     }
   | {
       type: 'Air'
@@ -92,7 +92,7 @@ const buildGeometry = (option: GeometryBuildOption): GeometryForCollision => {
     case 'OBB':
       return new OBB(new AABB(option.offset, option.size), option.angle)
     case 'Ray':
-      return new Ray(option.origin, option.direction)
+      return new Ray(option.start, option.end)
     case 'Air':
       return new Air(option.world)
   }

@@ -1,24 +1,32 @@
-import { AABB } from './AABB'
 import { Vec2 } from '@core/math/vec2'
-import { GeometryForCollision } from './geometry'
 import { Graphics } from 'pixi.js'
-import { INFINITY_COORDINATE } from '@core/math/constants'
+import { AABB } from './AABB'
+import { GeometryForCollision } from './geometry'
 
 export class Ray implements GeometryForCollision {
-  public constructor(public origin = new Vec2(), public direction = new Vec2()) {}
+  private _start: Vec2
+  private _end: Vec2
+  private _direction: Vec2
+  private shouldUpdateDirection = true
+
+  public constructor(start = new Vec2(), end = new Vec2()) {
+    this._start = start
+    this._end = end
+    this._direction = new Vec2()
+  }
 
   createBound(): AABB {
-    return new AABB(new Vec2(), new Vec2(INFINITY_COORDINATE, INFINITY_COORDINATE))
+    return new AABB()
   }
 
   applyPosition(pos: Vec2): GeometryForCollision {
-    return new Ray(pos.add(this.origin), this.direction)
+    return new Ray(pos.add(this.start), pos.add(this.end))
   }
 
   draw(_: Graphics): void {}
 
   distance(p: Vec2): number {
-    const s = this.origin
+    const s = this.start
     const v = this.direction
     // <s + vt - p, v> = 0
     // t = <p - s, v> / <v, v>
@@ -27,5 +35,31 @@ export class Ray implements GeometryForCollision {
       .add(v.mul(t))
       .sub(p)
       .length()
+  }
+
+  public get start(): Vec2 {
+    return this._start
+  }
+
+  public set start(_start: Vec2) {
+    this._start = _start
+    this.shouldUpdateDirection = true
+  }
+
+  public get end(): Vec2 {
+    return this._end
+  }
+
+  public set end(_end: Vec2) {
+    this._end = _end
+    this.shouldUpdateDirection = true
+  }
+
+  public get direction(): Vec2 {
+    if (this.shouldUpdateDirection) {
+      this.shouldUpdateDirection = false
+      this._direction = this._end.sub(this._start).normalize()
+    }
+    return this._direction
   }
 }

@@ -9,6 +9,7 @@ import { RaySearcherFactory } from '@game/entities/raySearcherFactory'
 import { Category } from '@game/entities/category'
 import { raySearchGenerator } from '../raySearcher/raySearcherAI'
 import { assert } from '@utils/assertion'
+import { INFINITY_COORDINATE } from '@core/math/constants'
 
 const FLUFF_EMIT_INTERVAL = 200
 const HEAD_OFFSET_Y = -96
@@ -23,8 +24,8 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   headPosition.y += HEAD_OFFSET_Y
 
   const raySearcher = new RaySearcherFactory()
-    .setRayOrigin(headPosition)
-    .setRayDirection(new Vec2(0, 1))
+    .setRayStart(headPosition)
+    .setRayEnd(headPosition.add(new Vec2(0, INFINITY_COORDINATE)))
     .addCategoryToMask(Category.TERRAIN)
     .create()
   world.addEntity(raySearcher)

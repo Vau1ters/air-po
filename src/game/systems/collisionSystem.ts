@@ -8,6 +8,7 @@ import { Category, CategorySet } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 import { BVH } from '@core/collision/bvh'
 import { AABB } from '@core/collision/geometry/AABB'
+import { Ray } from '@core/collision/geometry/ray'
 
 export default class CollisionSystem extends System {
   private staticFamily: Family
@@ -76,7 +77,10 @@ export default class CollisionSystem extends System {
       const collidedEntityIdSet = new Set<number>()
       for (const c of collider1.colliders) {
         for (const m of c.mask) {
-          const rs = this.query(m, c.bound.add(position1))
+          const rs =
+            c.geometry instanceof Ray
+              ? this.queryRay(m, c.geometry as Ray)
+              : this.query(m, c.bound.add(position1))
           for (const { entity: entity2 } of rs) {
             if (entity1 === entity2) continue // prevent self collision
             if (collidedEntityIdSet.has(entity2.id)) continue // prevent dual collision
@@ -91,6 +95,14 @@ export default class CollisionSystem extends System {
   private query(category: Category, bound: AABB): Collider[] {
     const staticResult = this.staticBVHs.get(category)?.query(bound)
     const dynamicResult = this.dynamicBVHs.get(category)?.query(bound)
+    assert(staticResult !== undefined, `There are no BVH with category '${category}'`)
+    assert(dynamicResult !== undefined, `There are no BVH with category '${category}'`)
+    return staticResult.concat(dynamicResult)
+  }
+
+  private queryRay(category: Category, ray: Ray): Collider[] {
+    const staticResult = this.staticBVHs.get(category)?.queryRay(ray)
+    const dynamicResult = this.dynamicBVHs.get(category)?.queryRay(ray)
     assert(staticResult !== undefined, `There are no BVH with category '${category}'`)
     assert(dynamicResult !== undefined, `There are no BVH with category '${category}'`)
     return staticResult.concat(dynamicResult)

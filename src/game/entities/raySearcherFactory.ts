@@ -9,8 +9,8 @@ import { EntityFactory } from './entityFactory'
 export class RaySearcherFactory extends EntityFactory {
   private mask: CategorySet = new CategorySet()
   private raySetting: {
-    origin?: Vec2
-    direction?: Vec2
+    start?: Vec2
+    end?: Vec2
   } = {}
 
   public addCategoryToMask(...categories: Category[]): this {
@@ -20,13 +20,13 @@ export class RaySearcherFactory extends EntityFactory {
     return this
   }
 
-  public setRayOrigin(origin: Vec2): this {
-    this.raySetting.origin = origin
+  public setRayStart(start: Vec2): this {
+    this.raySetting.start = start
     return this
   }
 
-  public setRayDirection(direction: Vec2): this {
-    this.raySetting.direction = direction
+  public setRayEnd(end: Vec2): this {
+    this.raySetting.end = end
     return this
   }
 
@@ -40,8 +40,8 @@ export class RaySearcherFactory extends EntityFactory {
       mask: this.mask,
     })
     const ray = collider.geometry as Ray
-    if (this.raySetting.origin) ray.origin = this.raySetting.origin
-    if (this.raySetting.direction) ray.direction = this.raySetting.direction
+    if (this.raySetting.start) ray.start = this.raySetting.start
+    if (this.raySetting.end) ray.end = this.raySetting.end
 
     entity.addComponent('Collider', new ColliderComponent(collider))
     entity.addComponent('Position', new PositionComponent())

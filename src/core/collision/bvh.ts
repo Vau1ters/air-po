@@ -1,6 +1,8 @@
 import { AABB } from './geometry/AABB'
 import { ReservedArray } from '@utils/reservedArray'
 import { Collider } from '@game/components/colliderComponent'
+import { Ray } from './geometry/ray'
+import { collideRayAABB } from './collision/Ray_AABB'
 
 type Axis = 'x' | 'y'
 
@@ -13,6 +15,11 @@ export class BVHLeaf {
 
   public query(bound: AABB, result: ReservedArray<Collider>): void {
     if (!this.bound.overlap(bound)) return
+    result.push(this.collider)
+  }
+
+  public queryRay(ray: Ray, result: ReservedArray<Collider>): void {
+    if (!collideRayAABB(ray, this.bound).hit) return
     result.push(this.collider)
   }
 
@@ -37,6 +44,13 @@ export class BVHNode {
       c.query(bound, result)
     }
   }
+
+  public queryRay(ray: Ray, result: ReservedArray<Collider>): void {
+    if (!collideRayAABB(ray, this.bound).hit) return
+    for (const c of this.child) {
+      c.queryRay(ray, result)
+    }
+  }
 }
 
 export class BVH {
@@ -46,6 +60,14 @@ export class BVH {
     const result = new ReservedArray<Collider>(100)
     if (this.root) {
       this.root.query(bound, result)
+    }
+    return result.toArray()
+  }
+
+  public queryRay(ray: Ray): Collider[] {
+    const result = new ReservedArray<Collider>(100)
+    if (this.root) {
+      this.root.queryRay(ray, result)
     }
     return result.toArray()
   }

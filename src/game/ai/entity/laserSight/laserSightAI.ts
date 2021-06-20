@@ -36,8 +36,12 @@ const updateInvisibleRay = function*(laser: Entity, world: World): Behaviour<voi
     const ray = collider.geometry as Ray
     const position = player.getComponent('Position')
 
-    ray.origin = position
-    ray.direction = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+    const dir = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+
+    const s = Math.min(Math.abs(windowSize.width / dir.x), Math.abs(windowSize.height / dir.y)) / 2
+
+    ray.start = position
+    ray.end = position.add(dir.mul(s))
     yield
   }
 }
@@ -50,7 +54,7 @@ const shouldLockEntity = (entity: Entity, ray: Ray): boolean => {
   const isEntityCloseEnough =
     entity
       .getComponent('Position')
-      .sub(ray.origin)
+      .sub(ray.start)
       .length() < 160
   const forceFreeAiming = MouseController.isMousePressing('Right')
 
