@@ -3,7 +3,7 @@ import { Graphics } from 'pixi.js'
 import { AABB } from './AABB'
 import { GeometryForCollision } from './geometry'
 
-export class Ray implements GeometryForCollision {
+export class Segment implements GeometryForCollision {
   private _start: Vec2
   private _end: Vec2
   private _direction: Vec2
@@ -20,7 +20,7 @@ export class Ray implements GeometryForCollision {
   }
 
   applyPosition(pos: Vec2): GeometryForCollision {
-    return new Ray(pos.add(this.start), pos.add(this.end))
+    return new Segment(pos.add(this.start), pos.add(this.end))
   }
 
   draw(_: Graphics): void {}

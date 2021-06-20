@@ -6,7 +6,7 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { Graphics } from 'pixi.js'
 import { Category } from './category'
 import { EntityFactory } from './entityFactory'
-import { RaySearcherFactory } from './raySearcherFactory'
+import { SegmentSearcherFactory } from './segmentSearcherFactory'
 
 export class LaserSightFactory extends EntityFactory {
   constructor(private world: World) {
@@ -14,7 +14,7 @@ export class LaserSightFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const entity = new RaySearcherFactory()
+    const entity = new SegmentSearcherFactory()
       .addCategoryToMask(Category.ENEMY_HITBOX, Category.TERRAIN)
       .create()
 

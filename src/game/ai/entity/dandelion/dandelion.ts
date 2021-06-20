@@ -5,9 +5,9 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import DandelionStem from '@res/image/dandelionStem.png'
-import { RaySearcherFactory } from '@game/entities/raySearcherFactory'
+import { SegmentSearcherFactory } from '@game/entities/segmentSearcherFactory'
 import { Category } from '@game/entities/category'
-import { raySearchGenerator } from '../raySearcher/raySearcherAI'
+import { segmentSearchGenerator } from '../segmentSearcher/segmentSearcherAI'
 import { assert } from '@utils/assertion'
 import { INFINITY_COORDINATE } from '@core/math/constants'
 
@@ -23,21 +23,21 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
 
   headPosition.y += HEAD_OFFSET_Y
 
-  const raySearcher = new RaySearcherFactory()
-    .setRayStart(headPosition)
-    .setRayEnd(headPosition.add(new Vec2(0, INFINITY_COORDINATE)))
+  const segmentSearcher = new SegmentSearcherFactory()
+    .setSegmentStart(headPosition)
+    .setSegmentEnd(headPosition.add(new Vec2(0, INFINITY_COORDINATE)))
     .addCategoryToMask(Category.TERRAIN)
     .create()
-  world.addEntity(raySearcher)
-  const getClosestHit = raySearchGenerator(raySearcher, { maximumDistance: ROOT_OFFSET_Y })
+  world.addEntity(segmentSearcher)
+  const getClosestHit = segmentSearchGenerator(segmentSearcher, { maximumDistance: ROOT_OFFSET_Y })
 
   yield
 
   const { value: closestHit } = getClosestHit.next()
-  assert(closestHit instanceof Object, 'dandelion ai fails ray searching')
+  assert(closestHit instanceof Object, 'dandelion ai fails segment searching')
   const rootPosition = headPosition.copy()
   rootPosition.y = closestHit.point.y
-  world.removeEntity(raySearcher)
+  world.removeEntity(segmentSearcher)
 
   const points = new Array<PIXI.Point>(ROPE_POINT_NUM)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)

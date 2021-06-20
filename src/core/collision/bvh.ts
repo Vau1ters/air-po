@@ -1,8 +1,8 @@
 import { AABB } from './geometry/AABB'
 import { ReservedArray } from '@utils/reservedArray'
 import { Collider } from '@game/components/colliderComponent'
-import { Ray } from './geometry/ray'
-import { collideRayAABB } from './collision/Ray_AABB'
+import { Segment } from './geometry/segment'
+import { collideSegmentAABB } from './collision/Segment_AABB'
 
 type Axis = 'x' | 'y'
 
@@ -18,8 +18,8 @@ export class BVHLeaf {
     result.push(this.collider)
   }
 
-  public queryRay(ray: Ray, result: ReservedArray<Collider>): void {
-    if (!collideRayAABB(ray, this.bound).hit) return
+  public querySegment(ray: Segment, result: ReservedArray<Collider>): void {
+    if (!collideSegmentAABB(ray, this.bound).hit) return
     result.push(this.collider)
   }
 
@@ -45,10 +45,10 @@ export class BVHNode {
     }
   }
 
-  public queryRay(ray: Ray, result: ReservedArray<Collider>): void {
-    if (!collideRayAABB(ray, this.bound).hit) return
+  public querySegment(ray: Segment, result: ReservedArray<Collider>): void {
+    if (!collideSegmentAABB(ray, this.bound).hit) return
     for (const c of this.child) {
-      c.queryRay(ray, result)
+      c.querySegment(ray, result)
     }
   }
 }
@@ -64,10 +64,10 @@ export class BVH {
     return result.toArray()
   }
 
-  public queryRay(ray: Ray): Collider[] {
+  public querySegment(ray: Segment): Collider[] {
     const result = new ReservedArray<Collider>(100)
     if (this.root) {
-      this.root.queryRay(ray, result)
+      this.root.querySegment(ray, result)
     }
     return result.toArray()
   }
