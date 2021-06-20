@@ -20,6 +20,7 @@ import { SensorComponent } from '@game/components/sensorComponent'
 import { StaticComponent } from '@game/components/staticComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 import { ButtonComponent } from '@game/components/buttonComponent'
+import { MushroomComponent } from '@game/components/mushroomComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -44,6 +45,7 @@ export interface ComponentMap {
   Static: StaticComponent
   Equipment: EquipmentComponent
   Button: ButtonComponent
+  Mushroom: MushroomComponent
 }
 
 export type ComponentName = keyof ComponentMap

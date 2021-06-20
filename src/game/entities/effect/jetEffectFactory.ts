@@ -1,5 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-import { EntityFactory } from './entityFactory'
+import { EntityFactory } from '../entityFactory'
 import { DrawComponent } from '@game/components/drawComponent'
 import { AIComponent } from '@game/components/aiComponent'
 import { parseAnimation } from '@core/graphics/animationParser'
@@ -9,7 +9,7 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { World } from '@core/ecs/world'
 
 export class JetEffectFactory extends EntityFactory {
-  public shooter?: Entity
+  private shooter?: Entity
 
   public constructor(private world: World) {
     super()

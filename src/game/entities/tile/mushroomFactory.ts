@@ -15,28 +15,38 @@ import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
 import { TileEntityFactory } from './tileEntityFactory'
 import * as Sound from '@core/sound/sound'
+import { MushroomComponent } from '@game/components/mushroomComponent'
 
 export class MushroomFactory extends TileEntityFactory {
+  private readonly MUSHROOM_WIDTH = 78
+  private readonly MUSHROOM_HEIGHT = 44
+  private readonly STALK_WIDTH = 18
+  private readonly STALK_HEIGHT = this.MUSHROOM_HEIGHT
+  private readonly PILEUS_WIDTH = this.MUSHROOM_WIDTH
+  private readonly PILEUS_HEIGHT = 19
+
   private readonly WALL_COLLIDER = {
     type: 'AABB' as const,
-    size: new Vec2(20, 64),
+    offset: new Vec2(-1, 6),
+    size: new Vec2(this.STALK_WIDTH, this.STALK_HEIGHT),
   }
 
   private readonly JUMP_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(0, -24),
-    size: new Vec2(88, 16),
+    offset: new Vec2(0, 6 + this.PILEUS_HEIGHT / 4 - this.MUSHROOM_HEIGHT / 2),
+    size: new Vec2(this.PILEUS_WIDTH, this.PILEUS_HEIGHT / 2),
   }
 
   private readonly FLOOR_COLLIDER = {
     type: 'AABB' as const,
-    offset: new Vec2(0, -8),
-    size: new Vec2(88, 16),
+    offset: new Vec2(0, 6 + (this.PILEUS_HEIGHT * 3) / 4 - this.MUSHROOM_HEIGHT / 2),
+    size: new Vec2(this.PILEUS_WIDTH, this.PILEUS_HEIGHT / 2),
   }
 
   private readonly AIR_HOLDER_COLLIDER = {
     type: 'AABB' as const,
-    size: new Vec2(96, 96),
+    offset: new Vec2(0, 6),
+    size: new Vec2(this.MUSHROOM_WIDTH, this.MUSHROOM_HEIGHT),
   }
 
   private readonly AIR_HOLDER = {
@@ -90,13 +100,15 @@ export class MushroomFactory extends TileEntityFactory {
     )
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
-    entity.addComponent('AI', new AIComponent(mushroomAI(entity)))
+    entity.addComponent('Mushroom', new MushroomComponent())
+    entity.addComponent('AI', new AIComponent(mushroomAI(entity, this.world)))
 
     const [jumpCollider] = entity.getComponent('Collider').colliders
     jumpCollider.callbacks.add((args: CollisionCallbackArgs) => {
-      const { other } = args
+      const { me, other } = args
       const { axis } = args as CollisionResultAABBAABB
       if (Math.abs(axis.y) !== 1) return
+      me.entity.getComponent('Mushroom').landed = true
       other.entity.getComponent('RigidBody').velocity.y -= this.JUMP_ACCEL
       Sound.play('mushroom')
     })

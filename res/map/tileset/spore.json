@@ -1,0 +1,14 @@
+{ "columns":6,
+ "image":"..\/..\/image\/spore.png",
+ "imageheight":8,
+ "imagewidth":48,
+ "margin":0,
+ "name":"spore",
+ "spacing":0,
+ "tilecount":6,
+ "tiledversion":"1.6.0",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.6"
+}
