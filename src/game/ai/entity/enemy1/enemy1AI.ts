@@ -7,8 +7,7 @@ import { move, Direction } from '../common/action/move'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
-import { parallelAll, parallelAny } from '@core/behaviour/composite'
-import { damageEffect } from '../common/action/damageEffect'
+import { parallelAny } from '@core/behaviour/composite'
 
 const enemy1Walk = function*(entity: Entity, direction: Direction): Behaviour<void> {
   yield* parallelAny([
@@ -27,7 +26,7 @@ const enemy1Move = function*(entity: Entity): Behaviour<void> {
 }
 
 export const enemy1AI = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* suspendable(isAlive(entity), parallelAll([enemy1Move(entity), damageEffect(entity)]))
+  yield* suspendable(isAlive(entity), enemy1Move(entity))
   yield* emitAir(entity, world, 50)
   yield* animate({ entity, state: 'Dying' })
   yield* kill(entity, world)

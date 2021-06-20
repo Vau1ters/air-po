@@ -7,9 +7,8 @@ import { move, Direction } from '../common/action/move'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
-import { parallelAll, parallelAny } from '@core/behaviour/composite'
+import { parallelAny } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
-import { damageEffect } from '../common/action/damageEffect'
 
 const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<void> {
   Sound.play('slime4', { volume: 0.04 })
@@ -30,7 +29,7 @@ const slime1Move = function*(entity: Entity): Behaviour<void> {
 }
 
 export const slime1AI = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* suspendable(isAlive(entity), parallelAll([slime1Move(entity), damageEffect(entity)]))
+  yield* suspendable(isAlive(entity), slime1Move(entity))
   yield* emitAir(entity, world, 50)
   yield* animate({ entity, state: 'Dying' })
   yield* kill(entity, world)

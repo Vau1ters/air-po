@@ -11,6 +11,7 @@ export const HITBOX_TAG = 'HitBox'
 
 export class DamageSystem extends System {
   private family: Family
+  private hpFamily: Family
 
   public constructor(world: World) {
     super(world)
@@ -18,10 +19,20 @@ export class DamageSystem extends System {
     this.family = new FamilyBuilder(world).include('Attack', 'Collider').build()
     this.family.entityAddedEvent.addObserver((entity: Entity) => this.entityAdded(entity))
     this.family.entityRemovedEvent.addObserver((entity: Entity) => this.entityRemoved(entity))
+
+    this.hpFamily = new FamilyBuilder(world).include('HP').build()
   }
 
   public update(): void {
-    // 何もしない
+    for (const entity of this.hpFamily.entityIterator) {
+      const hp = entity.getComponent('HP')
+      if (hp.damageTime > 0) {
+        entity.getComponent('Draw').filters[0].uniforms.damaging = true
+        hp.damageTime--
+      } else {
+        entity.getComponent('Draw').filters[0].uniforms.damaging = false
+      }
+    }
   }
 
   private entityAdded(entity: Entity): void {
