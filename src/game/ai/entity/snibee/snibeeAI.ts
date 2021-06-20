@@ -12,6 +12,7 @@ import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
 import { animate } from '@game/ai/entity/common/action/animate'
 import { repeat } from '@core/behaviour/repeat'
+import { damageEffect } from '../common/action/damageEffect'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -86,6 +87,7 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
     moveAI(entity, playerEntity),
     shootAI(entity, world, playerEntity),
     animate({ entity, state: 'Alive', loopCount: Infinity }),
+    damageEffect(entity),
   ])
 }
 
