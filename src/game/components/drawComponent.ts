@@ -4,8 +4,6 @@ import { Category } from '../entities/category'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
 import { AnimationSprite } from '@core/graphics/animation'
-import damageShader from '@res/shaders/damage.frag'
-import { Filter } from 'pixi.js'
 
 export type ContainerType = 'World' | 'WorldUI' | 'UI'
 
@@ -35,7 +33,6 @@ export class DrawComponent extends Container {
       }
     }
     this.visible = false
-    this.filters = [new Filter(undefined, damageShader, { damaging: false })]
   }
 
   createCollider(): Collider {
