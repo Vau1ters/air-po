@@ -25,6 +25,7 @@ import CollisionSystem from '@game/systems/collisionSystem'
 import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import { Entity } from '@core/ecs/entity'
 import BackgroundSystem from '@game/systems/backgroundSystem'
+import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 
 export class GameWorldFactory {
   private mapBuilder?: MapBuilder
@@ -74,6 +75,7 @@ export class GameWorldFactory {
       new BulletSystem(world),
       new InvincibleSystem(world),
       new DamageSystem(world),
+      new DamageEffectSystem(world),
       new FilterSystem(world, filterContainer),
       new FilterEffectSystem(world, world.stage),
       new AirSystem(world),
