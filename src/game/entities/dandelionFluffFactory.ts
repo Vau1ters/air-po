@@ -12,7 +12,7 @@ import dandelionFluffDefinition from '@res/setting/dandelionFluff.json'
 import { World } from '@core/ecs/world'
 import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
-import { FLUFF_TAG } from '@game/ai/entity/player/playerItemAction'
+import { FLUFF_TAG } from '@game/ai/entity/player/playerAI'
 
 const EMIT_POS_DIFF = new Vec2(0, 16)
 
