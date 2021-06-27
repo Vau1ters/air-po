@@ -36,7 +36,7 @@ type StereoFilter = InstanceType<typeof PIXI_SOUND.filters.StereoFilter>
 
 export const soundStore: { [key: string]: PIXI_SOUND.Sound } = {}
 export const play = (name: string, option?: PlayOptions): void => {
-  option = option ? option : {}
+  option = option ? option : { volume: 0.1 }
   const sound = soundStore[name]
   if (option.pan) {
     const [stereoFilter] = sound.filters as StereoFilter[]
