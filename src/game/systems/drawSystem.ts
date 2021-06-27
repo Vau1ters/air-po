@@ -16,6 +16,7 @@ export default class DrawSystem extends System {
   private cameraFamily: Family
 
   private preVisibleEntities: Entity[] = []
+  private dynamicBVH: BVH
   private staticBVH: BVH
   private staticBVHInitialized = false
 
@@ -45,10 +46,12 @@ export default class DrawSystem extends System {
       .build()
     this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
+    this.dynamicBVH = new BVH()
     this.staticBVH = new BVH()
   }
 
   public init(): void {
+    this.dynamicBVH = new BVH()
     this.staticBVH = new BVH()
     this.preVisibleEntities = []
     this.staticBVHInitialized = false
@@ -95,38 +98,27 @@ export default class DrawSystem extends System {
         this.staticDrawFamily.entityArray.map(e => e.getComponent('Draw').createCollider())
       )
     }
+
+    this.dynamicBVH.build(
+      this.dynamicDrawFamily.entityArray.map(e => e.getComponent('Draw').createCollider())
+    )
   }
 
   private updateAllState(): void {
-    const visibleEntities = this.getVisibleEntitiesDynamic().concat(this.getVisibleEntitiesStatic())
-    for (const entity of visibleEntities) {
-      const position = entity.getComponent('Position')
-      const container = entity.getComponent('Draw')
-      container.visible = true
-      container.position.set(position.x, position.y)
-      this.preVisibleEntities.push(entity)
+    for (const camera of this.cameraFamily.entityIterator) {
+      const screen = this.createScreenAABB(camera)
+      const visibleEntities = [this.dynamicBVH, this.staticBVH]
+        .map(bvh => bvh.query(screen))
+        .reduce((a, b) => Array.prototype.concat(a, b))
+        .map(c => c.entity)
+      for (const entity of visibleEntities) {
+        const position = entity.getComponent('Position')
+        const container = entity.getComponent('Draw')
+        container.visible = true
+        container.position.set(position.x, position.y)
+        this.preVisibleEntities.push(entity)
+      }
     }
-  }
-
-  private getVisibleEntitiesStatic(): Array<Entity> {
-    const [camera] = this.cameraFamily.entityIterator
-    const screen = this.createScreenAABB(camera)
-    const visibleEntities = [this.staticBVH]
-      .map(bvh => bvh.query(screen))
-      .reduce((a, b) => Array.prototype.concat(a, b))
-      .map(c => c.entity)
-    return visibleEntities
-  }
-
-  private getVisibleEntitiesDynamic(): Array<Entity> {
-    const [camera] = this.cameraFamily.entityIterator
-    const screen = this.createScreenAABB(camera)
-    const visibleEntities = []
-    for (const entity of this.dynamicDrawFamily.entityIterator) {
-      if (!screen.intersect(entity.getComponent('Draw').createCollider().bound)) continue
-      visibleEntities.push(entity)
-    }
-    return visibleEntities
   }
 
   private createScreenAABB(camera: Entity): AABB {
