@@ -22,7 +22,11 @@ export const pickup = function*(entity: Entity): Behaviour<void> {
 
   while (true) {
     if (KeyController.isKeyPressed('E')) {
-      if (pickupTarget.size > 0) {
+      if (player.possessingEntity !== undefined) {
+        const target = player.possessingEntity.getComponent('PickupTarget')
+        target.isPossessed = false
+        player.possessingEntity = undefined
+      } else if (pickupTarget.size > 0) {
         const entity = Array.from(pickupTarget.values())[0]
         const target = entity.getComponent('PickupTarget')
         target.isPossessed = true

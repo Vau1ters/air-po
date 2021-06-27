@@ -12,7 +12,6 @@ import { downThroughFloor } from './downThroughFloor'
 import { walk } from './walk'
 import { pickup } from './pickup'
 import { talk } from './talk'
-import { release } from '../general/release'
 
 export const normalAI = function*(entity: Entity, world: World): Behaviour<void> {
   const playerBody = entity.getComponent('RigidBody')
@@ -25,7 +24,6 @@ export const normalAI = function*(entity: Entity, world: World): Behaviour<void>
     walk(entity),
     jet(entity, world),
     land(entity),
-    release(entity),
     pickup(entity),
     talk(entity, world),
     animate({ entity, loopCount: Infinity }),
