@@ -8,12 +8,10 @@ import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
-import * as Sound from '@core/sound/sound'
 import { createSound } from '@game/entities/soundFactory'
 
-const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<void> {
-  // Sound.play('slime4', { volume: 0.04 })
-  createSound(entity, 'slime4')
+const slime1Jump = function*(entity: Entity, world: World, direction: Direction): Behaviour<void> {
+  createSound({ world, entity, name: 'slime4', options: { volume: 0.2 } })
   yield* parallelAny([
     animate({ entity, state: 'Jumping' }),
     move(entity, direction, 0.5, Infinity),
@@ -21,17 +19,17 @@ const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<vo
   yield* animate({ entity, state: 'Landing' })
 }
 
-const slime1Move = function*(entity: Entity): Behaviour<void> {
+const slime1Move = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
     yield* animate({ entity, state: 'Idling', loopCount: 3 })
-    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Right)
+    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, world, Direction.Right)
     yield* animate({ entity, state: 'Idling', loopCount: 3 })
-    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Left)
+    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, world, Direction.Left)
   }
 }
 
 export const slime1AI = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* suspendable(isAlive(entity), slime1Move(entity))
+  yield* suspendable(isAlive(entity), slime1Move(entity, world))
   yield* emitAir(entity, world, 50)
   yield* animate({ entity, state: 'Dying' })
   yield* kill(entity, world)

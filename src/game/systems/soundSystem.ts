@@ -1,3 +1,4 @@
+import { windowSize } from '@core/application'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
@@ -23,10 +24,14 @@ export class SoundSystem extends System {
       const entityPosition = soundComponent.entity.getComponent('Position')
       const direction = entityPosition.sub(playerPosition)
       const distance = direction.length()
+      console.log(Math.max((soundComponent.playOptions?.volume ?? 1) * (1 - distance / 180), 0))
 
       play(soundComponent.name, {
         ...soundComponent.playOptions,
-        volume: (soundComponent.playOptions?.volume ?? 1) / distance,
+        volume: Math.max(
+          (soundComponent.playOptions?.volume ?? 1) * (1 - distance / (windowSize.width * 0.5)),
+          0
+        ),
         pan: direction.x / distance,
       })
       this.world.removeEntity(soundEntity)

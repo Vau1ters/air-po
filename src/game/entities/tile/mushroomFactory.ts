@@ -15,7 +15,6 @@ import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
 import { TileEntityFactory } from './tileEntityFactory'
 import * as Sound from '@core/sound/sound'
-import { createSound } from '../soundFactory'
 
 export class MushroomFactory extends TileEntityFactory {
   private readonly WALL_COLLIDER = {
@@ -99,8 +98,7 @@ export class MushroomFactory extends TileEntityFactory {
       const { axis } = args as CollisionResultAABBAABB
       if (Math.abs(axis.y) !== 1) return
       other.entity.getComponent('RigidBody').velocity.y -= this.JUMP_ACCEL
-      // Sound.play('mushroom')
-      createSound(entity, 'mushroom')
+      Sound.play('mushroom')
     })
 
     if (this.frame === 0) entity.getComponent('AirHolder').quantity = this.AIR_HOLDER.maxQuantity
