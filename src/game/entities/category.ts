@@ -62,7 +62,6 @@ export enum Category {
   /*
   ITEM category is used for
     - being detected by player as item
-  Process above is done in PlayerControlSystem
   */
   ITEM,
   /*
