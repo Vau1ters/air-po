@@ -1,4 +1,4 @@
-import { Ray } from '@core/collision/geometry/ray'
+import { Segment } from '@core/collision/geometry/segment'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider, ColliderComponent } from '@game/components/colliderComponent'
@@ -6,11 +6,11 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { Category, CategorySet } from './category'
 import { EntityFactory } from './entityFactory'
 
-export class RaySearcherFactory extends EntityFactory {
+export class SegmentSearcherFactory extends EntityFactory {
   private mask: CategorySet = new CategorySet()
-  private raySetting: {
-    origin?: Vec2
-    direction?: Vec2
+  private segmentSetting: {
+    start?: Vec2
+    end?: Vec2
   } = {}
 
   public addCategoryToMask(...categories: Category[]): this {
@@ -20,13 +20,13 @@ export class RaySearcherFactory extends EntityFactory {
     return this
   }
 
-  public setRayOrigin(origin: Vec2): this {
-    this.raySetting.origin = origin
+  public setSegmentStart(start: Vec2): this {
+    this.segmentSetting.start = start
     return this
   }
 
-  public setRayDirection(direction: Vec2): this {
-    this.raySetting.direction = direction
+  public setSegmentEnd(end: Vec2): this {
+    this.segmentSetting.end = end
     return this
   }
 
@@ -35,13 +35,13 @@ export class RaySearcherFactory extends EntityFactory {
 
     const collider: Collider = buildCollider({
       entity,
-      geometry: { type: 'Ray' },
+      geometry: { type: 'Segment' },
       category: Category.SENSOR,
       mask: this.mask,
     })
-    const ray = collider.geometry as Ray
-    if (this.raySetting.origin) ray.origin = this.raySetting.origin
-    if (this.raySetting.direction) ray.direction = this.raySetting.direction
+    const segment = collider.geometry as Segment
+    if (this.segmentSetting.start) segment.start = this.segmentSetting.start
+    if (this.segmentSetting.end) segment.end = this.segmentSetting.end
 
     entity.addComponent('Collider', new ColliderComponent(collider))
     entity.addComponent('Position', new PositionComponent())
