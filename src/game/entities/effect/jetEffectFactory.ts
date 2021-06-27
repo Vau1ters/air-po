@@ -18,6 +18,7 @@ export class JetEffectFactory extends EntityFactory {
   public setShooter(shooter: Entity): void {
     this.shooter = shooter
   }
+
   public create(): Entity {
     if (!this.shooter) {
       console.log('shooter is not defined')

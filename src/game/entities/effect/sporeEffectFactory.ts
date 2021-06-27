@@ -20,6 +20,7 @@ export class SporeEffectFactory extends EntityFactory {
   public setPosition(position: Vec2): void {
     this.position = position
   }
+
   public create(): Entity {
     if (!this.position) {
       console.log('mushroom is not defined')

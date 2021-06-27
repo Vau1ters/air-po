@@ -1,21 +1,14 @@
-import { CollisionResultAABBAABB } from '@core/collision/collision/AABB_AABB'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { mushroomAI } from '@game/ai/entity/mushroom/mushroomAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
-import {
-  ColliderComponent,
-  buildColliders,
-  CollisionCallbackArgs,
-} from '@game/components/colliderComponent'
+import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
 import { TileEntityFactory } from './tileEntityFactory'
-import * as Sound from '@core/sound/sound'
-import { MushroomComponent } from '@game/components/mushroomComponent'
 
 export class MushroomFactory extends TileEntityFactory {
   private readonly MUSHROOM_WIDTH = 78
@@ -56,8 +49,6 @@ export class MushroomFactory extends TileEntityFactory {
     consumeSpeed: 0,
     shouldDamageInSuffocation: false,
   }
-
-  private readonly JUMP_ACCEL = 500
 
   public create(): Entity {
     const entity = super.create()
@@ -100,18 +91,7 @@ export class MushroomFactory extends TileEntityFactory {
     )
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
-    entity.addComponent('Mushroom', new MushroomComponent())
     entity.addComponent('AI', new AIComponent(mushroomAI(entity, this.world)))
-
-    const [jumpCollider] = entity.getComponent('Collider').colliders
-    jumpCollider.callbacks.add((args: CollisionCallbackArgs) => {
-      const { me, other } = args
-      const { axis } = args as CollisionResultAABBAABB
-      if (Math.abs(axis.y) !== 1) return
-      me.entity.getComponent('Mushroom').landed = true
-      other.entity.getComponent('RigidBody').velocity.y -= this.JUMP_ACCEL
-      Sound.play('mushroom')
-    })
 
     if (this.frame === 0) entity.getComponent('AirHolder').quantity = this.AIR_HOLDER.maxQuantity
 
