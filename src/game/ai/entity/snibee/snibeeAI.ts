@@ -12,6 +12,7 @@ import { parallelAll } from '@core/behaviour/composite'
 import * as Sound from '@core/sound/sound'
 import { animate } from '@game/ai/entity/common/action/animate'
 import { repeat } from '@core/behaviour/repeat'
+import { createSound } from '@game/entities/soundFactory'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -72,7 +73,8 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
       bulletFactory.angle += (Math.random() - 0.5) * SnibeeSetting.angleRange
       bulletFactory.type = 'needle'
       world.addEntity(bulletFactory.create())
-      Sound.play('snibee')
+      // Sound.play('snibee')
+      createSound(entity, 'snibee')
       yield* wait(SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange)
     } else {
       yield
@@ -107,7 +109,8 @@ const flutteringAI = function*(entity: Entity): Behaviour<void> {
 
 export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
-  Sound.play('snibeeDie')
+  // Sound.play('snibeeDie')
+  createSound(entity, 'snibeeDie')
   yield* animate({ entity, state: 'Dying' })
   entity.getComponent('RigidBody').velocity.x = 0
   entity.getComponent('RigidBody').velocity.y = -3

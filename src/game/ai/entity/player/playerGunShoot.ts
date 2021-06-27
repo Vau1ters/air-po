@@ -5,6 +5,7 @@ import { MouseController } from '@game/systems/controlSystem'
 import { BulletFactory } from '@game/entities/bulletFactory'
 import * as Sound from '@core/sound/sound'
 import { wait } from '@core/behaviour/wait'
+import { createSound } from '@game/entities/soundFactory'
 
 const SETTING = {
   CONSUME_SPEED: 2,
@@ -22,7 +23,8 @@ export const playerGunShoot = function*(entity: Entity, world: World): Behaviour
     if (airHolder.quantity >= SETTING.CONSUME_SPEED) {
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      Sound.play('shot')
+      // Sound.play('shot')
+      createSound(entity, 'shot')
       // 弾を打つ
       bulletFactory.setShooter(entity, 'player')
       bulletFactory.setDirection(

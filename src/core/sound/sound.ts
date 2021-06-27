@@ -29,7 +29,7 @@ import airJet from '@res/sound/airJet.ogg'
 
 import * as PIXI_SOUND from '@pixi/sound'
 
-type PlayOptions = PIXI_SOUND.PlayOptions & {
+export type PlayOptions = PIXI_SOUND.PlayOptions & {
   pan?: number
 }
 type StereoFilter = InstanceType<typeof PIXI_SOUND.filters.StereoFilter>
