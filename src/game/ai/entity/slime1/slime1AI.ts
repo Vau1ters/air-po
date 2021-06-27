@@ -11,7 +11,7 @@ import { parallelAny } from '@core/behaviour/composite'
 import { createSound } from '@game/entities/soundFactory'
 
 const slime1Jump = function*(entity: Entity, world: World, direction: Direction): Behaviour<void> {
-  createSound({ world, entity, name: 'slime4', options: { volume: 0.2 } })
+  createSound({ world, entity, name: 'slime4', options: { volume: 0.04 } })
   yield* parallelAny([
     animate({ entity, state: 'Jumping' }),
     move(entity, direction, 0.5, Infinity),
