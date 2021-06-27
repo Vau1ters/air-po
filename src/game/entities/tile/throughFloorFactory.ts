@@ -13,7 +13,7 @@ export class ThroughFloorFactory extends TileEntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(0, -2),
-    size: new Vec2(8, 4),
+    size: new Vec2(8, 0),
   }
 
   public create(): Entity {
