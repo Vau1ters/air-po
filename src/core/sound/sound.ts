@@ -27,25 +27,35 @@ import danball from '@res/sound/danball.ogg'
 import burner from '@res/sound/burner.ogg'
 import airJet from '@res/sound/airJet.ogg'
 
-import PIXI from 'pixi-sound'
+import * as PIXI_SOUND from '@pixi/sound'
 
-export const soundStore: { [key: string]: PIXI.Sound } = {}
-export const play = (name: string, option?: PIXI.PlayOptions): void => {
-  option = option ?? { volume: 0.1 }
+type PlayOptions = PIXI_SOUND.PlayOptions & {
+  pan?: number
+}
+type StereoFilter = InstanceType<typeof PIXI_SOUND.filters.StereoFilter>
+
+export const soundStore: { [key: string]: PIXI_SOUND.Sound } = {}
+export const play = (name: string, option?: PlayOptions): void => {
+  option = option ? option : {}
   const sound = soundStore[name]
+  if (option.pan) {
+    const [stereoFilter] = sound.filters as StereoFilter[]
+    stereoFilter.pan = option.pan
+  }
   if (sound !== undefined) sound.play(option)
   else console.log(name, ':is not found')
 }
 
-const load = (url: string): Promise<PIXI.Sound> => {
+const load = (url: string): Promise<PIXI_SOUND.Sound> => {
   return new Promise((resolve, reject) => {
-    PIXI.Sound.from({
+    PIXI_SOUND.Sound.from({
       url: url,
       preload: true,
       loaded: (err, sound) => {
-        if (err) {
+        if (err || !sound) {
           reject()
         } else {
+          sound.filters = [new PIXI_SOUND.filters.StereoFilter()]
           resolve(sound)
         }
       },
