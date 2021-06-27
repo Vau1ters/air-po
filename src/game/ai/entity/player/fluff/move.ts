@@ -12,7 +12,7 @@ export const move = function*(entity: Entity): Behaviour<void> {
   const fluffPosition = fluff.getComponent('Position')
 
   while (true) {
-    const pos = fluffPosition.add(PLAYER_SETTING.fluff.chase.grubPosition)
+    const pos = fluffPosition.add(PLAYER_SETTING.fluff.chase.grabPosition)
     const diff = pos.sub(playerPosition)
     if (diff.x < PLAYER_SETTING.fluff.move.speed && KeyController.isActionPressing('MoveRight')) {
       fluffPosition.x += PLAYER_SETTING.fluff.move.speed

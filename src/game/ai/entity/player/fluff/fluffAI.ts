@@ -23,7 +23,7 @@ export const fluffAI = function*(entity: Entity, world: World): Behaviour<void> 
   playerBody.velocity.y = 0
   yield* suspendable(
     () =>
-      playerPosition.sub(fluffPosition.add(PLAYER_SETTING.fluff.chase.grubPosition)).length() <
+      playerPosition.sub(fluffPosition.add(PLAYER_SETTING.fluff.chase.grabPosition)).length() <
       PLAYER_SETTING.fluff.release.distance,
     parallelAll([chase(entity), move(entity), release(entity), gunShoot(entity, world)])
   )

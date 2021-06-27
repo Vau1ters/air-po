@@ -31,7 +31,7 @@ export const PLAYER_SETTING = {
   },
   fluff: {
     chase: {
-      grubPosition: new Vec2(0, 7.0),
+      grabPosition: new Vec2(0, 7.0),
       chaseScale: 0.5,
     },
     release: {

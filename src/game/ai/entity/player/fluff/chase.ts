@@ -11,7 +11,7 @@ export const chase = function*(entity: Entity): Behaviour<void> {
   const fluffPosition = fluff.getComponent('Position')
 
   while (true) {
-    const pos = fluffPosition.add(PLAYER_SETTING.fluff.chase.grubPosition)
+    const pos = fluffPosition.add(PLAYER_SETTING.fluff.chase.grabPosition)
     playerPosition.x += (pos.x - playerPosition.x) * PLAYER_SETTING.fluff.chase.chaseScale
     playerPosition.y += (pos.y - playerPosition.y) * PLAYER_SETTING.fluff.chase.chaseScale
     yield
