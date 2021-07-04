@@ -9,6 +9,7 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { CollisionResultAABBAABB } from '@core/collision/collision/AABB_AABB'
 import * as Sound from '@core/sound/sound'
 import { suspendable } from '@core/behaviour/suspendable'
+import { not } from '../common/condition/composite'
 
 const JUMP_ACCEL = 500
 
@@ -28,9 +29,7 @@ export const mushroomAI = function*(entity: Entity, world: World): Behaviour<voi
     Sound.play('mushroom')
   })
 
-  yield* suspendable(() => {
-    return !hasAir(entity)()
-  }, animate({ entity, state: 'Close', loopCount: Infinity }))
+  yield* suspendable(not(hasAir(entity)), animate({ entity, state: 'Close', loopCount: Infinity }))
 
   for (let i = 0; i < 10; i++) {
     sporeFactory.setPosition(
