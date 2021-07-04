@@ -43,8 +43,18 @@ const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour
     )
     const mousePositionOnWorld = cameraPosition.add(mousePositionOnScreen)
 
+    const dir = mousePositionOnWorld.sub(playerPosition)
+
+    const ts = [
+      (cameraPosition.x - playerPosition.x - windowSize.width / 2) / dir.x,
+      (cameraPosition.x - playerPosition.x + windowSize.width / 2) / dir.x,
+      (cameraPosition.y - playerPosition.y - windowSize.height / 2) / dir.y,
+      (cameraPosition.y - playerPosition.y + windowSize.height / 2) / dir.y,
+    ]
+    const t = ts.filter(t => t >= 0).reduce((a, b) => (a < b ? a : b))
+
     segment.start = playerPosition
-    segment.end = mousePositionOnWorld
+    segment.end = segment.start.add(dir.mul(t))
     yield
   }
 }
@@ -52,9 +62,13 @@ const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour
 const isDistantEnough = (segment: Segment, entity: Entity): boolean => {
   return segment.distance(entity.getComponent('Position')) > 20
 }
-const shouldLockEntity = (entity: Entity): boolean => {
+const shouldLockEntity = (entity: Entity, segment: Segment): boolean => {
   const isEntityAlive = entity.hasComponent('HP') && entity.getComponent('HP').hp > 0
-  const isEntityCloseEnough = entity.getComponent('Draw').visible
+  const isEntityCloseEnough =
+    entity
+      .getComponent('Position')
+      .sub(segment.start)
+      .length() < 160
   const forceFreeAiming = MouseController.isMousePressing('Right')
 
   return isEntityAlive && isEntityCloseEnough && !forceFreeAiming
@@ -86,7 +100,7 @@ const getLaserSightStateGenerator = function*(
   const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
     while (true) {
       const { entity } = state.hitResult
-      if (entity && shouldLockEntity(entity)) return
+      if (entity && shouldLockEntity(entity, segment)) return
 
       yield
     }
@@ -97,7 +111,7 @@ const getLaserSightStateGenerator = function*(
       const { entity: currentHittingEntity } = state.hitResult
       if (
         currentHittingEntity?.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
-        (isDistantEnough(segment, entity) || !shouldLockEntity(entity))
+        (isDistantEnough(segment, entity) || !shouldLockEntity(entity, segment))
       ) {
         return
       }
