@@ -3,10 +3,10 @@ import { Entity } from '@core/ecs/entity'
 import { KeyController } from '@game/systems/controlSystem'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
-import { JetEffectFactory } from '@game/entities/jetEffectFactory'
 import GravitySystem from '@game/systems/gravitySystem'
 import { wait } from '@core/behaviour/wait'
 import * as Sound from '@core/sound/sound'
+import { JetEffectFactory } from '@game/entities/effect/jetEffectFactory'
 import { PLAYER_SETTING } from '../playerAI'
 
 const calcPlayerAngle = (): Vec2 => {
