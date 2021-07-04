@@ -12,7 +12,7 @@ export class AirGeyserFactory extends ObjectEntityFactory {
   private readonly COLLIDER = {
     type: 'AABB' as const,
     offset: new Vec2(0, 9),
-    size: new Vec2(10, 13),
+    size: new Vec2(10, 14),
   }
 
   public create(): Entity {
