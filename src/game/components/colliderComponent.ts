@@ -3,7 +3,7 @@ import { AABB } from '@core/collision/geometry/AABB'
 import { Air } from '@core/collision/geometry/air'
 import { GeometryForCollision } from '@core/collision/geometry/geometry'
 import { OBB } from '@core/collision/geometry/OBB'
-import { Ray } from '@core/collision/geometry/ray'
+import { Segment } from '@core/collision/geometry/segment'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
@@ -67,9 +67,9 @@ type GeometryBuildOption =
       angle?: number
     }
   | {
-      type: 'Ray'
-      origin?: Vec2
-      direction?: Vec2
+      type: 'Segment'
+      start?: Vec2
+      end?: Vec2
     }
   | {
       type: 'Air'
@@ -91,8 +91,8 @@ const buildGeometry = (option: GeometryBuildOption): GeometryForCollision => {
       return new AABB(option.offset, option.size, option.maxClipToTolerance)
     case 'OBB':
       return new OBB(new AABB(option.offset, option.size), option.angle)
-    case 'Ray':
-      return new Ray(option.origin, option.direction)
+    case 'Segment':
+      return new Segment(option.start, option.end)
     case 'Air':
       return new Air(option.world)
   }

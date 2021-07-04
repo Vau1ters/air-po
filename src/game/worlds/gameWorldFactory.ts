@@ -8,7 +8,6 @@ import DrawSystem from '@game/systems/drawSystem'
 import { AirSystem } from '@game/systems/airSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { PlayerControlSystem } from '@game/systems/playerControlSystem'
 import { BulletSystem } from '@game/systems/bulletSystem'
 import { Map, MapBuilder } from '@game/map/mapBuilder'
 import AISystem from '@game/systems/aiSystem'
@@ -24,6 +23,7 @@ import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
 import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import { Entity } from '@core/ecs/entity'
+import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 
 export class GameWorldFactory {
   private mapBuilder?: MapBuilder
@@ -69,10 +69,10 @@ export class GameWorldFactory {
       new PhysicsSystem(world),
       collisionSystem,
       new AISystem(world),
-      new PlayerControlSystem(world),
       new BulletSystem(world),
       new InvincibleSystem(world),
       new DamageSystem(world),
+      new DamageEffectSystem(world),
       new FilterSystem(world, filterContainer),
       new FilterEffectSystem(world, world.stage),
       new AirSystem(world),

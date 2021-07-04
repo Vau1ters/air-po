@@ -1,8 +1,12 @@
+const DAMAGING_FRAMES = 5
+
 export class HPComponent {
+  public damageTime = 0
   public constructor(private _hp: number, private _maxHp: number) {}
 
   decrease(damage: number): void {
     this._hp = Math.max(0, this.hp - damage)
+    this.damageTime = DAMAGING_FRAMES
   }
 
   increase(heal: number): void {

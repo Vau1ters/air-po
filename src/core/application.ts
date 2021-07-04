@@ -19,6 +19,7 @@ export const initializeApplication = (): void => {
 
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
   PIXI.settings.ROUND_PIXELS = true
+  application.ticker.maxFPS = 60
 
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()

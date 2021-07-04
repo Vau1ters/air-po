@@ -1,30 +1,74 @@
-import { Entity } from '@core/ecs/entity'
-import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
-import { isAlive } from '../common/condition/isAlive'
-import { parallelAll } from '@core/behaviour/composite'
-import { playerGunShoot } from './playerGunShoot'
-import { playerMove } from './playerMove'
-import { playerJet } from './playerJet'
-import { playerPickup } from './playerPickup'
-import { playerItemAction } from './playerItemAction'
-import { invincibleTime } from '../common/action/invincibleTime'
-import { animate } from '../common/action/animate'
 import { wait } from '@core/behaviour/wait'
-import { playerTalk } from './playerTalk'
+import { Entity } from '@core/ecs/entity'
+import { World } from '@core/ecs/world'
+import { Vec2 } from '@core/math/vec2'
+import { animate } from '../common/action/animate'
+import { isAlive } from '../common/condition/isAlive'
+import { fluffAI } from './fluff/fluffAI'
+import { normalAI } from './normal/normalAI'
 
-export const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
-  yield* parallelAll([
-    playerGunShoot(entity, world),
-    playerMove(entity),
-    playerJet(entity, world),
-    playerPickup(entity),
-    playerItemAction(entity),
-    playerTalk(entity, world),
-    animate({ entity, loopCount: Infinity }),
-    invincibleTime(entity),
-  ])
+export const FLUFF_TAG = 'Fluff'
+export const PLAYER_SETTING = {
+  normal: {
+    throughFloor: {
+      ignoreCount: 20,
+    },
+    jet: {
+      airConsumeSpeed: 0.1,
+      speed: 140,
+      power: 600,
+      coolTime: 10,
+    },
+    jump: {
+      speed: 280,
+    },
+    walk: {
+      power: 10,
+      speed: 100,
+    },
+  },
+  fluff: {
+    chase: {
+      grabPosition: new Vec2(0, 7.0),
+      chaseScale: 0.5,
+    },
+    release: {
+      distance: 10,
+    },
+    move: {
+      speed: 0.3,
+    },
+  },
+}
+
+type PlayerMode = 'Normal' | 'Fluff'
+
+const getCurrentPlayerMode = (entity: Entity): PlayerMode => {
+  const player = entity.getComponent('Player')
+  if (player.possessingEntity !== undefined) {
+    if (player.possessingEntity.getComponent('Collider').colliders[0].tag.has(FLUFF_TAG)) {
+      return 'Fluff'
+    }
+  }
+  return 'Normal'
+}
+
+const selectPlayerAI = (entity: Entity, world: World): Behaviour<void> => {
+  switch (getCurrentPlayerMode(entity)) {
+    case 'Normal':
+      return normalAI(entity, world)
+    case 'Fluff':
+      return fluffAI(entity, world)
+  }
+}
+
+const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
+  while (true) {
+    const mode = getCurrentPlayerMode(entity)
+    yield* suspendable(() => mode === getCurrentPlayerMode(entity), selectPlayerAI(entity, world))
+  }
 }
 
 export const playerAI = function*(entity: Entity, world: World): Behaviour<void> {
