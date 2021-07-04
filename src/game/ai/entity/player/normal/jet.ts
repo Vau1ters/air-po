@@ -3,17 +3,12 @@ import { Entity } from '@core/ecs/entity'
 import { KeyController } from '@game/systems/controlSystem'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
-import { JetEffectFactory } from '@game/entities/jetEffectFactory'
 import GravitySystem from '@game/systems/gravitySystem'
 import { wait } from '@core/behaviour/wait'
 import * as Sound from '@core/sound/sound'
+import { JetEffectFactory } from '@game/entities/effect/jetEffectFactory'
+import { PLAYER_SETTING } from '../playerAI'
 
-const SETTING = {
-  CONSUME_SPEED: 0.1,
-  JET_SPEED: 140,
-  JET_POWER: 600,
-  JET_COOL_TIME: 10,
-}
 const calcPlayerAngle = (): Vec2 => {
   const angle = new Vec2()
 
@@ -35,10 +30,13 @@ const calcPlayerAngle = (): Vec2 => {
 
 const jetCondition = (entity: Entity): boolean => {
   const airHolder = entity.getComponent('AirHolder')
-  return KeyController.isActionPressing('Jet') && airHolder.quantity >= SETTING.CONSUME_SPEED
+  return (
+    KeyController.isActionPressing('Jet') &&
+    airHolder.quantity >= PLAYER_SETTING.normal.jet.airConsumeSpeed
+  )
 }
 
-export const playerJet = function*(entity: Entity, world: World): Behaviour<void> {
+export const jet = function*(entity: Entity, world: World): Behaviour<void> {
   const body = entity.getComponent('RigidBody')
   const airHolder = entity.getComponent('AirHolder')
   const animState = entity.getComponent('AnimationState')
@@ -46,8 +44,8 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
   while (true) {
     while (!jetCondition(entity)) yield
 
-    if (body.velocity.length() > SETTING.JET_SPEED) {
-      body.velocity.assign(body.velocity.normalize().mul(SETTING.JET_SPEED))
+    if (body.velocity.length() > PLAYER_SETTING.normal.jet.speed) {
+      body.velocity.assign(body.velocity.normalize().mul(PLAYER_SETTING.normal.jet.speed))
     }
 
     while (jetCondition(entity)) {
@@ -57,7 +55,7 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
 
       animState.state = 'Jumping'
       acceleration.y -= GravitySystem.acceleration * body.gravityScale
-      airHolder.consumeBy(SETTING.CONSUME_SPEED)
+      airHolder.consumeBy(PLAYER_SETTING.normal.jet.airConsumeSpeed)
 
       if (Math.random() < 0.5) {
         Sound.play('airJet', { volume: 0.5 })
@@ -72,14 +70,14 @@ export const playerJet = function*(entity: Entity, world: World): Behaviour<void
         world.addEntity(jetEffect)
       }
 
-      if (playerAngle.lengthSq() > 0 && velocity.length() < SETTING.JET_SPEED) {
-        acceleration.x += playerAngle.x * SETTING.JET_POWER
-        acceleration.y += playerAngle.y * SETTING.JET_POWER
+      if (playerAngle.lengthSq() > 0 && velocity.length() < PLAYER_SETTING.normal.jet.speed) {
+        acceleration.x += playerAngle.x * PLAYER_SETTING.normal.jet.power
+        acceleration.y += playerAngle.y * PLAYER_SETTING.normal.jet.power
       }
 
       yield
     }
 
-    yield* wait(SETTING.JET_COOL_TIME)
+    yield* wait(PLAYER_SETTING.normal.jet.coolTime)
   }
 }

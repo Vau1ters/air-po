@@ -37,6 +37,8 @@ import slime1Setting from '@res/setting/slime1.json'
 import slime1Img from '@res/image/slime1.png'
 import snibeeSetting from '@res/setting/snibee.json'
 import snibeeImg from '@res/image/snibee.png'
+import sporeSetting from '@res/setting/spore.json'
+import sporeImg from '@res/image/spore.png'
 import throughFloorSetting from '@res/setting/throughFloor.json'
 import throughFloorImg from '@res/image/throughFloor.png'
 import titleSetting from '@res/setting/title.json'
@@ -120,6 +122,7 @@ export const init = async (): Promise<void> => {
   textureStore.respawn = await buildTextureCache(respawnImg, respawnSetting)
   textureStore.slime1 = await buildTextureCache(slime1Img, slime1Setting)
   textureStore.snibee = await buildTextureCache(snibeeImg, snibeeSetting)
+  textureStore.spore = await buildTextureCache(sporeImg, sporeSetting)
   textureStore.throughFloor = await buildTextureCache(throughFloorImg, throughFloorSetting)
   textureStore.title = await buildTextureCache(titleImg, titleSetting)
   textureStore.uiAir = await buildTextureCache(uiAirImg, uiAirSetting)

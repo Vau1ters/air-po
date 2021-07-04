@@ -3,14 +3,16 @@
   "path": "mushroom.png",
   "texture": {
     "size": {
-      "width": 88,
-      "height": 64
+      "width": 80,
+      "height": 56
     }
   },
   "animation": {
     "state": {
-      "Open": [0],
-      "Close": [1]
+      "Close": [0],
+      "Opening": [1, 2, 3, 4, 5, 6],
+      "Open": [7],
+      "Landed": [3, 4, 5, 6]
     },
     "default": "Open"
   }

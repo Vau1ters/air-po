@@ -5,7 +5,7 @@ import { World } from '@core/ecs/world'
 import { SpeechBalloonFactory } from '@game/entities/speechBalloonFactory'
 import { KeyController } from '@game/systems/controlSystem'
 
-export const playerTalk = function*(entity: Entity, world: World): Behaviour<void> {
+export const talk = function*(entity: Entity, world: World): Behaviour<void> {
   const cameraFamily = new FamilyBuilder(world).include('Camera').build()
   const [camera] = cameraFamily.entityArray
   const talk = (serif: string): void => {

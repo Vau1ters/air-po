@@ -8,7 +8,6 @@ import DrawSystem from '@game/systems/drawSystem'
 import { AirSystem } from '@game/systems/airSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { PlayerControlSystem } from '@game/systems/playerControlSystem'
 import { BulletSystem } from '@game/systems/bulletSystem'
 import { Map, MapBuilder } from '@game/map/mapBuilder'
 import AISystem from '@game/systems/aiSystem'
@@ -71,7 +70,6 @@ export class GameWorldFactory {
       new PhysicsSystem(world),
       collisionSystem,
       new AISystem(world),
-      new PlayerControlSystem(world),
       new BulletSystem(world),
       new InvincibleSystem(world),
       new DamageSystem(world),

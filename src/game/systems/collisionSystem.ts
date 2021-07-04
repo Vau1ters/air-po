@@ -8,6 +8,7 @@ import { Category, CategorySet } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 import { BVH } from '@core/collision/bvh'
 import { AABB } from '@core/collision/geometry/AABB'
+import { Segment } from '@core/collision/geometry/segment'
 
 export default class CollisionSystem extends System {
   private staticFamily: Family
@@ -76,7 +77,10 @@ export default class CollisionSystem extends System {
       const collidedEntityIdSet = new Set<number>()
       for (const c of collider1.colliders) {
         for (const m of c.mask) {
-          const rs = this.query(m, c.bound.add(position1))
+          const rs =
+            c.geometry instanceof Segment
+              ? this.querySegment(m, c.geometry as Segment)
+              : this.query(m, c.bound.add(position1))
           for (const { entity: entity2 } of rs) {
             if (entity1 === entity2) continue // prevent self collision
             if (collidedEntityIdSet.has(entity2.id)) continue // prevent dual collision
@@ -91,6 +95,14 @@ export default class CollisionSystem extends System {
   private query(category: Category, bound: AABB): Collider[] {
     const staticResult = this.staticBVHs.get(category)?.query(bound)
     const dynamicResult = this.dynamicBVHs.get(category)?.query(bound)
+    assert(staticResult !== undefined, `There are no BVH with category '${category}'`)
+    assert(dynamicResult !== undefined, `There are no BVH with category '${category}'`)
+    return staticResult.concat(dynamicResult)
+  }
+
+  private querySegment(category: Category, segment: Segment): Collider[] {
+    const staticResult = this.staticBVHs.get(category)?.querySegment(segment)
+    const dynamicResult = this.dynamicBVHs.get(category)?.querySegment(segment)
     assert(staticResult !== undefined, `There are no BVH with category '${category}'`)
     assert(dynamicResult !== undefined, `There are no BVH with category '${category}'`)
     return staticResult.concat(dynamicResult)
