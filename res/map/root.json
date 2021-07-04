@@ -11,9 +11,25 @@
  "infinite":false,
  "layers":[
         {
+         "id":14,
+         "image":"..\/image\/background1.png",
+         "name":"background",
+         "opacity":1,
+         "properties":[
+                {
+                 "name":"layer",
+                 "type":"string",
+                 "value":"DistantView"
+                }],
+         "type":"imagelayer",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "draworder":"topdown",
          "id":12,
-         "name":"background",
+         "name":"horizon",
          "objects":[
                 {
                  "height":0,
@@ -213,7 +229,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":13,
+ "nextlayerid":16,
  "nextobjectid":44,
  "orientation":"orthogonal",
  "renderorder":"right-up",

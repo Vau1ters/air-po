@@ -1,6 +1,7 @@
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { LaserSightFactory } from '@game/entities/laserSightFactory'
+import { BackgroundFactory } from '@game/entities/object/backgroundFactory'
 import { PlayerFactory } from '@game/entities/object/playerFactory'
 import { PlayerUIFactory } from '@game/entities/playerUIFactory'
 import { assert } from '@utils/assertion'
@@ -52,6 +53,18 @@ export type ObjectLayer = {
   y: number
 }
 
+export type ImageLayer = {
+  id: number
+  image: string
+  name: string
+  opacity: number
+  properties: Array<CustomProperty>
+  type: string
+  visible: boolean
+  x: number
+  y: number
+}
+
 export type TileSet = {
   firstgid: number
   source: string
@@ -61,7 +74,7 @@ export type Map = {
   compressionlevel: number
   height: number
   infinite: boolean
-  layers: Array<TileLayer | ObjectLayer>
+  layers: Array<TileLayer | ObjectLayer | ImageLayer>
   nextlayerid: number
   nextobjectid: number
   orientation: string
@@ -95,8 +108,11 @@ export class MapBuilder {
         case 'equipment':
         case 'airGeyser':
         case 'player':
-        case 'background':
+        case 'horizon':
           objectLayerFactory.build(this, layer as ObjectLayer)
+          break
+        case 'background':
+          this.world.addEntity(new BackgroundFactory(layer as ImageLayer).create())
           break
       }
     }
