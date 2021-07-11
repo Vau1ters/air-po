@@ -6,36 +6,70 @@ const fileText = `
 // you can update this file by type "yarn soundtool" command.
 
 // IMPORT
+import { assert } from '@utils/assertion'
 
-import PIXI from 'pixi-sound'
-
-export const soundStore: { [key: string]: PIXI.Sound } = {}
-export const play = (name: string, option?: PIXI.PlayOptions): void => {
-  option = option ? option : {}
-  const sound = soundStore[name]
-  if (sound !== undefined) sound.play(option)
-  else console.log(name, ':is not found')
+export type PlayOptions = {
+  volume?: number
+  pan?: number
 }
 
-const load = (url: string): Promise<PIXI.Sound> => {
-  return new Promise((resolve, reject) => {
-    PIXI.Sound.from({
-      url: url,
-      preload: true,
-      loaded: (err, sound) => {
-        if (err) {
-          reject()
-        } else {
-          resolve(sound)
-        }
-      },
-    })
+let _ctx: AudioContext
+const soundStore: { [key: string]: AudioBuffer } = {}
+
+const getContext = (): AudioContext => {
+  assert(_ctx !== undefined, 'sound.init is not called yet')
+  return _ctx
+}
+
+export const play = (name: string, option?: PlayOptions): void => {
+  option = option ?? { volume: 0.1 }
+  const buffer = soundStore[name]
+  assert(buffer !== undefined, name + ' is not loaded')
+  const ctx = getContext()
+
+  const source = ctx.createBufferSource()
+  source.buffer = buffer
+
+  let node: AudioNode = source
+
+  if (option.volume) {
+    const gainNode = ctx.createGain()
+    gainNode.gain.value = option.volume
+    node.connect(gainNode)
+    node = gainNode
+  }
+
+  if (option.pan) {
+    const panNode = ctx.createStereoPanner()
+    panNode.pan.value = option.pan
+    node.connect(panNode)
+    node = panNode
+  }
+
+  node.connect(ctx.destination)
+
+  source.start(0)
+}
+
+const load = (url: string): Promise<AudioBuffer> => {
+  return new Promise<AudioBuffer>((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'arraybuffer'
+
+    xhr.onload = (): void => {
+      const ctx = getContext()
+      ctx.decodeAudioData(xhr.response, resolve, reject)
+    }
+    xhr.send()
   })
 }
 
 export const init = async (): Promise<void> => {
+  _ctx = new AudioContext()
   // LOAD_RESOURCE
 }
+
 `
 const importText = (filename: string): string => {
   return `import ${filename} from '@res/sound/${filename}.ogg'`
