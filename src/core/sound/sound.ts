@@ -3,9 +3,8 @@ import { SoundInstance } from './soundInstance'
 import { AllSoundName, getSoundURL, SoundName } from './soundStore'
 
 export type PlayOptions = {
-  volume?: number
+  volume: number
   pan?: number
-  oncomplete?: () => void
 }
 
 let _ctx: AudioContext
@@ -16,34 +15,38 @@ const getContext = (): AudioContext => {
   return _ctx
 }
 
-export const play = (name: SoundName, option?: PlayOptions): SoundInstance => {
+export const play = (name: SoundName, options: PlayOptions = { volume: 0.1 }): SoundInstance => {
   const buffer = soundStore[name]
   assert(buffer !== undefined, name + ' is not loaded')
   const ctx = getContext()
 
   const source = ctx.createBufferSource()
   source.buffer = buffer
-  source.start(0)
-  source.onended = option?.oncomplete ?? null
 
   let node: AudioNode = source
 
   const gainNode = ctx.createGain()
-  gainNode.gain.value = option?.volume ?? 0.1
+  gainNode.gain.value = options?.volume ?? 0.1
   node.connect(gainNode)
   node = gainNode
 
-  if (option?.pan !== undefined) {
-    const panNode = ctx.createStereoPanner()
-    panNode.pan.value = option.pan
+  let panNode: StereoPannerNode | undefined
+  if (options?.pan !== undefined) {
+    panNode = ctx.createStereoPanner()
+    panNode.pan.value = options.pan
     node.connect(panNode)
     node = panNode
-    node.connect(ctx.destination)
-    return new SoundInstance(gainNode, panNode)
-  } else {
-    node.connect(ctx.destination)
-    return new SoundInstance(gainNode)
   }
+  node.connect(ctx.destination)
+
+  const instance = new SoundInstance(options, gainNode, panNode)
+
+  source.start(0)
+  source.onended = (): void => {
+    instance.complete()
+  }
+
+  return instance
 }
 
 const load = (url: string): Promise<AudioBuffer> => {

@@ -37,11 +37,8 @@ export default class SoundSystem extends System {
 
       const pan = -1 + (2 * distanceLeft) / (distanceLeft + distanceRight)
 
-      for (const {
-        instance,
-        options: { volume },
-      } of sound.sounds) {
-        instance.volume = (volume / distanceCenter) * 1e2
+      for (const instance of sound.sounds) {
+        instance.volume = (instance.options.volume / distanceCenter) * 1e2
         instance.pan = pan
       }
       sound.sounds = sound.sounds.filter(s => !s.completed)
