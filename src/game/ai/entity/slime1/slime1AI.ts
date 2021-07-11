@@ -8,10 +8,9 @@ import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
-import * as Sound from '@core/sound/sound'
 
 const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<void> {
-  Sound.play('slime4', { volume: 0.04 })
+  entity.getComponent('Sound').addSound('slime4', { volume: 0.04 })
   yield* parallelAny([
     animate({ entity, state: 'Jumping' }),
     move(entity, direction, 0.5, Infinity),

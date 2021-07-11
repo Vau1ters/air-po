@@ -6,90 +6,43 @@ const fileText = `
 // you can update this file by type "yarn soundtool" command.
 
 // IMPORT
-import { assert } from '@utils/assertion'
 
-export type PlayOptions = {
-  volume?: number
-  pan?: number
-}
+export const AllSoundName = [
+  // NAME
+] as const
+export type SoundName = typeof AllSoundName[number]
 
-let _ctx: AudioContext
-const soundStore: { [key: string]: AudioBuffer } = {}
-
-const getContext = (): AudioContext => {
-  assert(_ctx !== undefined, 'sound.init is not called yet')
-  return _ctx
-}
-
-export const play = (name: string, option?: PlayOptions): void => {
-  option = option ?? { volume: 0.1 }
-  const buffer = soundStore[name]
-  assert(buffer !== undefined, name + ' is not loaded')
-  const ctx = getContext()
-
-  const source = ctx.createBufferSource()
-  source.buffer = buffer
-
-  let node: AudioNode = source
-
-  if (option.volume) {
-    const gainNode = ctx.createGain()
-    gainNode.gain.value = option.volume
-    node.connect(gainNode)
-    node = gainNode
+export const getSoundURL = (name: SoundName): string => {
+  switch (name) {
+// CASE
   }
-
-  if (option.pan) {
-    const panNode = ctx.createStereoPanner()
-    panNode.pan.value = option.pan
-    node.connect(panNode)
-    node = panNode
-  }
-
-  node.connect(ctx.destination)
-
-  source.start(0)
-}
-
-const load = (url: string): Promise<AudioBuffer> => {
-  return new Promise<AudioBuffer>((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.responseType = 'arraybuffer'
-
-    xhr.onload = (): void => {
-      const ctx = getContext()
-      ctx.decodeAudioData(xhr.response, resolve, reject)
-    }
-    xhr.send()
-  })
-}
-
-export const init = async (): Promise<void> => {
-  _ctx = new AudioContext()
-  // LOAD_RESOURCE
 }
 
 `
 const importText = (filename: string): string => {
   return `import ${filename} from '@res/sound/${filename}.ogg'`
 }
-const loadFormatText = (filename: string): string => {
-  return `soundStore.${filename} = await load(${filename})`
+const nameText = (filename: string): string => {
+  return `'${filename}',`
+}
+const caseText = (filename: string): string => {
+  return `case '${filename}': return ${filename}`
 }
 
 const soundPath = 'res/sound'
-const soundTsPath = 'src/core/sound/sound.ts'
+const soundTsPath = 'src/core/sound/soundStore.ts'
 const dir = fs.readdirSync(soundPath, { withFileTypes: true })
 
 const importReg = new RegExp('// IMPORT')
-const loadReg = new RegExp('// LOAD_RESOURCE')
+const nameReg = new RegExp('// NAME')
+const caseReg = new RegExp('// CASE')
 
 console.log('File added:')
 const generatedText = dir.reduce((text, file) => {
   const filename = file.name.split('.')[0]
   text = text.replace(importReg, `// IMPORT\n${importText(filename)}`)
-  text = text.replace(loadReg, `// LOAD_RESOURCE\n  ${loadFormatText(filename)}`)
+  text = text.replace(nameReg, `// NAME\n${nameText(filename)}`)
+  text = text.replace(caseReg, `// CASE\n${caseText(filename)}`)
   console.log(file.name)
   return text
 }, fileText)
