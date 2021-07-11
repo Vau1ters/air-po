@@ -7,7 +7,7 @@ import { BitmapFont, Texture } from 'pixi.js'
 const load = (font: string, image: string): void => {
   const texture = Texture.from(image)
   const doc = new DOMParser().parseFromString(font, 'application/xml')
-  BitmapFont.install(doc, texture)
+  BitmapFont.install(doc, texture, true)
 }
 
 export const init = (): void => {

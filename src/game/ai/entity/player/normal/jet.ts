@@ -5,7 +5,6 @@ import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
 import GravitySystem from '@game/systems/gravitySystem'
 import { wait } from '@core/behaviour/wait'
-import * as Sound from '@core/sound/sound'
 import { JetEffectFactory } from '@game/entities/effect/jetEffectFactory'
 import { PLAYER_SETTING } from '../playerAI'
 
@@ -58,7 +57,7 @@ export const jet = function*(entity: Entity, world: World): Behaviour<void> {
       airHolder.consumeBy(PLAYER_SETTING.normal.jet.airConsumeSpeed)
 
       if (Math.random() < 0.5) {
-        Sound.play('airJet', { volume: 0.5 })
+        entity.getComponent('Sound').addSound('airJet', { volume: 0.5 })
         const jetEffectFactory = new JetEffectFactory(world)
         jetEffectFactory.setShooter(entity)
         const jetEffect = jetEffectFactory.create()

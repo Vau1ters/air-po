@@ -3,7 +3,6 @@ import { Entity } from '@core/ecs/entity'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { PLAYER_SENSOR_TAG } from '@game/entities/object/playerFactory'
 import { KeyController } from '@game/systems/controlSystem'
-import * as Sound from '@core/sound/sound'
 
 export const pickup = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
@@ -28,11 +27,11 @@ export const pickup = function*(entity: Entity): Behaviour<void> {
         target.isPossessed = false
         player.possessingEntity = undefined
       } else if (pickupTarget.size > 0) {
-        const entity = Array.from(pickupTarget.values())[0]
-        const target = entity.getComponent('PickupTarget')
+        const targetEntity = Array.from(pickupTarget.values())[0]
+        const target = targetEntity.getComponent('PickupTarget')
         target.isPossessed = true
-        player.possessingEntity = entity
-        Sound.play('grab')
+        player.possessingEntity = targetEntity
+        entity.getComponent('Sound').addSound('grab')
       }
     }
     pickupTarget.clear()

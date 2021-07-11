@@ -5,6 +5,7 @@ import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { SoundComponent } from '@game/components/soundComponent'
 import { AIR_HOLDER_TAG } from '@game/systems/airHolderSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
@@ -92,6 +93,7 @@ export class MushroomFactory extends TileEntityFactory {
     entity.addComponent('RigidBody', new RigidBodyComponent())
     entity.addComponent('AirHolder', new AirHolderComponent(this.AIR_HOLDER))
     entity.addComponent('AI', new AIComponent(mushroomAI(entity, this.world)))
+    entity.addComponent('Sound', new SoundComponent())
 
     if (this.frame === 0) entity.getComponent('AirHolder').quantity = this.AIR_HOLDER.maxQuantity
 

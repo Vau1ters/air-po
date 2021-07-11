@@ -1,83 +1,60 @@
-/*+.† NOTIFICATION †.+*/
-// this file is automatically written by soundtool.
-// you can update this file by type "yarn soundtool" command.
+import { assert } from '@utils/assertion'
+import { SoundInstance } from './soundInstance'
+import { soundURL } from './soundURL'
 
-// IMPORT
-import start from '@res/sound/start.ogg'
-import snibeeDie from '@res/sound/snibeeDie.ogg'
-import snibee from '@res/sound/snibee.ogg'
-import slime4 from '@res/sound/slime4.ogg'
-import slime3 from '@res/sound/slime3.ogg'
-import slime2 from '@res/sound/slime2.ogg'
-import slime1 from '@res/sound/slime1.ogg'
-import shot from '@res/sound/shot.ogg'
-import pon from '@res/sound/pon.ogg'
-import playerWalk from '@res/sound/playerWalk.ogg'
-import playerLanding from '@res/sound/playerLanding.ogg'
-import playerJump from '@res/sound/playerJump.ogg'
-import playerHit from '@res/sound/playerHit.ogg'
-import peti from '@res/sound/peti.ogg'
-import mushroom from '@res/sound/mushroom.ogg'
-import grab from '@res/sound/grab.ogg'
-import getAirTank from '@res/sound/getAirTank.ogg'
-import foot from '@res/sound/foot.ogg'
-import fire from '@res/sound/fire.ogg'
-import enemyHit from '@res/sound/enemyHit.ogg'
-import dandelionShot from '@res/sound/dandelionShot.ogg'
-import danball from '@res/sound/danball.ogg'
-import burner from '@res/sound/burner.ogg'
-import airJet from '@res/sound/airJet.ogg'
+export type SoundName = keyof typeof soundURL
 
-import PIXI from 'pixi-sound'
-
-export const soundStore: { [key: string]: PIXI.Sound } = {}
-export const play = (name: string, option?: PIXI.PlayOptions): void => {
-  option = option ?? { volume: 0.1 }
-  const sound = soundStore[name]
-  if (sound !== undefined) sound.play(option)
-  else console.log(name, ':is not found')
+export type PlayOptions = {
+  volume: number
+  pan?: number
 }
 
-const load = (url: string): Promise<PIXI.Sound> => {
-  return new Promise((resolve, reject) => {
-    PIXI.Sound.from({
-      url: url,
-      preload: true,
-      loaded: (err, sound) => {
-        if (err) {
-          reject()
-        } else {
-          resolve(sound)
-        }
-      },
-    })
+const ctx = new AudioContext()
+const soundStore: { [key in SoundName]?: AudioBuffer } = {}
+
+export const play = (name: SoundName, options: PlayOptions = { volume: 0.1 }): SoundInstance => {
+  const buffer = soundStore[name]
+  assert(buffer !== undefined, name + ' is not loaded')
+
+  const source = ctx.createBufferSource()
+  source.buffer = buffer
+
+  let node: AudioNode = source
+
+  const gainNode = ctx.createGain()
+  gainNode.gain.value = options?.volume ?? 0.1
+  node.connect(gainNode)
+  node = gainNode
+
+  let panNode: StereoPannerNode | undefined
+  if (options?.pan !== undefined) {
+    panNode = ctx.createStereoPanner()
+    panNode.pan.value = options.pan
+    node.connect(panNode)
+    node = panNode
+  }
+  node.connect(ctx.destination)
+
+  const instance = new SoundInstance(options, gainNode, panNode)
+
+  source.start(0)
+  source.onended = (): void => {
+    instance.complete()
+  }
+
+  return instance
+}
+
+const load = async (url: string): Promise<AudioBuffer> => {
+  const response = await fetch(url)
+  const buffer = await response.arrayBuffer()
+  return await new Promise<AudioBuffer>((resolve, reject) => {
+    ctx.decodeAudioData(buffer, resolve, reject)
   })
 }
 
 export const init = async (): Promise<void> => {
-  // LOAD_RESOURCE
-  soundStore.start = await load(start)
-  soundStore.snibeeDie = await load(snibeeDie)
-  soundStore.snibee = await load(snibee)
-  soundStore.slime4 = await load(slime4)
-  soundStore.slime3 = await load(slime3)
-  soundStore.slime2 = await load(slime2)
-  soundStore.slime1 = await load(slime1)
-  soundStore.shot = await load(shot)
-  soundStore.pon = await load(pon)
-  soundStore.playerWalk = await load(playerWalk)
-  soundStore.playerLanding = await load(playerLanding)
-  soundStore.playerJump = await load(playerJump)
-  soundStore.playerHit = await load(playerHit)
-  soundStore.peti = await load(peti)
-  soundStore.mushroom = await load(mushroom)
-  soundStore.grab = await load(grab)
-  soundStore.getAirTank = await load(getAirTank)
-  soundStore.foot = await load(foot)
-  soundStore.fire = await load(fire)
-  soundStore.enemyHit = await load(enemyHit)
-  soundStore.dandelionShot = await load(dandelionShot)
-  soundStore.danball = await load(danball)
-  soundStore.burner = await load(burner)
-  soundStore.airJet = await load(airJet)
+  for (const name of Object.keys(soundURL) as Array<SoundName>) {
+    soundStore[name] = await load(soundURL[name])
+  }
 }

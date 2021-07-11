@@ -7,6 +7,7 @@ import { ColliderComponent, buildColliders } from '@game/components/colliderComp
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
 import { HPComponent } from '@game/components/hpComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
+import { SoundComponent } from '@game/components/soundComponent'
 import { HITBOX_TAG, ATTACK_TAG } from '@game/systems/damageSystem'
 import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
@@ -65,6 +66,7 @@ export class Slime1Factory extends TileEntityFactory {
     entity.addComponent('Attack', new AttackComponent(1, false))
     entity.addComponent('HP', new HPComponent(2, 2))
     entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
+    entity.addComponent('Sound', new SoundComponent())
     return entity
   }
 }
