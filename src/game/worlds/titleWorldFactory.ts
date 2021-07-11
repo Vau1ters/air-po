@@ -7,6 +7,7 @@ import { ControlSystem } from '@game/systems/controlSystem'
 import { MapBuilder } from '@game/map/mapBuilder'
 import map from '@res/map/root.json'
 import { titleWorldAI } from '@game/ai/world/title/titleWorldAI'
+import BackgroundSystem from '@game/systems/backgroundSystem'
 
 export class TitleWorldFactory {
   public create(): World {
@@ -38,7 +39,8 @@ export class TitleWorldFactory {
     world.addSystem(
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
       new CameraSystem(world, cameraContainer),
-      new ControlSystem(world)
+      new ControlSystem(world),
+      new BackgroundSystem(world)
     )
 
     const mapBuilder = new MapBuilder(world)

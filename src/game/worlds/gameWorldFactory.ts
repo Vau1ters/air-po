@@ -23,6 +23,7 @@ import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
 import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import { Entity } from '@core/ecs/entity'
+import BackgroundSystem from '@game/systems/backgroundSystem'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 
 export class GameWorldFactory {
@@ -83,7 +84,8 @@ export class GameWorldFactory {
       new CameraSystem(world, cameraContainer),
       new ControlSystem(world),
       new EventSensorSystem(world),
-      new HPSystem(world, worldUIContainer)
+      new HPSystem(world, worldUIContainer),
+      new BackgroundSystem(world)
     )
 
     this.mapBuilder = new MapBuilder(world)

@@ -310,11 +310,11 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":35,
+ "nextlayerid":13,
+ "nextobjectid":36,
  "orientation":"orthogonal",
  "renderorder":"right-up",
- "tiledversion":"2021.03.23",
+ "tiledversion":"1.4.3",
  "tileheight":8,
  "tilesets":[
         {
@@ -379,6 +379,6 @@
         }],
  "tilewidth":8,
  "type":"map",
- "version":1.5,
+ "version":1.4,
  "width":100
 }

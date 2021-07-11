@@ -6,16 +6,19 @@ import { LaserSightFactory } from '@game/entities/laserSightFactory'
 import { PlayerFactory } from '@game/entities/object/playerFactory'
 import { PlayerUIFactory } from '@game/entities/playerUIFactory'
 import { assert } from '@utils/assertion'
+import { buildBackgroundLayer } from './backgroundLayerBuilder'
 import { ObjectLayerFactory } from './objectLayerFactory'
 import { TileLayerFactory } from './tileLayerFactory'
 
+type CustomPropertyValue = boolean | number | string
 type CustomProperty = {
   name: string
   type: string
-  value: boolean | number | string
+  value: CustomPropertyValue
 }
 
 export type MapObject = {
+  gid: number
   height: number
   id: number
   name: string
@@ -27,6 +30,22 @@ export type MapObject = {
   y: number
   ellipse?: boolean
   properties?: Array<CustomProperty>
+}
+
+export type TileSetData = {
+  columns: number
+  image: string
+  imageheight: number
+  imagewidth: number
+  margin: number
+  name: string
+  spacing: number
+  tilecount: number
+  tiledversion: string
+  tileheight: number
+  tilewidth: number
+  type: string
+  version: number
 }
 
 export type TileLayer = {
@@ -52,6 +71,7 @@ export type ObjectLayer = {
   visible: boolean
   x: number
   y: number
+  properties?: Array<CustomProperty>
 }
 
 export type TileSet = {
@@ -77,6 +97,16 @@ export type Map = {
   width: number
 }
 
+export const getCustomProperty = <T extends CustomPropertyValue>(
+  object: { properties?: Array<CustomProperty> },
+  propertyName: string
+): T | undefined =>
+  object.properties?.find(property => property.name === propertyName)?.value as T | undefined
+export const getTileSetDataFromGid = (gid: number, tileSets: Array<TileSet>): TileSetData => {
+  const { source } = tileSets.find(tileSet => tileSet.firstgid === gid) as TileSet
+  return require(`../../../res/map/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
+}
+
 export class MapBuilder {
   private playerSpanwners = new Map<number, Vec2>()
 
@@ -98,6 +128,9 @@ export class MapBuilder {
         case 'airGeyser':
         case 'player':
           objectLayerFactory.build(this, layer as ObjectLayer)
+          break
+        case 'background':
+          buildBackgroundLayer(this.world, layer as ObjectLayer, map.tilesets)
           break
       }
     }
