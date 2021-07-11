@@ -1,6 +1,8 @@
 import { assert } from '@utils/assertion'
 import { SoundInstance } from './soundInstance'
-import { AllSoundName, getSoundURL, SoundName } from './soundStore'
+import { soundURL } from './soundURL'
+
+export type SoundName = keyof typeof soundURL
 
 export type PlayOptions = {
   volume: number
@@ -66,7 +68,7 @@ const load = (url: string): Promise<AudioBuffer> => {
 export const init = async (): Promise<void> => {
   _ctx = new AudioContext()
 
-  for (const name of AllSoundName) {
-    soundStore[name] = await load(getSoundURL(name))
+  for (const name of Object.keys(soundURL) as Array<SoundName>) {
+    soundStore[name] = await load(soundURL[name])
   }
 }

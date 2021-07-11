@@ -1,6 +1,5 @@
-import { play } from '@core/sound/sound'
+import { play, SoundName } from '@core/sound/sound'
 import { SoundInstance } from '@core/sound/soundInstance'
-import { SoundName } from '@core/sound/soundStore'
 
 type Options = {
   volume: number
