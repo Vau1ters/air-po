@@ -51,17 +51,11 @@ export const play = (name: SoundName, options: PlayOptions = { volume: 0.1 }): S
   return instance
 }
 
-const load = (url: string): Promise<AudioBuffer> => {
-  return new Promise<AudioBuffer>((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.responseType = 'arraybuffer'
-
-    xhr.onload = (): void => {
-      const ctx = getContext()
-      ctx.decodeAudioData(xhr.response, resolve, reject)
-    }
-    xhr.send()
+const load = async (url: string): Promise<AudioBuffer> => {
+  const response = await fetch(url)
+  const buffer = await response.arrayBuffer()
+  return await new Promise<AudioBuffer>((resolve, reject) => {
+    getContext().decodeAudioData(buffer, resolve, reject)
   })
 }
 
