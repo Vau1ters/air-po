@@ -8,8 +8,8 @@ export const buildBackgroundLayer = (
   layer: ObjectLayer,
   tileSets: Array<TileSet>
 ): void => {
-  const horizontalY = getCustomProperty<number | undefined>(layer, 'horizontalY')
-  assert(horizontalY !== undefined, 'y coordinate of background should be set')
+  const horizontalY = getCustomProperty<number>(layer, 'horizontalY')
+  assert(horizontalY !== undefined, 'y coordinate of background is not set')
 
   for (const object of layer.objects) {
     world.addEntity(new BackgroundFactory(object, horizontalY, tileSets).create())

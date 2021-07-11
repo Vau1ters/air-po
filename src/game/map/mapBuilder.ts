@@ -95,10 +95,11 @@ export type Map = {
   width: number
 }
 
-export const getCustomProperty = <T extends CustomPropertyValue | undefined>(
+export const getCustomProperty = <T extends CustomPropertyValue>(
   object: { properties?: Array<CustomProperty> },
   propertyName: string
-): T => object.properties?.find(property => property.name === propertyName)?.value as T
+): T | undefined =>
+  object.properties?.find(property => property.name === propertyName)?.value as T | undefined
 export const getTileSetDataFromGid = (gid: number, tileSets: Array<TileSet>): TileSetData => {
   const { source } = tileSets.find(tileSet => tileSet.firstgid === gid) as TileSet
   return require(`../../../res/map/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires

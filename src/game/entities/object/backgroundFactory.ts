@@ -3,6 +3,7 @@ import { textureStore } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
 import { getCustomProperty, getTileSetDataFromGid, MapObject, TileSet } from '@game/map/mapBuilder'
+import { assert } from '@utils/assertion'
 import { TilingSprite } from 'pixi.js'
 import { EntityFactory } from '../entityFactory'
 
@@ -29,6 +30,7 @@ export class BackgroundFactory extends EntityFactory {
 
   public create(): Entity {
     const bgType = getCustomProperty<BackgroundLayer>(this.mapObject, 'layer')
+    assert(bgType !== undefined, 'background layer is not set')
     const { name } = getTileSetDataFromGid(this.mapObject.gid, this.tileSets)
 
     const entity = new Entity()
