@@ -59,7 +59,7 @@ export const openingWorldAI = function*(world: World): Behaviour<void> {
 
   yield* FadeOut(world)
 
-  savePlayData({ status: StoryStatus.Stage, mapName: 'teststage' })
+  savePlayData({ status: StoryStatus.Stage, mapName: 'root' })
 
   const gameWorldFactory = new GameWorldFactory()
   const gameWorld = gameWorldFactory.create(map)
