@@ -12,29 +12,6 @@
  "layers":[
         {
          "draworder":"topdown",
-         "id":12,
-         "name":"horizon",
-         "objects":[
-                {
-                 "height":0,
-                 "id":35,
-                 "name":"horizon",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":256,
-                 "y":368
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
          "id":8,
          "name":"sensor",
          "objects":[

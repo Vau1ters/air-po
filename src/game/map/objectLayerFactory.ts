@@ -3,7 +3,6 @@ import { AirFactory } from '@game/entities/object/airFactory'
 import { AirGeyserFactory } from '@game/entities/object/airGeyserFactory'
 import { EquipmentTileFactory } from '@game/entities/object/equipmentTileFactory'
 import { EventSensorFactory } from '@game/entities/object/eventSensorFactory'
-import { HorizonFactory } from '@game/entities/object/horizonFactory'
 import { ObjectEntityFactory } from '@game/entities/object/objectEntityFactory'
 import { assert } from '@utils/assertion'
 import { ObjectLayer, MapObject, MapBuilder } from './mapBuilder'
@@ -19,7 +18,6 @@ export class ObjectLayerFactory {
       airGeyser: AirGeyserFactory,
       sensor: EventSensorFactory,
       equipment: EquipmentTileFactory,
-      horizon: HorizonFactory,
     }
   }
 

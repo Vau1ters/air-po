@@ -2,8 +2,7 @@ import { Entity } from '@core/ecs/entity'
 import { textureStore } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
-import { ImageLayer } from '@game/map/mapBuilder'
-import { assert } from '@utils/assertion'
+import { getCustomProperty, getTileSetDataFromGid, MapObject, TileSet } from '@game/map/mapBuilder'
 import { TilingSprite } from 'pixi.js'
 import { EntityFactory } from '../entityFactory'
 
@@ -20,23 +19,24 @@ const BACKGROUND_SCROLL_SPEED = {
 }
 
 export class BackgroundFactory extends EntityFactory {
-  public constructor(private layer: ImageLayer) {
+  public constructor(
+    private mapObject: MapObject,
+    private horizontalY: number,
+    private tileSets: Array<TileSet>
+  ) {
     super()
   }
 
   public create(): Entity {
-    const bgType =
-      (this.layer.properties?.find(property => property.name === 'layer')
-        ?.value as BackgroundLayer) ?? 'DistantView'
-
-    // 画像ファイル名から背景名を抽出
-    const matchResult = this.layer.image.match(/..\/image\/(.*).png/)
-    assert(matchResult, 'Filename of background image is invalid')
-    const [_, name] = matchResult
+    const bgType = getCustomProperty<BackgroundLayer>(this.mapObject, 'layer')
+    const { name } = getTileSetDataFromGid(this.mapObject.gid, this.tileSets)
 
     const entity = new Entity()
 
-    entity.addComponent('Background', { scrollSpeed: BACKGROUND_SCROLL_SPEED[bgType] })
+    entity.addComponent('Background', {
+      scrollSpeed: BACKGROUND_SCROLL_SPEED[bgType],
+      horizontalY: this.horizontalY,
+    })
     entity.addComponent('Position', new Vec2())
     const texture = textureStore[name][0]
     const sprite = new TilingSprite(texture, texture.width, texture.height)
