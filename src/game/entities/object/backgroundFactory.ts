@@ -41,14 +41,14 @@ export class BackgroundFactory extends EntityFactory {
     const texture = textureStore[name][0]
     const sprite = new TilingSprite(texture, texture.width, texture.height)
     sprite.anchor.set(0.5)
-    const drawComponent1 = new DrawComponent({
-      entity: entity,
+    const drawComponent = new DrawComponent({
+      entity,
       child: {
-        sprite: sprite,
+        sprite,
       },
     })
-    drawComponent1.zIndex = BACKGROUND_Z_INDEX[bgType]
-    entity.addComponent('Draw', drawComponent1)
+    drawComponent.zIndex = BACKGROUND_Z_INDEX[bgType]
+    entity.addComponent('Draw', drawComponent)
 
     return entity
   }
