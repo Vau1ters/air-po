@@ -4,7 +4,7 @@ import { Vec2 } from '@core/math/vec2'
 
 const SPEED = 0.1
 
-export const fixedCameraAI = function*(
+export const fixCameraAI = function*(
   camera: Entity,
   center: Vec2,
   stopCondition: () => boolean
