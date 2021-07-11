@@ -51,7 +51,7 @@ const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour
       (cameraPosition.y - playerPosition.y - windowSize.height / 2) / dir.y,
       (cameraPosition.y - playerPosition.y + windowSize.height / 2) / dir.y,
     ]
-    const t = ts.filter(t => t >= 0).reduce((a, b) => (a < b ? a : b))
+    const t = Math.min(...ts.filter(t => t >= 0))
 
     segment.start = playerPosition
     segment.end = segment.start.add(dir.mul(t))
