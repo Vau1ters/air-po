@@ -9,18 +9,12 @@ export type PlayOptions = {
   pan?: number
 }
 
-let _ctx: AudioContext
+const ctx = new AudioContext()
 const soundStore: { [key in SoundName]?: AudioBuffer } = {}
-
-const getContext = (): AudioContext => {
-  assert(_ctx !== undefined, 'sound.init is not called yet')
-  return _ctx
-}
 
 export const play = (name: SoundName, options: PlayOptions = { volume: 0.1 }): SoundInstance => {
   const buffer = soundStore[name]
   assert(buffer !== undefined, name + ' is not loaded')
-  const ctx = getContext()
 
   const source = ctx.createBufferSource()
   source.buffer = buffer
@@ -55,13 +49,11 @@ const load = async (url: string): Promise<AudioBuffer> => {
   const response = await fetch(url)
   const buffer = await response.arrayBuffer()
   return await new Promise<AudioBuffer>((resolve, reject) => {
-    getContext().decodeAudioData(buffer, resolve, reject)
+    ctx.decodeAudioData(buffer, resolve, reject)
   })
 }
 
 export const init = async (): Promise<void> => {
-  _ctx = new AudioContext()
-
   for (const name of Object.keys(soundURL) as Array<SoundName>) {
     soundStore[name] = await load(soundURL[name])
   }
