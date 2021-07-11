@@ -18,6 +18,7 @@ import playerJump from '@res/sound/playerJump.ogg'
 import playerHit from '@res/sound/playerHit.ogg'
 import peti from '@res/sound/peti.ogg'
 import mushroom from '@res/sound/mushroom.ogg'
+import grab from '@res/sound/grab.ogg'
 import getAirTank from '@res/sound/getAirTank.ogg'
 import foot from '@res/sound/foot.ogg'
 import fire from '@res/sound/fire.ogg'
@@ -44,6 +45,7 @@ export const AllSoundName = [
   'playerHit',
   'peti',
   'mushroom',
+  'grab',
   'getAirTank',
   'foot',
   'fire',
@@ -88,6 +90,8 @@ export const getSoundURL = (name: SoundName): string => {
       return peti
     case 'mushroom':
       return mushroom
+    case 'grab':
+      return grab
     case 'getAirTank':
       return getAirTank
     case 'foot':
