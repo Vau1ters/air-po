@@ -14,6 +14,10 @@ export class SoundInstance {
     this.gainNode.gain.value = Math.min(1, value)
   }
 
+  get volume(): number {
+    return this.gainNode.gain.value
+  }
+
   set pan(value: number) {
     assert(this.panNode, 'panning is not set on this instance')
     this.panNode.pan.value = value

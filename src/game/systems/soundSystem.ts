@@ -22,6 +22,7 @@ export default class SoundSystem extends System {
 
       const earDistance = 100
       const cameraZ = 10
+      const volumeMuteThreshold = 5e-3
 
       const leftX = cameraPosition.x - earDistance / 2 - entityPosition.x
       const leftY = cameraPosition.y - entityPosition.y
@@ -31,14 +32,15 @@ export default class SoundSystem extends System {
       const rightY = cameraPosition.y - entityPosition.y
       const rightZ = cameraZ
 
-      const distanceLeft = Math.sqrt(leftX * leftX + leftY * leftY + leftZ * leftZ)
-      const distanceRight = Math.sqrt(rightX * rightX + rightY * rightY + rightZ * rightZ)
+      const distanceLeft = leftX * leftX + leftY * leftY + leftZ * leftZ
+      const distanceRight = rightX * rightX + rightY * rightY + rightZ * rightZ
       const distanceCenter = (distanceLeft + distanceRight) / 2
 
       const pan = -1 + (2 * distanceLeft) / (distanceLeft + distanceRight)
 
       for (const instance of sound.sounds) {
-        instance.volume = (instance.options.volume / distanceCenter) * 1e2
+        instance.volume = (instance.options.volume / distanceCenter) * 1e4
+        if (instance.volume < volumeMuteThreshold) instance.volume = 0
         instance.pan = pan
       }
       sound.sounds = sound.sounds.filter(s => !s.completed)
