@@ -4,7 +4,7 @@ export class SoundInstance {
   constructor(private gainNode: GainNode, private panNode?: StereoPannerNode) {}
 
   set volume(value: number) {
-    this.gainNode.gain.value = value
+    this.gainNode.gain.value = Math.min(1, value)
   }
 
   set pan(value: number) {
