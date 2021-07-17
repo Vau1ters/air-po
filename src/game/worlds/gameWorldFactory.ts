@@ -9,7 +9,6 @@ import { AirSystem } from '@game/systems/airSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
 import { BulletSystem } from '@game/systems/bulletSystem'
-import { Map, MapBuilder } from '@game/map/mapBuilder'
 import AISystem from '@game/systems/aiSystem'
 import InvincibleSystem from '@game/systems/invincibleSystem'
 import { DamageSystem } from '@game/systems/damageSystem'
@@ -25,12 +24,14 @@ import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import { Entity } from '@core/ecs/entity'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 import SoundSystem from '@game/systems/soundSystem'
+import { loadStage, StageName } from '@game/stage/stageLoader'
+import { Stage } from '@game/stage/stage'
 
 export class GameWorldFactory {
-  private mapBuilder?: MapBuilder
+  private stage?: Stage
 
-  public create(map: Map): World {
-    const world = new World(gameWorldAI(map))
+  public create(stageName: StageName): World {
+    const world = new World(gameWorldAI(stageName))
 
     const filterContainer = new Container()
 
@@ -88,17 +89,16 @@ export class GameWorldFactory {
       new SoundSystem(world)
     )
 
-    this.mapBuilder = new MapBuilder(world)
-    this.mapBuilder.build(map)
+    this.stage = loadStage(stageName, world)
 
     return world
   }
 
   spawnPlayer(spawnerID: number): void {
-    this.mapBuilder?.spawnPlayer(spawnerID)
+    this.stage?.spawnPlayer(spawnerID)
   }
 
   respawnPlayer(player: Entity): void {
-    this.mapBuilder?.spawnPlayer(player.getComponent('Player').spawnerID)
+    this.stage?.spawnPlayer(player.getComponent('Player').spawnerID)
   }
 }

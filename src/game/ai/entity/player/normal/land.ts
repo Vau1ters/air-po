@@ -1,7 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { PLAYER_FOOT_TAG } from '@game/entities/object/playerFactory'
+import { PLAYER_FOOT_TAG } from '@game/entities/playerFactory'
 
 const footCollisionCallback = (args: CollisionCallbackArgs): void => {
   const {

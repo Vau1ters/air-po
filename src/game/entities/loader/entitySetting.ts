@@ -1,8 +1,7 @@
-/*+.† NOTIFICATION †.+*/
-// this file is automatically written by entitytool.
-// you can update this file by type "yarn entitytool" command.
+/*+. NOTIFICATION .+*/
+// this file is automatically written by script.
+// you can update this file by type "yarn buildResource" command.
 
-// IMPORT
 import air from '@res/entity/air.json'
 import airGeyser from '@res/entity/airGeyser.json'
 import balloonVine from '@res/entity/balloonVine.json'
@@ -26,7 +25,6 @@ import vine from '@res/entity/vine.json'
 import wall from '@res/entity/wall.json'
 
 export const entitySetting = {
-  // OBJECT
   air,
   airGeyser,
   balloonVine,

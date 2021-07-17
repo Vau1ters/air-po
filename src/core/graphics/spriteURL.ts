@@ -1,8 +1,7 @@
-/*+.† NOTIFICATION †.+*/
-// this file is automatically written by arttool.
-// you can update this file by type "yarn arttool" command.
+/*+. NOTIFICATION .+*/
+// this file is automatically written by script.
+// you can update this file by type "yarn buildResource" command.
 
-// IMPORT
 import airGeyser from '@res/sprite/airGeyser.json'
 import ballBullet from '@res/sprite/ballBullet.json'
 import balloonVine from '@res/sprite/balloonVine.json'
@@ -32,7 +31,6 @@ import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
 
 export const spriteURL = {
-  // OBJECT
   airGeyser,
   ballBullet,
   balloonVine,

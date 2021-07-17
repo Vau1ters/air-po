@@ -8,11 +8,9 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline --watch-content-base",
     "build": "webpack",
-    "lint": "eslint './**/*.ts'",
-    "format": "eslint --fix './**/*.ts'",
-    "arttool": "tsc arttool.ts && node arttool.js && rm arttool.js && yarn format",
-    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format",
-    "entitytool": "tsc entitytool.ts && node entitytool.js && rm entitytool.js && yarn format"
+    "lint": "eslint './src/**/*.ts'",
+    "format": "eslint --fix './src/**/*.ts'",
+    "metabuild": "tsc tool/buildMetaSource.ts --outDir .cache && node .cache/buildMetaSource.js && yarn format"
   },
   "husky": {
     "hooks": {

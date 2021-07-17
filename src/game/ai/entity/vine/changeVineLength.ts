@@ -5,12 +5,12 @@ import { DrawComponent } from '@game/components/drawComponent'
 import { ColliderComponent, CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/geometry/AABB'
 import { AIR_TAG } from '@game/systems/airSystem'
+import { createSprite } from '@core/graphics/art'
 import {
   VINE_TERRAIN_SENSOR_TAG,
   VINE_AIR_SENSOR_TAG,
   VINE_TAG,
-} from '@game/entities/tile/vineFactory'
-import { createSprite } from '@core/graphics/art'
+} from '@game/entities/stage/tile/vineFactory'
 
 const canExtend = (args: CollisionCallbackArgs): void => {
   const { me } = args

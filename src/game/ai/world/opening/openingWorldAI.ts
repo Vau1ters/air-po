@@ -4,7 +4,6 @@ import { World } from '@core/ecs/world'
 import { DrawComponent } from '@game/components/drawComponent'
 import { MouseController } from '@game/systems/controlSystem'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
-import map from '@res/map/root.json'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
 import { parallelAny } from '@core/behaviour/composite'
@@ -61,7 +60,7 @@ export const openingWorldAI = function*(world: World): Behaviour<void> {
   savePlayData({ status: StoryStatus.Stage, mapName: 'root' })
 
   const gameWorldFactory = new GameWorldFactory()
-  const gameWorld = gameWorldFactory.create(map)
+  const gameWorld = gameWorldFactory.create('root')
   gameWorldFactory.spawnPlayer(0)
   gameWorld.start()
 }
