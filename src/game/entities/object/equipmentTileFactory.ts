@@ -1,13 +1,12 @@
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
-import { DrawComponent } from '@game/components/drawComponent'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
-import { Category, CategorySet } from '../category'
+import { CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
 import { assert } from '@utils/assertion'
-import { createSprite } from '@core/graphics/art'
+import { AnimationSprite } from '@core/graphics/animationSprite'
 
 export class EquipmentTileFactory extends ObjectEntityFactory {
   public create(): Entity {
@@ -17,16 +16,9 @@ export class EquipmentTileFactory extends ObjectEntityFactory {
 
     const entity = super.create()
 
-    entity.addComponent(
-      'Draw',
-      new DrawComponent({
-        entity,
-        child: {
-          sprite: createSprite('equipment'),
-          state: equipmentType,
-        },
-      })
-    )
+    const [sprite] = entity.getComponent('Draw').children as [AnimationSprite]
+    sprite.state = equipmentType
+
     entity.addComponent(
       'Collider',
       new ColliderComponent(
@@ -36,8 +28,8 @@ export class EquipmentTileFactory extends ObjectEntityFactory {
             type: 'AABB',
             size: new Vec2(this.object.width, this.object.height),
           },
-          category: Category.EQUIPMENT,
-          mask: new CategorySet(Category.SENSOR),
+          category: 'equipment',
+          mask: new CategorySet('sensor'),
         })
       )
     )

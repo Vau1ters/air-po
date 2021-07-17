@@ -11,7 +11,8 @@
     "lint": "eslint './**/*.ts'",
     "format": "eslint --fix './**/*.ts'",
     "arttool": "tsc arttool.ts && node arttool.js && rm arttool.js && yarn format",
-    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format"
+    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format",
+    "entitytool": "tsc entitytool.ts && node entitytool.js && rm entitytool.js && yarn format"
   },
   "husky": {
     "hooks": {
@@ -41,6 +42,8 @@
   },
   "dependencies": {
     "@types/stats": "^0.16.30",
+    "fp-ts": "^2.10.5",
+    "io-ts": "^2.2.16",
     "pixi.js": "^5.3.3",
     "stats.js": "^0.17.0"
   }

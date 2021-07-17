@@ -1,5 +1,5 @@
 import { World } from '@core/ecs/world'
-import { SpriteName } from '@core/graphics/art'
+import { EntityName } from '@game/entities/loader/EntityLoader'
 import { AirFactory } from '@game/entities/object/airFactory'
 import { AirGeyserFactory } from '@game/entities/object/airGeyserFactory'
 import { EquipmentTileFactory } from '@game/entities/object/equipmentTileFactory'
@@ -8,7 +8,7 @@ import { ObjectEntityFactory } from '@game/entities/object/objectEntityFactory'
 import { assert } from '@utils/assertion'
 import { ObjectLayer, MapObject, MapBuilder } from './mapBuilder'
 
-type Builder = new (name: SpriteName, object: MapObject, world: World) => ObjectEntityFactory
+type Builder = new (name: EntityName, object: MapObject, world: World) => ObjectEntityFactory
 
 export class ObjectLayerFactory {
   private builders: { [keys: string]: Builder }
@@ -35,7 +35,7 @@ export class ObjectLayerFactory {
           break
         default:
           this.world.addEntity(
-            new this.builders[layer.name](layer.name as SpriteName, object, this.world).create()
+            new this.builders[layer.name](layer.name as EntityName, object, this.world).create()
           )
       }
     }

@@ -1,37 +1,20 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { createSprite, SpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
-import { AnimationStateComponent } from '@game/components/animationStateComponent'
-import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { MapObject } from '@game/map/mapBuilder'
 import { EntityFactory } from '../entityFactory'
+import { EntityName, loadEntity } from '../loader/EntityLoader'
 
 export class ObjectEntityFactory extends EntityFactory {
-  constructor(private name: SpriteName, protected object: MapObject, protected world: World) {
+  constructor(private name: EntityName, protected object: MapObject, protected world: World) {
     super()
   }
 
   create(): Entity {
-    const entity = new Entity()
+    const entity = loadEntity(this.name)
     const pos = ObjectEntityFactory.calcPosition(this.object)
     entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
-
-    try {
-      entity.addComponent(
-        'Draw',
-        new DrawComponent({
-          entity,
-          child: {
-            sprite: createSprite(this.name),
-          },
-        })
-      )
-      entity.addComponent('AnimationState', new AnimationStateComponent(entity))
-    } catch (_) {
-      return entity
-    }
     return entity
   }
 

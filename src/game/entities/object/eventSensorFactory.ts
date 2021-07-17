@@ -3,7 +3,7 @@ import { Vec2 } from '@core/math/vec2'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
 import { assert } from '@utils/assertion'
-import { Category, CategorySet } from '../category'
+import { CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
 
 export class EventSensorFactory extends ObjectEntityFactory {
@@ -22,8 +22,8 @@ export class EventSensorFactory extends ObjectEntityFactory {
             type: 'AABB',
             size: new Vec2(this.object.width, this.object.height),
           },
-          category: Category.SENSOR,
-          mask: new CategorySet(Category.SENSOR),
+          category: 'sensor',
+          mask: new CategorySet('sensor'),
         })
       )
     )

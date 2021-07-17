@@ -4,7 +4,6 @@ import { laserSightAI } from '@game/ai/entity/laserSight/laserSightAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { Graphics } from 'pixi.js'
-import { Category } from './category'
 import { EntityFactory } from './entityFactory'
 import { SegmentSearcherFactory } from './segmentSearcherFactory'
 
@@ -14,9 +13,7 @@ export class LaserSightFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const entity = new SegmentSearcherFactory()
-      .addCategoryToMask(Category.ENEMY_HITBOX, Category.TERRAIN)
-      .create()
+    const entity = new SegmentSearcherFactory().addCategoryToMask('enemyHitbox', 'terrain').create()
 
     const g = new Graphics()
     g.position.set(0)

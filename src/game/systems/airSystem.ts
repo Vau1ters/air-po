@@ -3,7 +3,6 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { PositionComponent } from '@game/components/positionComponent'
-import { Category } from '@game/entities/category'
 import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 
 export const AIR_TAG = 'Air'
@@ -32,7 +31,7 @@ export class AirSystem extends System {
             type: 'Air',
             world,
           },
-          category: Category.AIR,
+          category: 'air',
           tag: [AIR_TAG],
         })
       )
