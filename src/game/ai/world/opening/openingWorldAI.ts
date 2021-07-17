@@ -1,17 +1,16 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { DrawComponent } from '@game/components/drawComponent'
 import { MouseController } from '@game/systems/controlSystem'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import map from '@res/map/root.json'
-import playerDefinition from '@res/setting/player.json'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
 import { parallelAny } from '@core/behaviour/composite'
 import { FadeOut } from '../common/animation/fadeOut'
 import { savePlayData, StoryStatus } from '@game/playdata/playdata'
+import { createSprite } from '@core/graphics/art'
 
 const camera = function*(world: World): Behaviour<void> {
   const camera = new Entity()
@@ -32,7 +31,7 @@ const player = function*(world: World): Behaviour<void> {
     new DrawComponent({
       entity: player,
       child: {
-        sprite: parseAnimation(playerDefinition),
+        sprite: createSprite('player'),
         state: 'Dying',
       },
     })

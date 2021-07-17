@@ -14,6 +14,7 @@ import { WallFactory } from '@game/entities/tile/wallFactory'
 import { assert } from '@utils/assertion'
 import { TileSet, TileLayer, getTileId, MapBuilder } from './mapBuilder'
 import { RespawnFlagFactory } from '@game/entities/tile/respawnFlagFactory'
+import { SpriteName } from '@core/graphics/art'
 
 type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
 type Builder = { firstgid: number; build: Build }
@@ -50,7 +51,7 @@ export class TileLayerFactory {
     const factories: {
       [keys: string]: new (
         pos: Vec2,
-        name: string,
+        name: SpriteName,
         frame: number,
         world: World,
         builder: MapBuilder

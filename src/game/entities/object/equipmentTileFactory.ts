@@ -1,5 +1,4 @@
 import { Entity } from '@core/ecs/entity'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { Vec2 } from '@core/math/vec2'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 import { DrawComponent } from '@game/components/drawComponent'
@@ -7,8 +6,8 @@ import { EquipmentTypes } from '@game/components/equipmentComponent'
 import { SensorComponent } from '@game/components/sensorComponent'
 import { Category, CategorySet } from '../category'
 import { ObjectEntityFactory } from './objectEntityFactory'
-import equipmentDefinition from '@res/setting/equipment.json'
 import { assert } from '@utils/assertion'
+import { createSprite } from '@core/graphics/art'
 
 export class EquipmentTileFactory extends ObjectEntityFactory {
   public create(): Entity {
@@ -23,7 +22,7 @@ export class EquipmentTileFactory extends ObjectEntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(equipmentDefinition),
+          sprite: createSprite('equipment'),
           state: equipmentType,
         },
       })

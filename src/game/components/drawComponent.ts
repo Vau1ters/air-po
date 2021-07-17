@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Category } from '../entities/category'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
-import { AnimationSprite } from '@core/graphics/animation'
+import { AnimationSprite } from '@core/graphics/animationSprite'
 
 export type ContainerType = 'World' | 'WorldUI' | 'UI'
 

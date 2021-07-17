@@ -1,5 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-import { textureStore } from '@core/graphics/art'
+import { getSpriteBuffer } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 import { DrawComponent } from '@game/components/drawComponent'
@@ -56,7 +56,7 @@ export class WallFactory extends EntityFactory {
       entity.addComponent('RigidBody', new RigidBodyComponent())
     }
 
-    const sprite = new Sprite(textureStore.wall[this.tileId])
+    const sprite = new Sprite(getSpriteBuffer('wall').definitions['Default'].textures[this.tileId])
     sprite.anchor.set(0.5)
 
     entity.addComponent(

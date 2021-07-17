@@ -1,6 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { parseAnimation } from '@core/graphics/animationParser'
+import { createSprite, SpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { DrawComponent } from '@game/components/drawComponent'
@@ -10,7 +10,7 @@ import { EntityFactory } from '../entityFactory'
 export class TileEntityFactory extends EntityFactory {
   constructor(
     private pos: Vec2,
-    private name: string,
+    private name: SpriteName,
     protected frame: number,
     protected world: World
   ) {
@@ -18,7 +18,6 @@ export class TileEntityFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const definition = require(`../../../../res/setting/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
     const entity = new Entity()
     entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
     entity.addComponent(
@@ -26,7 +25,7 @@ export class TileEntityFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(definition),
+          sprite: createSprite(this.name),
         },
       })
     )

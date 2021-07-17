@@ -1,6 +1,5 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { Vec2 } from '@core/math/vec2'
 import { playerAI } from '@game/ai/entity/player/playerAI'
 import { AIComponent } from '@game/components/aiComponent'
@@ -20,8 +19,8 @@ import { PHYSICS_TAG } from '@game/systems/physicsSystem'
 import { Category, CategorySet } from '../category'
 import { EntityFactory } from '../entityFactory'
 import { THROUGH_FLOOR_TAG } from '../tile/throughFloorFactory'
-import playerDefinition from '@res/setting/player.json'
 import { SoundComponent } from '@game/components/soundComponent'
+import { createSprite } from '@core/graphics/art'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
@@ -68,7 +67,7 @@ export class PlayerFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(playerDefinition),
+          sprite: createSprite('player'),
         },
       })
     )

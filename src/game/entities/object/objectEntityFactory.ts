@@ -1,6 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { parseAnimation } from '@core/graphics/animationParser'
+import { createSprite, SpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { DrawComponent } from '@game/components/drawComponent'
@@ -9,7 +9,7 @@ import { MapObject } from '@game/map/mapBuilder'
 import { EntityFactory } from '../entityFactory'
 
 export class ObjectEntityFactory extends EntityFactory {
-  constructor(private name: string, protected object: MapObject, protected world: World) {
+  constructor(private name: SpriteName, protected object: MapObject, protected world: World) {
     super()
   }
 
@@ -19,13 +19,12 @@ export class ObjectEntityFactory extends EntityFactory {
     entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
 
     try {
-      const definition = require(`../../../../res/setting/${this.name}.json`) // eslint-disable-line  @typescript-eslint/no-var-requires
       entity.addComponent(
         'Draw',
         new DrawComponent({
           entity,
           child: {
-            sprite: parseAnimation(definition),
+            sprite: createSprite(this.name),
           },
         })
       )

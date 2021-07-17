@@ -10,6 +10,7 @@ import { MapBuilder } from '@game/map/mapBuilder'
 import { Category, CategorySet } from '../category'
 import { TileEntityFactory } from './tileEntityFactory'
 import { createHash } from 'crypto'
+import { SpriteName } from '@core/graphics/art'
 
 export class RespawnFlagFactory extends TileEntityFactory {
   private readonly COLLIDER = {
@@ -17,7 +18,13 @@ export class RespawnFlagFactory extends TileEntityFactory {
     size: new Vec2(48, 48),
   }
 
-  constructor(pos: Vec2, name: string, frame: number, world: World, private builder: MapBuilder) {
+  constructor(
+    pos: Vec2,
+    name: SpriteName,
+    frame: number,
+    world: World,
+    private builder: MapBuilder
+  ) {
     super(pos, name, frame, world)
   }
 

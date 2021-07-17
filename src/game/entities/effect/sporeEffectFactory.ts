@@ -2,13 +2,12 @@ import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from '../entityFactory'
 import { DrawComponent } from '@game/components/drawComponent'
 import { AIComponent } from '@game/components/aiComponent'
-import { parseAnimation } from '@core/graphics/animationParser'
-import sporeEffectDefinition from '@res/setting/spore.json'
 import { SporeEffectAI } from '@game/ai/entity/spore/sporeEffectAI'
 import { PositionComponent } from '@game/components/positionComponent'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
+import { createSprite } from '@core/graphics/art'
 
 export class SporeEffectFactory extends EntityFactory {
   private position?: Vec2
@@ -34,7 +33,7 @@ export class SporeEffectFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(sporeEffectDefinition),
+          sprite: createSprite('spore'),
         },
       })
     )

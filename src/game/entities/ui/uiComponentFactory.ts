@@ -2,15 +2,15 @@ import { EntityFactory } from '../entityFactory'
 import { Entity } from '@core/ecs/entity'
 import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
-import { parseAnimation, AnimationSetting } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { Vec2 } from '@core/math/vec2'
+import { createSprite, SpriteName } from '@core/graphics/art'
 
 export class UIComponentFactory extends EntityFactory {
   private position: Vec2 = new Vec2(0, 0)
   private anchor: Vec2 = new Vec2(0, 0)
 
-  constructor(private spriteSetting: AnimationSetting) {
+  constructor(private name: SpriteName) {
     super()
   }
 
@@ -35,7 +35,7 @@ export class UIComponentFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(this.spriteSetting, this.anchor),
+          sprite: createSprite(this.name, this.anchor),
         },
         type: 'UI',
       })

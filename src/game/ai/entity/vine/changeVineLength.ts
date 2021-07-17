@@ -1,9 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { VineComponent } from '@game/components/vineComponent'
-import vineDefinition from '@res/setting/vine.json'
 import { DrawComponent } from '@game/components/drawComponent'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { ColliderComponent, CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/geometry/AABB'
 import { AIR_TAG } from '@game/systems/airSystem'
@@ -12,6 +10,7 @@ import {
   VINE_AIR_SENSOR_TAG,
   VINE_TAG,
 } from '@game/entities/tile/vineFactory'
+import { createSprite } from '@core/graphics/art'
 
 const canExtend = (args: CollisionCallbackArgs): void => {
   const { me } = args
@@ -63,11 +62,11 @@ const changeSpritesLength = (draw: DrawComponent, vine: VineComponent): void => 
   if (diff < 0) {
     // 短いので長くする
     for (let i = 0; i < -diff; i++) {
-      const anim = parseAnimation(vineDefinition)
-      anim.y = vine.sprites[vine.sprites.length - 1].y + 16
-      draw.addChild(anim)
-      vine.sprites.push(anim)
-      anim.state = 'Stalk2'
+      const sprite = createSprite('vine')
+      sprite.y = vine.sprites[vine.sprites.length - 1].y + 16
+      draw.addChild(sprite)
+      vine.sprites.push(sprite)
+      sprite.state = 'Stalk2'
     }
   }
 

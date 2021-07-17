@@ -7,13 +7,6 @@ import { World } from '@core/ecs/world'
 import { assert } from '@utils/assertion'
 import { animate } from '../common/action/animate'
 import { UIComponentFactory } from '@game/entities/ui/uiComponentFactory'
-import AirDefinition from '@res/setting/uiAir.json'
-import AirtankTailDefinition from '@res/setting/uiAirtankTail.json'
-import AirtankBodyDefinition from '@res/setting/uiAirtankBody.json'
-import AirtankBgDefinition from '@res/setting/uiAirtankBg.json'
-import HpHeartDefinition from '@res/setting/uiHpHeart.json'
-import WeaponBackgroundDefinition from '@res/setting/uiWeaponBackground.json'
-import WeaponGunDefinition from '@res/setting/uiWeaponGun.json'
 
 const UI_SETTING = {
   WEAPON: {
@@ -38,7 +31,7 @@ const UI_SETTING = {
 }
 
 const renderPlayerWeapon = function*(world: World): Behaviour<void> {
-  const weaponGun = new UIComponentFactory(WeaponGunDefinition)
+  const weaponGun = new UIComponentFactory('uiWeaponGun')
     .setPosition(
       UI_SETTING.WEAPON.x + UI_SETTING.WEAPON.paddingX,
       UI_SETTING.WEAPON.y + UI_SETTING.WEAPON.paddingY
@@ -69,7 +62,7 @@ const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> 
 
   while (true) {
     while (renderingState.entities.length < hp.maxHp) {
-      const hpHeart = new UIComponentFactory(HpHeartDefinition)
+      const hpHeart = new UIComponentFactory('uiHpHeart')
         .setPosition(
           UI_SETTING.HP.x + renderingState.entities.length * UI_SETTING.HP.shiftX,
           UI_SETTING.HP.y
@@ -110,7 +103,7 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
   const holder = player.getComponent('AirHolder')
   const airTank = player.getComponent('Equipment').airTank
 
-  const airtankBg = new UIComponentFactory(AirtankBgDefinition)
+  const airtankBg = new UIComponentFactory('uiAirtankBg')
     .setPosition(
       UI_SETTING.AIR_TANK.x + UI_SETTING.AIR_TANK.paddingX,
       UI_SETTING.AIR_TANK.y + UI_SETTING.AIR_TANK.paddingY
@@ -123,17 +116,17 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
     tankTail: Entity
   } = {
     tankBodies: [],
-    tankTail: new UIComponentFactory(AirtankTailDefinition)
+    tankTail: new UIComponentFactory('uiAirtankTail')
       .setPosition(UI_SETTING.AIR_TANK.x, UI_SETTING.AIR_TANK.y)
       .create(),
   }
   const tankTailPosition = renderingState.tankTail.getComponent('Position')
 
-  const weaponBackground = new UIComponentFactory(WeaponBackgroundDefinition)
+  const weaponBackground = new UIComponentFactory('uiWeaponBackground')
     .setPosition(UI_SETTING.WEAPON.x, UI_SETTING.WEAPON.y)
     .create()
 
-  const airGauge = new UIComponentFactory(AirDefinition)
+  const airGauge = new UIComponentFactory('uiAir')
     .setPosition(
       UI_SETTING.AIR_TANK.x + UI_SETTING.AIR_TANK.paddingX,
       UI_SETTING.AIR_TANK.y + UI_SETTING.AIR_TANK.paddingY
@@ -148,7 +141,7 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
 
   while (true) {
     while (renderingState.tankBodies.length + 1 < airTank.count) {
-      const tankBody = new UIComponentFactory(AirtankBodyDefinition)
+      const tankBody = new UIComponentFactory('uiAirtankBody')
         .setPosition(
           UI_SETTING.AIR_TANK.x + renderingState.tankBodies.length * UI_SETTING.AIR_TANK.shiftX,
           UI_SETTING.AIR_TANK.y

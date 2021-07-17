@@ -6,17 +6,15 @@ import { BulletComponent } from '@game/components/bulletComponent'
 import { Vec2 } from '@core/math/vec2'
 import { Category, CategorySet } from './category'
 import { AttackComponent } from '@game/components/attackComponent'
-import ballBulletDefinition from '@res/setting/ballBullet.json'
-import needleBulletDefinition from '@res/setting/needleBullet.json'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 import { BULLET_TAG } from '@game/systems/bulletSystem'
 import { ATTACK_TAG } from '@game/systems/damageSystem'
+import { createSprite, SpriteName } from '@core/graphics/art'
 
-const bulletDefinition = {
-  ball: ballBulletDefinition,
-  needle: needleBulletDefinition,
+const bulletDefinition: { [keys in BulletType]: SpriteName } = {
+  ball: 'ballBullet',
+  needle: 'needleBullet',
 }
 type ShooterType = 'player' | 'enemy'
 type BulletType = 'ball' | 'needle'
@@ -96,7 +94,7 @@ export class BulletFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(bulletDefinition[this.type]),
+          sprite: createSprite(bulletDefinition[this.type]),
           state: directions[index],
         },
       })

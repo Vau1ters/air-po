@@ -2,11 +2,10 @@ import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from '../entityFactory'
 import { DrawComponent } from '@game/components/drawComponent'
 import { AIComponent } from '@game/components/aiComponent'
-import { parseAnimation } from '@core/graphics/animationParser'
-import jetEffectDefinition from '@res/setting/jetEffect.json'
 import { JetEffectAI } from '@game/ai/entity/jetEffect/jetEffectAI'
 import { PositionComponent } from '@game/components/positionComponent'
 import { World } from '@core/ecs/world'
+import { createSprite } from '@core/graphics/art'
 
 export class JetEffectFactory extends EntityFactory {
   private shooter?: Entity
@@ -34,7 +33,7 @@ export class JetEffectFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(jetEffectDefinition),
+          sprite: createSprite('jetEffect'),
         },
       })
     )

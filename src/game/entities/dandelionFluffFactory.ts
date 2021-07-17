@@ -5,14 +5,13 @@ import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
 import { Category } from './category'
 import { AIComponent } from '@game/components/aiComponent'
-import { parseAnimation } from '@core/graphics/animationParser'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
-import dandelionFluffDefinition from '@res/setting/dandelionFluff.json'
 import { World } from '@core/ecs/world'
 import { dandelionFluffAI } from '@game/ai/entity/dandelion/dandelionFluffAI'
 import { ColliderComponent, buildCollider } from '@game/components/colliderComponent'
 import { FLUFF_TAG } from '@game/ai/entity/player/playerAI'
+import { createSprite } from '@core/graphics/art'
 
 const EMIT_POS_DIFF = new Vec2(0, 16)
 
@@ -50,7 +49,7 @@ export class DandelionFluffFactory extends EntityFactory {
       new DrawComponent({
         entity,
         child: {
-          sprite: parseAnimation(dandelionFluffDefinition),
+          sprite: createSprite('dandelionFluff'),
         },
       })
     )

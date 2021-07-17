@@ -1,6 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { wait } from '@core/behaviour/wait'
 import { Container, ObservablePoint, Sprite, Texture } from 'pixi.js'
+import { AnimationDefinition } from './spriteBuffer'
 
 class AnimationSpriteFrame extends Sprite {
   public constructor(private textures: Array<Texture>, private waitFrames = 10) {
@@ -23,19 +24,12 @@ class AnimationSpriteFrame extends Sprite {
   }
 }
 
-export type AnimationDefinition = {
-  [key: string]: {
-    textures: Array<Texture>
-    waitFrames: number
-  }
-}
-
 export class AnimationSprite extends Container {
   private currentState: string
   private animationSprites: { [key: string]: AnimationSpriteFrame } = {}
 
   public constructor(
-    definition: AnimationDefinition,
+    definitions: { [keys: string]: AnimationDefinition },
     initialState: string,
     anchor = {
       x: 0.5,
@@ -44,7 +38,7 @@ export class AnimationSprite extends Container {
   ) {
     super()
 
-    for (const [key, { textures, waitFrames }] of Object.entries(definition)) {
+    for (const [key, { textures, waitFrames }] of Object.entries(definitions)) {
       const sprite = new AnimationSpriteFrame(textures, waitFrames)
       sprite.visible = false
       sprite.anchor.set(anchor.x, anchor.y)
