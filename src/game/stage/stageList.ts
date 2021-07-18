@@ -1,6 +1,6 @@
 /*+. NOTIFICATION .+*/
 // this file is automatically written by script.
-// you can update this file by type "yarn buildResource" command.
+// you can update this file by type "yarn metabuild" command.
 
 import root from '@res/stage/root.json'
 import stage1map1 from '@res/stage/stage1map1.json'

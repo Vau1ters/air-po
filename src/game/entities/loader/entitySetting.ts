@@ -1,6 +1,6 @@
 /*+. NOTIFICATION .+*/
 // this file is automatically written by script.
-// you can update this file by type "yarn buildResource" command.
+// you can update this file by type "yarn metabuild" command.
 
 import air from '@res/entity/air.json'
 import airGeyser from '@res/entity/airGeyser.json'

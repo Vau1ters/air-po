@@ -1,6 +1,6 @@
 /*+. NOTIFICATION .+*/
 // this file is automatically written by script.
-// you can update this file by type "yarn buildResource" command.
+// you can update this file by type "yarn metabuild" command.
 
 import airJet from '@res/sound/airJet.ogg'
 import burner from '@res/sound/burner.ogg'

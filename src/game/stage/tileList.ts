@@ -1,6 +1,6 @@
 /*+. NOTIFICATION .+*/
 // this file is automatically written by script.
-// you can update this file by type "yarn buildResource" command.
+// you can update this file by type "yarn metabuild" command.
 
 import balloonVine from 'src/game/entities/stage/tile/balloonVineFactory'
 import dandelion from 'src/game/entities/stage/tile/dandelionFactory'
