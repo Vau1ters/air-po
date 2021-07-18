@@ -30,10 +30,26 @@ export const TileLayerType = t.type({
 })
 export type TileLayer = t.TypeOf<typeof TileLayerType>
 
+export type TileSetData = {
+  columns: number
+  image: string
+  imageheight: number
+  imagewidth: number
+  margin: number
+  name: string
+  spacing: number
+  tilecount: number
+  tiledversion: string
+  tileheight: number
+  tilewidth: number
+  type: string
+  version: number
+}
+
 type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
 type Builder = { firstgid: number; build: Build }
 
-export class TileLayerFactory {
+export class TileLayerLoader {
   private static rand = new Random()
 
   private builders: Array<Builder>
@@ -42,7 +58,7 @@ export class TileLayerFactory {
     this.builders = this.loadBuilders(tileSets)
   }
 
-  public build(layer: TileLayer, tileSize: Vec2): void {
+  public load(layer: TileLayer, tileSize: Vec2): void {
     const findBuilder = (tileId: number): Builder => {
       for (let i = 0; i < this.builders.length; i++) {
         if (tileId < this.builders[i].firstgid) continue
@@ -229,6 +245,11 @@ export class TileLayerFactory {
   }
 
   private randomChoice(candidates: number[]): number {
-    return candidates[Math.abs(TileLayerFactory.rand.next()) % candidates.length]
+    return candidates[Math.abs(TileLayerLoader.rand.next()) % candidates.length]
   }
+}
+
+export const getTileSetDataFromGid = (gid: number, tileSets: Array<TileSet>): TileSetData => {
+  const { source } = tileSets.find(tileSet => tileSet.firstgid === gid) as TileSet
+  return require(`/res/stage/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
 }

@@ -41,7 +41,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   const points = new Array<PIXI.Point>(ROPE_POINT_NUM)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
   const rope = new PIXI.SimpleRope(PIXI.Texture.from(DandelionStem), points)
-  rope.zIndex = -100
+  rope.zIndex = -1
   draw.sortableChildren = true
   draw.addChild(rope)
 

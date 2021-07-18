@@ -24,7 +24,7 @@ export class DandelionFluffFactory extends EntityFactory {
       new PositionComponent().add(this.parent.getComponent('Position').add(EMIT_POS_DIFF))
     )
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
-    entity.getComponent('Draw').zIndex = -100
+    entity.getComponent('Draw').zIndex = -1
     return entity
   }
 }

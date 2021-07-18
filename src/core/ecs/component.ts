@@ -1,12 +1,9 @@
-/*+. NOTIFICATION .+*/
-// this file is automatically written by script.
-// you can update this file by type "yarn buildResource" command.
-
 import { AIComponent } from '@game/components/aiComponent'
 import { AirComponent } from '@game/components/airComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
 import { AttackComponent } from '@game/components/attackComponent'
+import { BackgroundComponent } from '@game/components/backgroundComponent'
 import { BulletComponent } from '@game/components/bulletComponent'
 import { ButtonComponent } from '@game/components/buttonComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
@@ -32,6 +29,7 @@ export interface ComponentMap {
   AirHolder: AirHolderComponent
   AnimationState: AnimationStateComponent
   Attack: AttackComponent
+  Background: BackgroundComponent
   Bullet: BulletComponent
   Button: ButtonComponent
   Camera: CameraComponent

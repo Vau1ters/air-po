@@ -3,6 +3,8 @@
 // you can update this file by type "yarn buildResource" command.
 
 import airGeyser from '@res/sprite/airGeyser.json'
+import background1 from '@res/sprite/background1.json'
+import background2 from '@res/sprite/background2.json'
 import ballBullet from '@res/sprite/ballBullet.json'
 import balloonVine from '@res/sprite/balloonVine.json'
 import dandelion from '@res/sprite/dandelion.json'
@@ -32,6 +34,8 @@ import wall from '@res/sprite/wall.json'
 
 export const spriteURL = {
   airGeyser,
+  background1,
+  background2,
   ballBullet,
   balloonVine,
   dandelion,

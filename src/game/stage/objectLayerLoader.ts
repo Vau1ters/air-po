@@ -8,11 +8,15 @@ import { Stage } from './stage'
 
 type ObjectName = keyof typeof objectList
 
+const CustomPropertyValueType = t.union([t.boolean, t.number, t.string])
+type CustomPropertyValue = t.TypeOf<typeof CustomPropertyValueType>
+
 const CustomPropertyType = t.type({
   name: t.string,
   type: t.string,
-  value: t.union([t.boolean, t.number, t.string]),
+  value: CustomPropertyValueType,
 })
+type CustomProperty = t.TypeOf<typeof CustomPropertyType>
 
 const StageObjectType = t.type({
   gid: t.union([t.number, t.undefined]),
@@ -40,6 +44,7 @@ export const ObjectLayerType = t.type({
   visible: t.boolean,
   x: t.number,
   y: t.number,
+  properties: t.union([t.array(CustomPropertyType), t.undefined]),
 })
 export type ObjectLayer = t.TypeOf<typeof ObjectLayerType>
 
@@ -47,6 +52,12 @@ type PlayerSpawner = {
   id: number
   pos: Vec2
 }
+
+export const getCustomProperty = <T extends CustomPropertyValue>(
+  object: { properties?: Array<CustomProperty> },
+  propertyName: string
+): T | undefined =>
+  object.properties?.find(property => property.name === propertyName)?.value as T | undefined
 
 export const calcCenter = (object: StageObject): Vec2 => {
   const { x, y, width, height, ellipse } = object
@@ -62,7 +73,7 @@ const buildSpawner = (object: StageObject): PlayerSpawner => {
   }
 }
 
-export const buildObjectLayer = (layer: ObjectLayer, world: World, stage: Stage): void => {
+export const loadObjectLayer = (layer: ObjectLayer, world: World, stage: Stage): void => {
   for (const object of layer.objects) {
     if (layer.name === 'player') {
       const { id, pos } = buildSpawner(object)

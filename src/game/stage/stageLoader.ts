@@ -3,10 +3,11 @@ import { PathReporter } from 'io-ts/PathReporter'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { assert } from '@utils/assertion'
-import { buildObjectLayer, ObjectLayer, ObjectLayerType } from './objectLayerFactory'
-import { TileLayer, TileLayerFactory, TileLayerType, TileSetType } from './tileLayerFactory'
+import { loadObjectLayer, ObjectLayer, ObjectLayerType } from './objectLayerLoader'
+import { TileLayer, TileLayerLoader, TileLayerType, TileSetType } from './tileLayerLoader'
 import { stageList } from './stageList'
 import { Stage } from './stage'
+import { loadBackgroundLayer } from './backgroundLayerLoader'
 
 export type StageName = keyof typeof stageList
 
@@ -41,15 +42,19 @@ export const loadStage = (stageName: StageName, world: World): Stage => {
   const stage = stageList[stageName]
   const decodeResult = StageType.decode(stage)
   assert(decodeResult._tag === 'Right', PathReporter.report(decodeResult).join('\n'))
-  const tileLayerFactory = new TileLayerFactory(result, world, stage.tilesets)
+  const tileLayerLoader = new TileLayerLoader(result, world, stage.tilesets)
   const tileSize = new Vec2(stage.tilewidth, stage.tileheight)
   for (const layer of stage.layers) {
     switch (layer.type) {
       case 'tilelayer':
-        tileLayerFactory.build(layer as TileLayer, tileSize)
+        tileLayerLoader.load(layer as TileLayer, tileSize)
         break
       case 'objectgroup':
-        buildObjectLayer(layer as ObjectLayer, world, result)
+        if (layer.name === 'background') {
+          loadBackgroundLayer(layer as ObjectLayer, world, stage.tilesets)
+        } else {
+          loadObjectLayer(layer as ObjectLayer, world, result)
+        }
         break
     }
   }
