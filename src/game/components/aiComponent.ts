@@ -1,7 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Dependency, Process } from '@utils/proc'
 
-export class AIComponent {
+export class AiComponent {
   public readonly proc: Process
 
   public constructor(

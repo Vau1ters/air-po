@@ -1,68 +1,10 @@
-/*+.† NOTIFICATION †.+*/
-// this file is automatically written by arttool.
-// you can update this file by type "yarn arttool" command.
+import { assert } from '@utils/assertion'
+import { BaseTexture, Texture, Rectangle } from 'pixi.js'
+import { SpriteBuffer, AnimationDefinition } from './spriteBuffer'
+import { AnimationSprite } from './animationSprite'
+import { spriteURL } from './spriteURL'
 
-// IMPORT
-import airGeyserSetting from '@res/setting/airGeyser.json'
-import airGeyserImg from '@res/image/airGeyser.png'
-import background1Setting from '@res/setting/background1.json'
-import background1Img from '@res/image/background1.png'
-import background2Setting from '@res/setting/background2.json'
-import background2Img from '@res/image/background2.png'
-import ballBulletSetting from '@res/setting/ballBullet.json'
-import ballBulletImg from '@res/image/ballBullet.png'
-import balloonVineSetting from '@res/setting/balloonVine.json'
-import balloonVineImg from '@res/image/balloonVine.png'
-import dandelionSetting from '@res/setting/dandelion.json'
-import dandelionImg from '@res/image/dandelion.png'
-import dandelionFluffSetting from '@res/setting/dandelionFluff.json'
-import dandelionFluffImg from '@res/image/dandelionFluff.png'
-import enemy1Setting from '@res/setting/enemy1.json'
-import enemy1Img from '@res/image/enemy1.png'
-import equipmentSetting from '@res/setting/equipment.json'
-import equipmentImg from '@res/image/equipment.png'
-import jetEffectSetting from '@res/setting/jetEffect.json'
-import jetEffectImg from '@res/image/jetEffect.png'
-import mossSetting from '@res/setting/moss.json'
-import mossImg from '@res/image/moss.png'
-import mushroomSetting from '@res/setting/mushroom.json'
-import mushroomImg from '@res/image/mushroom.png'
-import needleBulletSetting from '@res/setting/needleBullet.json'
-import needleBulletImg from '@res/image/needleBullet.png'
-import playerSetting from '@res/setting/player.json'
-import playerImg from '@res/image/player.png'
-import respawnSetting from '@res/setting/respawn.json'
-import respawnImg from '@res/image/respawn.png'
-import slime1Setting from '@res/setting/slime1.json'
-import slime1Img from '@res/image/slime1.png'
-import snibeeSetting from '@res/setting/snibee.json'
-import snibeeImg from '@res/image/snibee.png'
-import sporeSetting from '@res/setting/spore.json'
-import sporeImg from '@res/image/spore.png'
-import throughFloorSetting from '@res/setting/throughFloor.json'
-import throughFloorImg from '@res/image/throughFloor.png'
-import titleSetting from '@res/setting/title.json'
-import titleImg from '@res/image/title.png'
-import uiAirSetting from '@res/setting/uiAir.json'
-import uiAirImg from '@res/image/uiAir.png'
-import uiAirtankBgSetting from '@res/setting/uiAirtankBg.json'
-import uiAirtankBgImg from '@res/image/uiAirtankBg.png'
-import uiAirtankBodySetting from '@res/setting/uiAirtankBody.json'
-import uiAirtankBodyImg from '@res/image/uiAirtankBody.png'
-import uiAirtankTailSetting from '@res/setting/uiAirtankTail.json'
-import uiAirtankTailImg from '@res/image/uiAirtankTail.png'
-import uiHpHeartSetting from '@res/setting/uiHpHeart.json'
-import uiHpHeartImg from '@res/image/uiHpHeart.png'
-import uiWeaponBackgroundSetting from '@res/setting/uiWeaponBackground.json'
-import uiWeaponBackgroundImg from '@res/image/uiWeaponBackground.png'
-import uiWeaponGunSetting from '@res/setting/uiWeaponGun.json'
-import uiWeaponGunImg from '@res/image/uiWeaponGun.png'
-import vineSetting from '@res/setting/vine.json'
-import vineImg from '@res/image/vine.png'
-import wallSetting from '@res/setting/wall.json'
-import wallImg from '@res/image/wall.png'
-
-import { BaseTexture, Rectangle, Texture } from 'pixi.js'
+export type SpriteName = keyof typeof spriteURL
 
 type Setting = {
   name: string
@@ -73,10 +15,26 @@ type Setting = {
       height: number
     }
   }
+  animation?: {
+    state: { [key: string]: Array<number> }
+    speed?: { [key: string]: number }
+    default: string
+  }
 }
 
-function loadTexture(url: string): Promise<BaseTexture> {
+// 一枚絵をアニメーションとして扱うための設定
+const DEFAULT_ANIMATION_SETTING = {
+  state: { Default: [-1] },
+  speed: {},
+  default: 'Default',
+}
+
+const spriteStore: { [key: string]: SpriteBuffer } = {}
+
+const loadTexture = async (path: string): Promise<BaseTexture> => {
   return new Promise((resolve, reject) => {
+    const name = path.split('.')[0]
+    const { default: url } = require(`/res/image/${name}.png`) // eslint-disable-line  @typescript-eslint/no-var-requires
     const texture = BaseTexture.from(url)
     if (texture.width > 0) resolve(texture)
     texture.on('loaded', (tex: BaseTexture) => {
@@ -88,8 +46,8 @@ function loadTexture(url: string): Promise<BaseTexture> {
   })
 }
 
-async function buildTextureCache(baseURL: string, setting: Setting): Promise<Array<Texture>> {
-  const base = await loadTexture(baseURL)
+const loadMultiTexture = async (setting: Setting): Promise<Array<Texture>> => {
+  const base = await loadTexture(setting.path)
   const result = new Array<Texture>()
   const w = setting.texture?.size?.width ?? base.width
   const h = setting.texture?.size?.height ?? base.height
@@ -102,39 +60,40 @@ async function buildTextureCache(baseURL: string, setting: Setting): Promise<Arr
   return result
 }
 
-export const textureStore: { [key: string]: Array<Texture> } = {}
+const loadSpriteBuffer = async (setting: Setting): Promise<SpriteBuffer> => {
+  const textures = await loadMultiTexture(setting)
+  const animationSetting = setting.animation ?? DEFAULT_ANIMATION_SETTING
+
+  const state: { [key: string]: number[] } = animationSetting.state
+  const speed: { [key: string]: number } = animationSetting.speed ?? {}
+
+  const defaultState = animationSetting.default
+  assert(state[defaultState], `"${defaultState}" is not contained in state`)
+
+  const definitions: { [keys: string]: AnimationDefinition } = {}
+  for (const stateName of Object.keys(state)) {
+    const indices = state[stateName]
+    definitions[stateName] = {
+      textures: indices[0] === -1 ? textures : indices.map(i => textures[i]),
+      waitFrames: speed[stateName],
+    }
+  }
+  return new SpriteBuffer(definitions, defaultState)
+}
+
 export const init = async (): Promise<void> => {
-  // LOAD_RESOURCE
-  textureStore.airGeyser = await buildTextureCache(airGeyserImg, airGeyserSetting)
-  textureStore.background1 = await buildTextureCache(background1Img, background1Setting)
-  textureStore.background2 = await buildTextureCache(background2Img, background2Setting)
-  textureStore.ballBullet = await buildTextureCache(ballBulletImg, ballBulletSetting)
-  textureStore.balloonVine = await buildTextureCache(balloonVineImg, balloonVineSetting)
-  textureStore.dandelion = await buildTextureCache(dandelionImg, dandelionSetting)
-  textureStore.dandelionFluff = await buildTextureCache(dandelionFluffImg, dandelionFluffSetting)
-  textureStore.enemy1 = await buildTextureCache(enemy1Img, enemy1Setting)
-  textureStore.equipment = await buildTextureCache(equipmentImg, equipmentSetting)
-  textureStore.jetEffect = await buildTextureCache(jetEffectImg, jetEffectSetting)
-  textureStore.moss = await buildTextureCache(mossImg, mossSetting)
-  textureStore.mushroom = await buildTextureCache(mushroomImg, mushroomSetting)
-  textureStore.needleBullet = await buildTextureCache(needleBulletImg, needleBulletSetting)
-  textureStore.player = await buildTextureCache(playerImg, playerSetting)
-  textureStore.respawn = await buildTextureCache(respawnImg, respawnSetting)
-  textureStore.slime1 = await buildTextureCache(slime1Img, slime1Setting)
-  textureStore.snibee = await buildTextureCache(snibeeImg, snibeeSetting)
-  textureStore.spore = await buildTextureCache(sporeImg, sporeSetting)
-  textureStore.throughFloor = await buildTextureCache(throughFloorImg, throughFloorSetting)
-  textureStore.title = await buildTextureCache(titleImg, titleSetting)
-  textureStore.uiAir = await buildTextureCache(uiAirImg, uiAirSetting)
-  textureStore.uiAirtankBg = await buildTextureCache(uiAirtankBgImg, uiAirtankBgSetting)
-  textureStore.uiAirtankBody = await buildTextureCache(uiAirtankBodyImg, uiAirtankBodySetting)
-  textureStore.uiAirtankTail = await buildTextureCache(uiAirtankTailImg, uiAirtankTailSetting)
-  textureStore.uiHpHeart = await buildTextureCache(uiHpHeartImg, uiHpHeartSetting)
-  textureStore.uiWeaponBackground = await buildTextureCache(
-    uiWeaponBackgroundImg,
-    uiWeaponBackgroundSetting
-  )
-  textureStore.uiWeaponGun = await buildTextureCache(uiWeaponGunImg, uiWeaponGunSetting)
-  textureStore.vine = await buildTextureCache(vineImg, vineSetting)
-  textureStore.wall = await buildTextureCache(wallImg, wallSetting)
+  for (const name of Object.keys(spriteURL) as Array<SpriteName>) {
+    spriteStore[name] = await loadSpriteBuffer(spriteURL[name])
+  }
+}
+
+export const getSpriteBuffer = (name: SpriteName): SpriteBuffer => {
+  const buffer = spriteStore[name]
+  assert(buffer !== undefined, name + ' is not loaded')
+  return buffer
+}
+
+export const createSprite = (name: SpriteName, anchor = { x: 0.5, y: 0.5 }): AnimationSprite => {
+  const buffer = getSpriteBuffer(name)
+  return buffer.createAnimationSprite(anchor)
 }

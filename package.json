@@ -6,12 +6,11 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --hot --inline --watch-content-base",
-    "build": "webpack",
+    "start": "yarn metabuild && webpack-dev-server --hot --inline --watch-content-base",
+    "build": "yarn metabuild && webpack",
     "lint": "eslint './**/*.ts'",
     "format": "eslint --fix './**/*.ts'",
-    "arttool": "tsc arttool.ts && node arttool.js && rm arttool.js && yarn format",
-    "soundtool": "tsc soundtool.ts && node soundtool.js && rm soundtool.js && yarn format"
+    "metabuild": "ts-node tool/index.ts"
   },
   "husky": {
     "hooks": {
@@ -32,6 +31,7 @@
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.0",
     "ts-loader": "^6.2.1",
+    "ts-node": "^10.1.0",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
     "typescript": "^3.7.5",
     "url-loader": "^3.0.0",
@@ -41,6 +41,8 @@
   },
   "dependencies": {
     "@types/stats": "^0.16.30",
+    "fp-ts": "^2.10.5",
+    "io-ts": "^2.2.16",
     "pixi.js": "^5.3.3",
     "stats.js": "^0.17.0"
   }

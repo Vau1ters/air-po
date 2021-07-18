@@ -3,7 +3,6 @@ import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { Category } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 
 export const BULLET_TAG = 'bulletBody'
@@ -24,13 +23,10 @@ export class BulletSystem extends System {
       for (const c of collider.colliders) {
         if (c.tag.has(BULLET_TAG)) {
           assert(
-            c.category === Category.BULLET,
+            c.category === 'bullet',
             `Collider with '${BULLET_TAG}' tag must have BULLET category`
           )
-          assert(
-            c.mask.has(Category.TERRAIN),
-            `Collider with '${BULLET_TAG}' tag must have TERRAIN mask`
-          )
+          assert(c.mask.has('terrain'), `Collider with '${BULLET_TAG}' tag must have TERRAIN mask`)
           c.callbacks.add((args: CollisionCallbackArgs) => this.bulletCollisionCallback(args))
         }
       }

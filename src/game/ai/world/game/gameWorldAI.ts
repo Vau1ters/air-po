@@ -9,7 +9,7 @@ import { PauseWorldFactory } from '@game/worlds/pauseWorldFactory'
 import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
 import { isPlayerAlive } from '../common/condition/isPlayerAlive'
-import { Map } from '@game/map/mapBuilder'
+import { StageName } from '@game/stage/stageLoader'
 
 const game = function*(world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
@@ -25,7 +25,7 @@ const game = function*(world: World): Behaviour<void> {
   }
 }
 
-export const gameWorldAI = (map: Map) =>
+export const gameWorldAI = (stageName: StageName) =>
   function*(world: World): Behaviour<void> {
     yield* FadeIn(world)
 
@@ -36,7 +36,7 @@ export const gameWorldAI = (map: Map) =>
     const playerFamily = new FamilyBuilder(world).include('Player').build()
     const [player] = playerFamily.entityArray
     const gameWorldFactory = new GameWorldFactory()
-    const gameWorld = gameWorldFactory.create(map)
+    const gameWorld = gameWorldFactory.create(stageName)
     gameWorldFactory.respawnPlayer(player)
     gameWorld.start()
     return

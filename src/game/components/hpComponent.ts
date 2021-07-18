@@ -1,6 +1,6 @@
 const DAMAGING_FRAMES = 5
 
-export class HPComponent {
+export class HpComponent {
   public damageTime = 0
   public constructor(private _hp: number, private _maxHp: number) {}
 

@@ -1,5 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-import { AnimationSprite } from '@core/graphics/animation'
+import { AnimationSprite } from '@core/graphics/animationSprite'
 
 export class VineComponent {
   public sprites: Array<AnimationSprite> = []

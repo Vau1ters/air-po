@@ -7,7 +7,6 @@ import { collide, WithHit } from '@core/collision/collision'
 import { AABB } from '@core/collision/geometry/AABB'
 import { OBB } from '@core/collision/geometry/OBB'
 import { CollisionResultOBBOBB } from '@core/collision/collision/OBB_OBB'
-import { Category } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 
 export const PHYSICS_TAG = 'physics'
@@ -23,9 +22,9 @@ export default class PhysicsSystem extends System {
       for (const c of entity.getComponent('Collider').colliders) {
         if (c.tag.has(PHYSICS_TAG)) {
           switch (c.category) {
-            case Category.PHYSICS:
+            case 'physics':
               assert(
-                c.mask.has(Category.PHYSICS) || c.mask.has(Category.TERRAIN),
+                c.mask.has('physics') || c.mask.has('terrain'),
                 `Collider with '${PHYSICS_TAG}' tag and PHYSICS category must have PHYSICS or TERRAIN mask`
               )
               c.callbacks.add((args: CollisionCallbackArgs) => {
@@ -33,9 +32,9 @@ export default class PhysicsSystem extends System {
                 this.solve(me, other)
               })
               break
-            case Category.TERRAIN:
+            case 'terrain':
               assert(
-                c.mask.has(Category.PHYSICS),
+                c.mask.has('physics'),
                 `Collider with '${PHYSICS_TAG}' tag and TERRAIN category must have PHYSICS mask`
               )
               c.callbacks.add((args: CollisionCallbackArgs) => {

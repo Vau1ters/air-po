@@ -36,7 +36,7 @@ export class SegmentSearcherFactory extends EntityFactory {
     const collider: Collider = buildCollider({
       entity,
       geometry: { type: 'Segment' },
-      category: Category.SENSOR,
+      category: 'sensor',
       mask: this.mask,
     })
     const segment = collider.geometry as Segment

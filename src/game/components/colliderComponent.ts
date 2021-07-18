@@ -28,6 +28,10 @@ export class Collider {
     return this.option.condition
   }
 
+  set condition(condition: CollisionCondition) {
+    this.option.condition = condition
+  }
+
   get callbacks(): Set<CollisionCallback> {
     return this.option.callbacks
   }
@@ -53,7 +57,7 @@ export type ColliderOption = {
   mask: Set<Category>
 }
 
-type GeometryBuildOption =
+export type GeometryBuildOption =
   | {
       type: 'AABB'
       offset?: Vec2
@@ -76,7 +80,7 @@ type GeometryBuildOption =
       world: World
     }
 
-type ColliderBuildOption = {
+export type ColliderBuildOption = {
   condition?: CollisionCondition
   callbacks?: CollisionCallback[]
   tag?: string[]

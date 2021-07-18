@@ -4,7 +4,6 @@ import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { AIR_TAG } from './airSystem'
-import { Category } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 
 export const LIGHT_TAG = 'Light'
@@ -21,10 +20,10 @@ export class LightSystem extends System {
       for (const c of e.getComponent('Collider').colliders) {
         if (c.tag.has(LIGHT_TAG)) {
           assert(
-            c.category === Category.LIGHT,
+            c.category === 'light',
             `Collider with '${LIGHT_TAG}' tag must have LIGHT category`
           )
-          assert(c.mask.has(Category.AIR), `Collider with '${LIGHT_TAG}' tag must have AIR mask`)
+          assert(c.mask.has('air'), `Collider with '${LIGHT_TAG}' tag must have AIR mask`)
           c.callbacks.add(LightSystem.lightAirCollision)
         }
       }

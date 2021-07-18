@@ -3,7 +3,6 @@ import { Entity } from '@core/ecs/entity'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
-import { Category } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 
 export const ATTACK_TAG = 'Attack'
@@ -29,11 +28,11 @@ export class DamageSystem extends System {
     for (const c of collider.colliders) {
       if (c.tag.has(ATTACK_TAG)) {
         assert(
-          c.category === Category.ATTACK,
+          c.category === 'attack',
           `Collider with '${ATTACK_TAG}' tag must have ATTACK category`
         )
         assert(
-          c.mask.has(Category.PLAYER_HITBOX) || c.mask.has(Category.ENEMY_HITBOX),
+          c.mask.has('playerHitbox') || c.mask.has('enemyHitbox'),
           `Collider with '${ATTACK_TAG}' tag must have HITBOX mask`
         )
         c.callbacks.add(this.attackCollisionCallback)
@@ -60,8 +59,8 @@ export class DamageSystem extends System {
 
     const attack = attacker.getComponent('Attack')
 
-    if (target.hasComponent('HP') === false) return
-    const targetHP = target.getComponent('HP')
+    if (target.hasComponent('Hp') === false) return
+    const targetHP = target.getComponent('Hp')
 
     if (target.hasComponent('Invincible')) {
       const invincible = target.getComponent('Invincible')

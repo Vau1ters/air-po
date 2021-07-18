@@ -4,9 +4,8 @@ import { Container, Graphics } from 'pixi.js'
 import DrawSystem from '@game/systems/drawSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { MapBuilder } from '@game/map/mapBuilder'
-import map from '@res/map/root.json'
 import { titleWorldAI } from '@game/ai/world/title/titleWorldAI'
+import { loadStage } from '@game/stage/stageLoader'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 
 export class TitleWorldFactory {
@@ -43,9 +42,8 @@ export class TitleWorldFactory {
       new BackgroundSystem(world)
     )
 
-    const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map)
-    mapBuilder.spawnPlayer(0)
+    const stage = loadStage('root', world)
+    stage.spawnPlayer(0)
 
     return world
   }

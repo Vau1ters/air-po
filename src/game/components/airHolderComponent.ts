@@ -1,3 +1,11 @@
+export type AirHolderSetting = {
+  initialQuantity: number
+  maxQuantity: number
+  consumeSpeed: number
+  collectSpeed: number
+  shouldDamageInSuffocation: boolean
+}
+
 export class AirHolderComponent {
   public quantity: number
   public maxQuantity: number
@@ -7,13 +15,7 @@ export class AirHolderComponent {
   public suffocationDamageCount: number
   public inAir: boolean
 
-  public constructor(airSetting: {
-    initialQuantity: number
-    maxQuantity: number
-    consumeSpeed: number
-    collectSpeed: number
-    shouldDamageInSuffocation: boolean
-  }) {
+  public constructor(airSetting: AirHolderSetting) {
     this.quantity = airSetting.initialQuantity
     this.maxQuantity = airSetting.maxQuantity
     this.consumeSpeed = airSetting.consumeSpeed

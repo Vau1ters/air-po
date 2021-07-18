@@ -1,6 +1,6 @@
 import { Vec2 } from '@core/math/vec2'
 
-type BuildRigidBodyOption = {
+export type BuildRigidBodyOption = {
   mass?: number
   restitution?: number
   airResistance?: number

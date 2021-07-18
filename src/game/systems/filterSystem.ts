@@ -6,7 +6,7 @@ import { DarknessFilter } from '@game/filters/darknessFilter'
 import { windowSize } from '@core/application'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { Category, CategorySet } from '@game/entities/category'
+import { CategorySet } from '@game/entities/category'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
 import {
@@ -67,8 +67,8 @@ export class FilterSystem extends System {
             offset: new Vec2(windowSize.width / 2, windowSize.height / 2),
             size: new Vec2(windowSize.width, windowSize.height),
           },
-          category: Category.SENSOR,
-          mask: new CategorySet(Category.LIGHT),
+          category: 'sensor',
+          mask: new CategorySet('light'),
           callbacks: [
             (args: CollisionCallbackArgs): void => {
               const { other } = args

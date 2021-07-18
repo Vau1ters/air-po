@@ -1,16 +1,16 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { World } from '@core/ecs/world'
-import { textureStore } from '@core/graphics/art'
 import { loadPlayData, StoryStatus } from '@game/playdata/playdata'
 import { MouseController } from '@game/systems/controlSystem'
-import { Sprite } from 'pixi.js'
 import * as Sound from '@core/sound/sound'
 import { LogoBlinking } from './logoBlinking'
 import { OpeningWorldFactory } from '@game/worlds/openingWorldFactory'
 import { assert } from '@utils/assertion'
 import { FadeOut } from '../common/animation/fadeOut'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
-import { Map } from '@game/map/mapBuilder'
+import { getSpriteBuffer } from '@core/graphics/art'
+import { Sprite } from 'pixi.js'
+import { StageName } from '@game/stage/stageLoader'
 
 const createNextWorld = async (): Promise<World> => {
   const playData = loadPlayData()
@@ -21,9 +21,7 @@ const createNextWorld = async (): Promise<World> => {
     case StoryStatus.Stage: {
       assert(playData.mapName !== undefined, 'save data is broken')
       const gameWorldFactory = new GameWorldFactory()
-      const gameWorld = gameWorldFactory.create(
-        (await import(`../../../../../res/map/${playData.mapName}.json`)) as Map
-      )
+      const gameWorld = gameWorldFactory.create(playData.mapName as StageName)
       gameWorldFactory.spawnPlayer(0)
       return gameWorld
     }
@@ -31,7 +29,7 @@ const createNextWorld = async (): Promise<World> => {
 }
 
 export const titleWorldAI = function*(world: World): Behaviour<void> {
-  const titleImage = new Sprite(textureStore.title[0])
+  const titleImage = new Sprite(getSpriteBuffer('title').definitions['Default'].textures[0])
   world.stage.addChild(titleImage)
 
   while (!MouseController.isMousePressed('Left')) yield

@@ -6,7 +6,6 @@ import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import DandelionStem from '@res/image/dandelionStem.png'
 import { SegmentSearcherFactory } from '@game/entities/segmentSearcherFactory'
-import { Category } from '@game/entities/category'
 import { segmentSearchGenerator } from '../segmentSearcher/segmentSearcherAI'
 import { assert } from '@utils/assertion'
 import { INFINITY_COORDINATE } from '@core/math/constants'
@@ -26,7 +25,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   const segmentSearcher = new SegmentSearcherFactory()
     .setSegmentStart(headPosition)
     .setSegmentEnd(headPosition.add(new Vec2(0, INFINITY_COORDINATE)))
-    .addCategoryToMask(Category.TERRAIN)
+    .addCategoryToMask('terrain')
     .create()
   world.addEntity(segmentSearcher)
   const getClosestHit = segmentSearchGenerator(segmentSearcher, { maximumDistance: ROOT_OFFSET_Y })

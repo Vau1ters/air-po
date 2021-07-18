@@ -5,7 +5,6 @@ import { Entity } from '@core/ecs/entity'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { CollisionResultAirAABB } from '@core/collision/collision/Air_AABB'
 import { assert } from '@utils/assertion'
-import { Category } from '@game/entities/category'
 import { AIR_TAG } from './airSystem'
 
 export const AIR_HOLDER_TAG = 'airHolderBody'
@@ -29,7 +28,7 @@ export class AirHolderSystem extends System {
       airHolder.consume()
       if (airHolder.shouldDamageInSuffocation && airHolder.quantity === 0) {
         if (airHolder.suffocationDamageCount++ % SUFFOCATION_DAMAGE_INTERVAL === 0) {
-          entity.getComponent('HP').decrease(1)
+          entity.getComponent('Hp').decrease(1)
           entity.getComponent('Invincible').setInvincible()
         }
       } else {
@@ -44,13 +43,10 @@ export class AirHolderSystem extends System {
       for (const c of collider.colliders) {
         if (c.tag.has(AIR_HOLDER_TAG)) {
           assert(
-            c.category === Category.AIR_HOLDER,
+            c.category === 'airHolder',
             `Collider with '${AIR_HOLDER_TAG}' tag must have AIR_HOLDER category`
           )
-          assert(
-            c.mask.has(Category.AIR),
-            `Collider with '${AIR_HOLDER_TAG}' tag must have AIR mask`
-          )
+          assert(c.mask.has('air'), `Collider with '${AIR_HOLDER_TAG}' tag must have AIR mask`)
           c.callbacks.add(AirHolderSystem.airHolderSensor)
         }
       }
