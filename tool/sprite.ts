@@ -1,11 +1,11 @@
 import * as fs from 'fs'
 import { buildMetaSource } from './build'
 
-export const buildSprite = (): void => {
+export const buildSprite = (): string => {
   const importList: string[] = []
   const nameList: string[] = []
 
-  buildMetaSource({
+  return buildMetaSource({
     outputPath: 'src/core/graphics/spriteURL.ts',
     watchDir: 'res/sprite',
     templatePath: 'tool/template/spriteURL.ts',

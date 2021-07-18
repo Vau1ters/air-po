@@ -2,11 +2,11 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { buildMetaSource } from './build'
 
-export const buildStage = (): void => {
+export const buildStage = (): string => {
   const importList: string[] = []
   const nameList: string[] = []
 
-  buildMetaSource({
+  return buildMetaSource({
     outputPath: 'src/game/stage/stageList.ts',
     watchDir: 'res/stage',
     templatePath: 'tool/template/stageList.ts',

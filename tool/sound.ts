@@ -2,11 +2,11 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { buildMetaSource } from './build'
 
-export const buildSound = (): void => {
+export const buildSound = (): string => {
   const importList: string[] = []
   const nameList: string[] = []
 
-  buildMetaSource({
+  return buildMetaSource({
     outputPath: 'src/core/sound/soundURL.ts',
     watchDir: 'res/sound',
     templatePath: 'tool/template/soundURL.ts',

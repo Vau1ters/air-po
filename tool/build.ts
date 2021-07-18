@@ -8,7 +8,7 @@ type BuildOption = {
   replacementMap: () => { [keys: string]: string }
 }
 
-export const buildMetaSource = (option: BuildOption): void => {
+export const buildMetaSource = (option: BuildOption): string => {
   for (const e of fs.readdirSync(option.watchDir, { withFileTypes: true })) {
     option.onInput(option.watchDir, e)
   }
@@ -18,5 +18,6 @@ export const buildMetaSource = (option: BuildOption): void => {
   for (const [src, dst] of Object.entries(option.replacementMap())) {
     generatedText = generatedText.replace(`// ${src}`, dst)
   }
-  fs.writeFile(option.outputPath, generatedText, () => {})
+  fs.writeFileSync(option.outputPath, generatedText)
+  return option.outputPath
 }
