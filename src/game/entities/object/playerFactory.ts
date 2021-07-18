@@ -6,7 +6,6 @@ import { playerAI } from '@game/ai/entity/player/playerAI'
 import { AIComponent } from '@game/components/aiComponent'
 import { AirHolderComponent } from '@game/components/airHolderComponent'
 import { AnimationStateComponent } from '@game/components/animationStateComponent'
-import { CameraComponent } from '@game/components/cameraComponent'
 import { Collider, ColliderComponent, buildColliders } from '@game/components/colliderComponent'
 import { HorizontalDirectionComponent } from '@game/components/directionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
@@ -22,6 +21,7 @@ import { Category, CategorySet } from '../category'
 import { EntityFactory } from '../entityFactory'
 import { THROUGH_FLOOR_TAG } from '../tile/throughFloorFactory'
 import playerDefinition from '@res/setting/player.json'
+import { SoundComponent } from '@game/components/soundComponent'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
@@ -151,9 +151,8 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Player', player)
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Equipment', equipment)
-    // TODO: カメラをプレイヤーから分離する
-    entity.addComponent('Camera', new CameraComponent())
     entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
+    entity.addComponent('Sound', new SoundComponent())
     return entity
   }
 }

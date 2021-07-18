@@ -7,7 +7,6 @@ import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { CollisionResultAABBAABB } from '@core/collision/collision/AABB_AABB'
-import * as Sound from '@core/sound/sound'
 import { suspendable } from '@core/behaviour/suspendable'
 import { not } from '../common/condition/composite'
 
@@ -26,7 +25,7 @@ export const mushroomAI = function*(entity: Entity, world: World): Behaviour<voi
     if (Math.abs(axis.y) !== 1) return
     landed = true
     other.entity.getComponent('RigidBody').velocity.y -= JUMP_ACCEL
-    Sound.play('mushroom')
+    entity.getComponent('Sound').addSound('mushroom')
   })
 
   yield* suspendable(not(hasAir(entity)), animate({ entity, state: 'Close', loopCount: Infinity }))

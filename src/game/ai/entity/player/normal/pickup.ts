@@ -27,10 +27,11 @@ export const pickup = function*(entity: Entity): Behaviour<void> {
         target.isPossessed = false
         player.possessingEntity = undefined
       } else if (pickupTarget.size > 0) {
-        const entity = Array.from(pickupTarget.values())[0]
-        const target = entity.getComponent('PickupTarget')
+        const targetEntity = Array.from(pickupTarget.values())[0]
+        const target = targetEntity.getComponent('PickupTarget')
         target.isPossessed = true
-        player.possessingEntity = entity
+        player.possessingEntity = targetEntity
+        entity.getComponent('Sound').addSound('grab')
       }
     }
     pickupTarget.clear()

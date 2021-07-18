@@ -21,6 +21,7 @@ import { StaticComponent } from '@game/components/staticComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 import { ButtonComponent } from '@game/components/buttonComponent'
 import { BackgroundComponent } from '@game/components/backgroundComponent'
+import { SoundComponent } from '@game/components/soundComponent'
 
 export interface ComponentMap {
   Position: PositionComponent
@@ -46,6 +47,7 @@ export interface ComponentMap {
   Equipment: EquipmentComponent
   Button: ButtonComponent
   Background: BackgroundComponent
+  Sound: SoundComponent
 }
 
 export type ComponentName = keyof ComponentMap

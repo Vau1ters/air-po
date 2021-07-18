@@ -29,19 +29,32 @@ type LaserSightState = LockingAimState | FreeAimState
 
 const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
   const playerFamily = new FamilyBuilder(world).include('Player').build()
+  const cameraFamily = new FamilyBuilder(world).include('Camera').build()
   const [collider] = laser.getComponent('Collider').colliders
   while (true) {
     const [player] = playerFamily.entityArray
+    const [camera] = cameraFamily.entityArray
     const mousePosition = MouseController.position
     const segment = collider.geometry as Segment
-    const position = player.getComponent('Position')
+    const playerPosition = player.getComponent('Position')
+    const cameraPosition = camera.getComponent('Position')
+    const mousePositionOnScreen = mousePosition.sub(
+      new Vec2(windowSize.width / 2, windowSize.height / 2)
+    )
+    const mousePositionOnWorld = cameraPosition.add(mousePositionOnScreen)
 
-    const dir = mousePosition.sub(new Vec2(windowSize.width / 2, windowSize.height / 2))
+    const dir = mousePositionOnWorld.sub(playerPosition)
 
-    const s = Math.min(Math.abs(windowSize.width / dir.x), Math.abs(windowSize.height / dir.y)) / 2
+    const ts = [
+      (cameraPosition.x - playerPosition.x - windowSize.width / 2) / dir.x,
+      (cameraPosition.x - playerPosition.x + windowSize.width / 2) / dir.x,
+      (cameraPosition.y - playerPosition.y - windowSize.height / 2) / dir.y,
+      (cameraPosition.y - playerPosition.y + windowSize.height / 2) / dir.y,
+    ]
+    const t = Math.min(...ts.filter(t => t >= 0))
 
-    segment.start = position
-    segment.end = position.add(dir.mul(s))
+    segment.start = playerPosition
+    segment.end = segment.start.add(dir.mul(t))
     yield
   }
 }

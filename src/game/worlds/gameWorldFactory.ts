@@ -25,6 +25,7 @@ import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import { Entity } from '@core/ecs/entity'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
+import SoundSystem from '@game/systems/soundSystem'
 
 export class GameWorldFactory {
   private mapBuilder?: MapBuilder
@@ -85,7 +86,8 @@ export class GameWorldFactory {
       new ControlSystem(world),
       new EventSensorSystem(world),
       new HPSystem(world, worldUIContainer),
-      new BackgroundSystem(world)
+      new BackgroundSystem(world),
+      new SoundSystem(world)
     )
 
     this.mapBuilder = new MapBuilder(world)
