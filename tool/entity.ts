@@ -1,25 +1,26 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { buildMetaSource } from './build'
 
 export const buildEntity = (): void => {
-  const outputPath = 'src/game/entities/loader/entitySetting.ts'
-  const entityDir = 'res/entity'
-
   const importList: string[] = []
   const nameList: string[] = []
 
-  fs.readdirSync(entityDir, { withFileTypes: true }).forEach(e => {
-    const filename = e.name
-    const name = path.parse(filename).name
-    importList.push(`import ${name} from '@${entityDir}/${filename}'`)
-    nameList.push(name)
+  buildMetaSource({
+    outputPath: 'src/game/entities/loader/entitySetting.ts',
+    watchDir: 'res/entity',
+    templatePath: 'tool/template/entitySetting.ts',
+    onInput: (watchDir: string, e: fs.Dirent) => {
+      const filename = e.name
+      const name = path.parse(filename).name
+      importList.push(`import ${name} from '@${watchDir}/${filename}'`)
+      nameList.push(name)
+    },
+    replacementMap: () => {
+      return {
+        IMPORT: importList.join('\n'),
+        OBJECT: nameList.join(',')
+      }
+    }
   })
-
-  const headerText = fs.readFileSync('tool/template/header.ts', 'ascii')
-  const generatedText = fs
-    .readFileSync('tool/template/entitySetting.ts', 'ascii')
-    .replace('// HEADER', headerText)
-    .replace('// IMPORT', importList.join('\n'))
-    .replace('// OBJECT', nameList.join(','))
-  fs.writeFile(outputPath, generatedText, () => {})
 }

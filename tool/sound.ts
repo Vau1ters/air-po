@@ -1,26 +1,26 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { buildMetaSource } from './build'
 
 export const buildSound = (): void => {
-  const outputPath = 'src/core/sound/soundURL.ts'
-  const soundDir = 'res/sound'
-
   const importList: string[] = []
   const nameList: string[] = []
 
-  fs.readdirSync(soundDir, { withFileTypes: true }).forEach(e => {
-    const filename = e.name
-    const name = path.parse(filename).name
-    importList.push(`import ${name} from '@${soundDir}/${filename}'`)
-
-    nameList.push(name)
+  buildMetaSource({
+    outputPath: 'src/core/sound/soundURL.ts',
+    watchDir: 'res/sound',
+    templatePath: 'tool/template/soundURL.ts',
+    onInput: (watchDir: string, e: fs.Dirent) => {
+      const filename = e.name
+      const name = path.parse(filename).name
+      importList.push(`import ${name} from '@${watchDir}/${filename}'`)
+      nameList.push(name)
+    },
+    replacementMap: () => {
+      return {
+        IMPORT: importList.join('\n'),
+        OBJECT: nameList.join(',')
+      }
+    }
   })
-
-  const headerText = fs.readFileSync('tool/template/header.ts', 'ascii')
-  const generatedText = fs
-    .readFileSync('tool/template/soundURL.ts', 'ascii')
-    .replace('// HEADER', headerText)
-    .replace('// IMPORT', importList.join('\n'))
-    .replace('// OBJECT', nameList.join(','))
-  fs.writeFile(outputPath, generatedText, () => {})
 }

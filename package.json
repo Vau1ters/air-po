@@ -10,7 +10,7 @@
     "build": "webpack",
     "lint": "eslint './src/**/*.ts'",
     "format": "eslint --fix './src/**/*.ts'",
-    "metabuild": "tsc tool/buildMetaSource.ts --outDir .cache && node .cache/buildMetaSource.js && yarn format"
+    "metabuild": "tsc tool/index.ts --outDir .cache && node .cache/index.js && yarn format"
   },
   "husky": {
     "hooks": {
