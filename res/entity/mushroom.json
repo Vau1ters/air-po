@@ -1,12 +1,4 @@
 {
-    "constants": {
-        "MUSHROOM_WIDTH": "78",
-        "MUSHROOM_HEIGHT": "44",
-        "STALK_WIDTH": "18",
-        "STALK_HEIGHT": "MUSHROOM_HEIGHT",
-        "PILEUS_WIDTH": "MUSHROOM_WIDTH",
-        "PILEUS_HEIGHT": "19"
-    },
     "draw": {
         "name": "mushroom"
     },
