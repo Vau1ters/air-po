@@ -1,7 +1,6 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { KeyController } from '@game/systems/controlSystem'
-import * as Sound from '@core/sound/sound'
 import { PLAYER_SETTING } from '../playerAI'
 
 export const jump = function*(entity: Entity): Behaviour<void> {
@@ -14,12 +13,12 @@ export const jump = function*(entity: Entity): Behaviour<void> {
     while (!player.landing) yield
 
     animState.state = 'Standing'
-    Sound.play('playerLanding')
+    entity.getComponent('Sound').addSound('playerLanding')
 
     while (player.landing) {
       if (KeyController.isActionPressing('Jump')) {
         body.velocity.y = -PLAYER_SETTING.normal.jump.speed
-        Sound.play('playerJump')
+        entity.getComponent('Sound').addSound('playerJump')
       }
 
       yield

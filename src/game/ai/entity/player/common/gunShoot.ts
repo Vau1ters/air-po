@@ -3,7 +3,6 @@ import { World } from '@core/ecs/world'
 import { Entity } from '@core/ecs/entity'
 import { MouseController } from '@game/systems/controlSystem'
 import { BulletFactory } from '@game/entities/bulletFactory'
-import * as Sound from '@core/sound/sound'
 import { wait } from '@core/behaviour/wait'
 
 const SETTING = {
@@ -22,7 +21,7 @@ export const gunShoot = function*(entity: Entity, world: World): Behaviour<void>
     if (airHolder.quantity >= SETTING.CONSUME_SPEED) {
       airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
-      Sound.play('shot')
+      entity.getComponent('Sound').addSound('shot')
       // 弾を打つ
       bulletFactory.setShooter(entity, 'player')
       bulletFactory.setDirection(

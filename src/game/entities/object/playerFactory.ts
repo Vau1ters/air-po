@@ -21,6 +21,7 @@ import { Category, CategorySet } from '../category'
 import { EntityFactory } from '../entityFactory'
 import { THROUGH_FLOOR_TAG } from '../tile/throughFloorFactory'
 import playerDefinition from '@res/setting/player.json'
+import { SoundComponent } from '@game/components/soundComponent'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
@@ -151,6 +152,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('AirHolder', airHolder)
     entity.addComponent('Equipment', equipment)
     entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
+    entity.addComponent('Sound', new SoundComponent())
     return entity
   }
 }
