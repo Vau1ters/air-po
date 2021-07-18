@@ -20,6 +20,7 @@ import { SensorComponent } from '@game/components/sensorComponent'
 import { StaticComponent } from '@game/components/staticComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 import { ButtonComponent } from '@game/components/buttonComponent'
+import { BackgroundComponent } from '@game/components/backgroundComponent'
 import { SoundComponent } from '@game/components/soundComponent'
 
 export interface ComponentMap {
@@ -45,6 +46,7 @@ export interface ComponentMap {
   Static: StaticComponent
   Equipment: EquipmentComponent
   Button: ButtonComponent
+  Background: BackgroundComponent
   Sound: SoundComponent
 }
 
