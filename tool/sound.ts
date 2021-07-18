@@ -19,8 +19,8 @@ export const buildSound = (): void => {
     replacementMap: () => {
       return {
         IMPORT: importList.join('\n'),
-        OBJECT: nameList.join(',')
+        OBJECT: nameList.join(','),
       }
-    }
+    },
   })
 }

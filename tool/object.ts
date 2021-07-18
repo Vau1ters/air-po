@@ -25,8 +25,8 @@ export const buildObject = (): void => {
     replacementMap: () => {
       return {
         IMPORT: importList.join('\n'),
-        OBJECT: nameList.join('\n')
+        OBJECT: nameList.join('\n'),
       }
-    }
+    },
   })
 }

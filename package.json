@@ -8,8 +8,8 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline --watch-content-base",
     "build": "webpack",
-    "lint": "eslint './src/**/*.ts'",
-    "format": "eslint --fix './src/**/*.ts'",
+    "lint": "eslint './**/*.ts'",
+    "format": "eslint --fix './**/*.ts'",
     "metabuild": "tsc tool/index.ts --outDir .cache && node .cache/index.js && yarn format"
   },
   "husky": {

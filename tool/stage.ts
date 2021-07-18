@@ -20,8 +20,8 @@ export const buildStage = (): void => {
     replacementMap: () => {
       return {
         IMPORT: importList.join('\n'),
-        OBJECT: nameList.join('\n')
+        OBJECT: nameList.join('\n'),
       }
-    }
+    },
   })
 }
