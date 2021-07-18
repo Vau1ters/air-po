@@ -11,6 +11,7 @@ import { down } from './down'
 import { sleep } from './sleep'
 import { spawnGeyser } from './spawnGeyser'
 import { stem, StemState } from './stem'
+import { animate } from '../common/action/animate'
 
 const boss1Move = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   yield* sleep(boss, world)
@@ -30,6 +31,13 @@ export const boss1AI = function*(boss: Entity, world: World): Behaviour<void> {
     stem: (): Vec2 => new Vec2(),
     arms: [(): Vec2 => new Vec2(), (): Vec2 => new Vec2()],
   }
-  yield* suspendable(isAlive(boss), parallelAll([stem(state, boss), boss1Move(state, boss, world)]))
+  yield* suspendable(
+    isAlive(boss),
+    parallelAll([
+      animate({ entity: boss, state: 'Close', loopCount: Infinity }),
+      stem(state, boss),
+      boss1Move(state, boss, world),
+    ])
+  )
   yield* kill(boss, world)
 }

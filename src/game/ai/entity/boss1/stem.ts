@@ -2,6 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
+import RoseStem from '@res/image/roseStem.png'
 import * as PIXI from 'pixi.js'
 
 export type StemShape = (t: number) => Vec2
@@ -37,7 +38,7 @@ const addStem = (boss: Entity, width: number): Array<PIXI.Point> => {
   const points = new Array<PIXI.Point>(100)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
 
-  const stem = new PIXI.SimpleRope(PIXI.Texture.WHITE, points, width)
+  const stem = new PIXI.SimpleRope(PIXI.Texture.from(RoseStem), points, width)
   stem.tint = 0x22aa22
   stem.zIndex = -1
   boss.getComponent('Draw').addChild(stem)
@@ -50,8 +51,8 @@ export const stem = function*(state: StemState, boss: Entity): Behaviour<void> {
   const root = rootCollider.geometry as AABB
 
   boss.getComponent('Draw').sortableChildren = true
-  const stemPoints = addStem(boss, 0.4)
-  const armPointsList = state.arms.map(_ => addStem(boss, 0.2))
+  const stemPoints = addStem(boss, 1.0)
+  const armPointsList = state.arms.map(_ => addStem(boss, 0.6))
 
   while (true) {
     const { stem } = state
