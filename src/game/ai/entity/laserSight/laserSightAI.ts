@@ -63,7 +63,7 @@ const isDistantEnough = (segment: Segment, entity: Entity): boolean => {
   return segment.distance(entity.getComponent('Position')) > 20
 }
 const shouldLockEntity = (entity: Entity, segment: Segment): boolean => {
-  const isEntityAlive = entity.hasComponent('HP') && entity.getComponent('HP').hp > 0
+  const isEntityAlive = entity.hasComponent('Hp') && entity.getComponent('Hp').hp > 0
   const isEntityCloseEnough =
     entity
       .getComponent('Position')

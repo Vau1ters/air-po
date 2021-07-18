@@ -59,8 +59,8 @@ export class DamageSystem extends System {
 
     const attack = attacker.getComponent('Attack')
 
-    if (target.hasComponent('HP') === false) return
-    const targetHP = target.getComponent('HP')
+    if (target.hasComponent('Hp') === false) return
+    const targetHP = target.getComponent('Hp')
 
     if (target.hasComponent('Invincible')) {
       const invincible = target.getComponent('Invincible')

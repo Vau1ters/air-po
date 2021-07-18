@@ -5,7 +5,7 @@ import speechBalloonVertexShader from '@res/shaders/speechBalloon.vert'
 import speechBalloonFragmentShader from '@res/shaders/speechBalloon.frag'
 import speechBalloonTextFragmentShader from '@res/shaders/speechBalloonText.frag'
 import { speechBalloonAI } from '@game/ai/entity/speechBalloon/speechBalloonAI'
-import { AIComponent } from '@game/components/aiComponent'
+import { AiComponent } from '@game/components/aiComponent'
 import { windowSize } from '@core/application'
 import { normalizeText } from '@utils/text'
 import { TextFactory } from './textFactory'
@@ -61,7 +61,7 @@ export class SpeechBalloonFactory extends EntityFactory {
 
     ui.addChildAt(sprite, 0)
 
-    entity.addComponent('AI', new AIComponent(speechBalloonAI(entity, this.target, this.camera)))
+    entity.addComponent('Ai', new AiComponent(speechBalloonAI(entity, this.target, this.camera)))
     entity.getComponent('Position').x = windowSize.width * 0.5
     entity.getComponent('Position').y = sprite.height * 0.5
     return entity

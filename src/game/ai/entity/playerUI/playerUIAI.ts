@@ -41,7 +41,7 @@ const renderPlayerWeapon = function*(world: World): Behaviour<void> {
 }
 
 const renderPlayerHp = function*(player: Entity, world: World): Behaviour<void> {
-  const hp = player.getComponent('HP')
+  const hp = player.getComponent('Hp')
   const renderingState: {
     entities: Entity[]
     hp: number

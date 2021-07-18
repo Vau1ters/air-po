@@ -11,13 +11,13 @@ export class DamageEffectSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world).include('HP', 'Draw').build()
+    this.family = new FamilyBuilder(world).include('Hp', 'Draw').build()
     this.family.entityAddedEvent.addObserver((entity: Entity) => this.entityAdded(entity))
   }
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      const hp = entity.getComponent('HP')
+      const hp = entity.getComponent('Hp')
       const [filter] = entity.getComponent('Draw').filters
       if (hp.damageTime > 0) {
         filter.uniforms.damaging = true

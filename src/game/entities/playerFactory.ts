@@ -2,11 +2,11 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { playerAI } from '@game/ai/entity/player/playerAI'
-import { AIComponent } from '@game/components/aiComponent'
+import { AiComponent } from '@game/components/aiComponent'
 import { Collider } from '@game/components/colliderComponent'
-import { HorizontalDirectionComponent } from '@game/components/directionComponent'
+import { HorizontalDirectionComponent } from '@game/components/horizontalDirectionComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
-import { HPComponent } from '@game/components/hpComponent'
+import { HpComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { PositionComponent } from '@game/components/positionComponent'
@@ -44,8 +44,8 @@ export class PlayerFactory extends EntityFactory {
     equipment.equipEvent.notify('AirTank')
 
     entity.addComponent(
-      'AI',
-      new AIComponent({
+      'Ai',
+      new AiComponent({
         behaviour: playerAI(entity, this.world),
         name: 'Player:AI',
         dependency: {
@@ -53,7 +53,7 @@ export class PlayerFactory extends EntityFactory {
         },
       })
     )
-    entity.addComponent('HP', new HPComponent(3, 3))
+    entity.addComponent('Hp', new HpComponent(3, 3))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('Player', player)
     entity.addComponent('Equipment', equipment)

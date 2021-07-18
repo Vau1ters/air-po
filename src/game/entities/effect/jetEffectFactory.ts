@@ -1,6 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { EntityFactory } from '../entityFactory'
-import { AIComponent } from '@game/components/aiComponent'
+import { AiComponent } from '@game/components/aiComponent'
 import { JetEffectAI } from '@game/ai/entity/jetEffect/jetEffectAI'
 import { PositionComponent } from '@game/components/positionComponent'
 import { World } from '@core/ecs/world'
@@ -26,7 +26,7 @@ export class JetEffectFactory extends EntityFactory {
     const shooterPosition = this.shooter.getComponent('Position')
 
     const entity = loadEntity('jetEffect')
-    entity.addComponent('AI', new AIComponent(JetEffectAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(JetEffectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(shooterPosition.x, shooterPosition.y))
 
     return entity
