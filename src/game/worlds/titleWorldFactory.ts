@@ -6,6 +6,7 @@ import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
 import { loadStage } from '@game/stage/stageLoader'
 import BackgroundSystem from '@game/systems/backgroundSystem'
+import { SingletonSystem } from '@game/systems/singletonSystem'
 
 export class TitleWorldFactory {
   public create(): World {
@@ -38,7 +39,8 @@ export class TitleWorldFactory {
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
       new CameraSystem(world, cameraContainer),
       new ControlSystem(world),
-      new BackgroundSystem(world)
+      new BackgroundSystem(world),
+      new SingletonSystem(world)
     )
 
     const stage = loadStage('root', world)

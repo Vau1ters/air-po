@@ -1,9 +1,9 @@
 import shader from '@res/shaders/air.frag'
 import { Filter } from 'pixi.js'
 import { World } from '@core/ecs/world'
-import { Family, FamilyBuilder } from '@core/ecs/family'
 import { Vec2 } from '@core/math/vec2'
 import { Air } from '@core/collision/geometry/air'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 export interface AirDefinition {
   center: {
@@ -14,10 +14,8 @@ export interface AirDefinition {
 }
 
 export class AirFilter extends Filter {
-  private family: Family
-
   public constructor(
-    world: World,
+    private world: World,
     displaySize: { x: number; y: number },
     setting: { antiAlias: boolean }
   ) {
@@ -30,7 +28,6 @@ export class AirFilter extends Filter {
       antiAlias: setting.antiAlias,
       inAirRate: 0,
     })
-    this.family = new FamilyBuilder(world).include('Player').build()
   }
 
   public updateUniforms(airs: Array<AirDefinition>, camera: Vec2): void {
@@ -41,12 +38,15 @@ export class AirFilter extends Filter {
       this.uniforms.points.push(air.radius)
     }
     this.uniforms.pointNum = airs.length
-    if (this.family.entityArray[0].getComponent('AirHolder').inAir) {
+
+    const player = getSingleton('Player', this.world)
+    const airHolder = player.getComponent('AirHolder')
+    if (airHolder.inAir) {
       this.uniforms.inAirRate = Math.min(this.uniforms.inAirRate + 0.05, 1)
     } else {
       this.uniforms.inAirRate = Math.max(this.uniforms.inAirRate - 0.05, 0)
     }
-    this.family.entityArray[0].getComponent('AirHolder').inAir = false
+    airHolder.inAir = false
     this.uniforms.camera = [Math.ceil(camera.x), Math.ceil(camera.y)]
   }
 }

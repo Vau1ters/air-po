@@ -5,11 +5,11 @@ import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
 import { Segment } from '@core/collision/geometry/segment'
 import { Entity } from '@core/ecs/entity'
-import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { LaserSightLockFactory } from '@game/entities/laserSightLockFactory'
 import { MouseController } from '@game/systems/controlSystem'
+import { getSingleton } from '@game/systems/singletonSystem'
 import { assert } from '@utils/assertion'
 import { Graphics } from 'pixi.js'
 import { SegmentHitResult, segmentSearchGenerator } from '../segmentSearcher/segmentSearcherAI'
@@ -28,12 +28,10 @@ type FreeAimState = {
 type LaserSightState = LockingAimState | FreeAimState
 
 const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
-  const playerFamily = new FamilyBuilder(world).include('Player').build()
-  const cameraFamily = new FamilyBuilder(world).include('Camera').build()
   const [collider] = laser.getComponent('Collider').colliders
   while (true) {
-    const [player] = playerFamily.entityArray
-    const [camera] = cameraFamily.entityArray
+    const player = getSingleton('Player', world)
+    const camera = getSingleton('Camera', world)
     const mousePosition = MouseController.position
     const segment = collider.geometry as Segment
     const playerPosition = player.getComponent('Position')
@@ -193,9 +191,8 @@ const getLaserSightStateGenerator = function*(
 }
 
 const updateVisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
-  const playerFamily = new FamilyBuilder(world).include('Player').build()
   const [g] = laser.getComponent('Draw').children as [Graphics]
-  const [player] = playerFamily.entityArray
+  const player = getSingleton('Player', world)
 
   for (const state of getLaserSightStateGenerator(player, laser, world)) {
     const start = player.getComponent('Position')

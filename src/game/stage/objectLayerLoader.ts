@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 import { World } from '@core/ecs/world'
-import { EntityName } from '@game/entities/loader/EntityLoader'
+import { toEntityName } from '@game/entities/loader/EntityLoader'
 import { assert } from '@utils/assertion'
 import { Vec2 } from '@core/math/vec2'
 import { objectList } from './objectList'
@@ -46,7 +46,7 @@ export const loadObjectLayer = (layer: ObjectLayer, world: World, stage: Stage):
     } else {
       const factory = objectList[layer.name as ObjectName]
       assert(factory !== undefined, `object name '${layer.name}' is invalid`)
-      world.addEntity(new factory(layer.name as EntityName, object, world).create())
+      world.addEntity(new factory(toEntityName(layer.name), object, world).create())
     }
   }
 }

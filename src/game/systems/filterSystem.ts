@@ -17,6 +17,7 @@ import {
 import { LIGHT_TAG } from './lightSystem'
 import { SuffocationFilter } from '@game/filters/suffocationFilter'
 import { SUFFOCATION_DAMAGE_INTERVAL } from './airHolderSystem'
+import { getSingleton } from './singletonSystem'
 
 export class FilterSystem extends System {
   private airFilter: AirFilter
@@ -24,8 +25,6 @@ export class FilterSystem extends System {
   private suffocationFilter: SuffocationFilter
   private lights: Array<Entity>
   private airFamily: Family
-  private cameraFamily: Family
-  private playerFamily: Family
   private lightSearcher: Entity
 
   public static settings = {
@@ -52,8 +51,6 @@ export class FilterSystem extends System {
     this.suffocationFilter = new SuffocationFilter({ x: windowSize.width, y: windowSize.height })
     this.lights = []
     this.airFamily = new FamilyBuilder(world).include('Air').build()
-    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
-    this.playerFamily = new FamilyBuilder(world).include('Player').build()
 
     this.lightSearcher = new Entity()
 
@@ -93,8 +90,7 @@ export class FilterSystem extends System {
     after: ['CameraSystem:update'],
   })
   public update(): void {
-    if (this.cameraFamily.entityArray.length === 0) return
-    const [camera] = this.cameraFamily.entityArray
+    const camera = getSingleton('Camera', this.world)
     this.updateAirFilter(camera)
     this.updateDarknessFilter(camera)
     this.updateSuffocationFilter()
@@ -140,7 +136,7 @@ export class FilterSystem extends System {
   }
 
   private updateSuffocationFilter(): void {
-    const [player] = this.playerFamily.entityArray
+    const player = getSingleton('Player', this.world)
     const suffocationRate = Math.min(
       1,
       player.getComponent('AirHolder').suffocationDamageCount / SUFFOCATION_DAMAGE_INTERVAL

@@ -10,6 +10,7 @@ import { AirHolderComponent } from 'src/game/components/airHolderComponent'
 import { AnimationStateComponent } from 'src/game/components/animationStateComponent'
 import { AttackComponent } from 'src/game/components/attackComponent'
 import { BackgroundComponent } from 'src/game/components/backgroundComponent'
+import { BgmComponent } from 'src/game/components/bgmComponent'
 import { BulletComponent } from 'src/game/components/bulletComponent'
 import { ButtonComponent } from 'src/game/components/buttonComponent'
 import { CameraComponent } from 'src/game/components/cameraComponent'
@@ -35,6 +36,7 @@ export interface ComponentMap {
   AnimationState: AnimationStateComponent
   Attack: AttackComponent
   Background: BackgroundComponent
+  Bgm: BgmComponent
   Bullet: BulletComponent
   Button: ButtonComponent
   Camera: CameraComponent

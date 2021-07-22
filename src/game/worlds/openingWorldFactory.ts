@@ -4,6 +4,7 @@ import { Container, Graphics } from 'pixi.js'
 import DrawSystem from '@game/systems/drawSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
+import { SingletonSystem } from '@game/systems/singletonSystem'
 
 export class OpeningWorldFactory {
   public create(): World {
@@ -35,7 +36,8 @@ export class OpeningWorldFactory {
     world.addSystem(
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
       new CameraSystem(world, cameraContainer),
-      new ControlSystem(world)
+      new ControlSystem(world),
+      new SingletonSystem(world)
     )
 
     return world

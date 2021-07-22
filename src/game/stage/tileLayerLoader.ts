@@ -8,7 +8,8 @@ import { Entity } from '@core/ecs/entity'
 import WallFactory from '@game/entities/wallFactory'
 import { Random } from '@utils/random'
 import { CustomPropertyType, getCustomProperty } from './customProperty'
-import { SoundName } from '@core/sound/sound'
+import { toSoundName } from '@core/sound/sound'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 type TileName = keyof typeof tileList
 
@@ -82,7 +83,7 @@ export class TileLayerLoader {
 
     const bgmName = getCustomProperty<string>(layer, 'bgm')
     if (bgmName !== undefined) {
-      this.stage.setBGM(bgmName as SoundName)
+      this.world.addEntity(new BgmFactory(toSoundName(bgmName)).create())
     }
   }
 

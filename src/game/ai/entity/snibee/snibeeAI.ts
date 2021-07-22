@@ -5,12 +5,12 @@ import { suspendable } from '@core/behaviour/suspendable'
 import { isAlive } from '@game/ai/entity/common/condition/isAlive'
 import { kill } from '@game/ai/entity/common/action/kill'
 import { emitAir } from '@game/ai/entity/common/action/emitAir'
-import { FamilyBuilder } from '@core/ecs/family'
 import { BulletFactory } from '@game/entities/bulletFactory'
 import { wait } from '@core/behaviour/wait'
 import { parallelAll } from '@core/behaviour/composite'
 import { animate } from '@game/ai/entity/common/action/animate'
 import { repeat } from '@core/behaviour/repeat'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -80,10 +80,10 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
 }
 
 const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
-  const playerEntity = new FamilyBuilder(world).include('Player').build().entityArray[0]
+  const player = getSingleton('Player', world)
   yield* parallelAll([
-    moveAI(entity, playerEntity),
-    shootAI(entity, world, playerEntity),
+    moveAI(entity, player),
+    shootAI(entity, world, player),
     animate({ entity, state: 'Alive', loopCount: Infinity }),
   ])
 }

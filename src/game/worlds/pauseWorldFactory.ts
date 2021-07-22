@@ -4,6 +4,7 @@ import DrawSystem from '@game/systems/drawSystem'
 import { Container, filters, Graphics } from 'pixi.js'
 import { windowSize } from '@core/application'
 import { CameraFactory } from '@game/entities/cameraFactory'
+import { SingletonSystem } from '@game/systems/singletonSystem'
 
 export class PauseWorldFactory {
   public create(): { world: World; alphaFilter: filters.AlphaFilter } {
@@ -35,7 +36,8 @@ export class PauseWorldFactory {
 
     world.addSystem(
       new ControlSystem(world),
-      new DrawSystem(world, worldContainer, worldUIContainer, uiContainer)
+      new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
+      new SingletonSystem(world)
     )
 
     const camera = new CameraFactory().create()

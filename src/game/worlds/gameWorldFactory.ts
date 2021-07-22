@@ -23,6 +23,7 @@ import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 import SoundSystem from '@game/systems/soundSystem'
+import { SingletonSystem } from '@game/systems/singletonSystem'
 
 export class GameWorldFactory {
   public create(): World {
@@ -82,7 +83,8 @@ export class GameWorldFactory {
       new EventSensorSystem(world),
       new HPSystem(world, worldUIContainer),
       new BackgroundSystem(world),
-      new SoundSystem(world)
+      new SoundSystem(world),
+      new SingletonSystem(world)
     )
     return world
   }

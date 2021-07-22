@@ -4,6 +4,11 @@ import { soundURL } from './soundURL'
 
 export type SoundName = keyof typeof soundURL
 
+export const toSoundName = (s: string): SoundName => {
+  assert(s in soundURL, `'${s} is not SoundName`)
+  return s as SoundName
+}
+
 export type PlayOptions = {
   volume: number
   pan?: number

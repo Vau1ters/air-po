@@ -1,9 +1,8 @@
-import { Family } from '@core/ecs/family'
+import { World } from '@core/ecs/world'
 import { isAlive } from '@game/ai/entity/common/condition/isAlive'
-import { assertSingle } from '@utils/assertion'
+import { getSingleton } from '@game/systems/singletonSystem'
 
-export const isPlayerAlive = (playerFamily: Family) => (): boolean => {
-  assertSingle(playerFamily.entityArray.length, 'player')
-  const [playerEntity] = playerFamily.entityArray
-  return isAlive(playerEntity)()
+export const isPlayerAlive = (world: World) => (): boolean => {
+  const player = getSingleton('Player', world)
+  return isAlive(player)()
 }
