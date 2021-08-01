@@ -91,17 +91,6 @@ export class World {
     return this.entities.has(entity)
   }
 
-  public reset(): void {
-    const entities = new Set(this.entities) // to ensure the order of actual remove and callback
-    this.entities.clear()
-    for (const entity of entities) {
-      this.entityRemovedEvent.notify(entity)
-    }
-    for (const system of this.systems) {
-      system.init()
-    }
-  }
-
   public addSystem(...systems: System[]): void {
     for (const system of systems) {
       system.init()

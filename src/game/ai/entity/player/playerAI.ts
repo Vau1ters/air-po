@@ -4,6 +4,7 @@ import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { getSingleton } from '@game/systems/singletonSystem'
 import { animate } from '../common/action/animate'
 import { isAlive } from '../common/condition/isAlive'
 import { fluffAI } from './fluff/fluffAI'
@@ -75,4 +76,7 @@ export const playerAI = function*(entity: Entity, world: World): Behaviour<void>
   yield* suspendable(isAlive(entity), playerControl(entity, world))
   yield* animate({ entity, state: 'Dying' })
   yield* wait(60)
+  getSingleton('GameEvent', world).getComponent('GameEvent').event = {
+    type: 'playerDie',
+  }
 }

@@ -24,7 +24,7 @@ import BackgroundSystem from '@game/systems/backgroundSystem'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 import SoundSystem from '@game/systems/soundSystem'
 import { SingletonSystem } from '@game/systems/singletonSystem'
-import { BgmFactory } from '@game/entities/bgmFactory'
+import { GameEventFactory } from '@game/entities/gameEventFactory'
 
 export class GameWorldFactory {
   public create(): World {
@@ -87,7 +87,7 @@ export class GameWorldFactory {
       new BackgroundSystem(world),
       new SoundSystem(world)
     )
-    world.addEntity(new BgmFactory().create())
+    world.addEntity(new GameEventFactory().create())
     return world
   }
 }
