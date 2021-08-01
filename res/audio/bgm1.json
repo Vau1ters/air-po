@@ -1,7 +1,7 @@
 {
   "name": "bgm1",
   "path": "bgm1.mp3",
-  "maxVolume": 0.1,
+  "maxVolume": 0.05,
   "loop": {
     "start": 14,
     "end": 65
