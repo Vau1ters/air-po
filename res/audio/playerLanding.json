@@ -1,5 +1,5 @@
 {
   "name": "playerLanding",
   "path": "playerLanding.ogg",
-  "volume": 0.1
+  "maxVolume": 0.1
 }

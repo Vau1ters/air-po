@@ -15,7 +15,7 @@ export type PlayOptions = {
 
 type SoundBuffer = {
   audioBuffer: AudioBuffer
-  volume: number
+  maxVolume: number
   loop?: {
     start: number
     end: number
@@ -43,7 +43,7 @@ export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance 
   let node: AudioNode = source
 
   const gainNode = ctx.createGain()
-  gainNode.gain.value = buffer.volume
+  gainNode.gain.value = buffer.maxVolume
   node.connect(gainNode)
   node = gainNode
 
@@ -56,7 +56,7 @@ export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance 
   }
   node.connect(ctx.destination)
 
-  const instance = new SoundInstance(source, gainNode, panNode)
+  const instance = new SoundInstance(buffer.maxVolume, source, gainNode, panNode)
 
   source.start(0)
   source.onended = (): void => {
@@ -81,7 +81,7 @@ export const init = async (): Promise<void> => {
     const audioBuffer = await load(sound.path)
     soundStore[name] = {
       audioBuffer,
-      volume: sound.volume,
+      maxVolume: sound.maxVolume,
       loop: sound.loop,
     }
   }

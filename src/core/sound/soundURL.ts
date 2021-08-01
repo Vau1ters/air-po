@@ -30,7 +30,7 @@ import start from '@res/audio/start.json'
 
 export type AudioSetting = {
   path: string
-  volume: number
+  maxVolume: number
   loop?: {
     start: number
     end: number

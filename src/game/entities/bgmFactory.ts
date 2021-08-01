@@ -14,10 +14,7 @@ export class BgmFactory extends EntityFactory {
     const entity = new Entity()
     entity.addComponent('Bgm', new BgmComponent())
     entity.addComponent('Ai', new AiComponent(bgmAI(entity)))
-
-    const bgm = entity.getComponent('Bgm')
-    bgm.maxVolume = 0.05
-    bgm.start(this.name)
+    entity.getComponent('Bgm').start(this.name)
     return entity
   }
 }

@@ -1,5 +1,5 @@
 {
   "name": "danball",
   "path": "danball.ogg",
-  "volume": 0.1
+  "maxVolume": 0.1
 }

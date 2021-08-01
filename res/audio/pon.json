@@ -1,5 +1,5 @@
 {
   "name": "pon",
   "path": "pon.ogg",
-  "volume": 0.1
+  "maxVolume": 0.1
 }

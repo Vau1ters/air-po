@@ -4,7 +4,7 @@
 
 export type AudioSetting = {
   path: string
-  volume: number
+  maxVolume: number
   loop?: {
     start: number
     end: number

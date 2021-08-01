@@ -4,13 +4,14 @@ export class SoundInstance {
   private _completed = false
 
   constructor(
+    private readonly maxVolume: number,
     private source: AudioBufferSourceNode,
     private gainNode: GainNode,
     private panNode?: StereoPannerNode
   ) {}
 
   set volume(value: number) {
-    this.gainNode.gain.value = Math.min(1, value)
+    this.gainNode.gain.value = this.maxVolume * Math.min(1, value)
   }
 
   get volume(): number {

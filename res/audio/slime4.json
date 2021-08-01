@@ -1,5 +1,5 @@
 {
   "name": "slime4",
   "path": "slime4.ogg",
-  "volume": 0.1
+  "maxVolume": 0.1
 }

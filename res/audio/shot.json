@@ -1,5 +1,5 @@
 {
   "name": "shot",
   "path": "shot.ogg",
-  "volume": 0.01
+  "maxVolume": 0.1
 }

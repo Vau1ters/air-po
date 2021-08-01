@@ -1,5 +1,5 @@
 {
   "name": "playerWalk",
   "path": "playerWalk.ogg",
-  "volume": 0.1
+  "maxVolume": 0.1
 }

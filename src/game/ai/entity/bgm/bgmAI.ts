@@ -8,15 +8,14 @@ import { BgmComponent } from '@game/components/bgmComponent'
 
 const crossFade = function*(
   prev: SoundInstance | undefined,
-  nextName: SoundName | undefined,
-  bgm: BgmComponent
+  nextName: SoundName | undefined
 ): Behaviour<SoundInstance | undefined> {
   const next = nextName ? play(nextName) : undefined
   yield* ease(linear)(
     60,
     (volume: number): void => {
-      if (next) next.volume = bgm.maxVolume * volume
-      if (prev) prev.volume = bgm.maxVolume * (1 - volume)
+      if (next) next.volume = volume
+      if (prev) prev.volume = 1 - volume
     },
     { from: 0, to: 1 }
   )
@@ -35,6 +34,6 @@ export const bgmAI = function*(entity: Entity): Behaviour<void> {
   let inst = undefined
   while (true) {
     const nextRequest = yield* waitRequest(bgm)
-    inst = yield* crossFade(inst, nextRequest, bgm)
+    inst = yield* crossFade(inst, nextRequest)
   }
 }
