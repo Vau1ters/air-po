@@ -1,7 +1,7 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { laserSightLockEffectAI } from '@game/ai/entity/laserSight/laserSightLockEffectAI'
-import { AIComponent } from '@game/components/aiComponent'
+import { AiComponent } from '@game/components/aiComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { Graphics } from 'pixi.js'
@@ -24,8 +24,8 @@ export class LaserSightLockFactory extends EntityFactory {
       })
     )
     lock.addComponent(
-      'AI',
-      new AIComponent(laserSightLockEffectAI(lock, this.target, this.isDespawning, this.world))
+      'Ai',
+      new AiComponent(laserSightLockEffectAI(lock, this.target, this.isDespawning, this.world))
     )
     return lock
   }

@@ -3,7 +3,6 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import { Boss1GeyserFactory } from '@game/entities/tile/boss1GeyserFactory'
 import { fixedCameraAI } from '../camera/fixedCameraAI'
 
 const CAMERA_OFFSET = new Vec2(-96, -48)
@@ -23,7 +22,7 @@ export const sleep = function*(boss: Entity, world: World): Behaviour<void> {
         fixedCameraAI(
           cameraEntity,
           bossPos.add(CAMERA_OFFSET),
-          (): boolean => boss.getComponent('HP').hp <= 0
+          (): boolean => boss.getComponent('Hp').hp <= 0
         )
       )
       return

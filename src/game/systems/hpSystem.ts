@@ -13,14 +13,14 @@ export class HPSystem extends System {
     this.hpGauge.position.set(0)
     worldContainer.addChild(this.hpGauge)
 
-    this.hpFamily = new FamilyBuilder(world).include('HP', 'Position').build()
+    this.hpFamily = new FamilyBuilder(world).include('Hp', 'Position').build()
   }
 
   public update(): void {
     this.hpGauge.clear()
     this.hpGauge.beginFill(0x30ff70)
     for (const entity of this.hpFamily.entityIterator) {
-      const hp = entity.getComponent('HP')
+      const hp = entity.getComponent('Hp')
       const position = entity.getComponent('Position')
       this.hpGauge.drawRect(position.x - 8, position.y - 12, hp.ratio * 16, 2)
     }

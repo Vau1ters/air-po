@@ -3,39 +3,37 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
 import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
-import { Ray } from '@core/collision/geometry/ray'
+import { Segment } from '@core/collision/geometry/segment'
 import { Entity } from '@core/ecs/entity'
-import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { LaserSightLockFactory } from '@game/entities/laserSightLockFactory'
 import { MouseController } from '@game/systems/controlSystem'
+import { getSingleton } from '@game/systems/singletonSystem'
 import { assert } from '@utils/assertion'
 import { Graphics } from 'pixi.js'
-import { RayHitResult, raySearchGenerator } from '../raySearcher/raySearcherAI'
+import { SegmentHitResult, segmentSearchGenerator } from '../segmentSearcher/segmentSearcherAI'
 
 type Lock = { lock: Entity; despawn: () => void }
 type LockingAimState = {
   state: 'Locking'
   target: Entity
   chasing: number
-  hitResult: RayHitResult
+  hitResult: SegmentHitResult
 }
 type FreeAimState = {
   state: 'Free'
-  hitResult: RayHitResult
+  hitResult: SegmentHitResult
 }
 type LaserSightState = LockingAimState | FreeAimState
 
-const updateInvisibleRay = function*(laser: Entity, world: World): Behaviour<void> {
-  const playerFamily = new FamilyBuilder(world).include('Player').build()
-  const cameraFamily = new FamilyBuilder(world).include('Camera').build()
+const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
   const [collider] = laser.getComponent('Collider').colliders
   while (true) {
-    const [player] = playerFamily.entityArray
-    const [camera] = cameraFamily.entityArray
+    const player = getSingleton('Player', world)
+    const camera = getSingleton('Camera', world)
     const mousePosition = MouseController.position
-    const ray = collider.geometry as Ray
+    const segment = collider.geometry as Segment
     const playerPosition = player.getComponent('Position')
     const cameraPosition = camera.getComponent('Position')
     const mousePositionOnScreen = mousePosition.sub(
@@ -43,17 +41,27 @@ const updateInvisibleRay = function*(laser: Entity, world: World): Behaviour<voi
     )
     const mousePositionOnWorld = cameraPosition.add(mousePositionOnScreen)
 
-    ray.origin = playerPosition
-    ray.end = mousePositionOnWorld
+    const dir = mousePositionOnWorld.sub(playerPosition)
+
+    const ts = [
+      (cameraPosition.x - playerPosition.x - windowSize.width / 2) / dir.x,
+      (cameraPosition.x - playerPosition.x + windowSize.width / 2) / dir.x,
+      (cameraPosition.y - playerPosition.y - windowSize.height / 2) / dir.y,
+      (cameraPosition.y - playerPosition.y + windowSize.height / 2) / dir.y,
+    ]
+    const t = Math.min(...ts.filter(t => t >= 0))
+
+    segment.start = playerPosition
+    segment.end = segment.start.add(dir.mul(t))
     yield
   }
 }
 
-const isDistantEnough = (ray: Ray, entity: Entity): boolean => {
-  return ray.distance(entity.getComponent('Position')) > 20
+const isDistantEnough = (segment: Segment, entity: Entity): boolean => {
+  return segment.distance(entity.getComponent('Position')) > 20
 }
 const shouldLockEntity = (entity: Entity): boolean => {
-  const isEntityAlive = entity.hasComponent('HP') && entity.getComponent('HP').hp > 0
+  const isEntityAlive = entity.hasComponent('Hp') && entity.getComponent('Hp').hp > 0
   const isEntityCloseEnough = entity.getComponent('Draw').visible
   const forceFreeAiming = MouseController.isMousePressing('Right')
 
@@ -76,9 +84,12 @@ const getLaserSightStateGenerator = function*(
   laser: Entity,
   world: World
 ): Generator<LaserSightState, void> {
-  const getClosestHit = raySearchGenerator(laser, { ignoreEntity: player, maximumDistance: 300 })
+  const getClosestHit = segmentSearchGenerator(laser, {
+    ignoreEntity: player,
+    maximumDistance: 300,
+  })
   const [collider] = laser.getComponent('Collider').colliders
-  const ray = collider.geometry as Ray
+  const segment = collider.geometry as Segment
 
   const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
     while (true) {
@@ -94,7 +105,7 @@ const getLaserSightStateGenerator = function*(
       const { entity: currentHittingEntity } = state.hitResult
       if (
         currentHittingEntity?.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
-        (isDistantEnough(ray, entity) || !shouldLockEntity(entity))
+        (isDistantEnough(segment, entity) || !shouldLockEntity(entity))
       ) {
         return
       }
@@ -132,7 +143,7 @@ const getLaserSightStateGenerator = function*(
     yield* easeInChase
   }
 
-  const hitResult: RayHitResult = {
+  const hitResult: SegmentHitResult = {
     point: new Vec2(),
   }
   const assignHitResult = (): void => {
@@ -175,10 +186,9 @@ const getLaserSightStateGenerator = function*(
   }
 }
 
-const updateVisibleRay = function*(laser: Entity, world: World): Behaviour<void> {
-  const playerFamily = new FamilyBuilder(world).include('Player').build()
+const updateVisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
   const [g] = laser.getComponent('Draw').children as [Graphics]
-  const [player] = playerFamily.entityArray
+  const player = getSingleton('Player', world)
 
   for (const state of getLaserSightStateGenerator(player, laser, world)) {
     const start = player.getComponent('Position')
@@ -204,5 +214,5 @@ const updateVisibleRay = function*(laser: Entity, world: World): Behaviour<void>
 }
 
 export const laserSightAI = (laser: Entity, world: World): Behaviour<void> => {
-  return parallelAll([updateInvisibleRay(laser, world), updateVisibleRay(laser, world)])
+  return parallelAll([updateInvisibleSegment(laser, world), updateVisibleSegment(laser, world)])
 }

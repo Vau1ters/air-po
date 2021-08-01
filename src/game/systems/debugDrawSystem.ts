@@ -7,6 +7,7 @@ import { AABB } from '@core/collision/geometry/AABB'
 import { Vec2 } from '@core/math/vec2'
 import { BVHLeaf, BVHNode } from '@core/collision/bvh'
 import CollisionSystem from './collisionSystem'
+import { getSingleton } from './singletonSystem'
 
 export default class DebugDrawSystem extends System {
   private state = {
@@ -17,7 +18,6 @@ export default class DebugDrawSystem extends System {
 
   private positionFamily: Family
   private colliderFamily: Family
-  private cameraFamily: Family
 
   private collisionSystem: CollisionSystem
   private graphics: Graphics = new Graphics()
@@ -27,7 +27,6 @@ export default class DebugDrawSystem extends System {
 
     this.positionFamily = new FamilyBuilder(world).include('Position').build()
     this.colliderFamily = new FamilyBuilder(world).include('Position', 'Collider').build()
-    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.collisionSystem = collisionSystem
 
@@ -38,8 +37,7 @@ export default class DebugDrawSystem extends System {
     this.graphics.clear()
 
     // 表示領域のみ描画して最適化
-    if (this.cameraFamily.entityArray.length === 0) return
-    const [camera] = this.cameraFamily.entityArray
+    const camera = getSingleton('Camera', this.world)
     const cameraPosition = camera.getComponent('Position')
     const cameraX = cameraPosition.x
     const cameraY = cameraPosition.y

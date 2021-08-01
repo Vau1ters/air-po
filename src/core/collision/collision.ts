@@ -6,12 +6,12 @@ import { CollisionResultAirAABB, collideAirAABB } from './collision/Air_AABB'
 import { CollisionResultCircleAABB, collideCircleAABB } from './collision/Circle_AABB'
 import { CollisionResultCircleCircle, collideCircleCircle } from './collision/Circle_Circle'
 import { CollisionResultOBBOBB, collideOBBOBB } from './collision/OBB_OBB'
-import { CollisionResultRayAABB, collideRayAABB } from './collision/Ray_AABB'
+import { CollisionResultSegmentAABB, collideSegmentAABB } from './collision/Segment_AABB'
 import { AABB } from './geometry/AABB'
 import { Air } from './geometry/air'
 import { Circle } from './geometry/circle'
 import { OBB } from './geometry/OBB'
-import { Ray } from './geometry/ray'
+import { Segment } from './geometry/segment'
 
 export type WithHit<T> = { hit: false } | ({ hit: true } & T)
 
@@ -21,7 +21,7 @@ export type CollisionResult =
   | CollisionResultCircleAABB
   | CollisionResultCircleCircle
   | CollisionResultAirAABB
-  | CollisionResultRayAABB
+  | CollisionResultSegmentAABB
 
 export const collide = (
   c1: Collider,
@@ -49,10 +49,10 @@ export const collide = (
     return collideAirAABB(g1, g2)
   } else if (g1 instanceof AABB && g2 instanceof Air) {
     return collideAirAABB(g2, g1)
-  } else if (g1 instanceof Ray && g2 instanceof AABB) {
-    return collideRayAABB(g1, g2)
-  } else if (g1 instanceof AABB && g2 instanceof Ray) {
-    return collideRayAABB(g2, g1)
+  } else if (g1 instanceof Segment && g2 instanceof AABB) {
+    return collideSegmentAABB(g1, g2)
+  } else if (g1 instanceof AABB && g2 instanceof Segment) {
+    return collideSegmentAABB(g2, g1)
   } else {
     assert(false, 'This collision is not implemented.')
   }

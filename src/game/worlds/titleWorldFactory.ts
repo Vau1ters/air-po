@@ -4,13 +4,14 @@ import { Container, Graphics } from 'pixi.js'
 import DrawSystem from '@game/systems/drawSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { MapBuilder } from '@game/map/mapBuilder'
-import map from '@res/map/root.json'
-import { titleWorldAI } from '@game/ai/world/title/titleWorldAI'
+import { loadStage } from '@game/stage/stageLoader'
+import BackgroundSystem from '@game/systems/backgroundSystem'
+import { SingletonSystem } from '@game/systems/singletonSystem'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 export class TitleWorldFactory {
   public create(): World {
-    const world = new World(titleWorldAI)
+    const world = new World()
 
     const cameraContainer = new Container()
 
@@ -35,15 +36,18 @@ export class TitleWorldFactory {
     cameraContainer.addChild(worldUIContainer)
     cameraContainer.addChild(worldContainer)
 
+    world.addEntity(new BgmFactory().create())
+
     world.addSystem(
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
       new CameraSystem(world, cameraContainer),
-      new ControlSystem(world)
+      new ControlSystem(world),
+      new BackgroundSystem(world),
+      new SingletonSystem(world)
     )
 
-    const mapBuilder = new MapBuilder(world)
-    mapBuilder.build(map)
-    mapBuilder.spawnPlayer(0)
+    const stage = loadStage('root', world)
+    stage.spawnPlayer(0)
 
     return world
   }

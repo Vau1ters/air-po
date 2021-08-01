@@ -1,11 +1,18 @@
-export enum Category {
+function strEnum<T extends string>(o: Array<T>): { [K in T]: K } {
+  return o.reduce((res, key) => {
+    res[key] = key
+    return res
+  }, Object.create(null))
+}
+
+export const CategoryDef = strEnum([
   /*
   AIR category is used for
     - being collected by AIR_HOLDER
     - being detected by some sensors
   Process above is done in AirHolderSystem and others
   */
-  AIR,
+  'air',
   /*
   AIR_HOLDER category is used for
     - collecting airs
@@ -14,7 +21,7 @@ export enum Category {
     - 'AIR_HOLDER_TAG' tag
     - 'AIR' mask
   */
-  AIR_HOLDER,
+  'airHolder',
   /*
   BULLET category is used for
     - remove entity from world when contacting a collider with PHYSICS category
@@ -23,7 +30,7 @@ export enum Category {
     - 'BULLET_TAG' tag
     - 'TERRAIN' mask
   */
-  BULLET,
+  'bullet',
   /*
   PHYSICS category is used for
     - updating velocity and position
@@ -33,7 +40,7 @@ export enum Category {
     - 'PHYSICS_TAG' tag
     - 'PHYSICS' or 'TERRAIN' mask
   */
-  PHYSICS,
+  'physics',
   /*
   TERRAIN category is used for
     - solve contact
@@ -42,7 +49,7 @@ export enum Category {
     - 'PHYSICS_TAG' tag
     - 'PHYSICS' mask
   */
-  TERRAIN,
+  'terrain',
   /*
   ATTACK category is used for
     - sending damage
@@ -51,32 +58,31 @@ export enum Category {
     - 'ATTACK_TAG' tag
     - 'HITBOX' mask
   */
-  ATTACK,
+  'attack',
   /*
   PLAYER_HITBOX and ENEMY_HITBOX category is used for
     - receiving damage
   Process above is done in DamageSystem
   */
-  PLAYER_HITBOX,
-  ENEMY_HITBOX,
+  'playerHitbox',
+  'enemyHitbox',
   /*
   ITEM category is used for
     - being detected by player as item
-  Process above is done in PlayerControlSystem
   */
-  ITEM,
+  'item',
   /*
   EQUIPMENT category is used for
     - being detected by player as quipment
   Process above is done in EventSensorSystem
   */
-  EQUIPMENT,
+  'equipment',
   /*
   SENSOR category is used for
     - being detected by player as sensor
   Process above is done in EventSensorSystem
   */
-  SENSOR,
+  'sensor',
   /*
   LIGHT category is used for
     - increasing intensity when contacting AIR
@@ -85,21 +91,20 @@ export enum Category {
     - 'LIGHT_TAG' tag
     - 'AIR' mask
   */
-  LIGHT,
-  DRAW,
-}
+  'light',
+  'draw',
+])
+
+export type Category = keyof typeof CategoryDef
+const AllCategory = Object.keys(CategoryDef) as Category[]
 
 export class CategorySet extends Set<Category> {
-  public static readonly ALL = new CategorySet(
-    ...Object.entries(Category)
-      .filter(t => typeof t[1] === 'number')
-      .map(t => t[1] as Category)
-  )
+  public static readonly ALL = new CategorySet(...AllCategory)
 
   public static readonly NONE = new CategorySet()
 
   public constructor(...categories: Category[]) {
-    super(categories)
+    super([...categories])
   }
 
   public clone(): CategorySet {

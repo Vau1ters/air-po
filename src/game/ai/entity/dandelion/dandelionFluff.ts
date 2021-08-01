@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
-import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import { animate } from '../common/action/animate'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 const INITIAL_VELOCITY = new Vec2(1, 2)
 const BUOYANCY = 0.005
@@ -12,10 +12,7 @@ const OPEN_WAIT_FRAME = 5
 const ROTATE_WAIT_FRAME = 2
 
 export const dandelionFluffBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
-  const player = new FamilyBuilder(world)
-    .include('Player')
-    .build()
-    .entityArray[0].getComponent('Player')
+  const player = getSingleton('Player', world).getComponent('Player')
   const position = entity.getComponent('Position')
 
   const velocity = INITIAL_VELOCITY.copy()

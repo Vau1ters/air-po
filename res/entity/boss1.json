@@ -1,0 +1,29 @@
+{
+  "draw": {
+    "name": "boss1"
+  },
+  "animationState": {},
+  "rigidBody": {
+    "mass": 10,
+    "gravityScale": 1
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [96, 96]
+      },
+      "category": "enemyHitbox",
+      "tag": ["HitBox"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [5, 5]
+      },
+      "category": "physics",
+      "mask": ["terrain"],
+      "tag": ["physics"]
+    }
+  ]
+}

@@ -1,13 +1,12 @@
 import { Container, DisplayObject } from 'pixi.js'
 import { Entity } from '@core/ecs/entity'
-import { Category } from '../entities/category'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
-import { AnimationSprite } from '@core/graphics/animation'
+import { AnimationSprite } from '@core/graphics/animationSprite'
 
 export type ContainerType = 'World' | 'WorldUI' | 'UI'
 
-type DrawComponentOption = {
+export type DrawComponentOption = {
   entity: Entity
   type?: ContainerType
   child?: { sprite: DisplayObject; zIndex?: number; state?: string }
@@ -50,7 +49,7 @@ export class DrawComponent extends Container {
           ? new Vec2(VERY_BIG_NUMBER, VERY_BIG_NUMBER)
           : new Vec2(localBounds.width, localBounds.height),
       },
-      category: Category.DRAW,
+      category: 'draw',
     })
   }
 }

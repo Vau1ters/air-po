@@ -1,0 +1,14 @@
+{ "columns":8,
+ "image":"..\/..\/image\/mushroom.png",
+ "imageheight":56,
+ "imagewidth":640,
+ "margin":0,
+ "name":"mushroom",
+ "spacing":0,
+ "tilecount":8,
+ "tiledversion":"2021.03.23",
+ "tileheight":56,
+ "tilewidth":80,
+ "type":"tileset",
+ "version":1.5
+}

@@ -6,7 +6,7 @@ import { DarknessFilter } from '@game/filters/darknessFilter'
 import { windowSize } from '@core/application'
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { Category, CategorySet } from '@game/entities/category'
+import { CategorySet } from '@game/entities/category'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { PositionComponent } from '@game/components/positionComponent'
 import {
@@ -15,13 +15,16 @@ import {
   CollisionCallbackArgs,
 } from '@game/components/colliderComponent'
 import { LIGHT_TAG } from './lightSystem'
+import { SuffocationFilter } from '@game/filters/suffocationFilter'
+import { SUFFOCATION_DAMAGE_INTERVAL } from './airHolderSystem'
+import { getSingleton } from './singletonSystem'
 
 export class FilterSystem extends System {
   private airFilter: AirFilter
   private darknessFilter: DarknessFilter
+  private suffocationFilter: SuffocationFilter
   private lights: Array<Entity>
   private airFamily: Family
-  private cameraFamily: Family
   private lightSearcher: Entity
 
   public static settings = {
@@ -45,9 +48,9 @@ export class FilterSystem extends System {
       { x: windowSize.width, y: windowSize.height },
       FilterSystem.settings.darkness
     )
+    this.suffocationFilter = new SuffocationFilter({ x: windowSize.width, y: windowSize.height })
     this.lights = []
     this.airFamily = new FamilyBuilder(world).include('Air').build()
-    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.lightSearcher = new Entity()
 
@@ -61,8 +64,8 @@ export class FilterSystem extends System {
             offset: new Vec2(windowSize.width / 2, windowSize.height / 2),
             size: new Vec2(windowSize.width, windowSize.height),
           },
-          category: Category.SENSOR,
-          mask: new CategorySet(Category.LIGHT),
+          category: 'sensor',
+          mask: new CategorySet('light'),
           callbacks: [
             (args: CollisionCallbackArgs): void => {
               const { other } = args
@@ -75,7 +78,7 @@ export class FilterSystem extends System {
     )
     this.lightSearcher.addComponent('Position', new PositionComponent())
 
-    container.filters = [this.airFilter, this.darknessFilter]
+    container.filters = [this.airFilter, this.darknessFilter, this.suffocationFilter]
   }
 
   public init(): void {
@@ -87,10 +90,10 @@ export class FilterSystem extends System {
     after: ['CameraSystem:update'],
   })
   public update(): void {
-    if (this.cameraFamily.entityArray.length === 0) return
-    const [camera] = this.cameraFamily.entityArray
+    const camera = getSingleton('Camera', this.world)
     this.updateAirFilter(camera)
     this.updateDarknessFilter(camera)
+    this.updateSuffocationFilter()
     this.updateSearcher(camera)
   }
 
@@ -130,6 +133,15 @@ export class FilterSystem extends System {
       }
     })
     this.lights = []
+  }
+
+  private updateSuffocationFilter(): void {
+    const player = getSingleton('Player', this.world)
+    const suffocationRate = Math.min(
+      1,
+      player.getComponent('AirHolder').suffocationDamageCount / SUFFOCATION_DAMAGE_INTERVAL
+    )
+    this.suffocationFilter.updateUniforms(suffocationRate)
   }
 
   private updateSearcher(camera: Entity): void {

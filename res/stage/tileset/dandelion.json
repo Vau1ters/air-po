@@ -1,0 +1,14 @@
+{ "columns":7,
+ "image":"../../image/dandelion.png",
+ "imageheight":80,
+ "imagewidth":560,
+ "margin":0,
+ "name":"dandelion",
+ "spacing":0,
+ "tilecount":7,
+ "tiledversion":"2021.03.23",
+ "tileheight":80,
+ "tilewidth":80,
+ "type":"tileset",
+ "version":1.5
+}

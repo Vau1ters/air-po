@@ -9,14 +9,14 @@ export default class AISystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.family = new FamilyBuilder(world).include('AI').build()
+    this.family = new FamilyBuilder(world).include('Ai').build()
 
     this.family.entityAddedEvent.addObserver((entity: Entity) => {
-      const ai = entity.getComponent('AI')
+      const ai = entity.getComponent('Ai')
       world.processManager.addProcess(ai.proc)
     })
     this.family.entityRemovedEvent.addObserver((entity: Entity) => {
-      const ai = entity.getComponent('AI')
+      const ai = entity.getComponent('Ai')
       world.processManager.removeProcess(ai.proc)
     })
   }

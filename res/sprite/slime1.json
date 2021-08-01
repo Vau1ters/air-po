@@ -1,0 +1,25 @@
+{
+  "name": "slime1",
+  "path": "slime1.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "Idling": [3, 4, 0, 1, 2],
+      "Landing": [5, 6, 7],
+      "Jumping": [8, 9, 10, 11, 12],
+      "Dying": [13, 14, 15, 16, 17, 18, 19, 20, 21]
+    },
+    "speed": {
+      "Idling": 8,
+      "Jumping": 5,
+      "Landing": 5,
+      "Dying": 5
+    },
+    "default": "Idling"
+  }
+}

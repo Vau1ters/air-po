@@ -8,9 +8,7 @@ import DrawSystem from '@game/systems/drawSystem'
 import { AirSystem } from '@game/systems/airSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { PlayerControlSystem } from '@game/systems/playerControlSystem'
 import { BulletSystem } from '@game/systems/bulletSystem'
-import { Map, MapBuilder } from '@game/map/mapBuilder'
 import AISystem from '@game/systems/aiSystem'
 import InvincibleSystem from '@game/systems/invincibleSystem'
 import { DamageSystem } from '@game/systems/damageSystem'
@@ -19,17 +17,18 @@ import * as PIXI from 'pixi.js'
 import { FilterSystem } from '@game/systems/filterSystem'
 import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
-import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
 import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
 import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
-import { Entity } from '@core/ecs/entity'
+import BackgroundSystem from '@game/systems/backgroundSystem'
+import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
+import SoundSystem from '@game/systems/soundSystem'
+import { SingletonSystem } from '@game/systems/singletonSystem'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 export class GameWorldFactory {
-  private mapBuilder?: MapBuilder
-
-  public create(map: Map): World {
-    const world = new World(gameWorldAI(map))
+  public create(): World {
+    const world = new World()
 
     const filterContainer = new Container()
 
@@ -65,14 +64,15 @@ export class GameWorldFactory {
 
     const collisionSystem = new CollisionSystem(world)
     world.addSystem(
+      new SingletonSystem(world),
       new GravitySystem(world),
       new PhysicsSystem(world),
       collisionSystem,
       new AISystem(world),
-      new PlayerControlSystem(world),
       new BulletSystem(world),
       new InvincibleSystem(world),
       new DamageSystem(world),
+      new DamageEffectSystem(world),
       new FilterSystem(world, filterContainer),
       new FilterEffectSystem(world, world.stage),
       new AirSystem(world),
@@ -83,20 +83,11 @@ export class GameWorldFactory {
       new CameraSystem(world, cameraContainer),
       new ControlSystem(world),
       new EventSensorSystem(world),
-      new HPSystem(world, worldUIContainer)
+      new HPSystem(world, worldUIContainer),
+      new BackgroundSystem(world),
+      new SoundSystem(world)
     )
-
-    this.mapBuilder = new MapBuilder(world)
-    this.mapBuilder.build(map)
-
+    world.addEntity(new BgmFactory().create())
     return world
-  }
-
-  spawnPlayer(spawnerID: number): void {
-    this.mapBuilder?.spawnPlayer(spawnerID)
-  }
-
-  respawnPlayer(player: Entity): void {
-    this.mapBuilder?.spawnPlayer(player.getComponent('Player').spawnerID)
   }
 }
