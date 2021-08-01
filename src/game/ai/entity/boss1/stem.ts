@@ -1,8 +1,12 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Entity } from '@core/ecs/entity'
+import { World } from '@core/ecs/world'
+import { AnimationSprite } from '@core/graphics/animationSprite'
+import { createSprite, getSpriteBuffer, SpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
-import RoseStem from '@res/image/roseStem.png'
+import { AiComponent } from '@game/components/aiComponent'
+import { calcDirection } from '@utils/direction'
 import * as PIXI from 'pixi.js'
 
 export type StemShape = (t: number) => Vec2
@@ -34,18 +38,61 @@ export const transiteShape = function*(
   }
 }
 
+const fragment = (
+  points: Array<PIXI.Point>,
+  rate: number,
+  offsetLength: number,
+  offsetAngle: number,
+  spriteName: SpriteName,
+  boss: Entity,
+  world: World
+): AnimationSprite => {
+  const index = Math.floor((points.length - 1) * rate)
+  const fraction = (points.length - 1) * rate - index
+  const fragment = createSprite(spriteName)
+  fragment.zIndex = -2
+  const entity = new Entity()
+  entity.addComponent(
+    'Ai',
+    new AiComponent(
+      (function*(): Generator<void> {
+        while (boss.getComponent('Hp').hp > 0) {
+          const p0 = points[index]
+          const p1 = points[index + 1]
+          const v0 = new Vec2(p0.x, p0.y)
+          const v1 = new Vec2(p1.x, p1.y)
+          const d = v1.sub(v0)
+          const angle = Math.atan2(d.y, d.x) + offsetAngle
+          const v = v0
+            .add(d.mul(fraction))
+            .add(new Vec2(Math.cos(angle), Math.sin(angle)).mul(offsetLength))
+          fragment.position.set(v.x, v.y)
+          fragment.state = calcDirection(angle)
+          yield
+        }
+      })()
+    )
+  )
+  world.addEntity(entity)
+  return fragment
+}
+
 const addStem = (boss: Entity, width: number): Array<PIXI.Point> => {
   const points = new Array<PIXI.Point>(100)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
 
-  const stem = new PIXI.SimpleRope(PIXI.Texture.from(RoseStem), points, width)
+  const stem = new PIXI.SimpleRope(
+    getSpriteBuffer('boss1Stem').definitions['Default'].textures[0],
+    points,
+    width
+  )
   stem.tint = 0x22aa22
   stem.zIndex = -1
   boss.getComponent('Draw').addChild(stem)
   return points
 }
 
-export const stem = function*(state: StemState, boss: Entity): Behaviour<void> {
+export const stem = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   const bossPosition = boss.getComponent('Position')
   const [_, rootCollider] = boss.getComponent('Collider').colliders
   const root = rootCollider.geometry as AABB
@@ -53,6 +100,35 @@ export const stem = function*(state: StemState, boss: Entity): Behaviour<void> {
   boss.getComponent('Draw').sortableChildren = true
   const stemPoints = addStem(boss, 1.0)
   const armPointsList = state.arms.map(_ => addStem(boss, 0.6))
+
+  for (let i = 0; i < 10; i++) {
+    boss
+      .getComponent('Draw')
+      .addChild(fragment(stemPoints, i / 10, 5, Math.PI / 2, 'boss1Needle', boss, world))
+    boss
+      .getComponent('Draw')
+      .addChild(
+        fragment(stemPoints, 0.5 / 10 + i / 10, 5, -Math.PI / 2, 'boss1Needle', boss, world)
+      )
+  }
+  for (const arm of armPointsList) {
+    for (let i = 0; i < 10; i++) {
+      boss
+        .getComponent('Draw')
+        .addChild(fragment(arm, i / 10, 3, Math.PI / 2, 'boss1Needle', boss, world))
+      boss
+        .getComponent('Draw')
+        .addChild(fragment(arm, 0.5 / 10 + i / 10, 3, -Math.PI / 2, 'boss1Needle', boss, world))
+    }
+    for (let i = 0; i < 3; i++) {
+      boss
+        .getComponent('Draw')
+        .addChild(fragment(arm, 0.5 / 20 + i / 3, 8, Math.PI / 2, 'boss1Leaf', boss, world))
+      boss
+        .getComponent('Draw')
+        .addChild(fragment(arm, 0.5 / 20 + i / 3, 8, -Math.PI / 2, 'boss1Leaf', boss, world))
+    }
+  }
 
   while (true) {
     const { stem } = state

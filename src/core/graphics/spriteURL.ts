@@ -8,6 +8,9 @@ import background2 from '@res/sprite/background2.json'
 import ballBullet from '@res/sprite/ballBullet.json'
 import balloonVine from '@res/sprite/balloonVine.json'
 import boss1 from '@res/sprite/boss1.json'
+import boss1Leaf from '@res/sprite/boss1Leaf.json'
+import boss1Needle from '@res/sprite/boss1Needle.json'
+import boss1Stem from '@res/sprite/boss1Stem.json'
 import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
@@ -40,6 +43,9 @@ export const spriteURL = {
   ballBullet,
   balloonVine,
   boss1,
+  boss1Leaf,
+  boss1Needle,
+  boss1Stem,
   dandelion,
   dandelionFluff,
   enemy1,

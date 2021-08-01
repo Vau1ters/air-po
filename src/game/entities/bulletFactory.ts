@@ -9,6 +9,7 @@ import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { createSprite, SpriteName } from '@core/graphics/art'
 import { assert } from '@utils/assertion'
 import { loadEntity } from './loader/EntityLoader'
+import { calcDirection } from '@utils/direction'
 
 const bulletDefinition: { [keys in BulletType]: SpriteName } = {
   ball: 'ballBullet',
@@ -48,27 +49,6 @@ export class BulletFactory extends EntityFactory {
 
     const entity = loadEntity(this.shooterType === 'player' ? 'playerBullet' : 'enemyBullet')
 
-    const radAngle = (this.angle / Math.PI) * 180
-    const index = Math.floor(((radAngle + 360 + 180 / 16) / 360) * 16) % 16
-    const directions = [
-      'Right',
-      'RightDownUp',
-      'RightDown',
-      'RightDownDown',
-      'Down',
-      'LeftDownDown',
-      'LeftDown',
-      'LeftDownUp',
-      'Left',
-      'LeftUpDown',
-      'LeftUp',
-      'LeftUpUp',
-      'Up',
-      'RightUpUp',
-      'RightUp',
-      'RightUpDown',
-    ]
-
     entity.addComponent(
       'Position',
       new PositionComponent(
@@ -82,7 +62,7 @@ export class BulletFactory extends EntityFactory {
         entity,
         child: {
           sprite: createSprite(bulletDefinition[this.type]),
-          state: directions[index],
+          state: calcDirection(this.angle),
         },
       })
     )

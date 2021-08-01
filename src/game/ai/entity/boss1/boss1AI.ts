@@ -35,7 +35,7 @@ export const boss1AI = function*(boss: Entity, world: World): Behaviour<void> {
     isAlive(boss),
     parallelAll([
       animate({ entity: boss, state: 'Close', loopCount: Infinity }),
-      stem(state, boss),
+      stem(state, boss, world),
       boss1Move(state, boss, world),
     ])
   )

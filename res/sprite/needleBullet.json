@@ -14,17 +14,17 @@
       "Down": [2],
       "LeftDownDown": [3],
       "LeftDown": [4],
-      "LeftDownUp": [5],
+      "LeftLeftDown": [5],
       "Left": [6],
-      "LeftUpDown": [7],
+      "LeftLeftUp": [7],
       "LeftUp": [8],
       "LeftUpUp": [9],
       "Up": [10],
       "RightUpUp": [11],
       "RightUp": [12],
-      "RightUpDown": [13],
+      "RightRightUp": [13],
       "Right": [14],
-      "RightDownUp": [15]
+      "RightRightDown": [15]
     },
     "default": "Right"
   }
