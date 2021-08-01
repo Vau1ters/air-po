@@ -8,12 +8,12 @@ import { AABB } from '@core/collision/geometry/AABB'
 import { Vec2 } from '@core/math/vec2'
 import { BVH } from '@core/collision/bvh'
 import { ContainerType } from '@game/components/drawComponent'
+import { getSingleton } from './singletonSystem'
 
 export default class DrawSystem extends System {
   private drawFamily: Family
   private staticDrawFamily: Family
   private dynamicDrawFamily: Family
-  private cameraFamily: Family
 
   private preVisibleEntities: Entity[] = []
   private dynamicBVH: BVH
@@ -44,7 +44,6 @@ export default class DrawSystem extends System {
       .include('Draw')
       .exclude('Static')
       .build()
-    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
 
     this.dynamicBVH = new BVH()
     this.staticBVH = new BVH()
@@ -105,23 +104,22 @@ export default class DrawSystem extends System {
   }
 
   private updateAllState(): void {
-    for (const camera of this.cameraFamily.entityIterator) {
-      const screen = this.createScreenAABB(camera)
-      const visibleEntities = [this.dynamicBVH, this.staticBVH]
-        .map(bvh => bvh.query(screen))
-        .reduce((a, b) => Array.prototype.concat(a, b))
-        .map(c => c.entity)
-      for (const entity of visibleEntities) {
-        const position = entity.getComponent('Position')
-        const container = entity.getComponent('Draw')
-        container.visible = true
-        container.position.set(position.x, position.y)
-        this.preVisibleEntities.push(entity)
-      }
+    const screen = this.createScreenAABB()
+    const visibleEntities = [this.dynamicBVH, this.staticBVH]
+      .map(bvh => bvh.query(screen))
+      .reduce((a, b) => Array.prototype.concat(a, b))
+      .map(c => c.entity)
+    for (const entity of visibleEntities) {
+      const position = entity.getComponent('Position')
+      const container = entity.getComponent('Draw')
+      container.visible = true
+      container.position.set(position.x, position.y)
+      this.preVisibleEntities.push(entity)
     }
   }
 
-  private createScreenAABB(camera: Entity): AABB {
+  private createScreenAABB(): AABB {
+    const camera = getSingleton('Camera', this.world)
     const sw = windowSize.width
     const sh = windowSize.height
     const cpos = camera.getComponent('Position')

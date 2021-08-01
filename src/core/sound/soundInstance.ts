@@ -1,17 +1,17 @@
 import { assert } from '@utils/assertion'
-import { PlayOptions } from './sound'
 
 export class SoundInstance {
   private _completed = false
 
   constructor(
-    public options: PlayOptions,
+    private readonly maxVolume: number,
+    private source: AudioBufferSourceNode,
     private gainNode: GainNode,
     private panNode?: StereoPannerNode
   ) {}
 
   set volume(value: number) {
-    this.gainNode.gain.value = Math.min(1, value)
+    this.gainNode.gain.value = this.maxVolume * Math.min(1, value)
   }
 
   get volume(): number {
@@ -29,5 +29,9 @@ export class SoundInstance {
 
   get completed(): boolean {
     return this._completed
+  }
+
+  stop(): void {
+    this.source.stop(0)
   }
 }

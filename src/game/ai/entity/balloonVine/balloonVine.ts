@@ -1,5 +1,4 @@
 import { Entity } from '@core/ecs/entity'
-import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
@@ -7,9 +6,10 @@ import * as PIXI from 'pixi.js'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/geometry/AABB'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
-  const player = new FamilyBuilder(world).include('Player').build().entityArray[0]
+  const player = getSingleton('Player', world)
   const draw = entity.getComponent('Draw')
   const pickup = entity.getComponent('PickupTarget')
 

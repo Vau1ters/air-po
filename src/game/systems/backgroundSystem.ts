@@ -4,16 +4,15 @@ import { dependsOn, System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { TilingSprite } from 'pixi.js'
+import { getSingleton } from './singletonSystem'
 
 export default class BackgroundSystem extends System {
   private backgroundFamily: Family
-  private cameraFamily: Family
 
   public constructor(world: World) {
     super(world)
 
     this.backgroundFamily = new FamilyBuilder(world).include('Background').build()
-    this.cameraFamily = new FamilyBuilder(world).include('Camera').build()
   }
 
   @dependsOn({
@@ -21,7 +20,7 @@ export default class BackgroundSystem extends System {
     after: ['CameraSystem:update'],
   })
   public update(): void {
-    const [camera] = this.cameraFamily.entityArray
+    const camera = getSingleton('Camera', this.world)
     const cameraPosition = camera.getComponent('Position')
 
     for (const background of this.backgroundFamily.entityIterator) {

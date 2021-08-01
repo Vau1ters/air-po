@@ -17,22 +17,18 @@ import * as PIXI from 'pixi.js'
 import { FilterSystem } from '@game/systems/filterSystem'
 import { LightSystem } from '@game/systems/lightSystem'
 import { EventSensorSystem } from '@game/systems/eventSensorSystem'
-import { gameWorldAI } from '@game/ai/world/game/gameWorldAI'
 import { HPSystem } from '@game/systems/hpSystem'
 import CollisionSystem from '@game/systems/collisionSystem'
 import { FilterEffectSystem } from '@game/systems/filterEffectSystem'
-import { Entity } from '@core/ecs/entity'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 import SoundSystem from '@game/systems/soundSystem'
-import { loadStage, StageName } from '@game/stage/stageLoader'
-import { Stage } from '@game/stage/stage'
+import { SingletonSystem } from '@game/systems/singletonSystem'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 export class GameWorldFactory {
-  private stage?: Stage
-
-  public create(stageName: StageName): World {
-    const world = new World(gameWorldAI(stageName))
+  public create(): World {
+    const world = new World()
 
     const filterContainer = new Container()
 
@@ -68,6 +64,7 @@ export class GameWorldFactory {
 
     const collisionSystem = new CollisionSystem(world)
     world.addSystem(
+      new SingletonSystem(world),
       new GravitySystem(world),
       new PhysicsSystem(world),
       collisionSystem,
@@ -90,17 +87,7 @@ export class GameWorldFactory {
       new BackgroundSystem(world),
       new SoundSystem(world)
     )
-
-    this.stage = loadStage(stageName, world)
-
+    world.addEntity(new BgmFactory().create())
     return world
-  }
-
-  spawnPlayer(spawnerID: number): void {
-    this.stage?.spawnPlayer(spawnerID)
-  }
-
-  respawnPlayer(player: Entity): void {
-    this.stage?.spawnPlayer(player.getComponent('Player').spawnerID)
   }
 }

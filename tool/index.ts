@@ -1,6 +1,6 @@
 import { buildEntity } from './entity'
 import { buildStage } from './stage'
-import { buildSound } from './sound'
+import { buildAudio } from './audio'
 import { buildSprite } from './sprite'
 import { buildTile } from './tile'
 import { buildObject } from './object'
@@ -9,7 +9,7 @@ import * as cp from 'child_process'
 
 const outputFiles: Array<string> = [
   buildSprite(),
-  buildSound(),
+  buildAudio(),
   buildEntity(),
   buildStage(),
   buildTile(),

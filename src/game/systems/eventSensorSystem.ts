@@ -7,16 +7,15 @@ import { EquipmentTypes } from '@game/components/equipmentComponent'
 import * as Sound from '@core/sound/sound'
 import { PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 import { loadStage, StageName } from '@game/stage/stageLoader'
+import { getSingleton } from './singletonSystem'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
-  private playerFamily: Family
 
   constructor(world: World) {
     super(world)
     this.sensorFamily = new FamilyBuilder(world).include('Sensor').build()
     this.sensorFamily.entityAddedEvent.addObserver((e: Entity) => this.onSensorAdded(e))
-    this.playerFamily = new FamilyBuilder(world).include('Player').build()
   }
 
   public update(): void {}
@@ -50,7 +49,7 @@ export class EventSensorSystem extends System {
   }
 
   private async equipItemEvent(equipmentType: EquipmentTypes, equipmentId: number): Promise<void> {
-    const [player] = this.playerFamily.entityArray
+    const player = getSingleton('Player', this.world)
     const equipmentComponent = player.getComponent('Equipment')
     equipmentComponent.equipEvent.notify(equipmentType)
     Sound.play('getAirTank')

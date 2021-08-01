@@ -6,6 +6,11 @@ import { spriteURL } from './spriteURL'
 
 export type SpriteName = keyof typeof spriteURL
 
+export const toSpriteName = (s: string): SpriteName => {
+  assert(s in spriteURL, `'${s} is not SpriteName`)
+  return s as SpriteName
+}
+
 type Setting = {
   name: string
   path: string

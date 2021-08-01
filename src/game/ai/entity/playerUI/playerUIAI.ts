@@ -2,11 +2,11 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
 import { sequent } from '@core/behaviour/sequence'
 import { Entity } from '@core/ecs/entity'
-import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { assert } from '@utils/assertion'
 import { animate } from '../common/action/animate'
 import { UIComponentFactory } from '@game/entities/ui/uiComponentFactory'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 const UI_SETTING = {
   WEAPON: {
@@ -169,13 +169,10 @@ const renderPlayerAir = function*(player: Entity, world: World): Behaviour<void>
 }
 
 export const playerUIAI = function*(world: World): Behaviour<void> {
-  const playerFamily = new FamilyBuilder(world).include('Player').build()
-
-  for (const player of playerFamily.entityIterator) {
-    yield* parallelAll([
-      renderPlayerHp(player, world),
-      renderPlayerAir(player, world),
-      renderPlayerWeapon(world),
-    ])
-  }
+  const player = getSingleton('Player', world)
+  yield* parallelAll([
+    renderPlayerHp(player, world),
+    renderPlayerAir(player, world),
+    renderPlayerWeapon(world),
+  ])
 }

@@ -7,6 +7,9 @@ import { Stage } from './stage'
 import { Entity } from '@core/ecs/entity'
 import WallFactory from '@game/entities/wallFactory'
 import { Random } from '@utils/random'
+import { CustomPropertyType, getCustomProperty } from './customProperty'
+import { toSoundName } from '@core/sound/sound'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 type TileName = keyof typeof tileList
 
@@ -27,6 +30,7 @@ export const TileLayerType = t.type({
   width: t.number,
   x: t.number,
   y: t.number,
+  properties: t.union([t.array(CustomPropertyType), t.undefined]),
 })
 export type TileLayer = t.TypeOf<typeof TileLayerType>
 
@@ -75,6 +79,13 @@ export class TileLayerLoader {
         const builder = findBuilder(tileId)
         builder.build(new Vec2(x, y), tileSize, tileId - builder.firstgid, layer)
       }
+    }
+
+    const bgmName = getCustomProperty<string>(layer, 'bgm')
+    if (bgmName !== undefined) {
+      getSingleton('Bgm', this.world)
+        .getComponent('Bgm')
+        .start(toSoundName(bgmName))
     }
   }
 

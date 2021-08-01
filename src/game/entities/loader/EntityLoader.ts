@@ -14,6 +14,11 @@ import { assert } from '@utils/assertion'
 
 export type EntityName = keyof typeof entitySetting
 
+export const toEntityName = (s: string): EntityName => {
+  assert(s in entitySetting, `'${s} is not EntityName`)
+  return s as EntityName
+}
+
 const EntitySettingType = t.type({
   draw: t.union([DrawSettingType, t.undefined]),
   animationState: t.union([AnimationStateSettingType, t.undefined]),
