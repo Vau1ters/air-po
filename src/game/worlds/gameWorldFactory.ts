@@ -62,8 +62,6 @@ export class GameWorldFactory {
     cameraContainer.addChild(worldUIContainer)
     cameraContainer.addChild(debugContainer)
 
-    world.addEntity(new BgmFactory().create())
-
     const collisionSystem = new CollisionSystem(world)
     world.addSystem(
       new SingletonSystem(world),
@@ -89,6 +87,7 @@ export class GameWorldFactory {
       new BackgroundSystem(world),
       new SoundSystem(world)
     )
+    world.addEntity(new BgmFactory().create())
     return world
   }
 }
