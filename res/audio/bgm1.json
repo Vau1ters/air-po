@@ -1,0 +1,9 @@
+{
+  "name": "bgm1",
+  "path": "bgm1.mp3",
+  "volume": 0.1,
+  "loop": {
+    "start": 14,
+    "end": 65
+  }
+}

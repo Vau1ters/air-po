@@ -1,11 +1,9 @@
 import { assert } from '@utils/assertion'
-import { PlayOptions } from './sound'
 
 export class SoundInstance {
   private _completed = false
 
   constructor(
-    public options: PlayOptions,
     private source: AudioBufferSourceNode,
     private gainNode: GainNode,
     private panNode?: StereoPannerNode

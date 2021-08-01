@@ -11,7 +11,7 @@ const crossFade = function*(
   nextName: SoundName | undefined,
   bgm: BgmComponent
 ): Behaviour<SoundInstance | undefined> {
-  const next = nextName ? play(nextName, { volume: 0, loop: true }) : undefined
+  const next = nextName ? play(nextName) : undefined
   yield* ease(linear)(
     60,
     (volume: number): void => {
