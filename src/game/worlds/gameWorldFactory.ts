@@ -24,6 +24,7 @@ import BackgroundSystem from '@game/systems/backgroundSystem'
 import { DamageEffectSystem } from '@game/systems/damageEffectSystem'
 import SoundSystem from '@game/systems/soundSystem'
 import { SingletonSystem } from '@game/systems/singletonSystem'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 export class GameWorldFactory {
   public create(): World {
@@ -61,8 +62,11 @@ export class GameWorldFactory {
     cameraContainer.addChild(worldUIContainer)
     cameraContainer.addChild(debugContainer)
 
+    world.addEntity(new BgmFactory().create())
+
     const collisionSystem = new CollisionSystem(world)
     world.addSystem(
+      new SingletonSystem(world),
       new GravitySystem(world),
       new PhysicsSystem(world),
       collisionSystem,
@@ -83,8 +87,7 @@ export class GameWorldFactory {
       new EventSensorSystem(world),
       new HPSystem(world, worldUIContainer),
       new BackgroundSystem(world),
-      new SoundSystem(world),
-      new SingletonSystem(world)
+      new SoundSystem(world)
     )
     return world
   }

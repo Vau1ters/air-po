@@ -7,6 +7,7 @@ import { ControlSystem } from '@game/systems/controlSystem'
 import { loadStage } from '@game/stage/stageLoader'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 import { SingletonSystem } from '@game/systems/singletonSystem'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 export class TitleWorldFactory {
   public create(): World {
@@ -34,6 +35,8 @@ export class TitleWorldFactory {
 
     cameraContainer.addChild(worldUIContainer)
     cameraContainer.addChild(worldContainer)
+
+    world.addEntity(new BgmFactory().create())
 
     world.addSystem(
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),

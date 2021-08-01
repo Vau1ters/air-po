@@ -9,7 +9,7 @@ import WallFactory from '@game/entities/wallFactory'
 import { Random } from '@utils/random'
 import { CustomPropertyType, getCustomProperty } from './customProperty'
 import { toSoundName } from '@core/sound/sound'
-import { BgmFactory } from '@game/entities/bgmFactory'
+import { getSingleton } from '@game/systems/singletonSystem'
 
 type TileName = keyof typeof tileList
 
@@ -83,7 +83,9 @@ export class TileLayerLoader {
 
     const bgmName = getCustomProperty<string>(layer, 'bgm')
     if (bgmName !== undefined) {
-      this.world.addEntity(new BgmFactory(toSoundName(bgmName)).create())
+      getSingleton('Bgm', this.world)
+        .getComponent('Bgm')
+        .start(toSoundName(bgmName))
     }
   }
 
