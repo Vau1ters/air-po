@@ -7,6 +7,7 @@ import { spriteURL } from '@core/graphics/spriteURL'
 export const DrawSettingType = t.type({
   name: t.keyof(spriteURL),
   state: t.union([t.string, t.undefined]),
+  zIndex: t.union([t.number, t.undefined]),
 })
 export type DrawSetting = t.TypeOf<typeof DrawSettingType>
 
@@ -16,6 +17,7 @@ export const loadDrawComponent = (setting: DrawSetting, entity: Entity): DrawCom
     child: {
       sprite: createSprite(setting.name),
       state: setting.state,
+      zIndex: setting.zIndex,
     },
   })
 }

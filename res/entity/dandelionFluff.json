@@ -1,6 +1,7 @@
 {
   "draw": {
-    "name": "dandelionFluff"
+    "name": "dandelionFluff",
+    "zIndex": -1
   },
   "animationState": {},
   "collider": [

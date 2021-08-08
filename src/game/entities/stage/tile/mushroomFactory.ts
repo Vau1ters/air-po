@@ -1,14 +1,12 @@
 import { Entity } from '@core/ecs/entity'
 import { mushroomAI } from '@game/ai/entity/mushroom/mushroomAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { SoundComponent } from '@game/components/soundComponent'
 import { TileEntityFactory } from '@game/entities/tileEntityFactory'
 
 export default class MushroomFactory extends TileEntityFactory {
   public create(): Entity {
     const entity = super.create()
     entity.addComponent('Ai', new AiComponent(mushroomAI(entity, this.world)))
-    entity.addComponent('Sound', new SoundComponent())
 
     const airHolder = entity.getComponent('AirHolder')
     const colliders = entity.getComponent('Collider').colliders.slice(0, 2)
