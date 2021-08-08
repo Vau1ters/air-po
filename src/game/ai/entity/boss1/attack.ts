@@ -1,8 +1,8 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { root } from './root'
-import { shot } from './shot'
+import { root } from './attack/root'
+import { shot } from './attack/shot'
 import { StemState } from './stem'
 import { wait } from './wait'
 
