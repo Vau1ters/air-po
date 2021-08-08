@@ -82,11 +82,9 @@ export class TileLayerLoader {
     }
 
     const bgmName = getCustomProperty<string>(layer, 'bgm')
-    if (bgmName !== undefined) {
-      getSingleton('Bgm', this.world)
-        .getComponent('Bgm')
-        .start(toSoundName(bgmName))
-    }
+    getSingleton('Bgm', this.world)
+      .getComponent('Bgm')
+      .request(bgmName ? toSoundName(bgmName) : undefined)
   }
 
   private loadBuilders(tileSets: Array<TileSet>): Array<Builder> {

@@ -4,22 +4,29 @@ import { KeyController } from '@game/systems/controlSystem'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
-import { isPlayerAlive } from '../common/condition/isPlayerAlive'
 import { loadStage, StageName } from '@game/stage/stageLoader'
 import { suspendable } from '@core/behaviour/suspendable'
 import { pauseFlow } from '../pause/pauseFlow'
 import { Flow } from '../flow'
+import { getSingleton } from '@game/systems/singletonSystem'
+import { assert } from '@utils/assertion'
+import { BgmFactory } from '@game/entities/bgmFactory'
 import { Entity } from '@core/ecs/entity'
-import { getSingleton, isSingleton } from '@game/systems/singletonSystem'
 
-export const gameFlow = function*(stageName: StageName, player?: Entity): Flow {
+export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?: Entity): Flow {
   const gameWorldFactory = new GameWorldFactory()
   const world = gameWorldFactory.create()
+  if (!bgm) {
+    bgm = new BgmFactory().create()
+  }
+  world.addEntity(bgm)
   const stage = loadStage(stageName, world)
 
-  stage.spawnPlayer(player?.getComponent('Player').spawnerID ?? 0)
+  stage.spawnPlayer(spawnerID ?? 0)
 
-  const isGameOn = isPlayerAlive(world)
+  const gameEvent = getSingleton('GameEvent', world).getComponent('GameEvent')
+
+  const isGameOn = (): boolean => gameEvent.event === undefined
   const canExecute = (): boolean => !KeyController.isActionPressed('Pause')
 
   yield* suspendable(
@@ -40,12 +47,16 @@ export const gameFlow = function*(stageName: StageName, player?: Entity): Flow {
   yield* wait(60)
   world.end()
 
-  if (isSingleton('Bgm', world)) {
-    getSingleton('Bgm', world)
-      .getComponent('Bgm')
-      .stop()
-  }
+  assert(gameEvent.event !== undefined, '')
 
-  const nextPlayer = getSingleton('Player', world)
-  return gameFlow(stageName, nextPlayer)
+  switch (gameEvent.event.type) {
+    case 'move':
+      return gameFlow(gameEvent.event.mapName, gameEvent.event.spawnerID, bgm)
+    case 'playerDie':
+      return gameFlow(
+        stageName,
+        getSingleton('Player', world).getComponent('Player').spawnerID,
+        bgm
+      )
+  }
 }

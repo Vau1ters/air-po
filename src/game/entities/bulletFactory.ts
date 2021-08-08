@@ -4,7 +4,6 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { DrawComponent } from '@game/components/drawComponent'
 import { BulletComponent } from '@game/components/bulletComponent'
 import { Vec2 } from '@core/math/vec2'
-import { AttackComponent } from '@game/components/attackComponent'
 import { RigidBodyComponent } from '@game/components/rigidBodyComponent'
 import { createSprite, SpriteName } from '@core/graphics/art'
 import { assert } from '@utils/assertion'
@@ -71,7 +70,6 @@ export class BulletFactory extends EntityFactory {
       new RigidBodyComponent({ velocity: direction.mul(this.speed) })
     )
     entity.addComponent('Bullet', new BulletComponent(this.life))
-    entity.addComponent('Attack', new AttackComponent(1, true))
     return entity
   }
 }

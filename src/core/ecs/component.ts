@@ -17,6 +17,7 @@ import { CameraComponent } from 'src/game/components/cameraComponent'
 import { ColliderComponent } from 'src/game/components/colliderComponent'
 import { DrawComponent } from 'src/game/components/drawComponent'
 import { EquipmentComponent } from 'src/game/components/equipmentComponent'
+import { GameEventComponent } from 'src/game/components/gameEventComponent'
 import { HorizontalDirectionComponent } from 'src/game/components/horizontalDirectionComponent'
 import { HpComponent } from 'src/game/components/hpComponent'
 import { InvincibleComponent } from 'src/game/components/invincibleComponent'
@@ -43,6 +44,7 @@ export interface ComponentMap {
   Collider: ColliderComponent
   Draw: DrawComponent
   Equipment: EquipmentComponent
+  GameEvent: GameEventComponent
   HorizontalDirection: HorizontalDirectionComponent
   Hp: HpComponent
   Invincible: InvincibleComponent
