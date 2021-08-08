@@ -1,0 +1,28 @@
+{
+  "draw": {
+    "name": "poisonousTulip"
+  },
+  "rigidBody": {},
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [8, 8]
+      },
+      "category": "terrain",
+      "mask": ["physics"],
+      "tag": ["physics"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 16]
+      },
+      "category": "enemyHitbox",
+      "tag": ["HitBox"]
+    }
+  ],
+  "hp": {
+    "max": 5
+  }
+}

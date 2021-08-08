@@ -21,6 +21,8 @@ import moss from '@res/sprite/moss.json'
 import mushroom from '@res/sprite/mushroom.json'
 import needleBullet from '@res/sprite/needleBullet.json'
 import player from '@res/sprite/player.json'
+import poison from '@res/sprite/poison.json'
+import poisonousTulip from '@res/sprite/poisonousTulip.json'
 import respawn from '@res/sprite/respawn.json'
 import slime1 from '@res/sprite/slime1.json'
 import snibee from '@res/sprite/snibee.json'
@@ -57,6 +59,8 @@ export const spriteURL = {
   mushroom,
   needleBullet,
   player,
+  poison,
+  poisonousTulip,
   respawn,
   slime1,
   snibee,

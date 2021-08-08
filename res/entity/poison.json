@@ -1,0 +1,23 @@
+{
+  "draw": {
+    "name": "poison"
+  },
+  "rigidBody": {
+    "airResistance": 1.2
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [12, 12]
+      },
+      "category": "attack",
+      "mask": ["playerHitbox"],
+      "tag": ["Attack"]
+    }
+  ],
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": false
+  }
+}
