@@ -1,0 +1,10 @@
+{
+  "name": "landingEffect",
+  "path": "landingEffect.png",
+  "animation": {
+    "state": {
+      "Default": [0, 1, 2, 3, 4, 5]
+    },
+    "default": "Default"
+  }
+}
