@@ -12,6 +12,7 @@ import { loadRigidBodyComponent, RigidBodySettingType } from './component/RigidB
 import { entitySetting } from './entitySetting'
 import { assert } from '@utils/assertion'
 import { HpSettingType, loadHpComponent } from './component/HpComponentLoader'
+import { AttackSettingType, loadAttackComponent } from './component/AttackComponentLoader'
 
 export type EntityName = keyof typeof entitySetting
 
@@ -27,6 +28,7 @@ const EntitySettingType = t.type({
   rigidBody: t.union([RigidBodySettingType, t.undefined]),
   airHolder: t.union([AirHolderSettingType, t.undefined]),
   hp: t.union([HpSettingType, t.undefined]),
+  attack: t.union([AttackSettingType, t.undefined]),
 })
 type EntitySetting = t.TypeOf<typeof EntitySettingType>
 
@@ -55,6 +57,9 @@ export const loadEntity = (name: EntityName): Entity => {
   }
   if (setting.hp) {
     entity.addComponent('Hp', loadHpComponent(setting.hp))
+  }
+  if (setting.attack) {
+    entity.addComponent('Attack', loadAttackComponent(setting.attack))
   }
   return entity
 }

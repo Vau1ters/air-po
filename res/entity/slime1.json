@@ -41,5 +41,9 @@
   ],
   "hp": {
     "max": 2
+  },
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": false
   }
 }
