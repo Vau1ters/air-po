@@ -10,21 +10,21 @@
   "animation": {
     "state": {
       "RightDown": [0],
-      "RightDownDown": [1],
-      "Down": [2],
-      "LeftDownDown": [3],
-      "LeftDown": [4],
-      "LeftLeftDown": [5],
-      "Left": [6],
-      "LeftLeftUp": [7],
-      "LeftUp": [8],
-      "LeftUpUp": [9],
-      "Up": [10],
-      "RightUpUp": [11],
-      "RightUp": [12],
-      "RightRightUp": [13],
-      "Right": [14],
-      "RightRightDown": [15]
+      "RightDownDown": [0],
+      "Down": [0],
+      "LeftDownDown": [0],
+      "LeftDown": [0],
+      "LeftLeftDown": [0],
+      "Left": [0],
+      "LeftLeftUp": [0],
+      "LeftUp": [0],
+      "LeftUpUp": [0],
+      "Up": [0],
+      "RightUpUp": [0],
+      "RightUp": [0],
+      "RightRightUp": [0],
+      "Right": [0],
+      "RightRightDown": [0]
     },
     "default": "Right"
   }

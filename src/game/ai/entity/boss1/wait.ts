@@ -26,7 +26,7 @@ export const wait = function*(state: StemState): Behaviour<void> {
     const t = (i / 100) % 1
     const stem = spline(
       [
-        new Vec2(0, 0),
+        new Vec2(0, 10),
         new Vec2(-8, -32).add(rot(i * 0.02, 10)),
         new Vec2(+32, -64).add(rot(i * 0.04, 15)),
         new Vec2(0, -112).add(rot(i * 0.01, 5)),

@@ -47,27 +47,49 @@ const fragment = (
   boss: Entity,
   world: World
 ): AnimationSprite => {
-  const index = Math.floor((points.length - 1) * rate)
-  const fraction = (points.length - 1) * rate - index
   const fragment = createSprite(spriteName)
   fragment.zIndex = -2
   const entity = new Entity()
+
+  const calcLengthList = (): Array<number> => {
+    const ls: Array<number> = []
+    for (let i = 0; i < points.length - 1; i++) {
+      const p0 = points[i + 0]
+      const p1 = points[i + 1]
+      ls.push(new Vec2(p0.x - p1.x, p0.y - p1.y).length())
+    }
+    return ls
+  }
+
+  const calcPosition = (l: number, ls: Array<number>): Vec2 => {
+    for (let i = 0; i < ls.length; i++) {
+      const li = ls[i]
+      if (l > li) {
+        l -= li
+      } else {
+        const p0 = Vec2.fromPoint(points[i + 0])
+        const p1 = Vec2.fromPoint(points[i + 1])
+        return Vec2.mix(p0, p1, l / li)
+      }
+    }
+    return Vec2.fromPoint(points[points.length - 1])
+  }
+
   entity.addComponent(
     'Ai',
     new AiComponent(
       (function*(): Generator<void> {
         while (boss.getComponent('Hp').hp > 0) {
-          const p0 = points[index]
-          const p1 = points[index + 1]
-          const v0 = new Vec2(p0.x, p0.y)
-          const v1 = new Vec2(p1.x, p1.y)
-          const d = v1.sub(v0)
-          const angle = Math.atan2(d.y, d.x) + offsetAngle
-          const v = v0
-            .add(d.mul(fraction))
-            .add(new Vec2(Math.cos(angle), Math.sin(angle)).mul(offsetLength))
-          fragment.position.set(v.x, v.y)
-          fragment.state = calcDirection(angle)
+          const ls = calcLengthList()
+          const lsum = ls.reduce((a, b) => a + b)
+          if (lsum > 0) {
+            const pos = calcPosition(lsum * rate, ls)
+            const d = calcPosition(lsum * (rate + 0.05), ls).sub(pos)
+            const angle = Math.atan2(d.y, d.x) + offsetAngle
+            const v = pos.add(new Vec2(Math.cos(angle), Math.sin(angle)).mul(offsetLength))
+            fragment.position.set(v.x, v.y)
+            fragment.state = calcDirection(angle)
+          }
           yield
         }
       })()

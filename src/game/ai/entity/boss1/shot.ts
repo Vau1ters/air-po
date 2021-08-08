@@ -38,7 +38,7 @@ const attack = (
 
 const s = (i: number): { stem: StemShape; arms: Array<StemShape> } => {
   const stem = (t: number): Vec2 => {
-    const p = new Vec2(-Math.sin(t * 6 + i * 0.1) * Math.min(10, t * 100), -t * 100)
+    const p = new Vec2(-Math.sin(t * 6 + i * 0.1) * Math.min(10, t * 100), -t * 100 + 10)
     const a = -0.5
     const c = Math.cos(a)
     const s = Math.sin(a)

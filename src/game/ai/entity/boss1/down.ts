@@ -61,7 +61,7 @@ export const down = function*(state: StemState, boss: Entity, world: World): Beh
     const t = i / 100
     const stem = spline(
       [
-        rot(new Vec2(0, 0)),
+        rot(new Vec2(0, 10)),
         pikupiku(rot(new Vec2(-18, -36))),
         pikupiku(rot(new Vec2(-72, -18))),
         rot(new Vec2(-140, 0)),
