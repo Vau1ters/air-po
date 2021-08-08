@@ -6,7 +6,6 @@ import { AiComponent } from '@game/components/aiComponent'
 import { Collider } from '@game/components/colliderComponent'
 import { HorizontalDirectionComponent } from '@game/components/horizontalDirectionComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
-import { HpComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { PositionComponent } from '@game/components/positionComponent'
@@ -53,7 +52,6 @@ export class PlayerFactory extends EntityFactory {
         },
       })
     )
-    entity.addComponent('Hp', new HpComponent(3, 3))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('Player', player)
     entity.addComponent('Equipment', equipment)

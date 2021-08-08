@@ -35,5 +35,8 @@
       "mask": ["playerHitbox"],
       "tag": ["Attack"]
     }
-  ]
+  ],
+  "hp": {
+    "max": 2
+  }
 }
