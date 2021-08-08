@@ -38,5 +38,16 @@
       "mask": ["playerHitbox"],
       "tag": ["Attack"]
     }
-  ]
+  ],
+  "hp": {
+    "max": 2
+  },
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": false
+  },
+  "sound": {},
+  "horizontalDirection": {
+    "looking": "Right"
+  }
 }

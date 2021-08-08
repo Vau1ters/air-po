@@ -1,7 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { balloonVineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { HpComponent } from '@game/components/hpComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
 import { TileEntityFactory } from '@game/entities/tileEntityFactory'
@@ -12,7 +11,6 @@ export default class BalloonVineFactory extends TileEntityFactory {
 
     entity.addComponent('Ai', new AiComponent(balloonVineAI(entity, this.world)))
 
-    entity.addComponent('Hp', new HpComponent(1, 1))
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))
 

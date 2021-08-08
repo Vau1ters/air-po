@@ -11,6 +11,13 @@ import { loadDrawComponent, DrawSettingType } from './component/DrawComponentLoa
 import { loadRigidBodyComponent, RigidBodySettingType } from './component/RigidBodyComponentLoader'
 import { entitySetting } from './entitySetting'
 import { assert } from '@utils/assertion'
+import { HpSettingType, loadHpComponent } from './component/HpComponentLoader'
+import { AttackSettingType, loadAttackComponent } from './component/AttackComponentLoader'
+import { loadSoundComponent, SoundSettingType } from './component/SoundComponentLoader'
+import {
+  HorizontalDirectionSettingType,
+  loadHorizontalDirectionComponent,
+} from './component/HorizontalDirectionLoader'
 
 export type EntityName = keyof typeof entitySetting
 
@@ -25,6 +32,10 @@ const EntitySettingType = t.type({
   collider: t.union([CollidersSettingType, t.undefined]),
   rigidBody: t.union([RigidBodySettingType, t.undefined]),
   airHolder: t.union([AirHolderSettingType, t.undefined]),
+  hp: t.union([HpSettingType, t.undefined]),
+  attack: t.union([AttackSettingType, t.undefined]),
+  sound: t.union([SoundSettingType, t.undefined]),
+  horizontalDirection: t.union([HorizontalDirectionSettingType, t.undefined]),
 })
 type EntitySetting = t.TypeOf<typeof EntitySettingType>
 
@@ -50,6 +61,21 @@ export const loadEntity = (name: EntityName): Entity => {
   }
   if (setting.airHolder) {
     entity.addComponent('AirHolder', loadAirHolderComponent(setting.airHolder))
+  }
+  if (setting.hp) {
+    entity.addComponent('Hp', loadHpComponent(setting.hp))
+  }
+  if (setting.attack) {
+    entity.addComponent('Attack', loadAttackComponent(setting.attack))
+  }
+  if (setting.sound) {
+    entity.addComponent('Sound', loadSoundComponent(setting.sound))
+  }
+  if (setting.horizontalDirection) {
+    entity.addComponent(
+      'HorizontalDirection',
+      loadHorizontalDirectionComponent(setting.horizontalDirection, entity)
+    )
   }
   return entity
 }

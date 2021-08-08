@@ -18,5 +18,9 @@
       "mask": ["enemyHitbox"],
       "tag": ["Attack"]
     }
-  ]
+  ],
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": true
+  }
 }

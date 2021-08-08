@@ -56,5 +56,8 @@
     "collectSpeed": 10,
     "consumeSpeed": 0,
     "shouldDamageInSuffocation": false
+  },
+  "hp": {
+    "max": 1
   }
 }
