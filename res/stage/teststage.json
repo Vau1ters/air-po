@@ -85,6 +85,12 @@
          "id":1,
          "name":"map",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"bgm",
+                 "type":"string",
+                 "value":"bgm1"
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":100,
