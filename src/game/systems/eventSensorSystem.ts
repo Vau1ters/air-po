@@ -6,7 +6,7 @@ import { World } from '@core/ecs/world'
 import { EquipmentTypes } from '@game/components/equipmentComponent'
 import * as Sound from '@core/sound/sound'
 import { PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
-import { loadStage, StageName } from '@game/stage/stageLoader'
+import { StageName } from '@game/stage/stageLoader'
 import { getSingleton } from './singletonSystem'
 
 export class EventSensorSystem extends System {
@@ -43,9 +43,11 @@ export class EventSensorSystem extends System {
   }
 
   private async moveEvent(newMapName: StageName, spawnerID: number): Promise<void> {
-    this.world.reset()
-    const stage = loadStage(newMapName, this.world)
-    stage.spawnPlayer(spawnerID)
+    getSingleton('GameEvent', this.world).getComponent('GameEvent').event = {
+      type: 'move',
+      mapName: newMapName,
+      spawnerID,
+    }
   }
 
   private async equipItemEvent(equipmentType: EquipmentTypes, equipmentId: number): Promise<void> {
