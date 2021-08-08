@@ -24,5 +24,8 @@
       "tag": ["physics"]
     }
   ],
-  "rigidBody": {}
+  "rigidBody": {},
+  "hp": {
+    "max": 10
+  }
 }

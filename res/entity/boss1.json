@@ -25,5 +25,8 @@
       "mask": ["terrain"],
       "tag": ["physics"]
     }
-  ]
+  ],
+  "hp": {
+    "max": 10
+  }
 }

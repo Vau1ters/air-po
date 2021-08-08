@@ -3,7 +3,6 @@ import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { geyserAI } from '@game/ai/entity/boss1/geyserAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { HpComponent } from '@game/components/hpComponent'
 import { EntityFactory } from './entityFactory'
 import { loadEntity } from './loader/EntityLoader'
 
@@ -15,7 +14,6 @@ export class Boss1GeyserFactory extends EntityFactory {
   public create(): Entity {
     const entity = loadEntity('boss1Geyser')
 
-    entity.addComponent('Hp', new HpComponent(10, 10))
     entity.addComponent('Ai', new AiComponent(geyserAI(entity, this.world)))
     entity.addComponent('Position', this.pos)
     return entity
