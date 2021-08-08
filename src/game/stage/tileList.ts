@@ -7,6 +7,7 @@ import dandelion from 'src/game/entities/stage/tile/dandelionFactory'
 import enemy1 from 'src/game/entities/stage/tile/enemy1Factory'
 import moss from 'src/game/entities/stage/tile/mossFactory'
 import mushroom from 'src/game/entities/stage/tile/mushroomFactory'
+import poisonousTulip from 'src/game/entities/stage/tile/poisonousTulipFactory'
 import respawn from 'src/game/entities/stage/tile/respawnFactory'
 import slime1 from 'src/game/entities/stage/tile/slime1Factory'
 import snibee from 'src/game/entities/stage/tile/snibeeFactory'
@@ -19,6 +20,7 @@ export const tileList = {
   enemy1,
   moss,
   mushroom,
+  poisonousTulip,
   respawn,
   slime1,
   snibee,
