@@ -1,0 +1,10 @@
+{
+  "name": "boss1Root",
+  "path": "roseRoot.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 96
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { assert } from '@utils/assertion'
 import { BaseTexture, Texture, Rectangle } from 'pixi.js'
-import { SpriteBuffer, AnimationDefinition } from './spriteBuffer'
 import { AnimationSprite } from './animationSprite'
+import { SpriteBuffer, AnimationDefinition } from './spriteBuffer'
 import { spriteURL } from './spriteURL'
 
 export type SpriteName = keyof typeof spriteURL

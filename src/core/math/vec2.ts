@@ -77,11 +77,19 @@ export class Vec2 {
     return this.div(this.length())
   }
 
+  public static fromPoint(p: PIXI.Point): Vec2 {
+    return new Vec2(p.x, p.y)
+  }
+
   public static max(a: Vec2, b: Vec2): Vec2 {
     return new Vec2(Math.max(a.x, b.x), Math.max(a.y, b.y))
   }
 
   public static min(a: Vec2, b: Vec2): Vec2 {
     return new Vec2(Math.min(a.x, b.x), Math.min(a.y, b.y))
+  }
+
+  public static mix(a: Vec2, b: Vec2, t: number): Vec2 {
+    return a.add(b.sub(a).mul(t))
   }
 }

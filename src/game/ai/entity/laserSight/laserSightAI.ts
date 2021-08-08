@@ -60,13 +60,9 @@ const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour
 const isDistantEnough = (segment: Segment, entity: Entity): boolean => {
   return segment.distance(entity.getComponent('Position')) > 20
 }
-const shouldLockEntity = (entity: Entity, segment: Segment): boolean => {
+const shouldLockEntity = (entity: Entity): boolean => {
   const isEntityAlive = entity.hasComponent('Hp') && entity.getComponent('Hp').hp > 0
-  const isEntityCloseEnough =
-    entity
-      .getComponent('Position')
-      .sub(segment.start)
-      .length() < 160
+  const isEntityCloseEnough = entity.getComponent('Draw').visible
   const forceFreeAiming = MouseController.isMousePressing('Right')
 
   return isEntityAlive && isEntityCloseEnough && !forceFreeAiming
@@ -98,7 +94,7 @@ const getLaserSightStateGenerator = function*(
   const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
     while (true) {
       const { entity } = state.hitResult
-      if (entity && shouldLockEntity(entity, segment)) return
+      if (entity && shouldLockEntity(entity)) return
 
       yield
     }
@@ -109,7 +105,7 @@ const getLaserSightStateGenerator = function*(
       const { entity: currentHittingEntity } = state.hitResult
       if (
         currentHittingEntity?.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
-        (isDistantEnough(segment, entity) || !shouldLockEntity(entity, segment))
+        (isDistantEnough(segment, entity) || !shouldLockEntity(entity))
       ) {
         return
       }
