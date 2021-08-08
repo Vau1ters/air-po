@@ -40,11 +40,11 @@ const s = (i: number): { stem: StemShape; arms: Array<StemShape> } => {
     let s = i / 25
     s = 1 - 1 / (s * s * s + 1)
     const a = t * (5 - 2 * s)
-    const h = -20 + 60 * s
+    const h = -20 + 50 * s
     const w = 50 - Math.abs(h)
-    const y = -Math.sin(a) * h
+    const y = Math.sin(a) * h
     const x = -(Math.cos(a) - 1) * w
-    const b = s * s * 1.1
+    const b = -s * s * 1.1
     const cos = Math.cos(b)
     const sin = Math.sin(b)
     const x2 = x * cos - y * sin

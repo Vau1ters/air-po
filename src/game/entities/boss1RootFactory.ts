@@ -19,7 +19,7 @@ export class Boss1RootFactory extends EntityFactory {
     const draw = entity.getComponent('Draw')
     draw.zIndex = -2
 
-    entity.addComponent('Attack', new AttackComponent(1, false))
+    entity.addComponent('Attack', new AttackComponent(0, false))
     entity.addComponent('Ai', new AiComponent(rootAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y + draw.height / 2))
     return entity

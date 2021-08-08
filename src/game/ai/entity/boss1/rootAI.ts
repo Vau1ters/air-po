@@ -19,12 +19,15 @@ const buruburu = function*(root: Entity): Generator<void> {
 export const rootAI = function*(root: Entity, world: World): Behaviour<void> {
   const draw = root.getComponent('Draw')
   const pos = root.getComponent('Position')
+  const attack = root.getComponent('Attack')
   const basePos = pos.copy()
   yield* buruburu(root)
+  attack.damage = 1
   yield* ease((t: number): number => t)(5, (y: number) => (pos.y = y), {
     from: basePos.y,
     to: basePos.y - draw.height + 10,
   })
+  attack.damage = 0
   yield* wait(50)
   yield* kill(root, world)
 }

@@ -58,6 +58,7 @@ export class DamageSystem extends System {
     } = args
 
     const attack = attacker.getComponent('Attack')
+    if (attack.damage === 0) return
 
     if (target.hasComponent('Hp') === false) return
     const targetHP = target.getComponent('Hp')
