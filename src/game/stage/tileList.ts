@@ -3,6 +3,7 @@
 // you can update this file by type "yarn metabuild" command.
 
 import balloonVine from 'src/game/entities/stage/tile/balloonVineFactory'
+import boss1 from 'src/game/entities/stage/tile/boss1Factory'
 import dandelion from 'src/game/entities/stage/tile/dandelionFactory'
 import enemy1 from 'src/game/entities/stage/tile/enemy1Factory'
 import moss from 'src/game/entities/stage/tile/mossFactory'
@@ -16,6 +17,7 @@ import vine from 'src/game/entities/stage/tile/vineFactory'
 
 export const tileList = {
   balloonVine,
+  boss1,
   dandelion,
   enemy1,
   moss,

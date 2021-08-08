@@ -1,0 +1,31 @@
+{
+  "name": "boss1Needle",
+  "path": "roseNeedle.png",
+  "texture": {
+    "size": {
+      "width": 7,
+      "height": 7
+    }
+  },
+  "animation": {
+    "state": {
+      "Up": [0],
+      "LeftUpUp": [1],
+      "LeftUp": [2],
+      "LeftLeftUp": [3],
+      "Left": [4],
+      "LeftLeftDown": [5],
+      "LeftDown": [6],
+      "LeftDownDown": [7],
+      "Down": [8],
+      "RightDownDown": [9],
+      "RightDown": [10],
+      "RightRightDown": [11],
+      "Right": [12],
+      "RightRightUp": [13],
+      "RightUp": [14],
+      "RightUpUp": [15]
+    },
+    "default": "Right"
+  }
+}

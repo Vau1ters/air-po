@@ -3,7 +3,7 @@
   "path": "bgm1.mp3",
   "maxVolume": 0.05,
   "loop": {
-    "start": 14,
-    "end": 65
+    "start": 14.656,
+    "end": 65.954
   }
 }

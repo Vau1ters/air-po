@@ -1,0 +1,10 @@
+{
+  "name": "boss1Stem",
+  "path": "roseStem.png",
+  "texture": {
+    "size": {
+      "width": 5,
+      "height": 5
+    }
+  }
+}
