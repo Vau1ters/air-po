@@ -81,10 +81,12 @@ export class TileLayerLoader {
       }
     }
 
-    const bgmName = getCustomProperty<string>(layer, 'bgm')
-    getSingleton('Bgm', this.world)
-      .getComponent('Bgm')
-      .request(bgmName ? toSoundName(bgmName) : undefined)
+    if (layer.name === 'map') {
+      const bgmName = getCustomProperty<string>(layer, 'bgm')
+      getSingleton('Bgm', this.world)
+        .getComponent('Bgm')
+        .request(bgmName ? toSoundName(bgmName) : undefined)
+    }
   }
 
   private loadBuilders(tileSets: Array<TileSet>): Array<Builder> {
