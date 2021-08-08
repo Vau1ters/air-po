@@ -7,26 +7,19 @@ const footCollisionCallback = (args: CollisionCallbackArgs): void => {
   const {
     me: { entity: playerEntity },
   } = args
-
   const rigidBody = playerEntity.getComponent('RigidBody')
   if (rigidBody.velocity.y < -1e-2) return
 
   const player = playerEntity.getComponent('Player')
   player.landing = true
-
-  const landingEffectFactory = new LandingEffectFactory(world)
-  landingEffectFactory.setPosition(
-    position.add(new Vec2(0, 5))
-  )
-  world.addEntity(landingEffectFactory.create())
 }
 
 export const land = function*(entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
 
   const footCollider = entity
-  .getComponent('Collider')
-  .colliders.find(c => c.tag.has(PLAYER_FOOT_TAG))
+    .getComponent('Collider')
+    .colliders.find(c => c.tag.has(PLAYER_FOOT_TAG))
   footCollider?.callbacks.add(footCollisionCallback)
 
   while (true) {

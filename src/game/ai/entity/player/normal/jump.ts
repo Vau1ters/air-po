@@ -1,9 +1,12 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
+import { World } from '@core/ecs/world'
+import { Vec2 } from '@core/math/vec2'
+import { LandingEffectFactory } from '@game/entities/effect/landingEffectFactory'
 import { KeyController } from '@game/systems/controlSystem'
 import { PLAYER_SETTING } from '../playerAI'
 
-export const jump = function*(entity: Entity): Behaviour<void> {
+export const jump = function*(entity: Entity, world: World): Behaviour<void> {
   const player = entity.getComponent('Player')
   const animState = entity.getComponent('AnimationState')
 
@@ -11,6 +14,10 @@ export const jump = function*(entity: Entity): Behaviour<void> {
 
   while (true) {
     while (!player.landing) yield
+
+    const landingEffectFactory = new LandingEffectFactory(world)
+    landingEffectFactory.setPosition(entity.getComponent('Position').add(new Vec2(0, 5)))
+    world.addEntity(landingEffectFactory.create())
 
     animState.state = 'Standing'
     entity.getComponent('Sound').addSound('playerLanding')

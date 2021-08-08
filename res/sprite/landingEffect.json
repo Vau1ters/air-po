@@ -1,6 +1,12 @@
 {
   "name": "landingEffect",
   "path": "landingEffect.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 8
+    }
+  },
   "animation": {
     "state": {
       "Default": [0, 1, 2, 3, 4, 5]
