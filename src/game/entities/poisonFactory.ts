@@ -3,7 +3,6 @@ import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { poisonAI } from '@game/ai/entity/poison/poisonAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { AttackComponent } from '@game/components/attackComponent'
 import { EntityFactory } from './entityFactory'
 import { loadEntity } from './loader/EntityLoader'
 
@@ -30,7 +29,6 @@ export class PoisonFactory extends EntityFactory {
 
     entity.addComponent('Ai', new AiComponent(poisonAI(entity, this.world)))
     entity.addComponent('Position', this.position)
-    entity.addComponent('Attack', new AttackComponent(1, false))
     entity.getComponent('RigidBody').velocity = this.direction.normalize().mul(20)
 
     return entity

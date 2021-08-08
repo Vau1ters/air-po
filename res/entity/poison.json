@@ -15,5 +15,9 @@
       "mask": ["playerHitbox"],
       "tag": ["Attack"]
     }
-  ]
+  ],
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": false
+  }
 }
