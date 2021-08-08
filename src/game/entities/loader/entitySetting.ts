@@ -7,6 +7,7 @@ import airGeyser from '@res/entity/airGeyser.json'
 import balloonVine from '@res/entity/balloonVine.json'
 import boss1 from '@res/entity/boss1.json'
 import boss1Geyser from '@res/entity/boss1Geyser.json'
+import boss1Root from '@res/entity/boss1Root.json'
 import dandelion from '@res/entity/dandelion.json'
 import dandelionFluff from '@res/entity/dandelionFluff.json'
 import enemy1 from '@res/entity/enemy1.json'
@@ -32,6 +33,7 @@ export const entitySetting = {
   balloonVine,
   boss1,
   boss1Geyser,
+  boss1Root,
   dandelion,
   dandelionFluff,
   enemy1,

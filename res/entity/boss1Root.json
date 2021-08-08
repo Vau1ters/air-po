@@ -1,0 +1,16 @@
+{
+  "draw": {
+    "name": "boss1Root"
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 80]
+      },
+      "category": "attack",
+      "mask": ["playerHitbox"],
+      "tag": ["Attack"]
+    }
+  ]
+}

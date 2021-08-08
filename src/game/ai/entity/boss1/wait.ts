@@ -22,7 +22,7 @@ export const wait = function*(state: StemState): Behaviour<void> {
   const transiteStem = transiteShape(state.stem, 60)
   const transiteArmL = transiteShape(state.arms[0], 60)
   const transiteArmR = transiteShape(state.arms[1], 60)
-  for (let i = 0; i < 300; i++) {
+  for (let i = 0; i < 100; i++) {
     const t = (i / 100) % 1
     const stem = spline(
       [
