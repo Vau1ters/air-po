@@ -46,5 +46,8 @@
   "attack": {
     "damage": 1,
     "shouldCounterbalance": false
+  },
+  "horizontalDirection": {
+    "looking": "Right"
   }
 }

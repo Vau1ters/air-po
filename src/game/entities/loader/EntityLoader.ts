@@ -14,6 +14,10 @@ import { assert } from '@utils/assertion'
 import { HpSettingType, loadHpComponent } from './component/HpComponentLoader'
 import { AttackSettingType, loadAttackComponent } from './component/AttackComponentLoader'
 import { loadSoundComponent, SoundSettingType } from './component/SoundComponentLoader'
+import {
+  HorizontalDirectionSettingType,
+  loadHorizontalDirectionComponent,
+} from './component/HorizontalDirectionLoader'
 
 export type EntityName = keyof typeof entitySetting
 
@@ -31,6 +35,7 @@ const EntitySettingType = t.type({
   hp: t.union([HpSettingType, t.undefined]),
   attack: t.union([AttackSettingType, t.undefined]),
   sound: t.union([SoundSettingType, t.undefined]),
+  horizontalDirection: t.union([HorizontalDirectionSettingType, t.undefined]),
 })
 type EntitySetting = t.TypeOf<typeof EntitySettingType>
 
@@ -65,6 +70,12 @@ export const loadEntity = (name: EntityName): Entity => {
   }
   if (setting.sound) {
     entity.addComponent('Sound', loadSoundComponent(setting.sound))
+  }
+  if (setting.horizontalDirection) {
+    entity.addComponent(
+      'HorizontalDirection',
+      loadHorizontalDirectionComponent(setting.horizontalDirection, entity)
+    )
   }
   return entity
 }

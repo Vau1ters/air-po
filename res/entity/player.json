@@ -69,5 +69,8 @@
   "hp": {
     "max": 3
   },
-  "sound": {}
+  "sound": {},
+  "horizontalDirection": {
+    "looking": "Right"
+  }
 }

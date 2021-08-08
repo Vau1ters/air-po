@@ -46,5 +46,8 @@
     "damage": 1,
     "shouldCounterbalance": false
   },
-  "sound": {}
+  "sound": {},
+  "horizontalDirection": {
+    "looking": "Right"
+  }
 }
