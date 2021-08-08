@@ -16,5 +16,5 @@ export const poisonAI = function*(entity: Entity, world: World): Behaviour<void>
     },
     { from: 1, to: 0 }
   )
-  kill(entity, world)
+  yield* kill(entity, world)
 }
