@@ -10,7 +10,6 @@ import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from './entityFactory'
-import { SoundComponent } from '@game/components/soundComponent'
 import { loadEntity } from './loader/EntityLoader'
 import { THROUGH_FLOOR_TAG } from './stage/tile/throughFloorFactory'
 
@@ -56,7 +55,6 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Player', player)
     entity.addComponent('Equipment', equipment)
     entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
-    entity.addComponent('Sound', new SoundComponent())
 
     const colliders = entity.getComponent('Collider').colliders.filter(c => c.mask.has('terrain'))
     for (const c of colliders) {

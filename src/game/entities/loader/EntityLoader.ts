@@ -13,6 +13,7 @@ import { entitySetting } from './entitySetting'
 import { assert } from '@utils/assertion'
 import { HpSettingType, loadHpComponent } from './component/HpComponentLoader'
 import { AttackSettingType, loadAttackComponent } from './component/AttackComponentLoader'
+import { loadSoundComponent, SoundSettingType } from './component/SoundComponentLoader'
 
 export type EntityName = keyof typeof entitySetting
 
@@ -29,6 +30,7 @@ const EntitySettingType = t.type({
   airHolder: t.union([AirHolderSettingType, t.undefined]),
   hp: t.union([HpSettingType, t.undefined]),
   attack: t.union([AttackSettingType, t.undefined]),
+  sound: t.union([SoundSettingType, t.undefined]),
 })
 type EntitySetting = t.TypeOf<typeof EntitySettingType>
 
@@ -60,6 +62,9 @@ export const loadEntity = (name: EntityName): Entity => {
   }
   if (setting.attack) {
     entity.addComponent('Attack', loadAttackComponent(setting.attack))
+  }
+  if (setting.sound) {
+    entity.addComponent('Sound', loadSoundComponent(setting.sound))
   }
   return entity
 }

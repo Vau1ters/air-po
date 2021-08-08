@@ -2,7 +2,6 @@ import { Entity } from '@core/ecs/entity'
 import { snibeeAI } from '@game/ai/entity/snibee/snibeeAI'
 import { AiComponent } from '@game/components/aiComponent'
 import { HorizontalDirectionComponent } from '@game/components/horizontalDirectionComponent'
-import { SoundComponent } from '@game/components/soundComponent'
 import { TileEntityFactory } from '@game/entities/tileEntityFactory'
 
 export default class SnibeeFactory extends TileEntityFactory {
@@ -11,7 +10,6 @@ export default class SnibeeFactory extends TileEntityFactory {
 
     entity.addComponent('Ai', new AiComponent(snibeeAI(entity, this.world)))
     entity.addComponent('HorizontalDirection', new HorizontalDirectionComponent(entity, 'Right'))
-    entity.addComponent('Sound', new SoundComponent())
     return entity
   }
 }

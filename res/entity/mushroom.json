@@ -52,5 +52,6 @@
     "collectSpeed": 1,
     "consumeSpeed": 0,
     "shouldDamageInSuffocation": false
-  }
+  },
+  "sound": {}
 }
