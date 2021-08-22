@@ -11,6 +11,7 @@ import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
 import equipment from '@res/entity/equipment.json'
 import jetEffect from '@res/entity/jetEffect.json'
+import jumpingEffect from '@res/entity/jumpingEffect.json'
 import landingEffect from '@res/entity/landingEffect.json'
 import moss from '@res/entity/moss.json'
 import mushroom from '@res/entity/mushroom.json'
@@ -35,6 +36,7 @@ export const entitySetting = {
   enemyBullet,
   equipment,
   jetEffect,
+  jumpingEffect,
   landingEffect,
   moss,
   mushroom,
