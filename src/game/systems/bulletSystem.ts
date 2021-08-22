@@ -4,6 +4,8 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { assert } from '@utils/assertion'
+import { Segment } from '@core/collision/geometry/segment'
+import { Vec2 } from '@core/math/vec2'
 
 export const BULLET_TAG = 'bulletBody'
 
@@ -36,6 +38,13 @@ export class BulletSystem extends System {
   public update(): void {
     for (const entity of this.family.entityIterator) {
       const bullet = entity.getComponent('Bullet')
+      const collider = entity.getComponent('Collider')
+      for (const c of collider.colliders) {
+        const segment = c.geometry as Segment
+        segment.start = new Vec2()
+        segment.end = bullet.previousPos.sub(entity.getComponent('Position'))
+      }
+      bullet.previousPos = entity.getComponent('Position').copy()
 
       if (bullet.life-- < 0) {
         this.world.removeEntity(entity)

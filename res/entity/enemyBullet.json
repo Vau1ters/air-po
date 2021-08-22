@@ -2,8 +2,7 @@
   "collider": [
     {
       "geometry": {
-        "type": "AABB",
-        "size": [0, 0]
+        "type": "Segment"
       },
       "category": "bullet",
       "mask": ["terrain"],
@@ -11,8 +10,7 @@
     },
     {
       "geometry": {
-        "type": "AABB",
-        "size": [0, 0]
+        "type": "Segment"
       },
       "category": "attack",
       "mask": ["playerHitbox"],

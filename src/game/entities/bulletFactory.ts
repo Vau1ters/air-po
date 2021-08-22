@@ -69,7 +69,7 @@ export class BulletFactory extends EntityFactory {
       'RigidBody',
       new RigidBodyComponent({ velocity: direction.mul(this.speed) })
     )
-    entity.addComponent('Bullet', new BulletComponent(this.life))
+    entity.addComponent('Bullet', new BulletComponent(entity, this.life))
     return entity
   }
 }
