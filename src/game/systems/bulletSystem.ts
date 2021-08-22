@@ -42,7 +42,7 @@ export class BulletSystem extends System {
       for (const c of collider.colliders) {
         const segment = c.geometry as Segment
         segment.start = new Vec2()
-        segment.end = entity.getComponent('Position').sub(bullet.previousPos)
+        segment.end = bullet.previousPos.sub(entity.getComponent('Position'))
       }
       bullet.previousPos = entity.getComponent('Position').copy()
 
