@@ -11,6 +11,9 @@
     "state": {
       "Default": [0, 1, 2, 3, 4]
     },
+    "speed": {
+      "Default": 3
+    },
     "default": "Default"
   }
 }

@@ -8,7 +8,7 @@ import { Vec2 } from '@core/math/vec2'
 import { assert } from '@utils/assertion'
 import { loadEntity } from '../loader/EntityLoader'
 
-export class LandingEffectFactory extends EntityFactory {
+export class JumpingEffectFactory extends EntityFactory {
   private position?: Vec2
 
   public constructor(private world: World) {
@@ -23,7 +23,7 @@ export class LandingEffectFactory extends EntityFactory {
   public create(): Entity {
     assert(this.position !== undefined, 'position is not defined')
 
-    const entity = loadEntity('landingEffect')
+    const entity = loadEntity('jumpingEffect')
     entity.addComponent('Ai', new AiComponent(effectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
 

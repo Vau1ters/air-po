@@ -2,6 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { JumpingEffectFactory } from '@game/entities/effect/jumpingEffectFactory'
 import { LandingEffectFactory } from '@game/entities/effect/landingEffectFactory'
 import { KeyController } from '@game/systems/controlSystem'
 import { PLAYER_SETTING } from '../playerAI'
@@ -15,8 +16,9 @@ export const jump = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
     while (!player.landing) yield
 
-    const landingEffectFactory = new LandingEffectFactory(world)
-    landingEffectFactory.setPosition(entity.getComponent('Position').add(new Vec2(0, 5)))
+    const landingEffectFactory = new LandingEffectFactory(world).setPosition(
+      entity.getComponent('Position').add(new Vec2(0, 5))
+    )
     world.addEntity(landingEffectFactory.create())
 
     animState.state = 'Standing'
@@ -26,6 +28,11 @@ export const jump = function*(entity: Entity, world: World): Behaviour<void> {
       if (KeyController.isActionPressing('Jump')) {
         body.velocity.y = -PLAYER_SETTING.normal.jump.speed
         entity.getComponent('Sound').addSound('playerJump')
+
+        const jumpingEffectFactory = new JumpingEffectFactory(world).setPosition(
+          entity.getComponent('Position').add(new Vec2(0, 5))
+        )
+        world.addEntity(jumpingEffectFactory.create())
       }
 
       yield
