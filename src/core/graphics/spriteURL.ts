@@ -12,6 +12,9 @@ import boss1Leaf from '@res/sprite/boss1Leaf.json'
 import boss1Needle from '@res/sprite/boss1Needle.json'
 import boss1Root from '@res/sprite/boss1Root.json'
 import boss1Stem from '@res/sprite/boss1Stem.json'
+import coinLarge from '@res/sprite/coinLarge.json'
+import coinLargeDummy from '@res/sprite/coinLargeDummy.json'
+import coinSmall from '@res/sprite/coinSmall.json'
 import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
@@ -50,6 +53,9 @@ export const spriteURL = {
   boss1Needle,
   boss1Root,
   boss1Stem,
+  coinLarge,
+  coinLargeDummy,
+  coinSmall,
   dandelion,
   dandelionFluff,
   enemy1,
