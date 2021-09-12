@@ -10,14 +10,9 @@ import { Random } from '@utils/random'
 import { CustomPropertyType, getCustomProperty } from './customProperty'
 import { toSoundName } from '@core/sound/sound'
 import { getSingleton } from '@game/systems/singletonSystem'
+import { TileSet } from './tileSet'
 
 type TileName = keyof typeof tileList
-
-export const TileSetType = t.type({
-  firstgid: t.number,
-  source: t.string,
-})
-export type TileSet = t.TypeOf<typeof TileSetType>
 
 export const TileLayerType = t.type({
   data: t.array(t.number),
@@ -33,22 +28,6 @@ export const TileLayerType = t.type({
   properties: t.union([t.array(CustomPropertyType), t.undefined]),
 })
 export type TileLayer = t.TypeOf<typeof TileLayerType>
-
-export type TileSetData = {
-  columns: number
-  image: string
-  imageheight: number
-  imagewidth: number
-  margin: number
-  name: string
-  spacing: number
-  tilecount: number
-  tiledversion: string
-  tileheight: number
-  tilewidth: number
-  type: string
-  version: number
-}
 
 type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => void
 type Builder = { firstgid: number; build: Build }
@@ -258,9 +237,4 @@ export class TileLayerLoader {
   private randomChoice(candidates: number[]): number {
     return candidates[Math.abs(TileLayerLoader.rand.next()) % candidates.length]
   }
-}
-
-export const getTileSetDataFromGid = (gid: number, tileSets: Array<TileSet>): TileSetData => {
-  const { source } = tileSets.find(tileSet => tileSet.firstgid === gid) as TileSet
-  return require(`/res/stage/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
 }

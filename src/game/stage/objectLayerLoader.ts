@@ -7,6 +7,7 @@ import { objectList } from './objectList'
 import { Stage } from './stage'
 import { CustomPropertyType } from './customProperty'
 import { StageObject, StageObjectType, calcCenter } from './object'
+import { TileSet } from './tileSet'
 
 type ObjectName = keyof typeof objectList
 
@@ -29,24 +30,64 @@ type PlayerSpawner = {
   pos: Vec2
 }
 
-const buildSpawner = (object: StageObject): PlayerSpawner => {
-  const id = object.properties?.find(prop => prop.name === 'id')?.value as number | undefined
-  assert(id !== undefined, 'player spawner ID is not set')
-  return {
-    id,
-    pos: calcCenter(object),
-  }
-}
+type Build = (stageObject: StageObject) => void
+type Builder = { firstgid: number; build: Build }
 
-export const loadObjectLayer = (layer: ObjectLayer, world: World, stage: Stage): void => {
-  for (const object of layer.objects) {
-    if (layer.name === 'player') {
-      const { id, pos } = buildSpawner(object)
-      stage.registerSpawner(id, pos)
-    } else {
-      const factory = objectList[layer.name as ObjectName]
-      assert(factory !== undefined, `object name '${layer.name}' is invalid`)
-      world.addEntity(new factory(toEntityName(layer.name), object, world).create())
+export class ObjectLayerLoader {
+  private builders: Array<Builder>
+
+  constructor(private stage: Stage, private world: World, tileSets: Array<TileSet>) {
+    this.builders = this.loadBuilders(tileSets)
+  }
+
+  public load(layer: ObjectLayer): void {
+    const findBuilder = (gid: number): Builder => {
+      for (let i = 0; i < this.builders.length; i++) {
+        if (gid < this.builders[i].firstgid) continue
+        if (i < this.builders.length - 1 && this.builders[i + 1].firstgid <= gid) continue
+        return this.builders[i]
+      }
+      assert(false, `Could not find appropriate builder for gid ${gid}`)
+    }
+
+    for (const object of layer.objects) {
+      assert(object.gid !== undefined, 'object.gid must not be undefined')
+      const builder = findBuilder(object.gid)
+      builder.build(object)
+    }
+  }
+
+  private loadBuilders(tileSets: Array<TileSet>): Array<Builder> {
+    const builders = new Array<Builder>()
+    for (const { firstgid, source } of tileSets) {
+      const { name } = require(`/res/stage/${source}`) // eslint-disable-line  @typescript-eslint/no-var-requires
+      builders.push({
+        firstgid,
+        build: (stageObject: StageObject) => {
+          if (name === 'player') {
+            const { id, pos } = this.buildSpawner(stageObject)
+            this.stage.registerSpawner(id, pos)
+          } else {
+            this.world.addEntity(
+              new objectList[name as ObjectName](
+                toEntityName(name),
+                stageObject,
+                this.world
+              ).create()
+            )
+          }
+        },
+      })
+    }
+    return builders
+  }
+
+  private buildSpawner(object: StageObject): PlayerSpawner {
+    const id = object.properties?.find(prop => prop.name === 'id')?.value as number | undefined
+    assert(id !== undefined, 'player spawner ID is not set')
+    return {
+      id,
+      pos: calcCenter(object),
     }
   }
 }
