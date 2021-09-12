@@ -7,4 +7,8 @@ export class PlayerComponent {
   public throughFloorIgnoreCount = 0
   public targetPosition = new Vec2()
   public spawnerID = 0
+  public coinCount = {
+    small: 0,
+    large: 0,
+  }
 }
