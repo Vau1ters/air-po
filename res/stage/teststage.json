@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"teststage.json"
-        }
-    },
  "height":100,
  "infinite":false,
  "layers":[
@@ -261,7 +253,7 @@
  "nextobjectid":35,
  "orientation":"orthogonal",
  "renderorder":"right-up",
- "tiledversion":"1.4.3",
+ "tiledversion":"1.7.2",
  "tileheight":8,
  "tilesets":[
         {
@@ -334,6 +326,6 @@
         }],
  "tilewidth":8,
  "type":"map",
- "version":1.4,
+ "version":"1.6",
  "width":100
 }
