@@ -6,7 +6,12 @@ import { EntityFactory } from './entityFactory'
 import { EntityName, loadEntity } from './loader/EntityLoader'
 
 export class ObjectEntityFactory extends EntityFactory {
-  constructor(private name: EntityName, protected object: StageObject, protected world: World) {
+  constructor(
+    private name: EntityName,
+    protected object: StageObject,
+    protected frame: number,
+    protected world: World
+  ) {
     super()
   }
 

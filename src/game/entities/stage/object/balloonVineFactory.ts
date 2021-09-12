@@ -3,9 +3,9 @@ import { balloonVineAI } from '@game/ai/entity/balloonVine/balloonVineAI'
 import { AiComponent } from '@game/components/aiComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
 import { PickupTargetComponent } from '@game/components/pickupTargetComponent'
-import { TileEntityFactory } from '@game/entities/tileEntityFactory'
+import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
-export default class BalloonVineFactory extends TileEntityFactory {
+export default class BalloonVineFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 

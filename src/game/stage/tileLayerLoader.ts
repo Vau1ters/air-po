@@ -97,8 +97,7 @@ export class TileLayerLoader {
                   this.calcPosition(index, tileSize, objectSize),
                   name,
                   frame,
-                  this.world,
-                  this.stage
+                  this.world
                 ).create()
               ),
           })

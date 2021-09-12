@@ -72,7 +72,9 @@ export class ObjectLayerLoader {
               new objectList[name as ObjectName](
                 toEntityName(name),
                 stageObject,
-                this.world
+                stageObject.gid !== undefined ? stageObject.gid - firstgid : 0,
+                this.world,
+                this.stage
               ).create()
             )
           }

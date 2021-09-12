@@ -4,6 +4,6 @@ import AirFactory from '@game/entities/stage/object/airFactory'
 
 export const loadAirLayer = (layer: ObjectLayer, world: World): void => {
   for (const object of layer.objects) {
-    world.addEntity(new AirFactory('air', object, world).create())
+    world.addEntity(new AirFactory('air', object, 0, world).create())
   }
 }
