@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { largeCoinAI } from '@game/ai/entity/coin/largeCoinAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { TileEntityFactory } from '@game/entities/tileEntityFactory'
+import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
-export default class CoinLargeFactory extends TileEntityFactory {
+export default class CoinLargeFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 

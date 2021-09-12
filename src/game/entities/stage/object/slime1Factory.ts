@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { slime1AI } from '@game/ai/entity/slime1/slime1AI'
 import { AiComponent } from '@game/components/aiComponent'
-import { TileEntityFactory } from '@game/entities/tileEntityFactory'
+import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
-export default class Slime1Factory extends TileEntityFactory {
+export default class Slime1Factory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 

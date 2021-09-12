@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { poisonousTulipAI } from '@game/ai/entity/poisonousTulip/poisonousTulipAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { TileEntityFactory } from '@game/entities/tileEntityFactory'
+import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
-export default class PoisonousTulipFactory extends TileEntityFactory {
+export default class PoisonousTulipFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 

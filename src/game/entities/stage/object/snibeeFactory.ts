@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { snibeeAI } from '@game/ai/entity/snibee/snibeeAI'
 import { AiComponent } from '@game/components/aiComponent'
-import { TileEntityFactory } from '@game/entities/tileEntityFactory'
+import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
-export default class SnibeeFactory extends TileEntityFactory {
+export default class SnibeeFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 

@@ -3,11 +3,13 @@ import { PathReporter } from 'io-ts/PathReporter'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { assert } from '@utils/assertion'
-import { loadObjectLayer, ObjectLayer, ObjectLayerType } from './objectLayerLoader'
-import { TileLayer, TileLayerLoader, TileLayerType, TileSetType } from './tileLayerLoader'
+import { ObjectLayer, ObjectLayerLoader, ObjectLayerType } from './objectLayerLoader'
+import { TileLayer, TileLayerLoader, TileLayerType } from './tileLayerLoader'
 import { stageList } from './stageList'
 import { Stage } from './stage'
+import { loadAirLayer } from './airLayerLoader'
 import { loadBackgroundLayer } from './backgroundLayerLoader'
+import { TileSetType } from './tileSet'
 
 export type StageName = keyof typeof stageList
 
@@ -33,8 +35,12 @@ export const loadStage = (stageName: StageName, world: World): Stage => {
   const result = new Stage(world)
   const stage = stageList[stageName]
   const decodeResult = StageType.decode(stage)
-  assert(decodeResult._tag === 'Right', PathReporter.report(decodeResult).join('\n'))
+  if (decodeResult._tag !== 'Right') {
+    console.error(PathReporter.report(decodeResult).join('\n'))
+    assert(false, '')
+  }
   const tileLayerLoader = new TileLayerLoader(result, world, stage.tilesets)
+  const objectLayerLoader = new ObjectLayerLoader(result, world, stage.tilesets)
   const tileSize = new Vec2(stage.tilewidth, stage.tileheight)
   for (const layer of stage.layers) {
     switch (layer.type) {
@@ -42,10 +48,16 @@ export const loadStage = (stageName: StageName, world: World): Stage => {
         tileLayerLoader.load(layer as TileLayer, tileSize)
         break
       case 'objectgroup':
-        if (layer.name === 'background') {
-          loadBackgroundLayer(layer as ObjectLayer, world, stage.tilesets)
-        } else {
-          loadObjectLayer(layer as ObjectLayer, world, result)
+        switch (layer.name) {
+          case 'air':
+            loadAirLayer(layer as ObjectLayer, world)
+            break
+          case 'background':
+            loadBackgroundLayer(layer as ObjectLayer, world, stage.tilesets)
+            break
+          default:
+            objectLayerLoader.load(layer as ObjectLayer)
+            break
         }
         break
     }
