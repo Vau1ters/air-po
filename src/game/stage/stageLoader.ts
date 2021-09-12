@@ -11,16 +11,8 @@ import { loadBackgroundLayer } from './backgroundLayerLoader'
 
 export type StageName = keyof typeof stageList
 
-const EditorSettingType = t.type({
-  export: t.type({
-    format: t.literal('json'),
-    target: t.string,
-  }),
-})
-
 const StageType = t.type({
   compressionlevel: t.number,
-  editorsettings: EditorSettingType,
   height: t.number,
   infinite: t.boolean,
   layers: t.array(t.union([TileLayerType, ObjectLayerType])),
@@ -33,7 +25,7 @@ const StageType = t.type({
   tilesets: t.array(TileSetType),
   tilewidth: t.number,
   type: t.literal('map'),
-  version: t.number,
+  version: t.string,
   width: t.number,
 })
 
