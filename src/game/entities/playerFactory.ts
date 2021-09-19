@@ -6,6 +6,7 @@ import { AiComponent } from '@game/components/aiComponent'
 import { Collider } from '@game/components/colliderComponent'
 import { EquipmentComponent } from '@game/components/equipmentComponent'
 import { InvincibleComponent } from '@game/components/invincibleComponent'
+import { NameComponent } from '@game/components/nameComponent'
 import { PlayerComponent } from '@game/components/playerComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from './entityFactory'
@@ -53,6 +54,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('Player', player)
     entity.addComponent('Equipment', equipment)
+    entity.addComponent('Name', new NameComponent('player'))
 
     const colliders = entity.getComponent('Collider').colliders.filter(c => c.mask.has('terrain'))
     for (const c of colliders) {

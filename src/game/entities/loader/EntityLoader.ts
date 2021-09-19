@@ -1,5 +1,4 @@
 import * as t from 'io-ts'
-import { PathReporter } from 'io-ts/PathReporter'
 import { Entity } from '@core/ecs/entity'
 import { AirHolderSettingType, loadAirHolderComponent } from './component/AirHolderComponentLoader'
 import {
@@ -18,6 +17,7 @@ import {
   HorizontalDirectionSettingType,
   loadHorizontalDirectionComponent,
 } from './component/HorizontalDirectionLoader'
+import { decodeJson } from '@utils/json'
 
 export type EntityName = keyof typeof entitySetting
 
@@ -40,9 +40,7 @@ const EntitySettingType = t.type({
 type EntitySetting = t.TypeOf<typeof EntitySettingType>
 
 export const loadEntity = (name: EntityName): Entity => {
-  const setting = entitySetting[name] as EntitySetting
-  const decodeResult = EntitySettingType.decode(setting)
-  assert(decodeResult._tag === 'Right', PathReporter.report(decodeResult).join('\n'))
+  const setting = decodeJson<EntitySetting>(entitySetting[name], EntitySettingType)
   const entity = new Entity()
   if (setting.draw) {
     entity.addComponent('Draw', loadDrawComponent(setting.draw, entity))
