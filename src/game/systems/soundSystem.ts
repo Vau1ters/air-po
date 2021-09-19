@@ -1,3 +1,4 @@
+import { windowSize } from '@core/application'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
@@ -20,26 +21,13 @@ export default class SoundSystem extends System {
       const entityPosition = entity.getComponent('Position')
       const sound = entity.getComponent('Sound')
 
-      const earDistance = 100
-      const cameraZ = 10
       const volumeMuteThreshold = 5e-3
 
-      const leftX = cameraPosition.x - earDistance / 2 - entityPosition.x
-      const leftY = cameraPosition.y - entityPosition.y
-      const leftZ = cameraZ
-
-      const rightX = cameraPosition.x + earDistance / 2 - entityPosition.x
-      const rightY = cameraPosition.y - entityPosition.y
-      const rightZ = cameraZ
-
-      const distanceLeft = leftX * leftX + leftY * leftY + leftZ * leftZ
-      const distanceRight = rightX * rightX + rightY * rightY + rightZ * rightZ
-      const distanceCenter = (distanceLeft + distanceRight) / 2
-
-      const pan = -1 + (2 * distanceLeft) / (distanceLeft + distanceRight)
+      const pan = (2 * (entityPosition.x - cameraPosition.x)) / windowSize.width
+      const distance = cameraPosition.sub(entityPosition).lengthSq()
 
       for (const instance of sound.sounds) {
-        instance.volume = (instance.volume / distanceCenter) * 1e4
+        instance.volume = 1e4 / distance
         if (instance.volume < volumeMuteThreshold) instance.volume = 0
         instance.pan = pan
       }
