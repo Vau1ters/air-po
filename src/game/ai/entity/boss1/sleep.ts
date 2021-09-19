@@ -3,6 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { getSingleton } from '@game/systems/singletonSystem'
 import { fixedCameraAI } from '../camera/fixedCameraAI'
 
 const CAMERA_OFFSET = new Vec2(-96, -48)
@@ -25,6 +26,9 @@ export const sleep = function*(boss: Entity, world: World): Behaviour<void> {
           (): boolean => boss.getComponent('Hp').hp <= 0
         )
       )
+      getSingleton('Bgm', world)
+        .getComponent('Bgm')
+        .request('bossBgm1')
       return
     }
     yield
