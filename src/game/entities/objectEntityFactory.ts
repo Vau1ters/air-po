@@ -1,5 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
+import { NameComponent } from '@game/components/nameComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { calcCenter, StageObject } from '@game/stage/object'
 import { EntityFactory } from './entityFactory'
@@ -19,6 +20,9 @@ export class ObjectEntityFactory extends EntityFactory {
     const entity = loadEntity(this.name)
     const pos = calcCenter(this.object)
     entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
+    if (this.object.name !== '') {
+      entity.addComponent('Name', new NameComponent(this.object.name))
+    }
     return entity
   }
 }
