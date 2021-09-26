@@ -8,6 +8,7 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
+import * as Sound from '@core/sound/sound'
 
 const waitPlayer = function*(entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
@@ -40,6 +41,7 @@ const playGetAnimation = function*(entity: Entity): Behaviour<void> {
 export const largeCoinAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* waitPlayer(entity)
   increaseCoinCount(world)
+  Sound.play('largeCoin')
   yield* playGetAnimation(entity)
   yield* kill(entity, world)
 }

@@ -14,6 +14,7 @@ import fire from '@res/audio/fire.json'
 import foot from '@res/audio/foot.json'
 import getAirTank from '@res/audio/getAirTank.json'
 import grab from '@res/audio/grab.json'
+import largeCoin from '@res/audio/largeCoin.json'
 import mushroom from '@res/audio/mushroom.json'
 import peti from '@res/audio/peti.json'
 import playerHit from '@res/audio/playerHit.json'
@@ -26,6 +27,7 @@ import slime1 from '@res/audio/slime1.json'
 import slime2 from '@res/audio/slime2.json'
 import slime3 from '@res/audio/slime3.json'
 import slime4 from '@res/audio/slime4.json'
+import smallCoin from '@res/audio/smallCoin.json'
 import snibee from '@res/audio/snibee.json'
 import snibeeDie from '@res/audio/snibeeDie.json'
 import start from '@res/audio/start.json'
@@ -52,6 +54,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   foot,
   getAirTank,
   grab,
+  largeCoin,
   mushroom,
   peti,
   playerHit,
@@ -64,6 +67,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   slime2,
   slime3,
   slime4,
+  smallCoin,
   snibee,
   snibeeDie,
   start,
