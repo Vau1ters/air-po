@@ -16,7 +16,7 @@ import { animate } from '../common/action/animate'
 const boss1Move = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
   yield* sleep(boss, world)
 
-  const geyserPos = boss.getComponent('Position').add(new Vec2(32, -16))
+  const geyserPos = boss.getComponent('Position').add(new Vec2(32, -14))
   while (true) {
     boss.getComponent('Invincible').setInvincible(Infinity)
     const geyser = yield* spawnGeyser(geyserPos, world)
