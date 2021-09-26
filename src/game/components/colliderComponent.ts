@@ -128,6 +128,10 @@ export class ColliderComponent {
     this.colliders = colliders
   }
 
+  public getByCategory(category: Category): Collider | undefined {
+    return this.colliders.find(c => c.option.category === category)
+  }
+
   public removeByTag(tag: string): void {
     while (true) {
       const idx = this.colliders.findIndex(c => c.option.tag.has(tag))

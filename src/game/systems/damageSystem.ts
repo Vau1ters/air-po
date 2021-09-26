@@ -38,6 +38,10 @@ export class DamageSystem extends System {
         c.callbacks.add(this.attackCollisionCallback)
       }
     }
+    assert(
+      entity.hasComponent('Sound'),
+      'Entity which has AttackComponent must have SoundComponent'
+    )
   }
 
   private entityRemoved(entity: Entity): void {
@@ -69,6 +73,14 @@ export class DamageSystem extends System {
       invincible.setInvincible()
     }
     targetHP.decrease(attack.damage)
+
+    if (target.getComponent('Collider').getByCategory('playerHitbox')) {
+      attacker.getComponent('Sound').addSound('playerHit')
+    } else if (target.getComponent('Collider').getByCategory('enemyHitbox')) {
+      attacker.getComponent('Sound').addSound('enemyHit')
+    } else {
+      assert(false, 'this target does not have hitbox')
+    }
 
     if (targetHP.hp <= 0) {
       target.getComponent('Collider').removeByTag(ATTACK_TAG)
