@@ -12,6 +12,10 @@ import dandelionShot from '@res/audio/dandelionShot.json'
 import enemyHit from '@res/audio/enemyHit.json'
 import fire from '@res/audio/fire.json'
 import foot from '@res/audio/foot.json'
+import foot1 from '@res/audio/foot1.json'
+import foot2 from '@res/audio/foot2.json'
+import foot3 from '@res/audio/foot3.json'
+import foot4 from '@res/audio/foot4.json'
 import getAirTank from '@res/audio/getAirTank.json'
 import grab from '@res/audio/grab.json'
 import largeCoin from '@res/audio/largeCoin.json'
@@ -52,6 +56,10 @@ export const soundURL: { [key: string]: AudioSetting } = {
   enemyHit,
   fire,
   foot,
+  foot1,
+  foot2,
+  foot3,
+  foot4,
   getAirTank,
   grab,
   largeCoin,
