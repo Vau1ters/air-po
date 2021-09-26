@@ -20,5 +20,6 @@
   "attack": {
     "damage": 1,
     "shouldCounterbalance": true
-  }
+  },
+  "sound": {}
 }
