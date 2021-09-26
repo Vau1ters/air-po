@@ -12,6 +12,7 @@ import fire from '@res/audio/fire.json'
 import foot from '@res/audio/foot.json'
 import getAirTank from '@res/audio/getAirTank.json'
 import grab from '@res/audio/grab.json'
+import largeCoin from '@res/audio/largeCoin.json'
 import mushroom from '@res/audio/mushroom.json'
 import peti from '@res/audio/peti.json'
 import playerHit from '@res/audio/playerHit.json'
@@ -49,6 +50,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   foot,
   getAirTank,
   grab,
+  largeCoin,
   mushroom,
   peti,
   playerHit,
