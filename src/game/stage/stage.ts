@@ -4,7 +4,7 @@ import { chaseCameraAI } from '@game/ai/entity/camera/chaseCameraAI'
 import { CameraFactory } from '@game/entities/cameraFactory'
 import { LaserSightFactory } from '@game/entities/laserSightFactory'
 import { PlayerFactory } from '@game/entities/playerFactory'
-import { PlayerUIFactory } from '@game/entities/playerUIFactory'
+import { UIFactory } from '@game/entities/UIFactory'
 import { assert } from '@utils/assertion'
 
 export class Stage {
@@ -26,7 +26,7 @@ export class Stage {
     camera.getComponent('Camera').aiStack.push(chaseCameraAI(camera, player))
     this.world.addEntity(player)
     this.world.addEntity(new LaserSightFactory(this.world).create())
-    this.world.addEntity(new PlayerUIFactory(this.world).create())
+    this.world.addEntity(new UIFactory(this.world).create())
     this.world.addEntity(camera)
   }
 }

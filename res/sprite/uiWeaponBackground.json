@@ -1,4 +1,21 @@
 {
   "name": "uiWeaponBackground",
-  "path": "uiWeaponBackground.png"
+  "path": "uiWeaponBackground.png",
+  "texture": {
+    "size": {
+      "width": 27,
+      "height": 25
+    }
+  },
+  "animation": {
+    "state": {
+      "Default": [0],
+      "SendStart1": [1, 2, 3, 4, 5],
+      "SendStart2": [6, 7, 8, 9, 10],
+      "SendStart3": [11, 7, 8, 9, 10],
+      "SendEnd1": [12, 14, 15, 16, 17],
+      "SendEnd2": [13, 14, 15, 16, 17]
+    },
+    "default": "Default"
+  }
 }
