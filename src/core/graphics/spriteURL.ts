@@ -20,6 +20,8 @@ import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
 import equipment from '@res/sprite/equipment.json'
 import jetEffect from '@res/sprite/jetEffect.json'
+import jumpingEffect from '@res/sprite/jumpingEffect.json'
+import landingEffect from '@res/sprite/landingEffect.json'
 import moss from '@res/sprite/moss.json'
 import mushroom from '@res/sprite/mushroom.json'
 import needleBullet from '@res/sprite/needleBullet.json'
@@ -33,9 +35,9 @@ import spore from '@res/sprite/spore.json'
 import throughFloor from '@res/sprite/throughFloor.json'
 import title from '@res/sprite/title.json'
 import uiAir from '@res/sprite/uiAir.json'
-import uiAirtankBg from '@res/sprite/uiAirtankBg.json'
-import uiAirtankBody from '@res/sprite/uiAirtankBody.json'
-import uiAirtankTail from '@res/sprite/uiAirtankTail.json'
+import uiAirTankBg from '@res/sprite/uiAirtankBg.json'
+import uiAirTankBody from '@res/sprite/uiAirtankBody.json'
+import uiAirTankTail from '@res/sprite/uiAirtankTail.json'
 import uiHpHeart from '@res/sprite/uiHpHeart.json'
 import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
@@ -61,6 +63,8 @@ export const spriteURL = {
   enemy1,
   equipment,
   jetEffect,
+  jumpingEffect,
+  landingEffect,
   moss,
   mushroom,
   needleBullet,
@@ -74,9 +78,9 @@ export const spriteURL = {
   throughFloor,
   title,
   uiAir,
-  uiAirtankBg,
-  uiAirtankBody,
-  uiAirtankTail,
+  uiAirTankBg,
+  uiAirTankBody,
+  uiAirTankTail,
   uiHpHeart,
   uiWeaponBackground,
   uiWeaponGun,

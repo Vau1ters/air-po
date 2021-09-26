@@ -28,6 +28,7 @@ export const gunShoot = function*(entity: Entity, world: World): Behaviour<void>
         entity.getComponent('Player').targetPosition.sub(entity.getComponent('Position'))
       )
       world.addEntity(bulletFactory.create())
+      entity.getComponent('Player').hasShot = true
     }
 
     yield* wait(SETTING.COOL_TIME)

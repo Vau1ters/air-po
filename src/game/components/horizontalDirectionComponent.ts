@@ -15,6 +15,7 @@ export class HorizontalDirectionComponent {
         sprite.scale.x = 1
       }
     })
+    this.changeDirection.notify(this._looking)
   }
 
   set looking(value: HorizontalDirection) {

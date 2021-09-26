@@ -1,0 +1,19 @@
+{
+  "name": "jumpingEffect",
+  "path": "jumpingEffect.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 8
+    }
+  },
+  "animation": {
+    "state": {
+      "Default": [0, 1, 2, 3, 4]
+    },
+    "speed": {
+      "Default": 3
+    },
+    "default": "Default"
+  }
+}
