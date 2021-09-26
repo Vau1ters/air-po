@@ -3,13 +3,13 @@ import { addTag } from '@game/ai/entity/vine/changeVineLength'
 import { vineAI } from '@game/ai/entity/vine/vineAI'
 import { AiComponent } from '@game/components/aiComponent'
 import { VineComponent } from '@game/components/vineComponent'
-import { TileEntityFactory } from '@game/entities/tileEntityFactory'
+import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
 export const VINE_TAG = 'Vine'
 export const VINE_TERRAIN_SENSOR_TAG = 'VineWallSensor'
 export const VINE_AIR_SENSOR_TAG = 'VineAirSensor'
 
-export default class VineFactory extends TileEntityFactory {
+export default class VineFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 

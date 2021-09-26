@@ -8,7 +8,6 @@ import {
   GeometryBuildOption,
 } from '@game/components/colliderComponent'
 import { CategoryDef, CategorySet } from '@game/entities/category'
-import { assert } from '@utils/assertion'
 
 const AABBSettingType = t.type({
   type: t.literal('AABB'),
@@ -17,7 +16,11 @@ const AABBSettingType = t.type({
   maxClipToTolerance: t.union([t.array(t.number), t.undefined]),
 })
 
-const GeometrySettingType = AABBSettingType
+const SegmentSettingType = t.type({
+  type: t.literal('Segment'),
+})
+
+const GeometrySettingType = t.union([AABBSettingType, SegmentSettingType])
 type GeometrySetting = t.TypeOf<typeof GeometrySettingType>
 
 const CategoryType = t.keyof(CategoryDef)
@@ -44,8 +47,11 @@ const createGeometryBuildOption = (setting: GeometrySetting): GeometryBuildOptio
           ? new Vec2(...setting.maxClipToTolerance)
           : undefined,
       }
+    case 'Segment':
+      return {
+        type: 'Segment',
+      }
   }
-  assert(false, `Unknown geometry type: ${setting.type}`)
 }
 
 const createColliderBuildOption = (setting: ColliderSetting): ColliderBuildOption => {

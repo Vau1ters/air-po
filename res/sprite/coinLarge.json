@@ -1,0 +1,19 @@
+{
+  "name": "coinLarge",
+  "path": "coinLarge.png",
+  "texture": {
+    "size": {
+      "width": 24,
+      "height": 24
+    }
+  },
+  "animation": {
+    "state": {
+      "Normal": [0]
+    },
+    "speed": {
+      "Normal": 18
+    },
+    "default": "Normal"
+  }
+}

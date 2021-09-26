@@ -5,10 +5,13 @@ import { ease } from '@core/behaviour/easing/easing'
 import { In, Out } from '@core/behaviour/easing/functions'
 import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
+import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { getSingleton } from '@game/systems/singletonSystem'
 import { BitmapText, Sprite } from 'pixi.js'
 
-const chase = function*(speechBalloon: Entity, target: Entity, camera: Entity): Behaviour<void> {
+const chase = function*(speechBalloon: Entity, target: Entity, world: World): Behaviour<void> {
+  const camera = getSingleton('Camera', world)
   const ui = speechBalloon.getComponent('Draw')
   const background = ui.getChildByName('background') as Sprite
   const targetPositionOnWorld = target.getComponent('Position')
@@ -69,7 +72,7 @@ const animate = function*(speechBalloon: Entity): Behaviour<void> {
 export const speechBalloonAI = function(
   speechBalloon: Entity,
   target: Entity,
-  camera: Entity
+  world: World
 ): Behaviour<void> {
-  return parallelAny([animate(speechBalloon), chase(speechBalloon, target, camera)])
+  return parallelAny([animate(speechBalloon), chase(speechBalloon, target, world)])
 }

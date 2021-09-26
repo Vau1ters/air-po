@@ -1,0 +1,16 @@
+{
+  "draw": {
+    "name": "coinSmall"
+  },
+  "animationState": {},
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [6, 6]
+      },
+      "category": "item",
+      "mask": ["sensor"]
+    }
+  ]
+}

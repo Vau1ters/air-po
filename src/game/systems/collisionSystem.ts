@@ -79,7 +79,7 @@ export default class CollisionSystem extends System {
         for (const m of c.mask) {
           const rs =
             c.geometry instanceof Segment
-              ? this.querySegment(m, c.geometry as Segment)
+              ? this.querySegment(m, c.geometry.applyPosition(position1) as Segment)
               : this.query(m, c.bound.add(position1))
           for (const { entity: entity2 } of rs) {
             if (entity1 === entity2) continue // prevent self collision

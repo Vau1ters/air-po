@@ -10,7 +10,7 @@ import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
 
 const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<void> {
-  entity.getComponent('Sound').addSound('slime4', { volume: 0.04 })
+  entity.getComponent('Sound').addSound('slime4')
   yield* parallelAny([
     animate({ entity, state: 'Jumping' }),
     move(entity, direction, 0.5, Infinity),
@@ -19,6 +19,7 @@ const slime1Jump = function*(entity: Entity, direction: Direction): Behaviour<vo
 }
 
 const slime1Move = function*(entity: Entity): Behaviour<void> {
+  yield* animate({ entity, state: 'Idling', loopCount: Math.random() * 3 })
   while (true) {
     yield* animate({ entity, state: 'Idling', loopCount: 3 })
     for (let i = 0; i < 5; i++) yield* slime1Jump(entity, Direction.Right)

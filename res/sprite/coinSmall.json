@@ -1,0 +1,19 @@
+{
+  "name": "coinSmall",
+  "path": "coinSmall.png",
+  "texture": {
+    "size": {
+      "width": 6,
+      "height": 6
+    }
+  },
+  "animation": {
+    "state": {
+      "Normal": [0]
+    },
+    "speed": {
+      "Normal": 18
+    },
+    "default": "Normal"
+  }
+}

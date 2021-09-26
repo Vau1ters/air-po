@@ -7,6 +7,7 @@ import { application } from '@core/application'
 
 export class World {
   private readonly entities: Set<Entity>
+  private readonly entityRemoveQueue: Set<Entity>
   private readonly systems: Set<System>
   public readonly processManager: ProcessManager
   public readonly stage: Container
@@ -15,6 +16,7 @@ export class World {
 
   public constructor() {
     this.entities = new Set()
+    this.entityRemoveQueue = new Set()
     this.systems = new Set()
     this.processManager = new ProcessManager()
     this.stage = new Container()
@@ -26,6 +28,11 @@ export class World {
     application.stage.addChild(this.stage)
     while (true) {
       this.processManager.execute()
+      for (const entity of this.entityRemoveQueue) {
+        this.entities.delete(entity)
+        this.entityRemovedEvent.notify(entity)
+      }
+      this.entityRemoveQueue.clear()
       yield
     }
   }
@@ -69,8 +76,7 @@ export class World {
 
   public removeEntity(...entities: Entity[]): void {
     for (const entity of entities) {
-      this.entities.delete(entity)
-      this.entityRemovedEvent.notify(entity)
+      this.entityRemoveQueue.add(entity)
     }
   }
 

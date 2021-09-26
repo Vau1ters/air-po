@@ -8,6 +8,7 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { LaserSightLockFactory } from '@game/entities/laserSightLockFactory'
+import { SegmentSearcherFactory } from '@game/entities/segmentSearcherFactory'
 import { MouseController } from '@game/systems/controlSystem'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { assert } from '@utils/assertion'
@@ -91,6 +92,16 @@ const getLaserSightStateGenerator = function*(
   const [collider] = laser.getComponent('Collider').colliders
   const segment = collider.geometry as Segment
 
+  // ロックしている敵が実際に当たる位置にいるか確かめるためのレイ
+  const lockingRay = new SegmentSearcherFactory()
+    .addCategoryToMask('enemyHitbox', 'terrain')
+    .create()
+  world.addEntity(lockingRay)
+  const getLockingEntityHit = segmentSearchGenerator(lockingRay, {
+    ignoreEntity: player,
+    maximumDistance: 300,
+  })
+
   const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
     while (true) {
       const { entity } = state.hitResult
@@ -102,10 +113,21 @@ const getLaserSightStateGenerator = function*(
 
   const lockingAimGenerator = function*(entity: Entity, state: LockingAimState): Behaviour<void> {
     while (true) {
+      const [lockingCollider] = lockingRay.getComponent('Collider').colliders
+      const lockingSegment = lockingCollider.geometry as Segment
+      lockingSegment.start = player.getComponent('Position')
+      lockingSegment.end = entity.getComponent('Position')
+      const { value } = getLockingEntityHit.next()
+      assert(value instanceof Object, 'Unexpected Error')
+      const { entity: firstHitEntity } = value
+
       const { entity: currentHittingEntity } = state.hitResult
+
       if (
         currentHittingEntity?.id !== entity.id && // 当たっているEntityが変わっていなければロックし続ける
-        (isDistantEnough(segment, entity) || !shouldLockEntity(entity))
+        (firstHitEntity?.id !== entity.id || // ロックしているEntityとプレイヤーの間にオブジェクトがある
+          isDistantEnough(segment, entity) ||
+          !shouldLockEntity(entity))
       ) {
         return
       }
