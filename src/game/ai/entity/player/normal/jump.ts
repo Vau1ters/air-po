@@ -16,8 +16,9 @@ export const jump = function*(entity: Entity, world: World): Behaviour<void> {
   while (true) {
     while (!player.landing) yield
 
-    const landingEffectFactory = new LandingEffectFactory(world).setPosition(
-      entity.getComponent('Position').add(new Vec2(0, 5))
+    const direction = entity.getComponent('HorizontalDirection')
+    const landingEffectFactory = new LandingEffectFactory(world, direction).setPosition(
+      entity.getComponent('Position').add(new Vec2(0, 4))
     )
     world.addEntity(landingEffectFactory.create())
 
@@ -29,8 +30,9 @@ export const jump = function*(entity: Entity, world: World): Behaviour<void> {
         body.velocity.y = -PLAYER_SETTING.normal.jump.speed
         entity.getComponent('Sound').addSound('playerJump')
 
-        const jumpingEffectFactory = new JumpingEffectFactory(world).setPosition(
-          entity.getComponent('Position').add(new Vec2(0, 5))
+        const direction = entity.getComponent('HorizontalDirection')
+        const jumpingEffectFactory = new JumpingEffectFactory(world, direction).setPosition(
+          entity.getComponent('Position').add(new Vec2(0, 4))
         )
         world.addEntity(jumpingEffectFactory.create())
       }
