@@ -33,9 +33,9 @@ import spore from '@res/sprite/spore.json'
 import throughFloor from '@res/sprite/throughFloor.json'
 import title from '@res/sprite/title.json'
 import uiAir from '@res/sprite/uiAir.json'
-import uiAirtankBg from '@res/sprite/uiAirtankBg.json'
-import uiAirtankBody from '@res/sprite/uiAirtankBody.json'
-import uiAirtankTail from '@res/sprite/uiAirtankTail.json'
+import uiAirTankBg from '@res/sprite/uiAirtankBg.json'
+import uiAirTankBody from '@res/sprite/uiAirtankBody.json'
+import uiAirTankTail from '@res/sprite/uiAirtankTail.json'
 import uiHpHeart from '@res/sprite/uiHpHeart.json'
 import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
@@ -74,9 +74,9 @@ export const spriteURL = {
   throughFloor,
   title,
   uiAir,
-  uiAirtankBg,
-  uiAirtankBody,
-  uiAirtankTail,
+  uiAirTankBg,
+  uiAirTankBody,
+  uiAirTankTail,
   uiHpHeart,
   uiWeaponBackground,
   uiWeaponGun,
