@@ -13,6 +13,8 @@ import { isAlive } from '../common/condition/isAlive'
 
 const emitPoison = (entity: Entity, world: World): void => {
   const position = entity.getComponent('Position')
+  entity.getComponent('Sound').addSound('poison')
+
   for (let i = 0; i < 5; i++) {
     world.addEntity(
       new PoisonFactory(world)
