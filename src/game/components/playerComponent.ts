@@ -7,4 +7,5 @@ export class PlayerComponent {
   public throughFloorIgnoreCount = 0
   public targetPosition = new Vec2()
   public spawnerID = 0
+  public hasShot = false // for Weapon Background UI
 }

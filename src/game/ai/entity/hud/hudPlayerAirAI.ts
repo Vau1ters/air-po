@@ -1,7 +1,5 @@
 import { Behaviour } from '@core/behaviour/behaviour'
-import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { assert } from '@utils/assertion'
 import { UIComponentFactory } from '@game/entities/ui/uiComponentFactory'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { animate } from '../common/action/animate'
@@ -24,33 +22,87 @@ const UI_SETTING = {
   },
 }
 
-export const hudPlayerAirAI = function*(world: World): Behaviour<void> {
+const airTankAI = function*(world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
-  const holder = player.getComponent('AirHolder')
   const airTank = player.getComponent('Equipment').airTank
 
-  const airtankBg = new UIComponentFactory('uiAirtankBg')
+  const background = new UIComponentFactory('uiAirTankBg')
     .setPosition(
       UI_SETTING.AIR_TANK.x + UI_SETTING.AIR_TANK.paddingX,
       UI_SETTING.AIR_TANK.y + UI_SETTING.AIR_TANK.paddingY
     )
     .create()
-  const airtankBgDraw = airtankBg.getComponent('Draw')
+  world.addEntity(background)
 
-  const renderingState: {
-    tankBodies: Entity[]
-    tankTail: Entity
-  } = {
-    tankBodies: [],
-    tankTail: new UIComponentFactory('uiAirtankTail')
-      .setPosition(UI_SETTING.AIR_TANK.x, UI_SETTING.AIR_TANK.y)
-      .create(),
+  const tail = new UIComponentFactory('uiAirTankTail')
+    .setPosition(UI_SETTING.AIR_TANK.x, UI_SETTING.AIR_TANK.y)
+    .create()
+  world.addEntity(tail)
+
+  const tankBodies = []
+
+  const supplyBody = (): void => {
+    while (tankBodies.length + 1 < airTank.count) {
+      const tankBody = new UIComponentFactory('uiAirTankBody')
+        .setPosition(
+          UI_SETTING.AIR_TANK.x + tankBodies.length * UI_SETTING.AIR_TANK.shiftX,
+          UI_SETTING.AIR_TANK.y
+        )
+        .create()
+      tankBodies.push(tankBody)
+      world.addEntity(tankBody)
+    }
   }
-  const tankTailPosition = renderingState.tankTail.getComponent('Position')
 
-  const weaponBackground = new UIComponentFactory('uiWeaponBackground')
+  const updateTail = (): void => {
+    const tankTailPosition = tail.getComponent('Position')
+    tankTailPosition.x = UI_SETTING.AIR_TANK.x + tankBodies.length * UI_SETTING.AIR_TANK.shiftX
+  }
+
+  while (true) {
+    supplyBody()
+    updateTail()
+    background.getComponent('Draw').width = UI_SETTING.AIR_TANK.shiftX * airTank.count
+    yield
+  }
+}
+
+const weaponAI = function*(world: World): Behaviour<void> {
+  const player = getSingleton('Player', world)
+  const background = new UIComponentFactory('uiWeaponBackground')
     .setPosition(UI_SETTING.WEAPON.x, UI_SETTING.WEAPON.y)
     .create()
+  world.addEntity(background)
+
+  const transitTable: { [keys: string]: [string, string] } = {
+    Default: ['SendStart1', 'Default'],
+    SendStart1: ['SendStart2', 'SendEnd1'],
+    SendStart2: ['SendStart3', 'SendEnd2'],
+    SendStart3: ['SendStart3', 'SendEnd2'],
+  }
+  let state = 'Default'
+
+  while (true) {
+    yield* animate({ entity: background, waitFrames: 5, state })
+    const hasShot = player.getComponent('Player').hasShot
+    player.getComponent('Player').hasShot = false
+    const next = transitTable[state]
+    if (next) {
+      if (hasShot) {
+        state = next[0]
+      } else {
+        state = next[1]
+      }
+    } else {
+      state = 'Default'
+    }
+  }
+}
+
+const airGaugeAI = function*(world: World): Behaviour<void> {
+  const player = getSingleton('Player', world)
+  const airTank = player.getComponent('Equipment').airTank
+  const holder = player.getComponent('AirHolder')
 
   const airGauge = new UIComponentFactory('uiAir')
     .setPosition(
@@ -58,45 +110,17 @@ export const hudPlayerAirAI = function*(world: World): Behaviour<void> {
       UI_SETTING.AIR_TANK.y + UI_SETTING.AIR_TANK.paddingY
     )
     .create()
-  const airGaugeDraw = airGauge.getComponent('Draw')
-
-  world.addEntity(airtankBg)
   world.addEntity(airGauge)
-  world.addEntity(weaponBackground)
-  world.addEntity(renderingState.tankTail)
 
-  const hoge = function*(): Behaviour<void> {
-    while (true) {
-      while (renderingState.tankBodies.length + 1 < airTank.count) {
-        const tankBody = new UIComponentFactory('uiAirtankBody')
-          .setPosition(
-            UI_SETTING.AIR_TANK.x + renderingState.tankBodies.length * UI_SETTING.AIR_TANK.shiftX,
-            UI_SETTING.AIR_TANK.y
-          )
-          .create()
-        renderingState.tankBodies.push(tankBody)
-        world.addEntity(tankBody)
-      }
-      while (renderingState.tankBodies.length + 1 > airTank.count) {
-        const lastTankBody = renderingState.tankBodies.pop()
-        assert(lastTankBody, `Tried to remove air tank but current tank count is ${airTank.count}.`)
-        world.removeEntity(lastTankBody)
-      }
-      tankTailPosition.x =
-        UI_SETTING.AIR_TANK.x + renderingState.tankBodies.length * UI_SETTING.AIR_TANK.shiftX
-
-      airtankBgDraw.width = UI_SETTING.AIR_TANK.shiftX * airTank.count
-      // 割合計算
-      const maxQuantity = airTank.quantity * airTank.count
-      const rate = Math.max(0, Math.min(1, holder.quantity / maxQuantity))
-      airGaugeDraw.width = rate * UI_SETTING.AIR_TANK.shiftX * airTank.count
-
-      yield
-    }
+  while (true) {
+    // 割合計算
+    const maxQuantity = airTank.quantity * airTank.count
+    const rate = Math.max(0, Math.min(1, holder.quantity / maxQuantity))
+    airGauge.getComponent('Draw').width = rate * UI_SETTING.AIR_TANK.shiftX * airTank.count
+    yield
   }
+}
 
-  yield* parallelAll([
-    animate({ entity: weaponBackground, loopCount: Infinity, waitFrames: 3 }),
-    hoge(),
-  ])
+export const hudPlayerAirAI = function*(world: World): Behaviour<void> {
+  yield* parallelAll([airTankAI(world), weaponAI(world), airGaugeAI(world)])
 }
