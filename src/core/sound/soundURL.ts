@@ -4,6 +4,8 @@
 
 import airJet from '@res/audio/airJet.json'
 import bgm1 from '@res/audio/bgm1.json'
+import bossAttack1 from '@res/audio/bossAttack1.json'
+import bossBgm1 from '@res/audio/bossBgm.json'
 import burner from '@res/audio/burner.json'
 import danball from '@res/audio/danball.json'
 import dandelionShot from '@res/audio/dandelionShot.json'
@@ -40,6 +42,8 @@ export type AudioSetting = {
 export const soundURL: { [key: string]: AudioSetting } = {
   airJet,
   bgm1,
+  bossAttack1,
+  bossBgm1,
   burner,
   danball,
   dandelionShot,
