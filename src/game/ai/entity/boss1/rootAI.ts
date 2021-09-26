@@ -5,6 +5,7 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { kill } from '../common/action/kill'
+import * as Sound from '@core/sound/sound'
 
 const buruburu = function*(root: Entity): Generator<void> {
   const pos = root.getComponent('Position')
@@ -23,6 +24,8 @@ export const rootAI = function*(root: Entity, world: World): Behaviour<void> {
   const basePos = pos.copy()
   yield* buruburu(root)
   attack.damage = 1
+
+  Sound.play('bossAttack1')
   yield* ease((t: number): number => t)(5, (y: number) => (pos.y = y), {
     from: basePos.y,
     to: basePos.y - draw.height + 10,
