@@ -13,7 +13,7 @@ export const walk = function*(entity: Entity): Behaviour<void> {
   let s = 0
   const footSounds = ['foot1', 'foot2', 'foot3', 'foot4']
 
-  const soundFoot = () => {
+  const soundFoot = (): void => {
     if (t++ % 8 == 0) entity.getComponent('Sound').addSound(footSounds[s++ % 4])
   }
 

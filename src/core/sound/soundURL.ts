@@ -25,6 +25,7 @@ import playerHit from '@res/audio/playerHit.json'
 import playerJump from '@res/audio/playerJump.json'
 import playerLanding from '@res/audio/playerLanding.json'
 import playerWalk from '@res/audio/playerWalk.json'
+import poison from '@res/audio/poison.json'
 import pon from '@res/audio/pon.json'
 import shot from '@res/audio/shot.json'
 import slime1 from '@res/audio/slime1.json'
@@ -69,6 +70,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   playerJump,
   playerLanding,
   playerWalk,
+  poison,
   pon,
   shot,
   slime1,

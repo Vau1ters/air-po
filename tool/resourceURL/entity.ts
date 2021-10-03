@@ -2,25 +2,24 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { buildMetaSource } from './build'
 
-export const buildStage = (): string => {
+export const buildEntity = (): string => {
   const importList: string[] = []
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/stage/stageList.ts',
-    watchDir: 'res/stage',
-    templatePath: 'tool/template/stageList.ts',
+    outputPath: 'src/game/entities/loader/entitySetting.ts',
+    watchDir: 'res/entity',
+    templatePath: 'entitySetting.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {
-      if (e.isFile() === false) return
       const filename = e.name
       const name = path.parse(filename).name
       importList.push(`import ${name} from '@${watchDir}/${filename}'`)
-      nameList.push(`${name},`)
+      nameList.push(name)
     },
     replacementMap: () => {
       return {
         IMPORT: importList.join('\n'),
-        OBJECT: nameList.join('\n'),
+        OBJECT: nameList.join(','),
       }
     },
   })

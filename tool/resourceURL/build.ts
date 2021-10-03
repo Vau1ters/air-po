@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import * as process from 'process'
 
 type BuildOption = {
   outputPath: string
@@ -13,8 +14,10 @@ export const buildMetaSource = (option: BuildOption): string => {
     option.onInput(option.watchDir, e)
   }
 
-  const headerText = fs.readFileSync('tool/template/header.ts', 'ascii')
-  let generatedText = fs.readFileSync(option.templatePath, 'ascii').replace('// HEADER', headerText)
+  const headerText = fs.readFileSync('tool/resourceURL/template/header.ts', 'ascii')
+  let generatedText = fs
+    .readFileSync(`${process.cwd()}/tool/resourceURL/template/${option.templatePath}`, 'ascii')
+    .replace('// HEADER', headerText)
   for (const [src, dst] of Object.entries(option.replacementMap())) {
     generatedText = generatedText.replace(`// ${src}`, dst)
   }

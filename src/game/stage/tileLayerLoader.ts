@@ -6,7 +6,6 @@ import { tileList } from './tileList'
 import { Stage } from './stage'
 import { Entity } from '@core/ecs/entity'
 import WallFactory from '@game/entities/wallFactory'
-import { Random } from '@utils/random'
 import { CustomPropertyType, getCustomProperty } from './customProperty'
 import { toSoundName } from '@core/sound/sound'
 import { getSingleton } from '@game/systems/singletonSystem'
@@ -33,8 +32,6 @@ type Build = (index: Vec2, tileSize: Vec2, frame: number, layer: TileLayer) => v
 type Builder = { firstgid: number; build: Build }
 
 export class TileLayerLoader {
-  private static rand = new Random()
-
   private builders: Array<Builder>
 
   constructor(private stage: Stage, private world: World, tileSets: Array<TileSet>) {
@@ -123,117 +120,8 @@ export class TileLayerLoader {
   }
 
   private buildWall(pos: Vec2, index: Vec2, firstgid: number, layer: TileLayer): Entity {
-    const cells = []
-    for (let j = 0; j < 3; j++) {
-      for (let i = 0; i < 3; i++) {
-        const xi = index.x + i - 1
-        const yj = index.y + j - 1
-        cells.push(this.getTileId(layer, xi, yj))
-      }
-    }
-    const tileId = this.calcWallId(cells) - firstgid
-    const shouldCollide = cells.some(c => c === 0)
+    const tileId = this.getTileId(layer, index.x, index.y) - firstgid
+    const shouldCollide = [9, 10, 13, 14, 17, 18, 21, 22].every(id => tileId !== id)
     return new WallFactory(pos, tileId, shouldCollide).create()
-  }
-
-  private calcWallId(cell: number[]): number {
-    if (
-      cell[0] != 0 &&
-      cell[1] != 0 &&
-      cell[2] != 0 &&
-      cell[3] != 0 &&
-      cell[5] != 0 &&
-      cell[6] != 0 &&
-      cell[7] != 0 &&
-      cell[8] != 0
-    ) {
-      // completely filled
-      return this.randomChoice([10, 11, 14, 15, 18, 19, 22, 23])
-    }
-    if (
-      cell[1] != 0 &&
-      cell[2] != 0 &&
-      cell[3] != 0 &&
-      cell[5] != 0 &&
-      cell[6] != 0 &&
-      cell[7] != 0 &&
-      cell[8] != 0
-    ) {
-      // lack left up
-      return 32
-    }
-    if (
-      cell[0] != 0 &&
-      cell[1] != 0 &&
-      cell[3] != 0 &&
-      cell[5] != 0 &&
-      cell[6] != 0 &&
-      cell[7] != 0 &&
-      cell[8] != 0
-    ) {
-      // lack right up
-      return 29
-    }
-    if (
-      cell[0] != 0 &&
-      cell[1] != 0 &&
-      cell[2] != 0 &&
-      cell[3] != 0 &&
-      cell[5] != 0 &&
-      cell[7] != 0 &&
-      cell[8] != 0
-    ) {
-      // lack left down
-      return 8
-    }
-    if (
-      cell[0] != 0 &&
-      cell[1] != 0 &&
-      cell[2] != 0 &&
-      cell[3] != 0 &&
-      cell[5] != 0 &&
-      cell[6] != 0 &&
-      cell[7] != 0
-    ) {
-      // lack right down
-      return 5
-    }
-    if (cell[1] == 0 && cell[3] == 0 && cell[5] != 0 && cell[7] != 0) {
-      // left up corner
-      return 1
-    }
-    if (cell[1] == 0 && cell[3] != 0 && cell[5] == 0 && cell[7] != 0) {
-      // right up corner
-      return 4
-    }
-    if (cell[1] != 0 && cell[3] == 0 && cell[5] != 0 && cell[7] == 0) {
-      // left down corner
-      return 25
-    }
-    if (cell[1] != 0 && cell[3] != 0 && cell[5] == 0 && cell[7] == 0) {
-      // right down corner
-      return 28
-    }
-    if (cell[1] == 0) {
-      // up
-      return this.randomChoice([2, 3, 30, 31])
-    }
-    if (cell[3] == 0) {
-      // left
-      return this.randomChoice([9, 17, 16, 24])
-    }
-    if (cell[5] == 0) {
-      // right
-      return this.randomChoice([12, 20, 13, 21])
-    }
-    if (cell[7] == 0) {
-      // down
-      return this.randomChoice([26, 27, 6, 7])
-    }
-    return 1
-  }
-
-  private randomChoice(candidates: number[]): number {
-    return candidates[Math.abs(TileLayerLoader.rand.next()) % candidates.length]
   }
 }
