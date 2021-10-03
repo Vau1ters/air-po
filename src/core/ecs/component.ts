@@ -20,6 +20,7 @@ import { EquipmentComponent } from 'src/game/components/equipmentComponent'
 import { GameEventComponent } from 'src/game/components/gameEventComponent'
 import { HorizontalDirectionComponent } from 'src/game/components/horizontalDirectionComponent'
 import { HpComponent } from 'src/game/components/hpComponent'
+import { InventoryStateComponent } from 'src/game/components/inventoryStateComponent'
 import { InvincibleComponent } from 'src/game/components/invincibleComponent'
 import { LightComponent } from 'src/game/components/lightComponent'
 import { NameComponent } from 'src/game/components/nameComponent'
@@ -48,6 +49,7 @@ export interface ComponentMap {
   GameEvent: GameEventComponent
   HorizontalDirection: HorizontalDirectionComponent
   Hp: HpComponent
+  InventoryState: InventoryStateComponent
   Invincible: InvincibleComponent
   Light: LightComponent
   Name: NameComponent

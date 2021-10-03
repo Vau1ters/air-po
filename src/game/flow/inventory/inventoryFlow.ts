@@ -6,7 +6,7 @@ import { KeyController } from '@game/systems/controlSystem'
 import { PauseWorldFactory } from '@game/worlds/pauseWorldFactory'
 import { fadeInOut } from '../common/animation/fadeInOut'
 
-export const pauseFlow = function*(): Behaviour<void> {
+export const inventoryFlow = function*(): Behaviour<void> {
   let hasResumeButtonPressed = false
 
   const { world, alphaFilter } = new PauseWorldFactory().create()

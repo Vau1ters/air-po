@@ -12,6 +12,9 @@ import { getSingleton } from '@game/systems/singletonSystem'
 import { assert } from '@utils/assertion'
 import { BgmFactory } from '@game/entities/bgmFactory'
 import { Entity } from '@core/ecs/entity'
+import { branch, BranchController } from '@core/behaviour/branch'
+import { Behaviour } from '@core/behaviour/behaviour'
+import { inventoryFlow } from '../inventory/inventoryFlow'
 
 export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?: Entity): Flow {
   const gameWorldFactory = new GameWorldFactory()
@@ -27,23 +30,40 @@ export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?
   const gameEvent = getSingleton('GameEvent', world).getComponent('GameEvent')
 
   const isGameOn = (): boolean => gameEvent.event === undefined
-  const canExecute = (): boolean => !KeyController.isActionPressed('Pause')
 
-  yield* suspendable(
-    isGameOn,
-    parallelAll([
-      (function*(): Generator<void> {
+  yield* branch({
+    Game: function*(controller: BranchController) {
+      const transitState = function*(): Behaviour<void> {
         while (true) {
-          yield* suspendable(canExecute, world.execute())
-          yield* pauseFlow()
+          if (KeyController.isActionPressed('Pause')) {
+            controller.transit('Pause')
+          }
+          if (KeyController.isActionPressed('Inventory')) {
+            controller.transit('Inventory')
+          }
+          yield
         }
-      })(),
-      (function*(): Generator<void> {
+      }
+      const postEffect = function*(): Generator<void> {
         yield* FadeIn(world)
         yield* Text(world, 'そうなんちてん')
-      })(),
-    ])
-  )
+      }
+      const gameExecute = suspendable(isGameOn, world.execute())
+      yield* parallelAll([transitState(), postEffect(), gameExecute])
+    },
+    Pause: function*(controller: BranchController) {
+      while (true) {
+        yield* pauseFlow()
+        controller.transit('Game')
+      }
+    },
+    Inventory: function*(controller: BranchController) {
+      while (true) {
+        yield* inventoryFlow()
+        controller.transit('Game')
+      }
+    },
+  }).start('Game')
   yield* wait(60)
   world.end()
 
