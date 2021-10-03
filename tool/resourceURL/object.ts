@@ -2,14 +2,14 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { buildMetaSource } from './build'
 
-export const buildTile = (): string => {
+export const buildObject = (): string => {
   const importList: string[] = []
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/stage/tileList.ts',
-    watchDir: 'src/game/entities/stage/tile',
-    templatePath: 'tool/template/tileList.ts',
+    outputPath: 'src/game/stage/objectList.ts',
+    watchDir: 'src/game/entities/stage/object',
+    templatePath: 'objectList.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {
       const filename = e.name
       const pattern = /^(.*)Factory.ts$/
