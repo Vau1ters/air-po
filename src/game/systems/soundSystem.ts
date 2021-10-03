@@ -23,7 +23,10 @@ export default class SoundSystem extends System {
 
       const volumeMuteThreshold = 5e-3
 
-      const pan = (2 * (entityPosition.x - cameraPosition.x)) / windowSize.width
+      const pan = Math.max(
+        -1,
+        Math.min(1, (2 * (entityPosition.x - cameraPosition.x)) / windowSize.width)
+      )
       const distance = cameraPosition.sub(entityPosition).lengthSq()
 
       for (const instance of sound.sounds) {
