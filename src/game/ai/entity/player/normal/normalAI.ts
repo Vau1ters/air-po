@@ -19,7 +19,7 @@ export const normalAI = function*(entity: Entity, world: World): Behaviour<void>
 
   yield* parallelAll([
     gunShoot(entity, world),
-    jump(entity),
+    jump(entity, world),
     downThroughFloor(entity),
     walk(entity),
     jet(entity, world),

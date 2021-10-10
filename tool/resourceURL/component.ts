@@ -9,7 +9,7 @@ export const buildComponent = (): string => {
   return buildMetaSource({
     outputPath: 'src/core/ecs/component.ts',
     watchDir: 'src/game/components',
-    templatePath: 'tool/template/component.ts',
+    templatePath: 'component.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {
       const filename = e.name
       const baseName = path.parse(filename).name

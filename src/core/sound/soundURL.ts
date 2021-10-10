@@ -12,6 +12,10 @@ import dandelionShot from '@res/audio/dandelionShot.json'
 import enemyHit from '@res/audio/enemyHit.json'
 import fire from '@res/audio/fire.json'
 import foot from '@res/audio/foot.json'
+import foot1 from '@res/audio/foot1.json'
+import foot2 from '@res/audio/foot2.json'
+import foot3 from '@res/audio/foot3.json'
+import foot4 from '@res/audio/foot4.json'
 import getAirTank from '@res/audio/getAirTank.json'
 import grab from '@res/audio/grab.json'
 import largeCoin from '@res/audio/largeCoin.json'
@@ -21,6 +25,7 @@ import playerHit from '@res/audio/playerHit.json'
 import playerJump from '@res/audio/playerJump.json'
 import playerLanding from '@res/audio/playerLanding.json'
 import playerWalk from '@res/audio/playerWalk.json'
+import poison from '@res/audio/poison.json'
 import pon from '@res/audio/pon.json'
 import shot from '@res/audio/shot.json'
 import slime1 from '@res/audio/slime1.json'
@@ -52,6 +57,10 @@ export const soundURL: { [key: string]: AudioSetting } = {
   enemyHit,
   fire,
   foot,
+  foot1,
+  foot2,
+  foot3,
+  foot4,
   getAirTank,
   grab,
   largeCoin,
@@ -61,6 +70,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   playerJump,
   playerLanding,
   playerWalk,
+  poison,
   pon,
   shot,
   slime1,

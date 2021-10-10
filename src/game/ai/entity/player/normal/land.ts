@@ -7,7 +7,6 @@ const footCollisionCallback = (args: CollisionCallbackArgs): void => {
   const {
     me: { entity: playerEntity },
   } = args
-
   const rigidBody = playerEntity.getComponent('RigidBody')
   if (rigidBody.velocity.y < -1e-2) return
 

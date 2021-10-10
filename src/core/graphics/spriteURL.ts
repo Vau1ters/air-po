@@ -20,6 +20,8 @@ import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
 import equipment from '@res/sprite/equipment.json'
 import jetEffect from '@res/sprite/jetEffect.json'
+import jumpingEffect from '@res/sprite/jumpingEffect.json'
+import landingEffect from '@res/sprite/landingEffect.json'
 import moss from '@res/sprite/moss.json'
 import mushroom from '@res/sprite/mushroom.json'
 import needleBullet from '@res/sprite/needleBullet.json'
@@ -61,6 +63,8 @@ export const spriteURL = {
   enemy1,
   equipment,
   jetEffect,
+  jumpingEffect,
+  landingEffect,
   moss,
   mushroom,
   needleBullet,

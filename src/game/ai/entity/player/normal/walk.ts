@@ -9,6 +9,13 @@ export const walk = function*(entity: Entity): Behaviour<void> {
   const direction = entity.getComponent('HorizontalDirection')
 
   const body = entity.getComponent('RigidBody')
+  let t = 0
+  let s = 0
+  const footSounds = ['foot1', 'foot2', 'foot3', 'foot4']
+
+  const soundFoot = (): void => {
+    if (t++ % 8 == 0) entity.getComponent('Sound').addSound(footSounds[s++ % 4])
+  }
 
   while (true) {
     while (
@@ -20,7 +27,10 @@ export const walk = function*(entity: Entity): Behaviour<void> {
           body.velocity.x + PLAYER_SETTING.normal.walk.power,
           PLAYER_SETTING.normal.walk.speed
         )
-        if (player.landing) animState.state = 'Walking'
+        if (player.landing) {
+          soundFoot()
+          animState.state = 'Walking'
+        }
         direction.looking = 'Right'
       }
       if (KeyController.isActionPressing('MoveLeft')) {
@@ -28,7 +38,10 @@ export const walk = function*(entity: Entity): Behaviour<void> {
           body.velocity.x - PLAYER_SETTING.normal.walk.power,
           -PLAYER_SETTING.normal.walk.speed
         )
-        if (player.landing) animState.state = 'Walking'
+        if (player.landing) {
+          soundFoot()
+          animState.state = 'Walking'
+        }
         direction.looking = 'Left'
       }
 
