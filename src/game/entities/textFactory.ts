@@ -10,6 +10,7 @@ type TextFactorySetting = {
   text?: string
   fontSize: number
   pos?: Vec2
+  tint?: number
 }
 
 export class TextFactory extends EntityFactory {
@@ -23,10 +24,11 @@ export class TextFactory extends EntityFactory {
     const t = new BitmapText(normalizeText(this.setting.text ?? ''), {
       fontName: 'got',
       fontSize: this.setting.fontSize,
+      tint: this.setting.tint,
     })
 
     ui.addChild(t)
-    entity.addComponent('Position', new PositionComponent())
+    entity.addComponent('Position', new PositionComponent(this.setting.pos?.x, this.setting.pos?.y))
     entity.addComponent('Draw', ui)
 
     return entity

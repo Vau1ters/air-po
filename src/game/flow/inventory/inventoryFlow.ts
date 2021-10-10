@@ -1,36 +1,22 @@
-import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAny } from '@core/behaviour/composite'
-import { ButtonFactory } from '@game/entities/ui/buttonFactory'
+import { Entity } from '@core/ecs/entity'
+import { MouseCursorFactory } from '@game/entities/mouseCursorFactory'
 import { KeyController } from '@game/systems/controlSystem'
-import { PauseWorldFactory } from '@game/worlds/pauseWorldFactory'
+import { InventoryWorldFactory } from '@game/worlds/inventoryWorldFactory'
 import { fadeInOut } from '../common/animation/fadeInOut'
+import { InventoryUI } from './inventoryUI'
 
-export const inventoryFlow = function*(): Behaviour<void> {
-  let hasResumeButtonPressed = false
+export const inventoryFlow = function*(player: Entity): Behaviour<void> {
+  const { world, alphaFilter } = new InventoryWorldFactory().create()
 
-  const { world, alphaFilter } = new PauseWorldFactory().create()
+  new InventoryUI(world, player)
 
-  const button1 = new ButtonFactory()
-    .setPosition(windowSize.width / 2, windowSize.height / 2 - 50)
-    .onClick(() => {
-      hasResumeButtonPressed = true
-    })
-    .create()
-  world.addEntity(button1)
-
-  const button2 = new ButtonFactory()
-    .setPosition(windowSize.width / 2, windowSize.height / 2)
-    .create()
-  world.addEntity(button2)
-
-  const button3 = new ButtonFactory()
-    .setPosition(windowSize.width / 2, windowSize.height / 2 + 50)
-    .create()
-  world.addEntity(button3)
+  const cursor = new MouseCursorFactory().create()
+  world.addEntity(cursor)
 
   const waitKey = function*(): Behaviour<void> {
-    while (!KeyController.isActionPressed('Pause') && !hasResumeButtonPressed) yield
+    while (!KeyController.isActionPressed('Inventory')) yield
   }
 
   yield* parallelAny([fadeInOut(waitKey(), alphaFilter), world.execute()])

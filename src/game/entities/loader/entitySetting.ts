@@ -15,10 +15,14 @@ import dandelionFluff from '@res/entity/dandelionFluff.json'
 import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
 import equipment from '@res/entity/equipment.json'
+import inventoryBackground from '@res/entity/inventoryBackground.json'
+import inventoryItemFrameLarge from '@res/entity/inventoryItemFrameLarge.json'
+import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
 import jetEffect from '@res/entity/jetEffect.json'
 import jumpingEffect from '@res/entity/jumpingEffect.json'
 import landingEffect from '@res/entity/landingEffect.json'
 import moss from '@res/entity/moss.json'
+import mouseCursor from '@res/entity/mouseCursor.json'
 import mushroom from '@res/entity/mushroom.json'
 import player from '@res/entity/player.json'
 import playerBullet from '@res/entity/playerBullet.json'
@@ -47,10 +51,14 @@ export const entitySetting = {
   enemy1,
   enemyBullet,
   equipment,
+  inventoryBackground,
+  inventoryItemFrameLarge,
+  inventoryItemFrameSmall,
   jetEffect,
   jumpingEffect,
   landingEffect,
   moss,
+  mouseCursor,
   mushroom,
   player,
   playerBullet,

@@ -12,6 +12,7 @@ export const Text = (world: World, text: string): Behaviour<void> => {
   const entity = new TextFactory({
     text,
     fontSize: 16,
+    tint: 0xffffff,
   }).create()
   world.addEntity(entity)
 

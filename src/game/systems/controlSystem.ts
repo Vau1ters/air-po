@@ -103,12 +103,14 @@ export class KeyController {
       const key = this.stringToKeyCode(e.key)
       if (key) {
         this.pressKey(key)
+        e.preventDefault()
       }
     })
     window.addEventListener('keyup', e => {
       const key = this.stringToKeyCode(e.key)
       if (key) {
         this.releaseKey(key)
+        e.preventDefault()
       }
     })
   }

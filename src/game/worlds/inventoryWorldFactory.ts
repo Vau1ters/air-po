@@ -3,9 +3,12 @@ import { ControlSystem } from '@game/systems/controlSystem'
 import DrawSystem from '@game/systems/drawSystem'
 import { Container, filters, Graphics } from 'pixi.js'
 import { windowSize } from '@core/application'
-import { CameraFactory } from '@game/entities/cameraFactory'
 import { SingletonSystem } from '@game/systems/singletonSystem'
-import { InventoryStateFactory } from '@game/entities/inventoryStateFactory'
+import AISystem from '@game/systems/aiSystem'
+import { Entity } from '@core/ecs/entity'
+import { PositionComponent } from '@game/components/positionComponent'
+import { CameraComponent } from '@game/components/cameraComponent'
+import CollisionSystem from '@game/systems/collisionSystem'
 
 export class InventoryWorldFactory {
   public create(): { world: World; alphaFilter: filters.AlphaFilter } {
@@ -38,13 +41,18 @@ export class InventoryWorldFactory {
     world.addSystem(
       new ControlSystem(world),
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
+      new AISystem(world),
+      new CollisionSystem(world),
       new SingletonSystem(world)
     )
 
-    const camera = new CameraFactory().create()
+    const camera = new Entity()
+    camera.addComponent(
+      'Position',
+      new PositionComponent(windowSize.width / 2, windowSize.height / 2)
+    )
+    camera.addComponent('Camera', new CameraComponent([]))
     world.addEntity(camera)
-
-    world.addEntity(new InventoryStateFactory().create())
 
     return { world, alphaFilter }
   }

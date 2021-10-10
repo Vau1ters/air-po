@@ -3,7 +3,7 @@ import { AABB } from '@core/collision/geometry/AABB'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { AnimationSprite } from '@core/graphics/animationSprite'
-import { createSprite, getSpriteBuffer, SpriteName } from '@core/graphics/art'
+import { createSprite, getTexture, SpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { AiComponent } from '@game/components/aiComponent'
 import { calcDirection } from '@utils/direction'
@@ -103,11 +103,7 @@ const addStem = (boss: Entity, width: number): Array<PIXI.Point> => {
   const points = new Array<PIXI.Point>(100)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
 
-  const stem = new PIXI.SimpleRope(
-    getSpriteBuffer('boss1Stem').definitions['Default'].textures[0],
-    points,
-    width
-  )
+  const stem = new PIXI.SimpleRope(getTexture('boss1Stem'), points, width)
   stem.tint = 0x22aa22
   stem.zIndex = -1
   boss.getComponent('Draw').addChild(stem)

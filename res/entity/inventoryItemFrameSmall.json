@@ -1,0 +1,15 @@
+{
+  "draw": {
+    "name": "inventoryItemFrameSmall"
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [30, 30]
+      },
+      "category": "sensor",
+      "mask": ["sensor"]
+    }
+  ]
+}

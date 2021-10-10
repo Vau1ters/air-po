@@ -4,7 +4,6 @@ import * as Sound from '@core/sound/sound'
 import { LogoBlinking } from './logoBlinking'
 import { assert } from '@utils/assertion'
 import { FadeOut } from '../common/animation/fadeOut'
-import { getSpriteBuffer } from '@core/graphics/art'
 import { Sprite } from 'pixi.js'
 import { StageName } from '@game/stage/stageLoader'
 import { TitleWorldFactory } from '@game/worlds/titleWorldFactory'
@@ -12,6 +11,7 @@ import { parallelAny } from '@core/behaviour/composite'
 import { gameFlow } from '../game/gameFlow'
 import { openingFlow } from '../opening/openingFlow'
 import { Flow } from '../flow'
+import { getTexture } from '@core/graphics/art'
 
 const createNextFlow = (): Flow => {
   const playData = loadPlayData()
@@ -29,7 +29,7 @@ const createNextFlow = (): Flow => {
 export const titleFlow = function*(): Flow {
   const world = new TitleWorldFactory().create()
 
-  const titleImage = new Sprite(getSpriteBuffer('title').definitions['Default'].textures[0])
+  const titleImage = new Sprite(getTexture('title'))
   world.stage.addChild(titleImage)
 
   yield* parallelAny([
