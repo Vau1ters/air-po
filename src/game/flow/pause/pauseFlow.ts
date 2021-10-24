@@ -1,11 +1,10 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAny } from '@core/behaviour/composite'
-import { ease } from '@core/behaviour/easing/easing'
-import { In, Out } from '@core/behaviour/easing/functions'
 import { ButtonFactory } from '@game/entities/ui/buttonFactory'
 import { KeyController } from '@game/systems/controlSystem'
 import { PauseWorldFactory } from '@game/worlds/pauseWorldFactory'
+import { fadeInOut } from '../common/animation/fadeInOut'
 
 export const pauseFlow = function*(): Behaviour<void> {
   let hasResumeButtonPressed = false
@@ -30,33 +29,10 @@ export const pauseFlow = function*(): Behaviour<void> {
     .create()
   world.addEntity(button3)
 
-  yield* parallelAny([
-    (function*(): Generator<void> {
-      yield* ease(Out.quad)(
-        10,
-        (value: number) => {
-          alphaFilter.alpha = value
-        },
-        {
-          from: 0,
-          to: 1,
-        }
-      )
+  const waitKey = function*(): Behaviour<void> {
+    while (!KeyController.isActionPressed('Pause') && !hasResumeButtonPressed) yield
+  }
 
-      while (!KeyController.isActionPressed('Pause') && !hasResumeButtonPressed) yield
-
-      yield* ease(In.quad)(
-        10,
-        (value: number) => {
-          alphaFilter.alpha = value
-        },
-        {
-          from: 1,
-          to: 0,
-        }
-      )
-    })(),
-    world.execute(),
-  ])
+  yield* parallelAny([fadeInOut(waitKey(), alphaFilter), world.execute()])
   world.end()
 }

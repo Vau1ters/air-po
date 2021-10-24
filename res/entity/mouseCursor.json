@@ -1,0 +1,14 @@
+{
+  "draw": {
+    "name": "cursor"
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB"
+      },
+      "category": "sensor",
+      "tag": ["mouse"]
+    }
+  ]
+}

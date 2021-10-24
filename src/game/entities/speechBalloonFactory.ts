@@ -20,6 +20,7 @@ export class SpeechBalloonFactory extends EntityFactory {
     const entity = new TextFactory({
       text: normalizeText(this.text),
       fontSize: 8,
+      tint: 0x000000,
     }).create()
 
     const tailSize = 20

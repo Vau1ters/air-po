@@ -102,3 +102,11 @@ export const createSprite = (name: SpriteName, anchor = { x: 0.5, y: 0.5 }): Ani
   const buffer = getSpriteBuffer(name)
   return buffer.createAnimationSprite(anchor)
 }
+
+export const getTexture = (name: SpriteName): Texture => {
+  const spriteBuffer = getSpriteBuffer(name)
+  assert('Default' in spriteBuffer.definitions, `'Default' is not contained in ${name}`)
+  const definition = spriteBuffer.definitions['Default']
+  assert(definition.textures.length === 1, 'There must be single texture for using this function')
+  return definition.textures[0]
+}

@@ -6,10 +6,12 @@ import { buildTile } from './tile'
 import { buildObject } from './object'
 import { buildComponent } from './component'
 import * as cp from 'child_process'
+import { buildItem } from './item'
 
 export const buildResourceURL = (): void => {
   const outputFiles: Array<string> = [
     buildSprite(),
+    buildItem(),
     buildAudio(),
     buildEntity(),
     buildStage(),

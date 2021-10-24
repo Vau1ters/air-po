@@ -1,5 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-import { getSpriteBuffer, toSpriteName } from '@core/graphics/art'
+import { getTexture, toSpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
 import { getCustomProperty } from '@game/stage/customProperty'
@@ -43,7 +43,7 @@ export class BackgroundFactory extends EntityFactory {
       horizontalY: this.horizontalY,
     })
     entity.addComponent('Position', new Vec2())
-    const texture = getSpriteBuffer(toSpriteName(name)).definitions['Default'].textures[0]
+    const texture = getTexture(toSpriteName(name))
     const sprite = new TilingSprite(texture, texture.width, texture.height)
     sprite.anchor.set(0.5)
     const drawComponent = new DrawComponent({

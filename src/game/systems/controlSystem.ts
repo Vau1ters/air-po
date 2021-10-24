@@ -11,6 +11,7 @@ export type KeyActionType =
   | 'Jump'
   | 'Jet'
   | 'Pause'
+  | 'Inventory'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveLeft: 'A',
   MoveRight: 'D',
@@ -19,6 +20,7 @@ export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   Jump: 'W',
   Jet: 'Shift',
   Pause: 'Escape',
+  Inventory: 'Tab',
 }
 
 export class KeyController {
@@ -83,7 +85,8 @@ export class KeyController {
       s == 'Control' ||
       s == 'Alt' ||
       s == 'Enter' ||
-      s == 'Escape'
+      s == 'Escape' ||
+      s == 'Tab'
     )
   }
 
@@ -100,12 +103,14 @@ export class KeyController {
       const key = this.stringToKeyCode(e.key)
       if (key) {
         this.pressKey(key)
+        e.preventDefault()
       }
     })
     window.addEventListener('keyup', e => {
       const key = this.stringToKeyCode(e.key)
       if (key) {
         this.releaseKey(key)
+        e.preventDefault()
       }
     })
   }

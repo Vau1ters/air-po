@@ -22,4 +22,12 @@ export class EventNotifier<T> {
       callback(arg)
     })
   }
+
+  public map<S>(conv: (t: T) => S): EventNotifier<S> {
+    const result = new EventNotifier<S>()
+    this.addObserver((arg: T): void => {
+      result.notify(conv(arg))
+    })
+    return result
+  }
 }

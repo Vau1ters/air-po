@@ -15,10 +15,14 @@ import boss1Stem from '@res/sprite/boss1Stem.json'
 import coinLarge from '@res/sprite/coinLarge.json'
 import coinLargeDummy from '@res/sprite/coinLargeDummy.json'
 import coinSmall from '@res/sprite/coinSmall.json'
+import cursor from '@res/sprite/cursor.json'
 import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
 import equipment from '@res/sprite/equipment.json'
+import inventoryBackground from '@res/sprite/inventoryBackgroud.json'
+import inventoryItemFrameLarge from '@res/sprite/inventoryItemFrameLarge.json'
+import inventoryItemFrameSmall from '@res/sprite/inventoryItemFrameSmall.json'
 import jetEffect from '@res/sprite/jetEffect.json'
 import jumpingEffect from '@res/sprite/jumpingEffect.json'
 import landingEffect from '@res/sprite/landingEffect.json'
@@ -32,6 +36,7 @@ import respawn from '@res/sprite/respawn.json'
 import slime1 from '@res/sprite/slime1.json'
 import snibee from '@res/sprite/snibee.json'
 import spore from '@res/sprite/spore.json'
+import testItem from '@res/sprite/testItem.json'
 import throughFloor from '@res/sprite/throughFloor.json'
 import title from '@res/sprite/title.json'
 import uiAir from '@res/sprite/uiAir.json'
@@ -58,10 +63,14 @@ export const spriteURL = {
   coinLarge,
   coinLargeDummy,
   coinSmall,
+  cursor,
   dandelion,
   dandelionFluff,
   enemy1,
   equipment,
+  inventoryBackground,
+  inventoryItemFrameLarge,
+  inventoryItemFrameSmall,
   jetEffect,
   jumpingEffect,
   landingEffect,
@@ -75,6 +84,7 @@ export const spriteURL = {
   slime1,
   snibee,
   spore,
+  testItem,
   throughFloor,
   title,
   uiAir,

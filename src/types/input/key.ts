@@ -35,3 +35,4 @@ type KeyCode =
   | 'Alt'
   | 'Enter'
   | 'Escape'
+  | 'Tab'
