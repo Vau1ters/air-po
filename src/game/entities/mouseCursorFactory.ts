@@ -9,7 +9,15 @@ export class MouseCursorFactory extends EntityFactory {
   public create(): Entity {
     const entity = loadEntity('mouseCursor')
     entity.addComponent('Position', new PositionComponent())
-    entity.addComponent('Ai', new AiComponent(mouseCursorAI(entity)))
+    entity.addComponent(
+      'Ai',
+      new AiComponent({
+        behaviour: mouseCursorAI(entity),
+        dependency: {
+          before: ['CollisionSystem:update'],
+        },
+      })
+    )
     return entity
   }
 }
