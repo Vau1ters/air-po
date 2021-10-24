@@ -4,11 +4,12 @@ import { convertToEaseOut, quad } from '@core/behaviour/easing/functions'
 import { Entity } from '@core/ecs/entity'
 import { getTexture } from '@core/graphics/art'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { OnClickCallback, OnFocusCallback } from '@game/entities/inventoryItemFrameFactory'
-import { MouseController } from '@game/systems/controlSystem'
+import { MouseButton, MouseController } from '@game/systems/controlSystem'
 import { Graphics } from 'pixi.js'
 
 type State = 'On' | 'Off'
+type OnFocusCallback = () => void
+type OnClickCallback = (button: MouseButton) => void
 
 const waitForChangeState = function*(
   entity: Entity,

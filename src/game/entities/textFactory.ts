@@ -6,7 +6,7 @@ import { normalizeText } from '@utils/text'
 import { BitmapText } from 'pixi.js'
 import { EntityFactory } from './entityFactory'
 
-type TextFactorySetting = {
+export type TextFactorySetting = {
   text?: string
   fontSize: number
   pos?: Vec2

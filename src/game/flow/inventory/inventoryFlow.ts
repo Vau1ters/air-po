@@ -5,12 +5,12 @@ import { MouseCursorFactory } from '@game/entities/mouseCursorFactory'
 import { KeyController } from '@game/systems/controlSystem'
 import { InventoryWorldFactory } from '@game/worlds/inventoryWorldFactory'
 import { fadeInOut } from '../common/animation/fadeInOut'
-import { InventoryUI } from './inventoryUI'
+import { createInventoryUI } from './inventoryUI'
 
 export const inventoryFlow = function*(player: Entity): Behaviour<void> {
   const { world, alphaFilter } = new InventoryWorldFactory().create()
 
-  new InventoryUI(world, player)
+  createInventoryUI(world, player)
 
   const cursor = new MouseCursorFactory().create()
   world.addEntity(cursor)
