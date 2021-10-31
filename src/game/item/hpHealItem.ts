@@ -1,6 +1,13 @@
-import { Entity } from '@core/ecs/entity'
+import { Item } from './item'
 
-export const useHpHealItem = (player: Entity): void => {
-  const hp = player.getComponent('Hp')
-  hp.increase(1)
+export class HpHealItem extends Item {
+  use(): void {
+    const hp = this.player.getComponent('Hp')
+    hp.increase(1)
+  }
+
+  canUse(): boolean {
+    const hp = this.player.getComponent('Hp')
+    return hp.hp < hp.maxHp
+  }
 }

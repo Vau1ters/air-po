@@ -27,7 +27,7 @@ export class PlayerFactory extends EntityFactory {
 
     entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
 
-    const player = new PlayerComponent(new UIFactory(this.world).create())
+    const player = new PlayerComponent(entity, new UIFactory(this.world).create())
 
     const equipment = new EquipmentComponent()
     equipment.equipEvent.addObserver(type => {

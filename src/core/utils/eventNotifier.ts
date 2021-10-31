@@ -23,10 +23,18 @@ export class EventNotifier<T> {
     })
   }
 
-  public map<S>(conv: (t: T) => S): EventNotifier<S> {
+  public map<S>(pred: (t: T) => S): EventNotifier<S> {
     const result = new EventNotifier<S>()
     this.addObserver((arg: T): void => {
-      result.notify(conv(arg))
+      result.notify(pred(arg))
+    })
+    return result
+  }
+
+  public filter(pred: (t: T) => boolean): EventNotifier<T> {
+    const result = new EventNotifier<T>()
+    this.addObserver((arg: T): void => {
+      if (pred(arg)) result.notify(arg)
     })
     return result
   }

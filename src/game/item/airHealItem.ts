@@ -1,6 +1,13 @@
-import { Entity } from '@core/ecs/entity'
+import { Item } from './item'
 
-export const useAirHealItem = (player: Entity): void => {
-  const airHolder = player.getComponent('AirHolder')
-  airHolder.collect(100)
+export class AirHealItem extends Item {
+  use(): void {
+    const airHolder = this.player.getComponent('AirHolder')
+    airHolder.collect(100)
+  }
+
+  canUse(): boolean {
+    const airHolder = this.player.getComponent('AirHolder')
+    return airHolder.quantity < airHolder.maxQuantity
+  }
 }
