@@ -1,6 +1,7 @@
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { ItemName } from '@game/flow/inventory/item'
+import { instantiateItem } from '@game/item/instantiateItem'
+import { Item } from '@game/item/item'
 
 export class PlayerComponent {
   public landing = false
@@ -13,15 +14,17 @@ export class PlayerComponent {
     small: 0,
     large: 0,
   }
-  public itemList: Array<ItemName> = ['testItem', 'testItem']
+  public itemList: Array<Item> = []
 
-  public useItem(index: number): void {
-    console.log(`use ${this.itemList[index]}`)
-    this.itemList.splice(index, 1)
+  constructor(player: Entity, public ui: Entity) {
+    this.itemList.push(instantiateItem('testItem', player))
+    this.itemList.push(instantiateItem('testItem', player))
+    this.itemList.push(instantiateItem('hpHealItem', player))
+    this.itemList.push(instantiateItem('airHealItem', player))
   }
 
-  public discardItem(index: number): void {
-    console.log(`discard ${this.itemList[index]}`)
-    this.itemList.splice(index, 1)
+  public popItem(index: number): Item {
+    const [item] = this.itemList.splice(index, 1)
+    return item
   }
 }

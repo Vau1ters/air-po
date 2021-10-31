@@ -12,6 +12,7 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { EntityFactory } from './entityFactory'
 import { loadEntity } from './loader/EntityLoader'
 import { THROUGH_FLOOR_TAG } from './stage/tile/throughFloorFactory'
+import { UIFactory } from './UIFactory'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
@@ -26,7 +27,7 @@ export class PlayerFactory extends EntityFactory {
 
     entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
 
-    const player = new PlayerComponent()
+    const player = new PlayerComponent(entity, new UIFactory(this.world).create())
 
     const equipment = new EquipmentComponent()
     equipment.equipEvent.addObserver(type => {

@@ -43,6 +43,13 @@ export class GameWorldFactory {
     background.drawRect(0, 0, windowSize.width, windowSize.height)
     background.endFill()
 
+    const blackSheet = new PIXI.Graphics()
+    blackSheet.name = 'blackSheet'
+    blackSheet.beginFill(0, 0.5)
+    blackSheet.drawRect(0, 0, windowSize.width, windowSize.height)
+    blackSheet.endFill()
+    blackSheet.filters = [new PIXI.filters.AlphaFilter(0)]
+
     const worldUIContainer = new Container()
     worldUIContainer.zIndex = Infinity
 
@@ -57,6 +64,7 @@ export class GameWorldFactory {
 
     filterContainer.addChild(background)
     filterContainer.addChild(cameraContainer)
+    filterContainer.addChild(blackSheet)
 
     cameraContainer.addChild(worldContainer)
     cameraContainer.addChild(worldUIContainer)

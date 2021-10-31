@@ -1,7 +1,7 @@
 import { World } from '@core/ecs/world'
 import { ControlSystem } from '@game/systems/controlSystem'
 import DrawSystem from '@game/systems/drawSystem'
-import { Container, filters, Graphics } from 'pixi.js'
+import { Container, filters } from 'pixi.js'
 import { windowSize } from '@core/application'
 import { SingletonSystem } from '@game/systems/singletonSystem'
 import AISystem from '@game/systems/aiSystem'
@@ -16,11 +16,6 @@ export class InventoryWorldFactory {
 
     const world = new World()
 
-    const background = new Graphics()
-    background.beginFill(0, 0.5)
-    background.drawRect(0, 0, windowSize.width, windowSize.height)
-    background.endFill()
-
     const rootContainer = new Container()
     rootContainer.filters = rootContainer.filters || [] // undefinedの場合は空配列を入れる
     rootContainer.filters.push(alphaFilter)
@@ -28,8 +23,6 @@ export class InventoryWorldFactory {
 
     const worldContainer = new Container()
     rootContainer.addChild(worldContainer)
-
-    worldContainer.addChild(background)
 
     const worldUIContainer = new Container()
     worldUIContainer.zIndex = Infinity

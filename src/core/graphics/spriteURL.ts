@@ -3,6 +3,7 @@
 // you can update this file by type "yarn metabuild" command.
 
 import airGeyser from '@res/sprite/airGeyser.json'
+import airHealItem from '@res/sprite/airHealItem.json'
 import background1 from '@res/sprite/background1.json'
 import background2 from '@res/sprite/background2.json'
 import ballBullet from '@res/sprite/ballBullet.json'
@@ -20,6 +21,7 @@ import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
 import equipment from '@res/sprite/equipment.json'
+import hpHealItem from '@res/sprite/hpHealItem.json'
 import inventoryBackground from '@res/sprite/inventoryBackgroud.json'
 import inventoryItemFrameLarge from '@res/sprite/inventoryItemFrameLarge.json'
 import inventoryItemFrameSmall from '@res/sprite/inventoryItemFrameSmall.json'
@@ -51,6 +53,7 @@ import wall from '@res/sprite/wall.json'
 
 export const spriteURL = {
   airGeyser,
+  airHealItem,
   background1,
   background2,
   ballBullet,
@@ -68,6 +71,7 @@ export const spriteURL = {
   dandelionFluff,
   enemy1,
   equipment,
+  hpHealItem,
   inventoryBackground,
   inventoryItemFrameLarge,
   inventoryItemFrameSmall,
