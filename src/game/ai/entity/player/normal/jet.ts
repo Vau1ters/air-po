@@ -77,6 +77,6 @@ export const jet = function*(entity: Entity, world: World): Behaviour<void> {
       yield
     }
 
-    yield* wait(PLAYER_SETTING.normal.jet.coolTime)
+    yield* wait.frame(PLAYER_SETTING.normal.jet.coolTime)
   }
 }

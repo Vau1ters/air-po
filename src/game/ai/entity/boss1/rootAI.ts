@@ -31,6 +31,6 @@ export const rootAI = function*(root: Entity, world: World): Behaviour<void> {
     to: basePos.y - draw.height + 10,
   })
   attack.damage = 0
-  yield* wait(50)
+  yield* wait.frame(50)
   yield* kill(root, world)
 }

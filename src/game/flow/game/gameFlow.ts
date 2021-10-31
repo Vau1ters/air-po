@@ -64,7 +64,7 @@ export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?
       }
     },
   }).start('Game')
-  yield* wait(60)
+  yield* wait.frame(60)
   world.end()
 
   assert(gameEvent.event !== undefined, '')

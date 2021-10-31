@@ -57,10 +57,10 @@ const animate = function*(speechBalloon: Entity): Behaviour<void> {
   yield* parallelAll([popInspeechBalloonScale, popInspeechBalloonAngle])
 
   while (bitmapText.text.length < wholeText.length) {
-    yield* wait(4)
+    yield* wait.frame(4)
     updateBitmapText(bitmapText, wholeText.substr(0, bitmapText.text.length + 1))
   }
-  yield* wait(100)
+  yield* wait.frame(100)
 
   const popOutspeechBalloonScale = ease(In.quad)(20, value => (filter.uniforms.scale = value), {
     from: 1,

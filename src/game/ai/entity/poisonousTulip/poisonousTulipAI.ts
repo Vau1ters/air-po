@@ -47,7 +47,7 @@ const poisonousTulipApproached = function*(entity: Entity, world: World): Behavi
         .length() < 48
     ) {
       emitPoison(entity, world)
-      yield* wait(90)
+      yield* wait.frame(90)
     }
     yield
   }

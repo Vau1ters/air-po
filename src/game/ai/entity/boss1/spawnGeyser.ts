@@ -7,6 +7,6 @@ import { Boss1GeyserFactory } from '@game/entities/boss1GeyserFactory'
 export const spawnGeyser = function*(pos: Vec2, world: World): Generator<void, Entity> {
   const geyser = new Boss1GeyserFactory(pos, world).create()
   world.addEntity(geyser)
-  yield* wait(100)
+  yield* wait.frame(100)
   return geyser
 }

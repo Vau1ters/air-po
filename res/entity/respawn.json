@@ -1,13 +1,14 @@
 {
   "draw": {
-    "name": "respawn"
+    "name": "respawn",
+    "zIndex": 10
   },
   "animationState": {},
   "collider": [
     {
       "geometry": {
         "type": "AABB",
-        "size": [48, 48]
+        "size": [16, 16]
       },
       "category": "sensor",
       "mask": ["playerHitbox"]

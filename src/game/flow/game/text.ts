@@ -32,7 +32,7 @@ export const Text = (world: World, text: string): Behaviour<void> => {
         to: text.length,
       }
     ),
-    wait(60),
+    wait.frame(60),
     ease(In.linear)(
       120,
       (value: number) => {

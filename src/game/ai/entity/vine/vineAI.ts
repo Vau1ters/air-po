@@ -6,6 +6,6 @@ import { wait } from '@core/behaviour/wait'
 export const vineAI = function*(entity: Entity): Behaviour<void> {
   while (true) {
     yield* changeVineLength(entity)
-    yield* wait(2)
+    yield* wait.frame(2)
   }
 }

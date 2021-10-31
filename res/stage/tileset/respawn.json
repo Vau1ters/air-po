@@ -1,14 +1,14 @@
 { "columns":1,
  "image":"..\/..\/image\/respawn.png",
- "imageheight":48,
- "imagewidth":48,
+ "imageheight":32,
+ "imagewidth":336,
  "margin":0,
  "name":"respawn",
  "spacing":0,
  "tilecount":1,
  "tiledversion":"2021.03.23",
- "tileheight":48,
- "tilewidth":48,
+ "tileheight":32,
+ "tilewidth":24,
  "type":"tileset",
  "version":1.5
 }

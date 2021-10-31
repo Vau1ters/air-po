@@ -23,8 +23,7 @@ export class DrawComponent extends Container {
     if (option.child) {
       this.addChild(option.child.sprite)
       if (option.child.zIndex) {
-        option.child.sprite.zIndex = option.child.zIndex
-        this.sortableChildren = true
+        this.zIndex = option.child.zIndex
       }
       if (option.child.state) {
         const sprite = option.child.sprite as AnimationSprite

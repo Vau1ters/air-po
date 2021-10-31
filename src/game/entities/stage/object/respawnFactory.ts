@@ -1,11 +1,11 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { createHash } from 'crypto'
 import { EntityName } from '@game/entities/loader/EntityLoader'
 import { Stage } from '@game/stage/stage'
 import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 import { StageObject } from '@game/stage/object'
+import { AiComponent } from '@game/components/aiComponent'
+import { respawnAI } from '@game/ai/entity/respawn/respawnAI'
 
 export default class RespawnFactory extends ObjectEntityFactory {
   constructor(
@@ -20,22 +20,7 @@ export default class RespawnFactory extends ObjectEntityFactory {
 
   public create(): Entity {
     const entity = super.create()
-
-    const hash = createHash('md5')
-    hash.update(entity.getComponent('Position').x.toString())
-    hash.update(entity.getComponent('Position').y.toString())
-
-    const spawnerID = parseInt('0x' + hash.digest('hex'), 16)
-    this.stage.registerSpawner(spawnerID, entity.getComponent('Position'))
-
-    const [collider] = entity.getComponent('Collider').colliders
-    collider.callbacks.add((args: CollisionCallbackArgs): void => {
-      const {
-        other: { entity: player },
-      } = args
-      player.getComponent('Player').spawnerID = spawnerID
-    })
-
+    entity.addComponent('Ai', new AiComponent(respawnAI(entity, this.stage)))
     return entity
   }
 }
