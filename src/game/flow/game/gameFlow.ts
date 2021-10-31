@@ -59,7 +59,7 @@ export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?
     },
     Inventory: function*(controller: BranchController) {
       while (true) {
-        yield* inventoryFlow(getSingleton('Player', world))
+        yield* inventoryFlow(world)
         controller.transit('Game')
       }
     },

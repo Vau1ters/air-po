@@ -8,6 +8,7 @@ import { AiComponent } from '@game/components/aiComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityName, loadEntity } from '@game/entities/loader/EntityLoader'
 import { TextFactory } from '@game/entities/textFactory'
+import { useItem } from '@game/item/useItem'
 import { MouseButton } from '@game/systems/controlSystem'
 import { EventNotifier } from '@utils/eventNotifier'
 import { BitmapText, Sprite } from 'pixi.js'
@@ -19,11 +20,13 @@ type FocusItemReceiver = EventNotifier<ItemSetting | undefined>
 type ChangeItemListNotifier = EventNotifier<ItemName[]>
 type SelectItemNotifier = EventNotifier<[MouseButton, number]>
 
+const OFFSET_Y = 24
+
 const createBackground = (): Entity => {
   const entity = loadEntity('inventoryBackground')
   entity.addComponent(
     'Position',
-    new PositionComponent(windowSize.width / 2, windowSize.height / 2)
+    new PositionComponent(windowSize.width / 2, windowSize.height / 2 + OFFSET_Y)
   )
   return entity
 }
@@ -55,12 +58,12 @@ const createItemFrame = (arg: {
 const createItemName = (notifier: FocusItemReceiver): Entity => {
   const entity = new TextFactory({
     fontSize: 16,
-    pos: new Vec2(130, 50),
+    pos: new Vec2(130, 50 + OFFSET_Y),
     tint: 0x000000,
   }).create()
   notifier.addObserver((item?: ItemSetting): void => {
     const [bitmapText] = entity.getComponent('Draw').children as [BitmapText]
-    bitmapText.text = item?.name ?? ''
+    bitmapText.text = item?.displayName ?? ''
   })
   return entity
 }
@@ -68,7 +71,7 @@ const createItemName = (notifier: FocusItemReceiver): Entity => {
 const createItemDescription = (notifier: FocusItemReceiver): Entity => {
   const entity = new TextFactory({
     fontSize: 8,
-    pos: new Vec2(130, 75),
+    pos: new Vec2(130, 75 + OFFSET_Y),
     tint: 0x000000,
   }).create()
   notifier.addObserver((item?: ItemSetting): void => {
@@ -116,7 +119,7 @@ const createInventoryItemSmallFrames = (
               WINDOW_HEIGHT / 4 +
               MARGIN_Y * (row - ROW_NUM / 2 + 1) +
               FRAME_HEIGHT * (row - ROW_NUM / 2)
-          )
+          ) + OFFSET_Y
         ),
         receiver,
       })
@@ -156,10 +159,10 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
     if (index >= player.itemList.length) return
     switch (button) {
       case 'Left':
-        player.useItem(index)
+        useItem(player.popItem(index), playerEntity)
         break
       case 'Right':
-        player.discardItem(index)
+        player.popItem(index)
         break
       default:
         return
@@ -173,7 +176,7 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
   const itemDescription = createItemDescription(focusItemReceiver)
   const largeFrame = createItemFrame({
     name: 'inventoryItemFrameLarge',
-    position: new PositionComponent(90, 80),
+    position: new PositionComponent(90, 80 + OFFSET_Y),
     receiver: focusItemReceiver,
   })
   const smallFrames = createInventoryItemSmallFrames(

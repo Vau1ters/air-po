@@ -13,15 +13,11 @@ export class PlayerComponent {
     small: 0,
     large: 0,
   }
-  public itemList: Array<ItemName> = ['testItem', 'testItem']
+  public itemList: Array<ItemName> = ['testItem', 'testItem', 'hpHealItem', 'airHealItem']
+  constructor(public ui: Entity) {}
 
-  public useItem(index: number): void {
-    console.log(`use ${this.itemList[index]}`)
-    this.itemList.splice(index, 1)
-  }
-
-  public discardItem(index: number): void {
-    console.log(`discard ${this.itemList[index]}`)
-    this.itemList.splice(index, 1)
+  public popItem(index: number): ItemName {
+    const [item] = this.itemList.splice(index, 1)
+    return item
   }
 }

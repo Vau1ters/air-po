@@ -2,6 +2,8 @@
 // this file is automatically written by script.
 // you can update this file by type "yarn metabuild" command.
 
+import airHealItem from '@res/item/airHealItem.json'
+import hpHealItem from '@res/item/hpHealItem.json'
 import testItem from '@res/item/testItem.json'
 
 export type ItemSetting = {
@@ -12,5 +14,7 @@ export type ItemSetting = {
 }
 
 export const itemURL: { [key: string]: ItemSetting } = {
+  airHealItem,
+  hpHealItem,
   testItem,
 }
