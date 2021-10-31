@@ -1,4 +1,19 @@
 {
   "name": "respawn",
-  "path": "respawn.png"
+  "path": "respawn.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "Deactivated": [0],
+      "Activating": [1,2,3,4,5],
+      "Activated": [6,7,8,9,10,11,12,13]
+    },
+    "default": "Deactivated"
+  }
+}
 }
