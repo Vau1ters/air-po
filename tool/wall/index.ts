@@ -1,8 +1,6 @@
 import { Random } from './random'
 import * as fs from 'fs'
 
-const rand = new Random()
-
 type Stage = {
   layers: TileLayer[]
   tilesets: TileSet[]
@@ -50,6 +48,8 @@ type WallType =
   | 'Invalid'
 
 export class WallLoader {
+  private rand: Random = new Random()
+
   constructor(private layer: TileLayer, private gidBegin: number, private gidEnd: number) {}
 
   public getTileId(x: number, y: number): number {
@@ -151,7 +151,7 @@ export class WallLoader {
   }
 
   private randomChoice(candidates: number[]): number {
-    return candidates[Math.abs(rand.next()) % candidates.length]
+    return candidates[Math.abs(this.rand.next()) % candidates.length]
   }
 }
 
