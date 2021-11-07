@@ -17,7 +17,7 @@ const emitSpore = (world: World, position: Vec2): void => {
 
   for (let i = 0; i < 10; i++) {
     sporeFactory.setPosition(
-      position.add(new Vec2(Math.random() * 5 - 30 + i * 6, Math.random() * 5 + 13))
+      position.add(new Vec2(Math.random() * 5 - 30 + i * 6, Math.random() * 5))
     )
     world.addEntity(sporeFactory.create())
   }
@@ -36,12 +36,12 @@ export const mushroomAI = function*(entity: Entity, world: World): Behaviour<voi
     landed = true
     other.entity.getComponent('RigidBody').velocity.y -= JUMP_ACCEL
     entity.getComponent('Sound').addSound('mushroom')
-    emitSpore(world, position)
+    emitSpore(world, position.add(new Vec2(0, 5)))
   })
 
   yield* suspendable(not(hasAir(entity)), animate({ entity, state: 'Close', loopCount: Infinity }))
 
-  emitSpore(world, position)
+  emitSpore(world, position.add(new Vec2(0, 13)))
 
   yield* animate({ entity, state: 'Opening', waitFrames: 5 })
 
