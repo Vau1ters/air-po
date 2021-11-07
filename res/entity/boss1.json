@@ -27,6 +27,7 @@
     }
   ],
   "hp": {
-    "max": 10
+    "max": 10,
+    "showHpBar": false
   }
 }

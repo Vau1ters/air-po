@@ -22,7 +22,9 @@ export class HPSystem extends System {
     for (const entity of this.hpFamily.entityIterator) {
       const hp = entity.getComponent('Hp')
       const position = entity.getComponent('Position')
-      this.hpGauge.drawRect(position.x - 8, position.y - 12, hp.ratio * 16, 2)
+      if (hp.showHpBar) {
+        this.hpGauge.drawRect(position.x - 8, position.y - 12, hp.ratio * 16, 2)
+      }
     }
     this.hpGauge.endFill()
   }
