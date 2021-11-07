@@ -1,6 +1,5 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { Vec2 } from '@core/math/vec2'
 import { playerAI } from '@game/ai/entity/player/playerAI'
 import { AiComponent } from '@game/components/aiComponent'
 import { Collider } from '@game/components/colliderComponent'
@@ -18,14 +17,14 @@ export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
 
 export class PlayerFactory extends EntityFactory {
-  constructor(private pos: Vec2, private world: World) {
+  constructor(private world: World) {
     super()
   }
 
   public create(): Entity {
     const entity = loadEntity('player')
 
-    entity.addComponent('Position', new PositionComponent(this.pos.x, this.pos.y))
+    entity.addComponent('Position', new PositionComponent())
 
     const player = new PlayerComponent(entity, new UIFactory(this.world).create())
 

@@ -8,6 +8,7 @@ import * as Sound from '@core/sound/sound'
 import { PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 import { StageName } from '@game/stage/stageLoader'
 import { getSingleton } from './singletonSystem'
+import { SpawnPoint } from '@game/components/gameEventComponent'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
@@ -34,7 +35,7 @@ export class EventSensorSystem extends System {
     const [eventName, ...options] = event.split(' ')
     switch (eventName) {
       case 'changeMap':
-        await this.moveEvent(options[0] as StageName, Number(options[1]))
+        await this.moveEvent({ stageName: options[0] as StageName, spawnerID: Number(options[1]) })
         break
       case 'equipItem':
         await this.equipItemEvent(options[0] as EquipmentTypes, Number(options[1]))
@@ -42,11 +43,10 @@ export class EventSensorSystem extends System {
     }
   }
 
-  private async moveEvent(newMapName: StageName, spawnerID: number): Promise<void> {
+  private async moveEvent(spawnPoint: SpawnPoint): Promise<void> {
     getSingleton('GameEvent', this.world).getComponent('GameEvent').event = {
       type: 'move',
-      mapName: newMapName,
-      spawnerID,
+      spawnPoint,
     }
   }
 

@@ -8,6 +8,7 @@ import { loadStage } from '@game/stage/stageLoader'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 import { SingletonSystem } from '@game/systems/singletonSystem'
 import { BgmFactory } from '@game/entities/bgmFactory'
+import { PlayerFactory } from '@game/entities/playerFactory'
 
 export class TitleWorldFactory {
   public create(): World {
@@ -47,7 +48,7 @@ export class TitleWorldFactory {
     )
 
     const stage = loadStage('root', world)
-    stage.spawnPlayer(0)
+    stage.spawnPlayer(new PlayerFactory(world).create(), 0)
 
     return world
   }

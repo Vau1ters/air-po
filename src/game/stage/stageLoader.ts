@@ -33,7 +33,7 @@ const StageType = t.type({
 type StageSetting = t.TypeOf<typeof StageType>
 
 export const loadStage = (stageName: StageName, world: World): Stage => {
-  const result = new Stage(world)
+  const result = new Stage(stageName, world)
   const stage = decodeJson<StageSetting>(stageList[stageName], StageType)
   const tileLayerLoader = new TileLayerLoader(result, world, stage.tilesets)
   const objectLayerLoader = new ObjectLayerLoader(result, world, stage.tilesets)
@@ -46,7 +46,7 @@ export const loadStage = (stageName: StageName, world: World): Stage => {
       case 'objectgroup':
         switch (layer.name) {
           case 'air':
-            loadAirLayer(layer as ObjectLayer, world)
+            loadAirLayer(layer as ObjectLayer, world, result)
             break
           case 'background':
             loadBackgroundLayer(layer as ObjectLayer, world, stage.tilesets)

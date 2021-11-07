@@ -2,10 +2,8 @@ import { loadPlayData, StoryStatus } from '@game/playdata/playdata'
 import { MouseController } from '@game/systems/controlSystem'
 import * as Sound from '@core/sound/sound'
 import { LogoBlinking } from './logoBlinking'
-import { assert } from '@utils/assertion'
 import { FadeOut } from '../common/animation/fadeOut'
 import { Sprite } from 'pixi.js'
-import { StageName } from '@game/stage/stageLoader'
 import { TitleWorldFactory } from '@game/worlds/titleWorldFactory'
 import { parallelAny } from '@core/behaviour/composite'
 import { gameFlow } from '../game/gameFlow'
@@ -16,12 +14,11 @@ import { getTexture } from '@core/graphics/art'
 const createNextFlow = (): Flow => {
   const playData = loadPlayData()
 
-  switch (playData.status) {
+  switch (playData.storyStatus) {
     case StoryStatus.Opening:
       return openingFlow()
     case StoryStatus.Stage: {
-      assert(playData.mapName !== undefined, 'save data is broken')
-      return gameFlow(playData.mapName as StageName)
+      return gameFlow(playData.spawnPoint, {})
     }
   }
 }
