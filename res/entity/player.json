@@ -67,7 +67,8 @@
     "shouldDamageInSuffocation": true
   },
   "hp": {
-    "max": 3
+    "max": 3,
+    "showHpBar": false
   },
   "sound": {},
   "horizontalDirection": {

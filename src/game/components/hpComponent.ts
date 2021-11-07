@@ -2,7 +2,7 @@ const DAMAGING_FRAMES = 5
 
 export class HpComponent {
   public damageTime = 0
-  public constructor(private _hp: number, private _maxHp: number) {}
+  public constructor(private _hp: number, private _maxHp: number, public showHpBar: boolean) {}
 
   decrease(damage: number): void {
     this._hp = Math.max(0, this.hp - damage)
