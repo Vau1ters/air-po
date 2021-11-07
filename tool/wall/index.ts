@@ -50,7 +50,7 @@ type WallType =
   | 'Invalid'
 
 export class WallLoader {
-  constructor(private layer: TileLayer) {}
+  constructor(private layer: TileLayer, private gidBegin: number, private gidEnd: number) {}
 
   public getTileId(x: number, y: number): number {
     const type = this.getType(x, y)
@@ -146,7 +146,8 @@ export class WallLoader {
     if (y < 0) return false
     if (x >= this.layer.width) return false
     if (y >= this.layer.height) return false
-    return this.layer.data[x + y * this.layer.width] !== 0
+    const gid = this.layer.data[x + y * this.layer.width]
+    return this.gidBegin <= gid && gid < this.gidEnd
   }
 
   private randomChoice(candidates: number[]): number {
@@ -155,7 +156,7 @@ export class WallLoader {
 }
 
 const updateLayer = (layer: TileLayer, gidBegin: number, gidEnd: number): void => {
-  const loader = new WallLoader(layer)
+  const loader = new WallLoader(layer, gidBegin, gidEnd)
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const index = x + y * layer.width
