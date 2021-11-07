@@ -12,9 +12,19 @@ import { not } from '../common/condition/composite'
 
 const JUMP_ACCEL = 500
 
+const emitSpore = (world: World, position: Vec2): void => {
+  const sporeFactory = new SporeEffectFactory(world)
+
+  for (let i = 0; i < 10; i++) {
+    sporeFactory.setPosition(
+      position.add(new Vec2(Math.random() * 5 - 30 + i * 6, Math.random() * 5 + 13))
+    )
+    world.addEntity(sporeFactory.create())
+  }
+}
+
 export const mushroomAI = function*(entity: Entity, world: World): Behaviour<void> {
   const position = entity.getComponent('Position')
-  const sporeFactory = new SporeEffectFactory(world)
 
   let landed = false
 
@@ -26,16 +36,12 @@ export const mushroomAI = function*(entity: Entity, world: World): Behaviour<voi
     landed = true
     other.entity.getComponent('RigidBody').velocity.y -= JUMP_ACCEL
     entity.getComponent('Sound').addSound('mushroom')
+    emitSpore(world, position)
   })
 
   yield* suspendable(not(hasAir(entity)), animate({ entity, state: 'Close', loopCount: Infinity }))
 
-  for (let i = 0; i < 10; i++) {
-    sporeFactory.setPosition(
-      position.add(new Vec2(Math.random() * 5 - 30 + i * 6, Math.random() * 5 + 13))
-    )
-    world.addEntity(sporeFactory.create())
-  }
+  emitSpore(world, position)
 
   yield* animate({ entity, state: 'Opening', waitFrames: 5 })
 
