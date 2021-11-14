@@ -1,4 +1,3 @@
-import { loadPlayData, StoryStatus } from '@game/playdata/playdata'
 import { MouseController } from '@game/systems/controlSystem'
 import * as Sound from '@core/sound/sound'
 import { LogoBlinking } from './logoBlinking'
@@ -10,15 +9,16 @@ import { gameFlow } from '../game/gameFlow'
 import { openingFlow } from '../opening/openingFlow'
 import { Flow } from '../flow'
 import { getTexture } from '@core/graphics/art'
+import { loadData, StoryStatus } from '@game/playdata/playdata'
 
 const createNextFlow = (): Flow => {
-  const playData = loadPlayData()
+  const { storyStatus, spawnPoint, playerData } = loadData()
 
-  switch (playData.storyStatus) {
+  switch (storyStatus) {
     case StoryStatus.Opening:
       return openingFlow()
     case StoryStatus.Stage: {
-      return gameFlow(playData.spawnPoint, {})
+      return gameFlow(spawnPoint, playerData)
     }
   }
 }

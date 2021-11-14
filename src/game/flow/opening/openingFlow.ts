@@ -7,11 +7,11 @@ import { PositionComponent } from '@game/components/positionComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
 import { parallelAny } from '@core/behaviour/composite'
 import { FadeOut } from '../common/animation/fadeOut'
-import { loadPlayData, savePlayData, StoryStatus } from '@game/playdata/playdata'
 import { createSprite } from '@core/graphics/art'
 import { OpeningWorldFactory } from '@game/worlds/openingWorldFactory'
 import { Flow } from '../flow'
 import { gameFlow } from '../game/gameFlow'
+import { loadData, saveData, StoryStatus } from '@game/playdata/playdata'
 
 const camera = function*(world: World): Behaviour<void> {
   const camera = new Entity()
@@ -65,10 +65,11 @@ export const openingFlow = function*(): Flow {
   ])
   world.end()
 
-  savePlayData({
-    ...loadPlayData(),
+  saveData({
+    ...loadData(),
     storyStatus: StoryStatus.Stage,
   })
 
-  return gameFlow(loadPlayData().spawnPoint, {})
+  const { spawnPoint, playerData } = loadData()
+  return gameFlow(spawnPoint, playerData)
 }

@@ -15,20 +15,15 @@ import { Entity } from '@core/ecs/entity'
 import { branch, BranchController } from '@core/behaviour/branch'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { inventoryFlow } from '../inventory/inventoryFlow'
-import { loadPlayData } from '@game/playdata/playdata'
-import { SpawnPoint } from '@game/components/gameEventComponent'
 import { PlayerFactory } from '@game/entities/playerFactory'
+import { loadData, PlayerData } from '@game/playdata/playdata'
+import { SpawnPoint } from '@game/components/gameEventComponent'
 
-type InterMapEntity = {
-  player?: Entity
-  bgm?: Entity
-}
-
-export const gameFlow = function*(spawnPoint: SpawnPoint, interMapEntity: InterMapEntity): Flow {
+export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?: Entity): Flow {
   const gameWorldFactory = new GameWorldFactory()
   const world = gameWorldFactory.create()
-  const player = interMapEntity.player ?? new PlayerFactory(world).create()
-  const bgm = interMapEntity.bgm ?? new BgmFactory().create()
+  const player = new PlayerFactory(world, data).create()
+  bgm = bgm ?? new BgmFactory().create()
   world.addEntity(bgm)
 
   const stage = loadStage(spawnPoint.stageName, world)
@@ -79,8 +74,10 @@ export const gameFlow = function*(spawnPoint: SpawnPoint, interMapEntity: InterM
 
   switch (gameEvent.event.type) {
     case 'move':
-      return gameFlow(gameEvent.event.spawnPoint, { player, bgm })
-    case 'playerDie':
-      return gameFlow(loadPlayData().spawnPoint, { player: undefined, bgm })
+      return gameFlow(gameEvent.event.spawnPoint, player.getComponent('Player').playerData, bgm)
+    case 'playerDie': {
+      const { spawnPoint, playerData } = loadData()
+      return gameFlow(spawnPoint, playerData, bgm)
+    }
   }
 }

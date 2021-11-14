@@ -1,24 +1,8 @@
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { ItemName } from '@game/flow/inventory/item'
 import { instantiateItem } from '@game/item/instantiateItem'
 import { Item } from '@game/item/item'
-import {
-  LargeCoinID,
-  loadPlayData,
-  PlayData,
-  SaveDataVersion,
-  StoryStatus,
-} from '@game/playdata/playdata'
-import { SpawnPoint } from './gameEventComponent'
-
-export type InterMapPlayerInfo = {
-  hp: number
-  spawnPoint: SpawnPoint
-  smallCoinCount: number
-  acquiredLargeCoinList: Set<LargeCoinID>
-  itemList: Array<ItemName>
-}
+import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
 
 export class PlayerComponent {
   public landing = false
@@ -30,13 +14,13 @@ export class PlayerComponent {
   public acquiredLargeCoinList: Set<LargeCoinID>
   public itemList: Array<Item>
 
-  constructor(player: Entity, public ui: Entity) {
-    const playData = loadPlayData()
+  constructor(private player: Entity, public ui: Entity) {
+    const { playerData } = loadData()
 
-    this.smallCoinCount = playData.smallCoinCount
-    this.acquiredLargeCoinList = new Set(playData.acquiredLargeCoinList)
+    this.smallCoinCount = playerData.smallCoinCount
+    this.acquiredLargeCoinList = new Set(playerData.acquiredLargeCoinList)
     this.itemList = []
-    for (const item of playData.itemList) {
+    for (const item of playerData.itemList) {
       this.itemList.push(instantiateItem(item, player))
     }
   }
@@ -46,11 +30,11 @@ export class PlayerComponent {
     return item
   }
 
-  public toPlayData(storyStatus: StoryStatus, spawnPoint: SpawnPoint): PlayData {
+  public get playerData(): PlayerData {
+    const hp = this.player.getComponent('Hp')
     return {
-      version: SaveDataVersion,
-      storyStatus,
-      spawnPoint,
+      hp: hp.hp,
+      maxHp: hp.maxHp,
       itemList: this.itemList.map(item => item.name),
       smallCoinCount: this.smallCoinCount,
       acquiredLargeCoinList: Array.from(this.acquiredLargeCoinList),

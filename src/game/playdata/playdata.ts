@@ -10,14 +10,20 @@ export type EquipmentStatus = {
 }
 export const SaveDataVersion = '0.0.1'
 
-export type PlayData = {
+export type SaveData = {
   version: string
   storyStatus: StoryStatus
+  spawnPoint: SpawnPoint
+  playerData: PlayerData
+}
+
+export type PlayerData = {
+  hp: number
+  maxHp: number
   itemList: ItemName[]
   smallCoinCount: number
   acquiredLargeCoinList: Array<LargeCoinID>
   equipmentList: EquipmentStatus[]
-  spawnPoint: SpawnPoint
 }
 
 export enum StoryStatus {
@@ -25,37 +31,41 @@ export enum StoryStatus {
   Stage,
 }
 
-export const InitialPlayData: PlayData = {
+export const InitialSaveData: SaveData = {
   version: SaveDataVersion,
   storyStatus: StoryStatus.Opening,
-  itemList: ['testItem', 'testItem', 'hpHealItem', 'airHealItem'],
-  smallCoinCount: 0,
-  acquiredLargeCoinList: [],
-  equipmentList: [],
   spawnPoint: {
     stageName: 'root',
     spawnerID: 0,
   },
+  playerData: {
+    hp: 3,
+    maxHp: 3,
+    itemList: ['testItem', 'testItem', 'hpHealItem', 'airHealItem'],
+    smallCoinCount: 0,
+    acquiredLargeCoinList: [],
+    equipmentList: [],
+  },
 }
 
-export const savePlayData = (data: PlayData): void => {
+export const saveData = (data: SaveData): void => {
   localStorage.setItem('playdata', JSON.stringify(data))
 }
 
-export const loadPlayData = (): PlayData => {
+export const loadData = (): SaveData => {
     const data = localStorage.getItem('playdata')
     if (data) {
-      const result = JSON.parse(data) as PlayData
+      const result = JSON.parse(data) as SaveData
       if (result.version === SaveDataVersion) {
         return result
       }
     }
 
-    savePlayData(InitialPlayData)
-    return InitialPlayData
+    saveData(InitialSaveData)
+    return InitialSaveData
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ;(window as any).changeMap = (stageName: StageName, spawnerID: SpawnerID = 0): void => {
-  savePlayData({ ...loadPlayData(), spawnPoint: { stageName, spawnerID } })
+  saveData({ ...loadData(), spawnPoint: { stageName, spawnerID } })
 }
