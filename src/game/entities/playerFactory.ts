@@ -44,6 +44,9 @@ export class PlayerFactory extends EntityFactory {
     equipment.equipEvent.notify('AirTank')
     equipment.equipEvent.notify('AirTank')
 
+    const airHolder = entity.getComponent('AirHolder')
+    airHolder.quantity = Math.min(this.playerData.air, airHolder.maxQuantity)
+
     entity.addComponent(
       'Ai',
       new AiComponent({

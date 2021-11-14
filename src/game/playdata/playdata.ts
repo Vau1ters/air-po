@@ -20,6 +20,7 @@ export type SaveData = {
 export type PlayerData = {
   hp: number
   maxHp: number
+  air: number
   itemList: ItemName[]
   smallCoinCount: number
   acquiredLargeCoinList: Array<LargeCoinID>
@@ -41,6 +42,7 @@ export const InitialSaveData: SaveData = {
   playerData: {
     hp: 3,
     maxHp: 3,
+    air: Infinity,
     itemList: ['testItem', 'testItem', 'hpHealItem', 'airHealItem'],
     smallCoinCount: 0,
     acquiredLargeCoinList: [],

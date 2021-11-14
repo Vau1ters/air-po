@@ -31,10 +31,12 @@ export class PlayerComponent {
   }
 
   public get playerData(): PlayerData {
+    const airHolder = this.player.getComponent('AirHolder')
     const hp = this.player.getComponent('Hp')
     return {
       hp: hp.hp,
       maxHp: hp.maxHp,
+      air: airHolder.quantity,
       itemList: this.itemList.map(item => item.name),
       smallCoinCount: this.smallCoinCount,
       acquiredLargeCoinList: Array.from(this.acquiredLargeCoinList),
