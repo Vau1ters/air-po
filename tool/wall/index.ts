@@ -96,7 +96,7 @@ export class WallLoader {
       case 'ProtrudeRight':
         return [32]
       case 'ProtrudeDown':
-        return [34]
+        return [35]
       case 'ProtrudeLeft':
         return [34]
       case 'Invalid':
