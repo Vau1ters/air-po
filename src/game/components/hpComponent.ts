@@ -21,6 +21,11 @@ export class HpComponent {
     return this._maxHp
   }
 
+  set maxHp(maxHp: number) {
+    this._maxHp = maxHp
+    this._hp = Math.min(this.maxHp, this.hp)
+  }
+
   get hp(): number {
     return this._hp
   }

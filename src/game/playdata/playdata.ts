@@ -1,11 +1,8 @@
 import { SpawnPoint } from '@game/components/gameEventComponent'
-import { ItemName } from '@game/flow/inventory/item'
+import { EquipmentName } from '@game/equipment/equipment'
+import { ItemName } from '@game/item/item'
 
 export type LargeCoinID = number
-export type EquipmentStatus = {
-  name: string
-  level: number
-}
 export const SaveDataVersion = '0.0.1'
 
 export type SaveData = {
@@ -22,7 +19,7 @@ export type PlayerData = {
   itemList: ItemName[]
   smallCoinCount: number
   acquiredLargeCoinList: Array<LargeCoinID>
-  equipmentList: EquipmentStatus[]
+  equipmentList: EquipmentName[]
 }
 
 export enum StoryStatus {
@@ -40,11 +37,11 @@ export const InitialSaveData: SaveData = {
   playerData: {
     hp: 3,
     maxHp: 3,
-    air: Infinity,
+    air: 1e8,
     itemList: ['testItem', 'testItem', 'hpHealItem', 'airHealItem'],
     smallCoinCount: 0,
     acquiredLargeCoinList: [],
-    equipmentList: [],
+    equipmentList: ['airTank', 'airTank'],
   },
 }
 

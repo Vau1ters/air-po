@@ -24,7 +24,7 @@ const UI_SETTING = {
 
 const airTankAI = function*(world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
-  const airTank = player.getComponent('Equipment').airTank
+  const airTankCount = player.getComponent('Player').getEquipmentCount('airTank')
 
   const background = new UIComponentFactory('uiAirTankBg')
     .setPosition(
@@ -42,7 +42,7 @@ const airTankAI = function*(world: World): Behaviour<void> {
   const tankBodies = []
 
   const supplyBody = (): void => {
-    while (tankBodies.length + 1 < airTank.count) {
+    while (tankBodies.length + 1 < airTankCount) {
       const tankBody = new UIComponentFactory('uiAirTankBody')
         .setPosition(
           UI_SETTING.AIR_TANK.x + tankBodies.length * UI_SETTING.AIR_TANK.shiftX,
@@ -62,7 +62,7 @@ const airTankAI = function*(world: World): Behaviour<void> {
   while (true) {
     supplyBody()
     updateTail()
-    background.getComponent('Draw').width = UI_SETTING.AIR_TANK.shiftX * airTank.count
+    background.getComponent('Draw').width = UI_SETTING.AIR_TANK.shiftX * airTankCount
     yield
   }
 }
@@ -101,7 +101,7 @@ const weaponAI = function*(world: World): Behaviour<void> {
 
 const airGaugeAI = function*(world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
-  const airTank = player.getComponent('Equipment').airTank
+  const airTankCount = player.getComponent('Player').getEquipmentCount('airTank')
   const holder = player.getComponent('AirHolder')
 
   const airGauge = new UIComponentFactory('uiAir')
@@ -114,9 +114,8 @@ const airGaugeAI = function*(world: World): Behaviour<void> {
 
   while (true) {
     // 割合計算
-    const maxQuantity = airTank.quantity * airTank.count
-    const rate = Math.max(0, Math.min(1, holder.quantity / maxQuantity))
-    airGauge.getComponent('Draw').width = rate * UI_SETTING.AIR_TANK.shiftX * airTank.count
+    const rate = Math.max(0, Math.min(1, holder.quantity / holder.maxQuantity))
+    airGauge.getComponent('Draw').width = rate * UI_SETTING.AIR_TANK.shiftX * airTankCount
     yield
   }
 }

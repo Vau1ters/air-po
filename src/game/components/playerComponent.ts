@@ -1,7 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
-import { instantiateItem } from '@game/item/instantiateItem'
+import { Equipment, EquipmentName } from '@game/equipment/equipment'
+import { equipmentClass } from '@game/equipment/equipmentURL'
 import { Item } from '@game/item/item'
+import { itemClass } from '@game/item/itemURL'
 import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
 
 export class PlayerComponent {
@@ -13,21 +15,31 @@ export class PlayerComponent {
   public smallCoinCount: number
   public acquiredLargeCoinList: Set<LargeCoinID>
   public itemList: Array<Item>
+  private equipmentList: Array<Equipment>
 
   constructor(private player: Entity, public ui: Entity) {
     const { playerData } = loadData()
 
     this.smallCoinCount = playerData.smallCoinCount
     this.acquiredLargeCoinList = new Set(playerData.acquiredLargeCoinList)
-    this.itemList = []
-    for (const item of playerData.itemList) {
-      this.itemList.push(instantiateItem(item, player))
+    this.itemList = playerData.itemList.map(
+      item => new itemClass[item as keyof typeof itemClass](item, player)
+    )
+    this.equipmentList = playerData.equipmentList.map(
+      e => new equipmentClass[e as keyof typeof equipmentClass](e, player)
+    )
+    for (const e of this.equipmentList) {
+      e.onEquip()
     }
   }
 
   public popItem(index: number): Item {
     const [item] = this.itemList.splice(index, 1)
     return item
+  }
+
+  public getEquipmentCount(name: EquipmentName): number {
+    return this.equipmentList.filter(e => e.name === name).length
   }
 
   public get playerData(): PlayerData {
