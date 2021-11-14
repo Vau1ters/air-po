@@ -3,6 +3,7 @@ import * as Art from '@core/graphics/art'
 import * as Sound from '@core/sound/sound'
 import * as Font from '@core/font/font'
 import { totalFlow } from '@game/flow/flow'
+import { exportDebugUtilityToGlobal } from '@game/debug/debug'
 
 export class Main {
   /*+.† INITIALIZATION †.+*/
@@ -11,6 +12,7 @@ export class Main {
     await Art.init()
     await Sound.init()
     Font.init()
+    exportDebugUtilityToGlobal()
 
     const flow = totalFlow()
     application.ticker.add(() => {

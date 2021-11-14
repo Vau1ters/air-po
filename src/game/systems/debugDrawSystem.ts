@@ -10,7 +10,7 @@ import CollisionSystem from './collisionSystem'
 import { getSingleton } from './singletonSystem'
 
 export default class DebugDrawSystem extends System {
-  private state = {
+  public static state = {
     position: false,
     collider: false,
     bvh: false,
@@ -45,7 +45,7 @@ export default class DebugDrawSystem extends System {
     const cameraH = windowSize.height
     const cameraArea = new AABB(new Vec2(cameraX, cameraY), new Vec2(cameraW, cameraH))
 
-    if (this.state.position) {
+    if (DebugDrawSystem.state.position) {
       this.graphics.beginFill(0xff0000)
       for (const entity of this.positionFamily.entityIterator) {
         const position = entity.getComponent('Position')
@@ -56,7 +56,7 @@ export default class DebugDrawSystem extends System {
       this.graphics.endFill()
     }
 
-    if (this.state.collider) {
+    if (DebugDrawSystem.state.collider) {
       this.graphics.lineStyle(1, 0x0000ff, 1, 0.5, true)
       for (const entity of this.colliderFamily.entityIterator) {
         const position = entity.getComponent('Position')
@@ -72,7 +72,7 @@ export default class DebugDrawSystem extends System {
       this.graphics.endFill()
     }
 
-    if (this.state.bvh) {
+    if (DebugDrawSystem.state.bvh) {
       for (const bvh of this.collisionSystem.bvhs) {
         // webGLの頂点数上限に引っかからないようにnative: trueにしている
         this.graphics.lineStyle(1, 0xff0000, 1, 0.5, true)

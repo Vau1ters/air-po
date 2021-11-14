@@ -1,7 +1,5 @@
 import { SpawnPoint } from '@game/components/gameEventComponent'
 import { ItemName } from '@game/flow/inventory/item'
-import { SpawnerID } from '@game/stage/stage'
-import { StageName } from '@game/stage/stageLoader'
 
 export type LargeCoinID = number
 export type EquipmentStatus = {
@@ -50,24 +48,23 @@ export const InitialSaveData: SaveData = {
   },
 }
 
+export const clearData = (): void => {
+  localStorage.clear()
+}
+
 export const saveData = (data: SaveData): void => {
   localStorage.setItem('playdata', JSON.stringify(data))
 }
 
 export const loadData = (): SaveData => {
-    const data = localStorage.getItem('playdata')
-    if (data) {
-      const result = JSON.parse(data) as SaveData
-      if (result.version === SaveDataVersion) {
-        return result
-      }
+  const data = localStorage.getItem('playdata')
+  if (data) {
+    const result = JSON.parse(data) as SaveData
+    if (result.version === SaveDataVersion) {
+      return result
     }
-
-    saveData(InitialSaveData)
-    return InitialSaveData
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-;(window as any).changeMap = (stageName: StageName, spawnerID: SpawnerID = 0): void => {
-  saveData({ ...loadData(), spawnPoint: { stageName, spawnerID } })
+  saveData(InitialSaveData)
+  return InitialSaveData
 }
