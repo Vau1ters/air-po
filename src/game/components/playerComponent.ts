@@ -52,7 +52,7 @@ export class PlayerComponent {
       itemList: this.itemList.map(item => item.name),
       smallCoinCount: this.smallCoinCount,
       acquiredLargeCoinList: Array.from(this.acquiredLargeCoinList),
-      equipmentList: [],
+      equipmentList: Array.from(this.equipmentList.map(e => e.name)),
     }
   }
 }
