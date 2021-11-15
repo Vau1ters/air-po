@@ -1,7 +1,6 @@
 import { parallelAll } from '@core/behaviour/composite'
 import { wait } from '@core/behaviour/wait'
 import { KeyController } from '@game/systems/controlSystem'
-import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
 import { loadStage } from '@game/stage/stageLoader'
@@ -18,6 +17,7 @@ import { inventoryFlow } from '../inventory/inventoryFlow'
 import { PlayerFactory } from '@game/entities/playerFactory'
 import { loadData, PlayerData } from '@game/playdata/playdata'
 import { SpawnPoint } from '@game/components/gameEventComponent'
+import { GameWorldFactory } from './gameWorldFactory'
 
 export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?: Entity): Flow {
   const gameWorldFactory = new GameWorldFactory()
