@@ -1,0 +1,37 @@
+{
+  "background": {
+    "type": "entity",
+    "name": "inventoryBackground",
+    "position": [160, 120]
+  },
+  "itemName": {
+    "type": "text",
+    "fontSize": 16,
+    "position": [130, 50],
+    "tint": 0
+  },
+  "itemDescription": {
+    "type": "text",
+    "fontSize": 8,
+    "position": [130, 75],
+    "tint": 0
+  },
+  "itemFrameLarge": {
+    "type": "entity",
+    "name": "inventoryItemFrameLarge",
+    "position": [90, 80]
+  },
+  "itemFrameSmall": {
+    "type": "tileLayout",
+    "element": {
+      "type": "entity",
+      "name": "inventoryItemFrameSmall"
+    },
+    "tileCount": [5, 2],
+    "fillElements": true,
+    "layoutOption": {
+      "center": [160, 160],
+      "size": [240, 100]
+    }
+  }
+}

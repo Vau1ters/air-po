@@ -7,6 +7,7 @@ import { buildObject } from './object'
 import { buildComponent } from './component'
 import * as cp from 'child_process'
 import { buildItem } from './item'
+import { buildUi } from './ui'
 
 export const buildResourceURL = (): void => {
   const outputFiles: Array<string> = [
@@ -14,6 +15,7 @@ export const buildResourceURL = (): void => {
     buildItem(),
     buildAudio(),
     buildEntity(),
+    buildUi(),
     buildStage(),
     buildTile(),
     buildObject(),
