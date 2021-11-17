@@ -1,0 +1,8 @@
+{
+  "draw": {
+    "name": "uiAirTankTail",
+    "type": "UI",
+    "anchor": [0, 0]
+  },
+  "animationState": {}
+}

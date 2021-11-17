@@ -7,8 +7,8 @@ import { windowSize } from '@core/application'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Vec2 } from '@core/math/vec2'
 import { BVH } from '@core/collision/bvh'
-import { ContainerType } from '@game/components/drawComponent'
 import { getSingleton } from './singletonSystem'
+import { ContainerType } from '@game/entities/loader/component/DrawComponentLoader'
 
 export default class DrawSystem extends System {
   private drawFamily: Family

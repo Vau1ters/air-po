@@ -1,0 +1,8 @@
+{
+  "draw": {
+    "name": "uiWeaponBackground",
+    "type": "UI",
+    "anchor": [0, 0]
+  },
+  "animationState": {}
+}

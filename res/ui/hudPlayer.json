@@ -1,0 +1,53 @@
+{
+  "airTankBg": {
+    "type": "entity",
+    "name": "uiAirTankBg",
+    "position": [50, 34]
+  },
+  "airTankTail": {
+    "type": "entity",
+    "name": "uiAirTankTail",
+    "position": [53, 32]
+  },
+  "airTankBodies": {
+    "type": "tileLayout",
+    "element": {
+      "type": "entity",
+      "name": "uiAirTankBody"
+    },
+    "tileCount": [10, 1],
+    "fillElements": false,
+    "layoutOption": {
+      "offset": [53, 32],
+      "shift": [8, 0]
+    }
+  },
+  "airGauge": {
+    "type": "entity",
+    "name": "uiAir",
+    "position": [50, 34]
+  },
+  "weaponBackground": {
+    "type": "entity",
+    "name": "uiWeaponBackground",
+    "position": [26, 22]
+  },
+  "weaponGun": {
+    "type": "entity",
+    "name": "uiWeaponGun",
+    "position": [27, 23]
+  },
+  "hpHearts": {
+    "type": "tileLayout",
+    "element": {
+      "type": "entity",
+      "name": "uiHpHeart"
+    },
+    "tileCount": [10, 1],
+    "fillElements": false,
+    "layoutOption": {
+      "offset": [47, 22],
+      "shift": [10, 0]
+    }
+  }
+}

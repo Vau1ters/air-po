@@ -3,8 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
 import { AnimationSprite } from '@core/graphics/animationSprite'
-
-export type ContainerType = 'World' | 'WorldUI' | 'UI'
+import { ContainerType } from '@game/entities/loader/component/DrawComponentLoader'
 
 export type DrawComponentOption = {
   entity: Entity

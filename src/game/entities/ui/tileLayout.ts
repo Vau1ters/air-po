@@ -1,8 +1,11 @@
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
+import { getTexture, toSpriteName } from '@core/graphics/art'
 import { PositionComponent } from '@game/components/positionComponent'
 import { assert } from '@utils/assertion'
 import { EventNotifier } from '@utils/eventNotifier'
+import { toEntityName } from '../loader/EntityLoader'
+import { entitySetting } from '../loader/entitySetting'
 import { loadEntityUi } from './loader/entityUiLoader'
 import { TileLayoutUiSetting } from './loader/tileLayoutLoader'
 
@@ -15,23 +18,21 @@ export class TileLayout {
     this.elements = []
     if (setting.fillElements) {
       const [tx, ty] = setting.tileCount
-      for (let i = 0; i < tx * ty; i++) {
-        this.add()
-      }
+      this.count = tx * ty
     }
   }
 
-  private add(): void {
+  public calcPos(index: number): [number, number] {
     const [tx, ty] = this.setting.tileCount
-    const index = this.elements.length
     const ix = index % tx
     const iy = Math.floor(index / tx)
-    const element = loadEntityUi({
-      ...this.setting.element,
-    })
-    const draw = element.getComponent('Draw')
-    const { width, height } = draw.getBounds()
+
     if ('center' in this.setting.layoutOption) {
+      const entityName = toEntityName(this.setting.element.name)
+      const entity = entitySetting[entityName]
+      assert('draw' in entity, `${entityName} must have DrawComponent`)
+      const spriteName = toSpriteName(entity.draw.name)
+      const { width, height } = getTexture(spriteName)
       const {
         center: [cx, cy],
         size: [sx, sy],
@@ -40,20 +41,25 @@ export class TileLayout {
       // margin = (totalSize - elementSize * maxCount) / (maxCount + 1)
       const mx = (sx - width * tx) / (tx + 1)
       const my = (sy - height * ty) / (ty + 1)
-      element.addComponent(
-        'Position',
-        new PositionComponent(
-          Math.floor(cx - sx / 2 + mx + (mx + width) * ix + width / 2),
-          Math.floor(cy - sy / 2 + my + (my + height) * iy + height / 2)
-        )
-      )
+      return [
+        Math.floor(cx - sx / 2 + mx + (mx + width) * ix + width / 2),
+        Math.floor(cy - sy / 2 + my + (my + height) * iy + height / 2),
+      ]
     } else {
       const {
         offset: [ox, oy],
         shift: [sx, sy],
       } = this.setting.layoutOption
-      element.addComponent('Position', new PositionComponent(ox + ix * sx, oy + iy * sy))
+      return [ox + ix * sx, oy + iy * sy]
     }
+  }
+
+  private add(): void {
+    const index = this.elements.length
+    const element = loadEntityUi({
+      ...this.setting.element,
+    })
+    element.addComponent('Position', new PositionComponent(...this.calcPos(index)))
     this.elements.push(element)
     this.world.addEntity(element)
   }
@@ -69,12 +75,16 @@ export class TileLayout {
     return cx * cy
   }
 
+  get count(): number {
+    return this.elements.length
+  }
+
   set count(count: number) {
-    assert(count < this.maxCount, '')
-    while (count < this.elements.length) {
+    assert(count <= this.maxCount, '')
+    while (this.count < count) {
       this.add()
     }
-    while (count > this.elements.length) {
+    while (count < this.count) {
       this.remove()
     }
   }
