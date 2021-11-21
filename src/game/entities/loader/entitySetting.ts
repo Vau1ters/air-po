@@ -14,7 +14,6 @@ import dandelion from '@res/entity/dandelion.json'
 import dandelionFluff from '@res/entity/dandelionFluff.json'
 import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
-import equipment from '@res/entity/equipment.json'
 import inventoryBackground from '@res/entity/inventoryBackground.json'
 import inventoryItemFrameLarge from '@res/entity/inventoryItemFrameLarge.json'
 import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
@@ -50,7 +49,6 @@ export const entitySetting = {
   dandelionFluff,
   enemy1,
   enemyBullet,
-  equipment,
   inventoryBackground,
   inventoryItemFrameLarge,
   inventoryItemFrameSmall,

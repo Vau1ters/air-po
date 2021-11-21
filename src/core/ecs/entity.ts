@@ -35,7 +35,7 @@ export class Entity {
   }
 
   public removeComponent<K extends ComponentName>(componentName: K): void {
-    delete this.componentMap[componentName]
     this.componentChangedEvent.notify(this)
+    delete this.componentMap[componentName]
   }
 }

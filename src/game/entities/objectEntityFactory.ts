@@ -3,6 +3,7 @@ import { World } from '@core/ecs/world'
 import { NameComponent } from '@game/components/nameComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { calcCenter, StageObject } from '@game/stage/object'
+import { Stage } from '@game/stage/stage'
 import { EntityFactory } from './entityFactory'
 import { EntityName, loadEntity } from './loader/EntityLoader'
 
@@ -11,7 +12,8 @@ export class ObjectEntityFactory extends EntityFactory {
     private name: EntityName,
     protected object: StageObject,
     protected frame: number,
-    protected world: World
+    protected world: World,
+    protected stage: Stage
   ) {
     super()
   }

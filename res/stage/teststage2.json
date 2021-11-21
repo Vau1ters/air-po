@@ -131,63 +131,6 @@
           "y": 272
         },
         {
-          "gid": 94,
-          "height": 16,
-          "id": 28,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 184,
-          "y": 88
-        },
-        {
-          "gid": 94,
-          "height": 16,
-          "id": 29,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 376,
-          "y": 208
-        },
-        {
-          "gid": 94,
-          "height": 16,
-          "id": 30,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 192,
-          "y": 312
-        },
-        {
           "gid": 41,
           "height": 16,
           "id": 31,
@@ -236,7 +179,7 @@
           "y": 192
         },
         {
-          "gid": 95,
+          "gid": 94,
           "height": 16,
           "id": 35,
           "name": "",
@@ -260,7 +203,7 @@
           "y": 200
         },
         {
-          "gid": 95,
+          "gid": 94,
           "height": 16,
           "id": 37,
           "name": "",
@@ -272,7 +215,7 @@
           "y": 344
         },
         {
-          "gid": 95,
+          "gid": 94,
           "height": 16,
           "id": 38,
           "name": "",
@@ -10385,10 +10328,6 @@
     },
     {
       "firstgid": 94,
-      "source": "tileset/equipment.json"
-    },
-    {
-      "firstgid": 95,
       "source": "tileset/slime1.json"
     }
   ],
