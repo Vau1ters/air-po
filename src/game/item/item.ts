@@ -1,6 +1,13 @@
 import { Entity } from '@core/ecs/entity'
-import { ItemName } from '@game/flow/inventory/item'
-import { ItemSetting, itemURL } from '@game/flow/inventory/itemURL'
+import { assert } from '@utils/assertion'
+import { ItemSetting, itemURL } from './itemURL'
+
+export type ItemName = keyof typeof itemURL
+
+export const toItemName = (s: string): ItemName => {
+  assert(s in itemURL, `'${s} is not ItemName`)
+  return s as ItemName
+}
 
 export abstract class Item {
   constructor(public readonly name: ItemName, protected player: Entity) {}

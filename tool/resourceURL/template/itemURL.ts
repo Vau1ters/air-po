@@ -11,5 +11,9 @@ export type ItemSetting = {
 }
 
 export const itemURL: { [key: string]: ItemSetting } = {
-  // OBJECT
+  // URL
+}
+
+export const itemClass = {
+  // CLASS
 }

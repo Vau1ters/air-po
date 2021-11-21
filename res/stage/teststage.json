@@ -139,63 +139,6 @@
         {
           "gid": 103,
           "height": 16,
-          "id": 30,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 184,
-          "y": 80
-        },
-        {
-          "gid": 103,
-          "height": 16,
-          "id": 32,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 224,
-          "y": 360
-        },
-        {
-          "gid": 103,
-          "height": 16,
-          "id": 34,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 288,
-          "y": 248
-        },
-        {
-          "gid": 104,
-          "height": 16,
           "id": 35,
           "name": "",
           "rotation": 0,
@@ -242,7 +185,7 @@
           "y": 168
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 39,
           "name": "",
@@ -278,7 +221,7 @@
           "y": 200
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 42,
           "name": "",
@@ -290,7 +233,7 @@
           "y": 200
         },
         {
-          "gid": 140,
+          "gid": 139,
           "height": 16,
           "id": 43,
           "name": "",
@@ -302,7 +245,7 @@
           "y": 240
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 46,
           "name": "",
@@ -338,7 +281,7 @@
           "y": 368
         },
         {
-          "gid": 135,
+          "gid": 134,
           "height": 96,
           "id": 49,
           "name": "",
@@ -350,7 +293,7 @@
           "y": 368
         },
         {
-          "gid": 134,
+          "gid": 133,
           "height": 48,
           "id": 50,
           "name": "",
@@ -362,7 +305,7 @@
           "y": 544
         },
         {
-          "gid": 127,
+          "gid": 126,
           "height": 56,
           "id": 51,
           "name": "",
@@ -374,7 +317,7 @@
           "y": 600
         },
         {
-          "gid": 126,
+          "gid": 125,
           "height": 56,
           "id": 52,
           "name": "",
@@ -3253,7 +3196,7 @@
         0,
         0,
         0,
-        35,
+        36,
         0,
         39,
         0,
@@ -3633,7 +3576,7 @@
         0,
         0,
         0,
-        35,
+        36,
         0,
         0,
         0,
@@ -10478,26 +10421,22 @@
     },
     {
       "firstgid": 103,
-      "source": "tileset/equipment.json"
-    },
-    {
-      "firstgid": 104,
       "source": "tileset/slime1.json"
     },
     {
-      "firstgid": 126,
+      "firstgid": 125,
       "source": "tileset/mushroom.json"
     },
     {
-      "firstgid": 134,
+      "firstgid": 133,
       "source": "tileset/respawn.json"
     },
     {
-      "firstgid": 135,
+      "firstgid": 134,
       "source": "tileset/boss1.json"
     },
     {
-      "firstgid": 140,
+      "firstgid": 139,
       "source": "tileset/poisonousTulip.json"
     }
   ],

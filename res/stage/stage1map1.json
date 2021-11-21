@@ -33,7 +33,7 @@
       "name": "background",
       "objects": [
         {
-          "gid": 126,
+          "gid": 125,
           "height": 1200,
           "id": 55,
           "name": "",
@@ -52,7 +52,7 @@
           "y": 1200
         },
         {
-          "gid": 127,
+          "gid": 126,
           "height": 1200,
           "id": 56,
           "name": "",
@@ -219,44 +219,6 @@
           "y": 360
         },
         {
-          "gid": 103,
-          "height": 16,
-          "id": 45,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 1016,
-          "y": 96
-        },
-        {
-          "gid": 103,
-          "height": 16,
-          "id": 48,
-          "name": "",
-          "properties": [
-            {
-              "name": "type",
-              "type": "string",
-              "value": "AirTank"
-            }
-          ],
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 2512,
-          "y": 80
-        },
-        {
           "gid": 63,
           "height": 16,
           "id": 53,
@@ -293,7 +255,7 @@
           "y": 104
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 56,
           "name": "",
@@ -305,7 +267,7 @@
           "y": 112
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 57,
           "name": "",
@@ -401,7 +363,7 @@
           "y": 296
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 65,
           "name": "",
@@ -425,7 +387,7 @@
           "y": 320
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 67,
           "name": "",
@@ -437,7 +399,7 @@
           "y": 336
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 68,
           "name": "",
@@ -449,7 +411,7 @@
           "y": 336
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 69,
           "name": "",
@@ -461,7 +423,7 @@
           "y": 336
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 70,
           "name": "",
@@ -473,7 +435,7 @@
           "y": 344
         },
         {
-          "gid": 104,
+          "gid": 103,
           "height": 16,
           "id": 71,
           "name": "",
@@ -2104,7 +2066,7 @@
         0,
         0,
         0,
-        35,
+        36,
         0,
         0,
         0,
@@ -25758,18 +25720,14 @@
     },
     {
       "firstgid": 103,
-      "source": "tileset/equipment.json"
-    },
-    {
-      "firstgid": 104,
       "source": "tileset/slime1.json"
     },
     {
-      "firstgid": 126,
+      "firstgid": 125,
       "source": "tileset/background1.json"
     },
     {
-      "firstgid": 127,
+      "firstgid": 126,
       "source": "tileset/background2.json"
     }
   ],

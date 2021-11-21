@@ -24,6 +24,8 @@ export default class RespawnFactory extends ObjectEntityFactory {
         stageName: this.stage.stageName,
       }
       currentData.playerData = playerData
+      currentData.playerData.hp = currentData.playerData.maxHp
+      currentData.playerData.air = player.getComponent('AirHolder').maxQuantity
 
       saveData(currentData)
     })

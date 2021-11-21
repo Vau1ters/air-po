@@ -20,7 +20,6 @@ import cursor from '@res/sprite/cursor.json'
 import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
-import equipment from '@res/sprite/equipment.json'
 import hpHealItem from '@res/sprite/hpHealItem.json'
 import inventoryBackground from '@res/sprite/inventoryBackgroud.json'
 import inventoryItemFrameLarge from '@res/sprite/inventoryItemFrameLarge.json'
@@ -74,7 +73,6 @@ export const spriteURL = {
   dandelion,
   dandelionFluff,
   enemy1,
-  equipment,
   hpHealItem,
   inventoryBackground,
   inventoryItemFrameLarge,
