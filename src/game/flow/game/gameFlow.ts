@@ -4,7 +4,7 @@ import { KeyController } from '@game/systems/controlSystem'
 import { GameWorldFactory } from '@game/worlds/gameWorldFactory'
 import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
-import { loadStage, StageName } from '@game/stage/stageLoader'
+import { loadStage } from '@game/stage/stageLoader'
 import { suspendable } from '@core/behaviour/suspendable'
 import { pauseFlow } from '../pause/pauseFlow'
 import { Flow } from '../flow'
@@ -15,20 +15,21 @@ import { Entity } from '@core/ecs/entity'
 import { branch, BranchController } from '@core/behaviour/branch'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { inventoryFlow } from '../inventory/inventoryFlow'
+import { PlayerFactory } from '@game/entities/playerFactory'
+import { loadData, PlayerData } from '@game/playdata/playdata'
+import { SpawnPoint } from '@game/components/gameEventComponent'
 
-export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?: Entity): Flow {
+export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?: Entity): Flow {
   const gameWorldFactory = new GameWorldFactory()
   const world = gameWorldFactory.create()
-  if (!bgm) {
-    bgm = new BgmFactory().create()
-  }
+  const player = new PlayerFactory(world, data).create()
+  bgm = bgm ?? new BgmFactory().create()
   world.addEntity(bgm)
-  const stage = loadStage(stageName, world)
 
-  stage.spawnPlayer(spawnerID ?? 0)
+  const stage = loadStage(spawnPoint.stageName, world)
+  stage.spawnPlayer(player, spawnPoint.spawnerID)
 
   const gameEvent = getSingleton('GameEvent', world).getComponent('GameEvent')
-
   const isGameOn = (): boolean => gameEvent.event === undefined
 
   yield* branch({
@@ -48,19 +49,21 @@ export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?
         yield* FadeIn(world)
         yield* Text(world, 'そうなんちてん')
       }
-      const gameExecute = suspendable(isGameOn, world.execute())
-      yield* parallelAll([transitState(), postEffect(), gameExecute])
+      yield* suspendable(isGameOn, parallelAll([transitState(), postEffect(), world.execute()]))
+      controller.finish()
     },
     Pause: function*(controller: BranchController) {
       while (true) {
         yield* pauseFlow()
         controller.transit('Game')
+        yield
       }
     },
     Inventory: function*(controller: BranchController) {
       while (true) {
-        yield* inventoryFlow(getSingleton('Player', world))
+        yield* inventoryFlow(world)
         controller.transit('Game')
+        yield
       }
     },
   }).start('Game')
@@ -71,12 +74,10 @@ export const gameFlow = function*(stageName: StageName, spawnerID?: number, bgm?
 
   switch (gameEvent.event.type) {
     case 'move':
-      return gameFlow(gameEvent.event.mapName, gameEvent.event.spawnerID, bgm)
-    case 'playerDie':
-      return gameFlow(
-        stageName,
-        getSingleton('Player', world).getComponent('Player').spawnerID,
-        bgm
-      )
+      return gameFlow(gameEvent.event.spawnPoint, player.getComponent('Player').playerData, bgm)
+    case 'playerDie': {
+      const { spawnPoint, playerData } = loadData()
+      return gameFlow(spawnPoint, playerData, bgm)
+    }
   }
 }

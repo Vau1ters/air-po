@@ -1,4 +1,10 @@
+import { SpawnerID } from '@game/stage/stage'
 import { StageName } from '@game/stage/stageLoader'
+
+export type SpawnPoint = {
+  stageName: StageName
+  spawnerID: SpawnerID
+}
 
 type PlayerDieEvent = {
   type: 'playerDie'
@@ -6,8 +12,7 @@ type PlayerDieEvent = {
 
 type MoveEvent = {
   type: 'move'
-  mapName: StageName
-  spawnerID: number
+  spawnPoint: SpawnPoint
 }
 
 type GameEvent = PlayerDieEvent | MoveEvent

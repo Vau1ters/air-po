@@ -8,22 +8,23 @@ import { AiComponent } from '@game/components/aiComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { EntityName, loadEntity } from '@game/entities/loader/EntityLoader'
 import { TextFactory } from '@game/entities/textFactory'
+import { Item } from '@game/item/item'
 import { MouseButton } from '@game/systems/controlSystem'
 import { EventNotifier } from '@utils/eventNotifier'
-import { BitmapText, Sprite } from 'pixi.js'
-import { ItemName } from './item'
-import { ItemSetting, itemURL } from './itemURL'
+import { BitmapText, Graphics, Sprite } from 'pixi.js'
 
 type FocusItemNotifier = EventNotifier<number>
-type FocusItemReceiver = EventNotifier<ItemSetting | undefined>
-type ChangeItemListNotifier = EventNotifier<ItemName[]>
+type FocusItemReceiver = EventNotifier<Item | undefined>
+type ChangeItemListNotifier = EventNotifier<Item[]>
 type SelectItemNotifier = EventNotifier<[MouseButton, number]>
+
+const OFFSET_Y = 24
 
 const createBackground = (): Entity => {
   const entity = loadEntity('inventoryBackground')
   entity.addComponent(
     'Position',
-    new PositionComponent(windowSize.width / 2, windowSize.height / 2)
+    new PositionComponent(windowSize.width / 2, windowSize.height / 2 + OFFSET_Y)
   )
   return entity
 }
@@ -36,16 +37,27 @@ const createItemFrame = (arg: {
   const entity = loadEntity(arg.name)
   entity.addComponent('Position', arg.position)
 
-  const sprite = new Sprite()
-  sprite.anchor.set(0.5)
-  entity.getComponent('Draw').addChild(sprite)
+  const draw = entity.getComponent('Draw')
 
-  arg.receiver.addObserver((item?: ItemSetting): void => {
+  const textureHolder = new Sprite()
+  textureHolder.anchor.set(0.5)
+  draw.addChild(textureHolder)
+
+  const blackSheet = new Graphics()
+  blackSheet.beginFill(0, 0.5)
+  blackSheet.drawRect(-16, -16, 32, 32)
+  blackSheet.endFill()
+  blackSheet.visible = false
+  draw.addChild(blackSheet)
+
+  arg.receiver.addObserver((item?: Item): void => {
     if (item !== undefined) {
-      sprite.texture = getTexture(toSpriteName(item.spriteName))
-      sprite.visible = true
+      textureHolder.texture = getTexture(toSpriteName(item.setting.spriteName))
+      textureHolder.visible = true
+      blackSheet.visible = !item.canUse()
     } else {
-      sprite.visible = false
+      textureHolder.visible = false
+      blackSheet.visible = false
     }
   })
 
@@ -55,12 +67,12 @@ const createItemFrame = (arg: {
 const createItemName = (notifier: FocusItemReceiver): Entity => {
   const entity = new TextFactory({
     fontSize: 16,
-    pos: new Vec2(130, 50),
+    pos: new Vec2(130, 50 + OFFSET_Y),
     tint: 0x000000,
   }).create()
-  notifier.addObserver((item?: ItemSetting): void => {
+  notifier.addObserver((item?: Item): void => {
     const [bitmapText] = entity.getComponent('Draw').children as [BitmapText]
-    bitmapText.text = item?.name ?? ''
+    bitmapText.text = item?.setting?.displayName ?? ''
   })
   return entity
 }
@@ -68,12 +80,12 @@ const createItemName = (notifier: FocusItemReceiver): Entity => {
 const createItemDescription = (notifier: FocusItemReceiver): Entity => {
   const entity = new TextFactory({
     fontSize: 8,
-    pos: new Vec2(130, 75),
+    pos: new Vec2(130, 75 + OFFSET_Y),
     tint: 0x000000,
   }).create()
-  notifier.addObserver((item?: ItemSetting): void => {
+  notifier.addObserver((item?: Item): void => {
     const [bitmapText] = entity.getComponent('Draw').children as [BitmapText]
-    bitmapText.text = item?.description ?? ''
+    bitmapText.text = item?.setting?.description ?? ''
   })
   return entity
 }
@@ -98,9 +110,7 @@ const createInventoryItemSmallFrames = (
   for (let row = 0; row < ROW_NUM; row++) {
     for (let col = 0; col < COL_NUM; col++) {
       const index = result.length
-      const receiver = changeItemListNotifier.map(
-        (itemNames: ItemName[]): ItemSetting | undefined => itemURL[itemNames[index]]
-      )
+      const receiver = changeItemListNotifier.map((items: Item[]): Item | undefined => items[index])
       const entity = createItemFrame({
         name: 'inventoryItemFrameSmall',
         position: new PositionComponent(
@@ -116,7 +126,7 @@ const createInventoryItemSmallFrames = (
               WINDOW_HEIGHT / 4 +
               MARGIN_Y * (row - ROW_NUM / 2 + 1) +
               FRAME_HEIGHT * (row - ROW_NUM / 2)
-          )
+          ) + OFFSET_Y
         ),
         receiver,
       })
@@ -146,20 +156,24 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
   const player = playerEntity.getComponent('Player')
   const focusItemNotifier = new EventNotifier<number>()
   const focusItemReceiver = focusItemNotifier.map(
-    (index: number): ItemSetting | undefined => itemURL[player.itemList[index]]
+    (index: number): Item | undefined => player.itemList[index]
   )
   const selectItemNotifier = new EventNotifier<[MouseButton, number]>()
-  const changeItemListNotifier = new EventNotifier<ItemName[]>()
+  const changeItemListNotifier = new EventNotifier<Item[]>()
 
   selectItemNotifier.addObserver((arg: [MouseButton, number]): void => {
     const [button, index] = arg
     if (index >= player.itemList.length) return
     switch (button) {
-      case 'Left':
-        player.useItem(index)
+      case 'Left': {
+        const item = player.itemList[index]
+        if (item.canUse()) {
+          player.popItem(index).use()
+        }
         break
+      }
       case 'Right':
-        player.discardItem(index)
+        player.popItem(index)
         break
       default:
         return
@@ -173,8 +187,8 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
   const itemDescription = createItemDescription(focusItemReceiver)
   const largeFrame = createItemFrame({
     name: 'inventoryItemFrameLarge',
-    position: new PositionComponent(90, 80),
-    receiver: focusItemReceiver,
+    position: new PositionComponent(90, 80 + OFFSET_Y),
+    receiver: focusItemReceiver.filter((item?: Item): boolean => item?.canUse() ?? false),
   })
   const smallFrames = createInventoryItemSmallFrames(
     focusItemNotifier,

@@ -66,9 +66,6 @@
     "consumeSpeed": 0.025,
     "shouldDamageInSuffocation": true
   },
-  "hp": {
-    "max": 3
-  },
   "sound": {},
   "horizontalDirection": {
     "looking": "Right"

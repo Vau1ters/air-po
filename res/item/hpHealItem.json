@@ -1,0 +1,6 @@
+{
+  "name": "hpHealItem",
+  "displayName": "HPかいふく",
+  "description": "HPを1かいふく",
+  "spriteName": "hpHealItem"
+}

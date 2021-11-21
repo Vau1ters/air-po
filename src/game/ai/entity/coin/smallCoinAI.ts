@@ -21,7 +21,7 @@ const waitPlayer = function*(entity: Entity): Behaviour<void> {
 
 const increaseCoinCount = (world: World): void => {
   const player = getSingleton('Player', world)
-  player.getComponent('Player').coinCount.small++
+  player.getComponent('Player').smallCoinCount++
 }
 
 export const smallCoinAI = function*(entity: Entity, world: World): Behaviour<void> {

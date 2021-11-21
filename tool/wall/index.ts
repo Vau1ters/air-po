@@ -1,8 +1,6 @@
 import { Random } from './random'
 import * as fs from 'fs'
 
-const rand = new Random()
-
 type Stage = {
   layers: TileLayer[]
   tilesets: TileSet[]
@@ -50,7 +48,9 @@ type WallType =
   | 'Invalid'
 
 export class WallLoader {
-  constructor(private layer: TileLayer) {}
+  private rand: Random = new Random()
+
+  constructor(private layer: TileLayer, private gidBegin: number, private gidEnd: number) {}
 
   public getTileId(x: number, y: number): number {
     const type = this.getType(x, y)
@@ -96,7 +96,7 @@ export class WallLoader {
       case 'ProtrudeRight':
         return [32]
       case 'ProtrudeDown':
-        return [34]
+        return [35]
       case 'ProtrudeLeft':
         return [34]
       case 'Invalid':
@@ -146,16 +146,17 @@ export class WallLoader {
     if (y < 0) return false
     if (x >= this.layer.width) return false
     if (y >= this.layer.height) return false
-    return this.layer.data[x + y * this.layer.width] !== 0
+    const gid = this.layer.data[x + y * this.layer.width]
+    return this.gidBegin <= gid && gid < this.gidEnd
   }
 
   private randomChoice(candidates: number[]): number {
-    return candidates[Math.abs(rand.next()) % candidates.length]
+    return candidates[Math.abs(this.rand.next()) % candidates.length]
   }
 }
 
 const updateLayer = (layer: TileLayer, gidBegin: number, gidEnd: number): void => {
-  const loader = new WallLoader(layer)
+  const loader = new WallLoader(layer, gidBegin, gidEnd)
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const index = x + y * layer.width
