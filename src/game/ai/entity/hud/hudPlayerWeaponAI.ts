@@ -1,22 +1,31 @@
 import { Behaviour } from '@core/behaviour/behaviour'
-import { World } from '@core/ecs/world'
-import { UIComponentFactory } from '@game/entities/ui/uiComponentFactory'
+import { Entity } from '@core/ecs/entity'
+import { Ui } from '@game/entities/ui/loader/uiLoader'
+import { animate } from '../common/action/animate'
 
-const UI_SETTING = {
-  WEAPON: {
-    x: 26,
-    y: 22,
-    paddingX: 1,
-    paddingY: 1,
-  },
-}
+export const hudPlayerWeaponAI = function*(ui: Ui, player: Entity): Behaviour<void> {
+  const background = ui.get('weaponBackground')
+  const transitTable: { [keys: string]: [string, string] } = {
+    Default: ['SendStart1', 'Default'],
+    SendStart1: ['SendStart2', 'SendEnd1'],
+    SendStart2: ['SendStart3', 'SendEnd2'],
+    SendStart3: ['SendStart3', 'SendEnd2'],
+  }
+  let state = 'Default'
 
-export const hudPlayerWeaponAI = function*(world: World): Behaviour<void> {
-  const weaponGun = new UIComponentFactory('uiWeaponGun')
-    .setPosition(
-      UI_SETTING.WEAPON.x + UI_SETTING.WEAPON.paddingX,
-      UI_SETTING.WEAPON.y + UI_SETTING.WEAPON.paddingY
-    )
-    .create()
-  world.addEntity(weaponGun)
+  while (true) {
+    yield* animate({ entity: background, waitFrames: 5, state })
+    const hasShot = player.getComponent('Player').hasShot
+    player.getComponent('Player').hasShot = false
+    const next = transitTable[state]
+    if (next) {
+      if (hasShot) {
+        state = next[0]
+      } else {
+        state = next[1]
+      }
+    } else {
+      state = 'Default'
+    }
+  }
 }

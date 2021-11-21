@@ -2,5 +2,6 @@
   "name": "hpHealItem",
   "displayName": "HPかいふく",
   "description": "HPを1かいふく",
-  "spriteName": "hpHealItem"
+  "spriteName": "hpHealItem",
+  "price": 15
 }

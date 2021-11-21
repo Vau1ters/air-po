@@ -1,0 +1,35 @@
+{
+  "frame": {
+    "type": "entity",
+    "name": "shopItemFrame",
+    "position": [10, 0]
+  },
+  "itemFrame": {
+    "type": "entity",
+    "name": "inventoryItemFrameSmall",
+    "position": [-80, 0]
+  },
+  "itemName": {
+    "type": "text",
+    "fontSize": 16,
+    "position": [-60, -20],
+    "tint": 0
+  },
+  "itemDescription": {
+    "type": "text",
+    "fontSize": 8,
+    "position": [-60, 0],
+    "tint": 0
+  },
+  "coin": {
+    "type": "entity",
+    "name": "coinIconSmall",
+    "position": [60, 0]
+  },
+  "price": {
+    "type": "text",
+    "fontSize": 16,
+    "position": [80, -8],
+    "tint": 0
+  }
+}

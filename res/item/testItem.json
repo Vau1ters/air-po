@@ -2,5 +2,6 @@
   "name": "testItem",
   "displayName": "うんこ",
   "description": "くさい。\nかいふくしない。",
-  "spriteName": "testItem"
+  "spriteName": "testItem",
+  "price": 1
 }

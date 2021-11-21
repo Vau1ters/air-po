@@ -3,12 +3,12 @@ import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { buildCollider, Collider } from './colliderComponent'
 import { AnimationSprite } from '@core/graphics/animationSprite'
-
-export type ContainerType = 'World' | 'WorldUI' | 'UI'
+import { ContainerType } from '@game/entities/loader/component/DrawComponentLoader'
 
 export type DrawComponentOption = {
   entity: Entity
   type?: ContainerType
+  scale?: number
   child?: { sprite: DisplayObject; zIndex?: number; state?: string }
 }
 
@@ -20,11 +20,11 @@ export class DrawComponent extends Container {
     super()
     this.entity = option.entity
     this.type = option.type ?? 'World'
+    this.scale.set(option.scale ?? 1)
     if (option.child) {
       this.addChild(option.child.sprite)
       if (option.child.zIndex) {
-        option.child.sprite.zIndex = option.child.zIndex
-        this.sortableChildren = true
+        this.zIndex = option.child.zIndex
       }
       if (option.child.state) {
         const sprite = option.child.sprite as AnimationSprite

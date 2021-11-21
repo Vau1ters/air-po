@@ -1,6 +1,7 @@
 {
   "draw": {
-    "name": "cursor"
+    "name": "cursor",
+    "type": "UI"
   },
   "collider": [
     {

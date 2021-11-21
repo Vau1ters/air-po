@@ -1,5 +1,6 @@
 {
   "draw": {
-    "name": "inventoryBackground"
+    "name": "inventoryBackground",
+    "type": "UI"
   }
 }

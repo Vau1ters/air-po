@@ -29,6 +29,7 @@ import { RigidBodyComponent } from 'src/game/components/rigidBodyComponent'
 import { SensorComponent } from 'src/game/components/sensorComponent'
 import { SoundComponent } from 'src/game/components/soundComponent'
 import { StaticComponent } from 'src/game/components/staticComponent'
+import { TileLayoutComponent } from 'src/game/components/tileLayoutComponent'
 import { VineComponent } from 'src/game/components/vineComponent'
 export interface ComponentMap {
   Ai: AiComponent
@@ -56,6 +57,7 @@ export interface ComponentMap {
   Sensor: SensorComponent
   Sound: SoundComponent
   Static: StaticComponent
+  TileLayout: TileLayoutComponent
   Vine: VineComponent
 }
 

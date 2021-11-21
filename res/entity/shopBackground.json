@@ -1,0 +1,17 @@
+{
+  "draw": {
+    "name": "shopBackground",
+    "type": "UI",
+    "zIndex": -1
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [240, 180]
+      },
+      "category": "sensor",
+      "mask": ["sensor"]
+    }
+  ]
+}

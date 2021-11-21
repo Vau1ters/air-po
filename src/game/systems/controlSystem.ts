@@ -12,6 +12,7 @@ export type KeyActionType =
   | 'Jet'
   | 'Pause'
   | 'Inventory'
+  | 'Shop'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveLeft: 'A',
   MoveRight: 'D',
@@ -21,6 +22,7 @@ export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   Jet: 'Shift',
   Pause: 'Escape',
   Inventory: 'Tab',
+  Shop: 'Space',
 }
 
 export class KeyController {
@@ -145,6 +147,8 @@ export class MouseController {
 
   private static readonly mousePressedMap: Map<MouseButton, boolean> = new Map()
 
+  private static wheelDelta = 0
+
   private static pressMouse(button: MouseButton): void {
     if (!this.mousePressingMap.get(button)) {
       this.mousePressedMap.set(button, true)
@@ -183,6 +187,9 @@ export class MouseController {
         this.releaseMouse(button)
       }
     })
+    window.addEventListener('wheel', e => {
+      this.wheelDelta = e.deltaY
+    })
   }
 
   public static isMousePressed(button: MouseButton): boolean {
@@ -199,10 +206,15 @@ export class MouseController {
     return new Vec2(position.x / scale.x, position.y / scale.y)
   }
 
+  public static get wheel(): number {
+    return this.wheelDelta
+  }
+
   public static reset(): void {
     for (const button of this.mousePressedMap.keys()) {
       this.mousePressedMap.set(button, false)
     }
+    this.wheelDelta = 0
   }
 }
 

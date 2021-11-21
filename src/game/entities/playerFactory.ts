@@ -10,9 +10,9 @@ import { PlayerComponent } from '@game/components/playerComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { PlayerData } from '@game/playdata/playdata'
 import { EntityFactory } from './entityFactory'
+import { HudFactory } from './hudFactory'
 import { loadEntity } from './loader/EntityLoader'
 import { THROUGH_FLOOR_TAG } from './stage/tile/throughFloorFactory'
-import { UIFactory } from './UIFactory'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
 export const PLAYER_FOOT_TAG = 'PlayerFoot'
@@ -28,7 +28,7 @@ export class PlayerFactory extends EntityFactory {
     entity.addComponent('Position', new PositionComponent())
     entity.addComponent('Hp', new HpComponent(this.playerData.hp, this.playerData.maxHp, false))
 
-    const player = new PlayerComponent(entity, new UIFactory(this.world).create())
+    const player = new PlayerComponent(entity, new HudFactory(this.world).create())
 
     const airHolder = entity.getComponent('AirHolder')
     airHolder.quantity = Math.min(this.playerData.air, airHolder.maxQuantity)

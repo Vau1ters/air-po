@@ -1,5 +1,6 @@
 {
   "draw": {
-    "name": "inventoryItemFrameLarge"
+    "name": "inventoryItemFrameLarge",
+    "type": "UI"
   }
 }
