@@ -78,7 +78,7 @@ export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?
       }
     },
   }).start('Game')
-  yield* wait(60)
+  yield* wait.frame(60)
   world.end()
 
   assert(gameEvent.event !== undefined, '')

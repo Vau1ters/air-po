@@ -72,7 +72,9 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
       bulletFactory.type = 'needle'
       world.addEntity(bulletFactory.create())
       entity.getComponent('Sound').addSound('snibee')
-      yield* wait(SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange)
+      yield* wait.frame(
+        SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange
+      )
     } else {
       yield
     }

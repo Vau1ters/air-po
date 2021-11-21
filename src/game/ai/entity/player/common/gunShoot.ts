@@ -31,6 +31,6 @@ export const gunShoot = function*(entity: Entity, world: World): Behaviour<void>
       entity.getComponent('Player').hasShot = true
     }
 
-    yield* wait(SETTING.COOL_TIME)
+    yield* wait.frame(SETTING.COOL_TIME)
   }
 }

@@ -75,7 +75,7 @@ const playerControl = function*(entity: Entity, world: World): Behaviour<void> {
 export const playerAI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), playerControl(entity, world))
   yield* animate({ entity, state: 'Dying' })
-  yield* wait(60)
+  yield* wait.frame(60)
   getSingleton('GameEvent', world).getComponent('GameEvent').event = {
     type: 'playerDie',
   }

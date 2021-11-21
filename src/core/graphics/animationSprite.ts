@@ -16,9 +16,9 @@ class AnimationSpriteFrame extends Sprite {
     for (const texture of this.textures) {
       this.texture = texture
       if (waitFrames) {
-        yield* wait(waitFrames)
+        yield* wait.frame(waitFrames)
       } else {
-        yield* wait(this.waitFrames)
+        yield* wait.frame(this.waitFrames)
       }
     }
   }

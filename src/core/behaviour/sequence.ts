@@ -4,7 +4,7 @@ import { wait } from './wait'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const shift = function*(behaviour: Behaviour<any>, delay: number): Behaviour<void> {
-  yield* wait(delay)
+  yield* wait.frame(delay)
   yield* behaviour
 }
 
