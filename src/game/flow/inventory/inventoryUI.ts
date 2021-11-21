@@ -68,10 +68,10 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
   })
 
   const ui = loadUi('inventory', world)
-  const itemName = ui.getEntity('itemName')
-  const itemDescription = ui.getEntity('itemDescription')
-  const itemFrameLarge = ui.getEntity('itemFrameLarge')
-  const itemFrameSmall = ui.getTileLayout('itemFrameSmall')
+  const itemName = ui.get('itemName')
+  const itemDescription = ui.get('itemDescription')
+  const itemFrameLarge = ui.get('itemFrameLarge')
+  const itemFrameSmall = ui.get('itemFrameSmall')
   focusItemReceiver.addObserver((item?: Item): void => {
     const [bitmapText] = itemName.getComponent('Draw').children as [BitmapText]
     bitmapText.text = item?.setting?.displayName ?? ''
@@ -85,7 +85,7 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
     itemFrameLarge,
     focusItemReceiver.filter((item?: Item): boolean => item?.canUse() ?? false)
   )
-  for (const [index, frame] of itemFrameSmall.entities.entries()) {
+  for (const [index, frame] of itemFrameSmall.getComponent('TileLayout').entities.entries()) {
     const changeItemReceiver = changeItemListNotifier.map(
       (items: Item[]): Item | undefined => items[index]
     )

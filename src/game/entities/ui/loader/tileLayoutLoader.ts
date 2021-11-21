@@ -1,6 +1,7 @@
+import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
+import { TileLayoutComponent } from '@game/components/tileLayoutComponent'
 import * as t from 'io-ts'
-import { TileLayout } from '../tileLayout'
 import { EntityUiSettingType } from './entityUiLoader'
 
 export const TileLayoutUiSettingType = t.type({
@@ -21,6 +22,8 @@ export const TileLayoutUiSettingType = t.type({
 })
 export type TileLayoutUiSetting = t.TypeOf<typeof TileLayoutUiSettingType>
 
-export const loadTileLayoutUi = (setting: TileLayoutUiSetting, world: World): TileLayout => {
-  return new TileLayout(world, setting)
+export const loadTileLayoutUi = (setting: TileLayoutUiSetting, world: World): Entity => {
+  const result = new Entity()
+  result.addComponent('TileLayout', new TileLayoutComponent(world, setting))
+  return result
 }

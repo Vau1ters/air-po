@@ -11,7 +11,7 @@ export const pauseFlow = function*(): Behaviour<void> {
 
   const ui = loadUi('pause', world)
 
-  ui.getEntity('button1')
+  ui.get('button1')
     .getComponent('Button')
     .clickEvent.addObserver((): void => {
       hasResumeButtonPressed = true

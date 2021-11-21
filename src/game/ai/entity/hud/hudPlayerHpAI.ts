@@ -5,7 +5,7 @@ import { Ui } from '@game/entities/ui/loader/uiLoader'
 import { animate } from '../common/action/animate'
 
 export const hudPlayerHpAI = function*(ui: Ui, player: Entity): Behaviour<void> {
-  const hpHearts = ui.getTileLayout('hpHearts')
+  const hpHearts = ui.get('hpHearts').getComponent('TileLayout')
   const hp = player.getComponent('Hp')
   const renderingState: {
     hp: number

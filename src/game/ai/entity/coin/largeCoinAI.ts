@@ -50,6 +50,7 @@ export const largeCoinAI = function*(entity: Entity, world: World, stage: Stage)
         {
           name: 'coinLargeDummy',
           type: undefined,
+          scale: undefined,
           state: undefined,
           zIndex: undefined,
           anchor: undefined,

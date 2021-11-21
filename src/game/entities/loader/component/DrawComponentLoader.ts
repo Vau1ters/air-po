@@ -11,6 +11,7 @@ export const DrawSettingType = t.type({
   type: t.union([ContainerTypes, t.undefined]),
   state: t.union([t.string, t.undefined]),
   zIndex: t.union([t.number, t.undefined]),
+  scale: t.union([t.number, t.undefined]),
   anchor: t.union([t.tuple([t.number, t.number]), t.undefined]),
 })
 export type DrawSetting = t.TypeOf<typeof DrawSettingType>
@@ -19,6 +20,7 @@ export const loadDrawComponent = (setting: DrawSetting, entity: Entity): DrawCom
   return new DrawComponent({
     entity,
     type: setting.type,
+    scale: setting.scale,
     child: {
       sprite: createSprite(
         setting.name,

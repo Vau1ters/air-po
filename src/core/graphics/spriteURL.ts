@@ -35,6 +35,10 @@ import player from '@res/sprite/player.json'
 import poison from '@res/sprite/poison.json'
 import poisonousTulip from '@res/sprite/poisonousTulip.json'
 import respawn from '@res/sprite/respawn.json'
+import shopBackground from '@res/sprite/shopBackground.json'
+import shopItemFrame from '@res/sprite/shopItemFrame.json'
+import shopScrollBarThumb from '@res/sprite/shopScrollBarThumb.json'
+import shopScrollBarTrack from '@res/sprite/shopScrollBarTrack.json'
 import slime1 from '@res/sprite/slime1.json'
 import snibee from '@res/sprite/snibee.json'
 import spore from '@res/sprite/spore.json'
@@ -85,6 +89,10 @@ export const spriteURL = {
   poison,
   poisonousTulip,
   respawn,
+  shopBackground,
+  shopItemFrame,
+  shopScrollBarThumb,
+  shopScrollBarTrack,
   slime1,
   snibee,
   spore,

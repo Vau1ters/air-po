@@ -2,16 +2,13 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { getTexture, toSpriteName } from '@core/graphics/art'
 import { PositionComponent } from '@game/components/positionComponent'
+import { toEntityName } from '@game/entities/loader/EntityLoader'
+import { entitySetting } from '@game/entities/loader/entitySetting'
+import { loadEntityUi } from '@game/entities/ui/loader/entityUiLoader'
+import { TileLayoutUiSetting } from '@game/entities/ui/loader/tileLayoutLoader'
 import { assert } from '@utils/assertion'
-import { EventNotifier } from '@utils/eventNotifier'
-import { toEntityName } from '../loader/EntityLoader'
-import { entitySetting } from '../loader/entitySetting'
-import { loadEntityUi } from './loader/entityUiLoader'
-import { TileLayoutUiSetting } from './loader/tileLayoutLoader'
 
-export class TileLayout {
-  public readonly addNotifier = new EventNotifier<Entity>()
-  public readonly removeNotifier = new EventNotifier<Entity>()
+export class TileLayoutComponent {
   private readonly elements: Array<Entity>
 
   constructor(private world: World, private readonly setting: TileLayoutUiSetting) {

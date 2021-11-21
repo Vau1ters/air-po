@@ -1,6 +1,6 @@
 {
   "draw": {
-    "name": "inventoryBackground",
+    "name": "shopItemFrame",
     "type": "UI"
   }
 }

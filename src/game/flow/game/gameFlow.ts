@@ -18,6 +18,7 @@ import { PlayerFactory } from '@game/entities/playerFactory'
 import { loadData, PlayerData } from '@game/playdata/playdata'
 import { SpawnPoint } from '@game/components/gameEventComponent'
 import { GameWorldFactory } from './gameWorldFactory'
+import { shopFlow } from '../shop/shopFlow'
 
 export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?: Entity): Flow {
   const gameWorldFactory = new GameWorldFactory()
@@ -42,6 +43,9 @@ export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?
           if (KeyController.isActionPressed('Inventory')) {
             controller.transit('Inventory')
           }
+          if (KeyController.isActionPressed('Shop')) {
+            controller.transit('Shop')
+          }
           yield
         }
       }
@@ -62,6 +66,13 @@ export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?
     Inventory: function*(controller: BranchController) {
       while (true) {
         yield* inventoryFlow(world)
+        controller.transit('Game')
+        yield
+      }
+    },
+    Shop: function*(controller: BranchController) {
+      while (true) {
+        yield* shopFlow(world)
         controller.transit('Game')
         yield
       }

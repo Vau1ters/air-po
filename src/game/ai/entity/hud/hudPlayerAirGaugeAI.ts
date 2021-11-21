@@ -5,8 +5,8 @@ import { Ui } from '@game/entities/ui/loader/uiLoader'
 export const hudPlayerAirGaugeAI = function*(ui: Ui, player: Entity): Behaviour<void> {
   const airTank = player.getComponent('Equipment').airTank
   const holder = player.getComponent('AirHolder')
-  const background = ui.getEntity('airTankBg')
-  const airGauge = ui.getEntity('airGauge')
+  const background = ui.get('airTankBg')
+  const airGauge = ui.get('airGauge')
 
   while (true) {
     // 割合計算

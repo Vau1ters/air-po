@@ -8,6 +8,8 @@ import balloonVine from '@res/entity/balloonVine.json'
 import boss1 from '@res/entity/boss1.json'
 import boss1Geyser from '@res/entity/boss1Geyser.json'
 import boss1Root from '@res/entity/boss1Root.json'
+import coinIconLarge from '@res/entity/coinIconLarge.json'
+import coinIconSmall from '@res/entity/coinIconSmall.json'
 import coinLarge from '@res/entity/coinLarge.json'
 import coinSmall from '@res/entity/coinSmall.json'
 import dandelion from '@res/entity/dandelion.json'
@@ -30,6 +32,10 @@ import poison from '@res/entity/poison.json'
 import poisonousTulip from '@res/entity/poisonousTulip.json'
 import respawn from '@res/entity/respawn.json'
 import sensor from '@res/entity/sensor.json'
+import shopBackground from '@res/entity/shopBackground.json'
+import shopItemFrame from '@res/entity/shopItemFrame.json'
+import shopScrollBarThumb from '@res/entity/shopScrollBarThumb.json'
+import shopScrollBarTrack from '@res/entity/shopScrollBarTrack.json'
 import slime1 from '@res/entity/slime1.json'
 import snibee from '@res/entity/snibee.json'
 import sporeEffect from '@res/entity/sporeEffect.json'
@@ -51,6 +57,8 @@ export const entitySetting = {
   boss1,
   boss1Geyser,
   boss1Root,
+  coinIconLarge,
+  coinIconSmall,
   coinLarge,
   coinSmall,
   dandelion,
@@ -73,6 +81,10 @@ export const entitySetting = {
   poisonousTulip,
   respawn,
   sensor,
+  shopBackground,
+  shopItemFrame,
+  shopScrollBarThumb,
+  shopScrollBarTrack,
   slime1,
   snibee,
   sporeEffect,

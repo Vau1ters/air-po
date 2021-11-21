@@ -11,6 +11,7 @@ export type ItemSetting = {
   displayName: string
   description: string
   spriteName: string
+  price: number
 }
 
 export const itemURL: { [key: string]: ItemSetting } = {

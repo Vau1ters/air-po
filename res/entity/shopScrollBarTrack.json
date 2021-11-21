@@ -1,6 +1,6 @@
 {
   "draw": {
-    "name": "inventoryBackground",
+    "name": "shopScrollBarTrack",
     "type": "UI"
   }
 }

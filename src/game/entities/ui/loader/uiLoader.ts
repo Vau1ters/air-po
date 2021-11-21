@@ -7,11 +7,10 @@ import { EntityUiSettingType, loadEntityUi } from './entityUiLoader'
 import { loadTextUi, TextUiSettingType } from './textUiLoader'
 import { loadTileLayoutUi, TileLayoutUiSettingType } from './tileLayoutLoader'
 import { World } from '@core/ecs/world'
-import { TileLayout } from '../tileLayout'
 import { assert } from '@utils/assertion'
+import { Vec2 } from '@core/math/vec2'
 
 export type UiName = keyof typeof uiSetting
-export type UiElement = Entity | TileLayout
 
 export const UiSettingType = t.record(
   t.string,
@@ -20,24 +19,34 @@ export const UiSettingType = t.record(
 export type UiSetting = t.TypeOf<typeof UiSettingType>
 
 export class Ui {
-  constructor(private elements: { [keys: string]: UiElement }) {}
+  private _offset = new Vec2()
+  constructor(private entities: { [keys: string]: Entity }) {}
 
-  getEntity(name: string): Entity {
-    const e = this.elements[name]
-    assert(e instanceof Entity, `${name} is not Entity`)
-    return e
+  get(name: string): Entity {
+    assert(
+      name in this.entities,
+      `${name} is not in this UI. candidates are ${Object.keys(this.entities)}`
+    )
+    return this.entities[name]
   }
 
-  getTileLayout(name: string): TileLayout {
-    const e = this.elements[name]
-    assert(e instanceof TileLayout, `${name} is not TileLayout`)
-    return e
+  set offset(offset: Vec2) {
+    const diff = offset.sub(this._offset)
+    this._offset = offset
+    for (const e of Object.values(this.entities)) {
+      const pos = e.getComponent('Position')
+      pos.assign(pos.add(diff))
+    }
+  }
+
+  get offset(): Vec2 {
+    return this._offset
   }
 }
 
 export const loadUi = (name: UiName, world: World): Ui => {
   const settings = decodeJson<UiSetting>(uiSetting[name], UiSettingType)
-  const result: { [keys: string]: UiElement } = {}
+  const result: { [keys: string]: Entity } = {}
   for (const name in settings) {
     const setting = settings[name]
     switch (setting?.type) {

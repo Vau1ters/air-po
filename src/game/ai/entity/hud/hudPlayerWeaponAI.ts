@@ -4,7 +4,7 @@ import { Ui } from '@game/entities/ui/loader/uiLoader'
 import { animate } from '../common/action/animate'
 
 export const hudPlayerWeaponAI = function*(ui: Ui, player: Entity): Behaviour<void> {
-  const background = ui.getEntity('weaponBackground')
+  const background = ui.get('weaponBackground')
   const transitTable: { [keys: string]: [string, string] } = {
     Default: ['SendStart1', 'Default'],
     SendStart1: ['SendStart2', 'SendEnd1'],
