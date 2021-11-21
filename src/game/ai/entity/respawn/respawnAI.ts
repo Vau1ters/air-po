@@ -2,18 +2,11 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { SpawnPoint } from '@game/components/gameEventComponent'
 import { loadData, StoryStatus, saveData } from '@game/playdata/playdata'
-import { Stage } from '@game/stage/stage'
-import { createHash } from 'crypto'
 import { animate } from '../common/action/animate'
 
-export const respawnAI = function*(entity: Entity, stage: Stage): Behaviour<void> {
-  const hash = createHash('md5')
-  hash.update(entity.getComponent('Position').x.toString())
-  hash.update(entity.getComponent('Position').y.toString())
-  const spawnerID = parseInt('0x' + hash.digest('hex'), 16)
-  stage.registerSpawner(spawnerID, entity.getComponent('Position'))
-
+export const respawnAI = function*(entity: Entity, spawnPoint: SpawnPoint): Behaviour<void> {
   let activated = false
   const [collider] = entity.getComponent('Collider').colliders
   collider.callbacks.add((args: CollisionCallbackArgs): void => {
@@ -24,10 +17,7 @@ export const respawnAI = function*(entity: Entity, stage: Stage): Behaviour<void
 
     const currentData = loadData()
     currentData.storyStatus = StoryStatus.Stage
-    currentData.spawnPoint = {
-      spawnerID,
-      stageName: stage.stageName,
-    }
+    currentData.spawnPoint = spawnPoint
     currentData.playerData = playerData
     currentData.playerData.hp = currentData.playerData.maxHp
     currentData.playerData.air = player.getComponent('AirHolder').maxQuantity
