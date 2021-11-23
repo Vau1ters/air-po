@@ -1,0 +1,10 @@
+{
+  "name": "branch",
+  "path": "branch.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 32
+    }
+  }
+}

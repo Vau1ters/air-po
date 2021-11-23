@@ -63,10 +63,11 @@ const isDistantEnough = (segment: Segment, entity: Entity): boolean => {
 }
 const shouldLockEntity = (entity: Entity): boolean => {
   const isEntityAlive = entity.hasComponent('Hp') && entity.getComponent('Hp').hp > 0
+  const canLock = entity.hasComponent('Hp') && entity.getComponent('Hp').canLock
   const isEntityCloseEnough = entity.getComponent('Draw').visible
   const forceFreeAiming = MouseController.isMousePressing('Right')
 
-  return isEntityAlive && isEntityCloseEnough && !forceFreeAiming
+  return isEntityAlive && canLock && isEntityCloseEnough && !forceFreeAiming
 }
 const spawnLock = (target: Entity, world: World): Lock => {
   let despawning = false

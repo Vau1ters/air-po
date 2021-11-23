@@ -13,6 +13,7 @@ import boss1Leaf from '@res/sprite/boss1Leaf.json'
 import boss1Needle from '@res/sprite/boss1Needle.json'
 import boss1Root from '@res/sprite/boss1Root.json'
 import boss1Stem from '@res/sprite/boss1Stem.json'
+import branch from '@res/sprite/branch.json'
 import coinLarge from '@res/sprite/coinLarge.json'
 import coinLargeDummy from '@res/sprite/coinLargeDummy.json'
 import coinSmall from '@res/sprite/coinSmall.json'
@@ -34,6 +35,7 @@ import player from '@res/sprite/player.json'
 import poison from '@res/sprite/poison.json'
 import poisonousTulip from '@res/sprite/poisonousTulip.json'
 import respawn from '@res/sprite/respawn.json'
+import rock from '@res/sprite/rock.json'
 import shopBackground from '@res/sprite/shopBackground.json'
 import shopItemFrame from '@res/sprite/shopItemFrame.json'
 import shopScrollBarThumb from '@res/sprite/shopScrollBarThumb.json'
@@ -66,6 +68,7 @@ export const spriteURL = {
   boss1Needle,
   boss1Root,
   boss1Stem,
+  branch,
   coinLarge,
   coinLargeDummy,
   coinSmall,
@@ -87,6 +90,7 @@ export const spriteURL = {
   poison,
   poisonousTulip,
   respawn,
+  rock,
   shopBackground,
   shopItemFrame,
   shopScrollBarThumb,

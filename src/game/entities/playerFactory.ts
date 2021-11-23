@@ -26,7 +26,15 @@ export class PlayerFactory extends EntityFactory {
     const entity = loadEntity('player')
 
     entity.addComponent('Position', new PositionComponent())
-    entity.addComponent('Hp', new HpComponent(this.playerData.hp, this.playerData.maxHp, false))
+    entity.addComponent(
+      'Hp',
+      new HpComponent({
+        initial: this.playerData.hp,
+        max: this.playerData.maxHp,
+        showHpBar: false,
+        canLock: false,
+      })
+    )
 
     const player = new PlayerComponent(entity, new HudFactory(this.world).create())
 

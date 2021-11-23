@@ -1,0 +1,16 @@
+{
+  "name": "rock",
+  "path": "rock.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "Damaging": [0, 1]
+    },
+    "default": "Damaging"
+  }
+}
