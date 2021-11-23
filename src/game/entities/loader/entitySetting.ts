@@ -47,6 +47,7 @@ import uiHpHeart from '@res/entity/uiHpHeart.json'
 import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
 import uiWeaponGun from '@res/entity/uiWeaponGun.json'
 import vine from '@res/entity/vine.json'
+import vineStalk from '@res/entity/vineStalk.json'
 import wall from '@res/entity/wall.json'
 
 export const entitySetting = {
@@ -95,5 +96,6 @@ export const entitySetting = {
   uiWeaponBackground,
   uiWeaponGun,
   vine,
+  vineStalk,
   wall,
 }

@@ -3,6 +3,8 @@ import { wait } from '@core/behaviour/wait'
 import { Container, ObservablePoint, Sprite, Texture } from 'pixi.js'
 import { AnimationDefinition } from './spriteBuffer'
 
+export type AnimationOption = { waitFrames?: number; reverse?: boolean }
+
 class AnimationSpriteFrame extends Sprite {
   public constructor(private textures: Array<Texture>, private waitFrames = 10) {
     super(textures[0])
@@ -12,11 +14,15 @@ class AnimationSpriteFrame extends Sprite {
     this.texture = this.textures[number]
   }
 
-  public *animate(waitFrames?: number): Behaviour<void> {
-    for (const texture of this.textures) {
+  public *animate(option: AnimationOption): Behaviour<void> {
+    const textures =
+      option.reverse === true
+        ? this.textures.map((_, idx) => this.textures[this.textures.length - 1 - idx])
+        : this.textures
+    for (const texture of textures) {
       this.texture = texture
-      if (waitFrames) {
-        yield* wait.frame(waitFrames)
+      if (option.waitFrames) {
+        yield* wait.frame(option.waitFrames)
       } else {
         yield* wait.frame(this.waitFrames)
       }
@@ -49,8 +55,8 @@ export class AnimationSprite extends Container {
     this.currentAnimationSprite.visible = true
   }
 
-  public *animate(waitFrame?: number): Behaviour<void> {
-    yield* this.currentAnimationSprite.animate(waitFrame)
+  public *animate(option: AnimationOption): Behaviour<void> {
+    yield* this.currentAnimationSprite.animate(option)
   }
 
   public set isVisible(isVisible: boolean) {

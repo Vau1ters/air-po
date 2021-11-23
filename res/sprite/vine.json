@@ -9,13 +9,15 @@
   },
   "animation": {
     "state": {
-      "Root0": [0],
-      "Root1": [1],
-      "Root2": [2],
-      "Stalk0": [3],
-      "Stalk1": [4],
-      "Stalk2": [5]
+      "DownRoot": [0, 1, 2],
+      "DownStalk": [3, 4, 5],
+      "RightRoot": [6, 7, 8],
+      "RightStalk": [9, 10, 11],
+      "UpRoot": [12, 13, 14],
+      "UpStalk": [15, 16, 17],
+      "LeftRoot": [18, 19, 20],
+      "LeftStalk": [21, 22, 23]
     },
-    "default": "Root0"
+    "default": "DownRoot"
   }
 }

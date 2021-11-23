@@ -16,7 +16,7 @@
     {
       "geometry": {
         "type": "AABB",
-        "size": [14, 5]
+        "size": [1, 1]
       },
       "category": "sensor",
       "mask": ["terrain"],
