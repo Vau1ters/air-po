@@ -35,7 +35,7 @@ const manageAir = function*(
   }
 }
 
-export const airGeyserAI = function(
+export const airGeyserAI = function*(
   entity: Entity,
   world: World,
   options: {
@@ -43,7 +43,7 @@ export const airGeyserAI = function(
     increaseRate: number
   }
 ): Behaviour<void> {
-  return parallelAny([
+  yield* parallelAny([
     animate({
       entity,
       state: 'Default',

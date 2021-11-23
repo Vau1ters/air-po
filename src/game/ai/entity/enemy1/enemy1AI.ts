@@ -3,25 +3,25 @@ import { World } from '@core/ecs/world'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { suspendable } from '@core/behaviour/suspendable'
 import { isAlive } from '../common/condition/isAlive'
-import { move, Direction } from '../common/action/move'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
+import { move, MoveDirection } from '../common/action/move'
 
-const enemy1Walk = function*(entity: Entity, direction: Direction): Behaviour<void> {
+const enemy1Walk = function*(entity: Entity, direction: MoveDirection): Behaviour<void> {
   yield* parallelAny([
     animate({ entity, state: 'Walk', loopCount: Infinity }),
-    move(entity, direction, 0.3, 200),
+    move({ entity, direction, speed: 0.3, duration: 200 }),
   ])
 }
 
 const enemy1Move = function*(entity: Entity): Behaviour<void> {
   while (true) {
     yield* animate({ entity, state: 'Idle', loopCount: 3 })
-    yield* enemy1Walk(entity, Direction.Right)
+    yield* enemy1Walk(entity, 'Right')
     yield* animate({ entity, state: 'Idle', loopCount: 3 })
-    yield* enemy1Walk(entity, Direction.Left)
+    yield* enemy1Walk(entity, 'Left')
   }
 }
 

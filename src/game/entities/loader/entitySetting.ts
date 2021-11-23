@@ -23,6 +23,7 @@ import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
 import jetEffect from '@res/entity/jetEffect.json'
 import jumpingEffect from '@res/entity/jumpingEffect.json'
 import landingEffect from '@res/entity/landingEffect.json'
+import locust from '@res/entity/locust.json'
 import moss from '@res/entity/moss.json'
 import mouseCursor from '@res/entity/mouseCursor.json'
 import mushroom from '@res/entity/mushroom.json'
@@ -74,6 +75,7 @@ export const entitySetting = {
   jetEffect,
   jumpingEffect,
   landingEffect,
+  locust,
   moss,
   mouseCursor,
   mushroom,

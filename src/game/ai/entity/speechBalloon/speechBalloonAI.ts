@@ -69,10 +69,10 @@ const animate = function*(speechBalloon: Entity): Behaviour<void> {
   yield* popOutspeechBalloonScale
 }
 
-export const speechBalloonAI = function(
+export const speechBalloonAI = function*(
   speechBalloon: Entity,
   target: Entity,
   world: World
 ): Behaviour<void> {
-  return parallelAny([animate(speechBalloon), chase(speechBalloon, target, world)])
+  yield* parallelAny([animate(speechBalloon), chase(speechBalloon, target, world)])
 }
