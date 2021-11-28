@@ -1,4 +1,5 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { parallelAll } from '@core/behaviour/composite'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
@@ -15,6 +16,8 @@ import { animate } from '../common/action/animate'
 
 type VineStatus = 'Extend' | 'Shrink'
 type Vine = { vine: Entity; world: World; dir: VineDirection; stalks: Array<Entity> }
+
+const WaitFrames = 2
 
 const getVector = (dir: VineDirection): Vec2 => {
   switch (dir) {
@@ -88,7 +91,7 @@ const extend = function*(vine: Vine): Behaviour<Entity> {
     yield* animate({
       entity: vine.vine,
       state: `${vine.dir}Root`,
-      waitFrames: 2,
+      waitFrames: WaitFrames,
     })
   }
 
@@ -109,11 +112,32 @@ const extend = function*(vine: Vine): Behaviour<Entity> {
   vine.world.addEntity(stalk)
   vine.stalks.push(stalk)
 
-  yield* animate({
-    entity: stalk,
-    state: `${vine.dir}Stalk`,
-    waitFrames: 2,
-  })
+  const stalkAnim = [
+    animate({
+      entity: stalk,
+      state: `${vine.dir}Stalk`,
+      waitFrames: WaitFrames,
+    }),
+  ]
+  if (vine.stalks.length > 1) {
+    const lastStalk = vine.stalks[vine.stalks.length - 2]
+    stalkAnim.push(
+      animate({
+        entity: lastStalk,
+        state: `${vine.dir}StalkEnd`,
+        waitFrames: WaitFrames,
+      })
+    )
+  } else {
+    stalkAnim.push(
+      animate({
+        entity: vine.vine,
+        state: `${vine.dir}RootEnd`,
+        waitFrames: WaitFrames,
+      })
+    )
+  }
+  yield* parallelAll(stalkAnim)
 
   return stalk
 }
@@ -135,7 +159,7 @@ const shrink = function*(vine: Vine): Behaviour<Entity> {
   yield* animate({
     entity: stalk,
     state: `${vine.dir}Stalk`,
-    waitFrames: 2,
+    waitFrames: WaitFrames,
     reverse: true,
   })
   vine.world.removeEntity(stalk)
@@ -144,7 +168,7 @@ const shrink = function*(vine: Vine): Behaviour<Entity> {
     yield* animate({
       entity: vine.vine,
       state: `${vine.dir}Root`,
-      waitFrames: 2,
+      waitFrames: WaitFrames,
       reverse: true,
     })
   }
