@@ -1,3 +1,5 @@
+import { assert } from '@utils/assertion'
+import { EventNotifier } from '@utils/eventNotifier'
 import { Behaviour } from './behaviour'
 
 export const wait = {
@@ -10,5 +12,16 @@ export const wait = {
     while (!cond()) {
       yield
     }
+  },
+  notification: function*<T>(notifier: EventNotifier<T>): Behaviour<T> {
+    let result: T | undefined
+    const callback = (value: T): void => {
+      result = value
+    }
+    notifier.addObserver(callback)
+    yield* wait.until((): boolean => result !== undefined)
+    notifier.removeObserver(callback)
+    assert(result !== undefined, '')
+    return result
   },
 }

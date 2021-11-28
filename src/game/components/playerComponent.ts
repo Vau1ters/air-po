@@ -5,6 +5,10 @@ import { equipmentClass } from '@game/equipment/equipmentURL'
 import { Item } from '@game/item/item'
 import { itemClass } from '@game/item/itemURL'
 import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
+import { assert } from '@utils/assertion'
+import { EventNotifier } from '@utils/eventNotifier'
+
+export type WeaponType = 'Gun' | 'Emitter'
 
 export class PlayerComponent {
   public landing = false
@@ -15,6 +19,8 @@ export class PlayerComponent {
   public smallCoinCount: number
   public acquiredLargeCoinList: Set<LargeCoinID>
   public itemList: Array<Item>
+  private _currentWeapon: WeaponType = 'Gun'
+  public readonly weaponChanged: EventNotifier<number>
   private equipmentList: Array<Equipment>
 
   constructor(private player: Entity, public ui: Entity) {
@@ -31,6 +37,7 @@ export class PlayerComponent {
     for (const e of this.equipmentList) {
       e.onEquip()
     }
+    this.weaponChanged = new EventNotifier()
   }
 
   public popItem(index: number): Item {
@@ -53,6 +60,36 @@ export class PlayerComponent {
       smallCoinCount: this.smallCoinCount,
       acquiredLargeCoinList: Array.from(this.acquiredLargeCoinList),
       equipmentList: Array.from(this.equipmentList.map(e => e.name)),
+    }
+  }
+
+  get currentWeapon(): WeaponType {
+    return this._currentWeapon
+  }
+
+  changeWeapon(delta: number): void {
+    const currentIndex = this.weaponToIndex(this.currentWeapon)
+    const nextIndex = (currentIndex + delta + 2) % 2
+    this._currentWeapon = this.indexToWeapon(nextIndex)
+    this.weaponChanged.notify(delta)
+  }
+
+  private indexToWeapon(index: number): WeaponType {
+    switch (index) {
+      case 0:
+        return 'Gun'
+      case 1:
+        return 'Emitter'
+    }
+    assert(false, `invalid index ${index}`)
+  }
+
+  private weaponToIndex(type: WeaponType): number {
+    switch (type) {
+      case 'Gun':
+        return 0
+      case 'Emitter':
+        return 1
     }
   }
 }

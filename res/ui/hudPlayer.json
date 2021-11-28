@@ -32,9 +32,9 @@
     "name": "uiWeaponBackground",
     "position": [26, 22]
   },
-  "weaponGun": {
+  "weapon": {
     "type": "entity",
-    "name": "uiWeaponGun",
+    "name": "uiWeapon",
     "position": [27, 23]
   },
   "hpHearts": {

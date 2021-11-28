@@ -30,7 +30,7 @@ const slime1Move = function*(entity: Entity): Behaviour<void> {
 
 export const slime1AI = function*(entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), slime1Move(entity))
-  yield* emitAir(entity, world, 50)
+  yield* emitAir(entity)
   yield* animate({ entity, state: 'Dying' })
   yield* kill(entity, world)
 }

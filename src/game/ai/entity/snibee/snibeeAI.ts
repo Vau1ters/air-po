@@ -113,7 +113,7 @@ export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void>
   entity.getComponent('RigidBody').velocity.x = 0
   entity.getComponent('RigidBody').velocity.y = -3
   entity.getComponent('RigidBody').gravityScale = 0.05
-  yield* emitAir(entity, world, 50)
+  yield* emitAir(entity)
   yield* flutteringAI(entity)
   yield* kill(entity, world)
 }

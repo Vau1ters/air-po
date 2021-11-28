@@ -6,6 +6,7 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { CollisionResultAirAABB } from '@core/collision/collision/Air_AABB'
 import { assert } from '@utils/assertion'
 import { AIR_TAG } from './airSystem'
+import { AirFactory } from '@game/entities/airFactory'
 
 export const AIR_HOLDER_TAG = 'airHolderBody'
 export const SUFFOCATION_DAMAGE_INTERVAL = 180
@@ -23,8 +24,30 @@ export class AirHolderSystem extends System {
 
   public update(): void {
     for (const entity of this.family.entityIterator) {
-      // air consume
+      const position = entity.getComponent('Position')
       const airHolder = entity.getComponent('AirHolder')
+
+      const nearestAir =
+        airHolder.hitAirs.length > 0
+          ? airHolder.hitAirs
+              .reduce((a, b) => {
+                const aa = a.getComponent('Air')
+                const pa = a.getComponent('Position')
+                const ab = b.getComponent('Air')
+                const pb = b.getComponent('Position')
+                if (
+                  pa.sub(position).lengthSq() / aa.quantity <
+                  pb.sub(position).lengthSq() / ab.quantity
+                ) {
+                  return a
+                } else {
+                  return b
+                }
+              })
+              .getComponent('Air')
+          : undefined
+
+      // air consume
       airHolder.consume()
       if (airHolder.shouldDamageInSuffocation && airHolder.quantity === 0) {
         if (airHolder.suffocationDamageCount++ % SUFFOCATION_DAMAGE_INTERVAL === 0) {
@@ -34,6 +57,25 @@ export class AirHolderSystem extends System {
       } else {
         airHolder.suffocationDamageCount = 0
       }
+
+      // air collect
+      if (nearestAir) {
+        const collectedQuantity = airHolder.collect(nearestAir.quantity)
+        nearestAir.decrease(collectedQuantity)
+      }
+
+      // air emit
+      if (airHolder.emitSpeed > 0) {
+        const consumedQuantity = airHolder.consumeBy(airHolder.emitSpeed)
+        if (nearestAir) {
+          nearestAir.increase(consumedQuantity)
+        } else {
+          this.world.addEntity(new AirFactory(position, consumedQuantity).create())
+        }
+      }
+
+      // reset
+      airHolder.hitAirs = []
     }
   }
 
@@ -69,23 +111,8 @@ export class AirHolderSystem extends System {
     const { hitAirs } = args as CollisionResultAirAABB
     // collect air
     if (otherCollider.tag.has(AIR_TAG)) {
-      const position = airHolderCollider.entity.getComponent('Position')
       const airHolder = airHolderCollider.entity.getComponent('AirHolder')
-
-      const nearestAir = hitAirs.reduce((a, b) => {
-        const aa = a.getComponent('Air')
-        const pa = a.getComponent('Position')
-        const ab = b.getComponent('Air')
-        const pb = b.getComponent('Position')
-        if (pa.sub(position).lengthSq() / aa.quantity < pb.sub(position).lengthSq() / ab.quantity) {
-          return a
-        } else {
-          return b
-        }
-      })
-      const airComponent = nearestAir.getComponent('Air')
-      const collectedQuantity = airHolder.collect(airComponent.quantity)
-      airComponent.decrease(collectedQuantity)
+      airHolder.hitAirs.push(...hitAirs)
     }
   }
 }
