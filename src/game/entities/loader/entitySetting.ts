@@ -29,6 +29,7 @@ import mouseCursor from '@res/entity/mouseCursor.json'
 import mushroom from '@res/entity/mushroom.json'
 import player from '@res/entity/player.json'
 import playerBullet from '@res/entity/playerBullet.json'
+import playerSpawner from '@res/entity/playerSpawner.json'
 import poison from '@res/entity/poison.json'
 import poisonousTulip from '@res/entity/poisonousTulip.json'
 import respawn from '@res/entity/respawn.json'
@@ -81,6 +82,7 @@ export const entitySetting = {
   mushroom,
   player,
   playerBullet,
+  playerSpawner,
   poison,
   poisonousTulip,
   respawn,

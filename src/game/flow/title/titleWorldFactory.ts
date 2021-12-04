@@ -4,12 +4,8 @@ import { Container, Graphics } from 'pixi.js'
 import DrawSystem from '@game/systems/drawSystem'
 import CameraSystem from '@game/systems/cameraSystem'
 import { ControlSystem } from '@game/systems/controlSystem'
-import { loadStage } from '@game/stage/stageLoader'
 import BackgroundSystem from '@game/systems/backgroundSystem'
 import { SingletonSystem } from '@game/systems/singletonSystem'
-import { BgmFactory } from '@game/entities/bgmFactory'
-import { PlayerFactory } from '@game/entities/playerFactory'
-import { loadData } from '@game/playdata/playdata'
 
 export class TitleWorldFactory {
   public create(): World {
@@ -38,8 +34,6 @@ export class TitleWorldFactory {
     cameraContainer.addChild(worldUIContainer)
     cameraContainer.addChild(worldContainer)
 
-    world.addEntity(new BgmFactory().create())
-
     world.addSystem(
       new DrawSystem(world, worldContainer, worldUIContainer, uiContainer),
       new CameraSystem(world, cameraContainer),
@@ -47,10 +41,6 @@ export class TitleWorldFactory {
       new BackgroundSystem(world),
       new SingletonSystem(world)
     )
-
-    const stage = loadStage('root', world)
-    const { playerData } = loadData()
-    stage.spawnPlayer(new PlayerFactory(world, playerData).create(), 0)
 
     return world
   }

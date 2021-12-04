@@ -10300,7 +10300,7 @@
     },
     {
       "firstgid": 58,
-      "source": "tileset/player.json"
+      "source": "tileset/playerSpawner.json"
     },
     {
       "firstgid": 61,

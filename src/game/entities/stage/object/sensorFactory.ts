@@ -8,8 +8,8 @@ import { ObjectEntityFactory } from '../../objectEntityFactory'
 
 export default class EventSensorFactory extends ObjectEntityFactory {
   public create(): Entity {
-    const event = this.object.properties?.find(prop => prop.name === 'event')?.value as string
-    assert(event, `Sensor must have string property 'event'`)
+    const event = this.findProperty('string', 'event')
+    assert(event !== undefined, `Sensor must have string property 'event'`)
 
     const entity = super.create()
 

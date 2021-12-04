@@ -10,8 +10,17 @@ import { EventNotifier } from '@utils/eventNotifier'
 
 export type WeaponType = 'Gun' | 'Emitter'
 
+type GroundInfo =
+  | {
+      landing: false
+    }
+  | {
+      landing: true
+      normal: Vec2
+    }
+
 export class PlayerComponent {
-  public landing = false
+  public ground: GroundInfo = { landing: false }
   public possessingEntity: Entity | undefined = undefined
   public throughFloorIgnoreCount = 0
   public targetPosition = new Vec2()

@@ -1,4 +1,4 @@
-import { SpawnPoint } from '@game/components/gameEventComponent'
+import { StagePoint } from '@game/components/stagePointComponent'
 import { EquipmentName } from '@game/equipment/equipment'
 import { ItemName } from '@game/item/item'
 
@@ -8,7 +8,7 @@ export const SaveDataVersion = '0.0.1'
 export type SaveData = {
   version: string
   storyStatus: StoryStatus
-  spawnPoint: SpawnPoint
+  spawnPoint: StagePoint
   playerData: PlayerData
 }
 
@@ -32,7 +32,7 @@ export const InitialSaveData: SaveData = {
   storyStatus: StoryStatus.Opening,
   spawnPoint: {
     stageName: 'root',
-    spawnerID: 0,
+    pointID: 0,
   },
   playerData: {
     hp: 3,

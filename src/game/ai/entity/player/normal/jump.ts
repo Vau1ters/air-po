@@ -14,7 +14,7 @@ export const jump = function*(entity: Entity, world: World): Behaviour<void> {
   const body = entity.getComponent('RigidBody')
 
   while (true) {
-    while (!player.landing) yield
+    while (!player.ground.landing) yield
 
     const direction = entity.getComponent('HorizontalDirection')
     const landingEffectFactory = new LandingEffectFactory(world, direction).setPosition(
@@ -25,7 +25,7 @@ export const jump = function*(entity: Entity, world: World): Behaviour<void> {
     animState.state = 'Standing'
     entity.getComponent('Sound').addSound('playerLanding')
 
-    while (player.landing) {
+    while (player.ground.landing) {
       if (KeyController.isActionPressing('Jump')) {
         body.velocity.y = -PLAYER_SETTING.normal.jump.speed
         entity.getComponent('Sound').addSound('playerJump')

@@ -13,6 +13,7 @@ import dandelion from 'src/game/entities/stage/object/dandelionFactory'
 import enemy1 from 'src/game/entities/stage/object/enemy1Factory'
 import locust from 'src/game/entities/stage/object/locustFactory'
 import mushroom from 'src/game/entities/stage/object/mushroomFactory'
+import playerSpawner from 'src/game/entities/stage/object/playerSpawnerFactory'
 import poisonousTulip from 'src/game/entities/stage/object/poisonousTulipFactory'
 import respawn from 'src/game/entities/stage/object/respawnFactory'
 import rock from 'src/game/entities/stage/object/rockFactory'
@@ -33,6 +34,7 @@ export const objectList = {
   enemy1,
   locust,
   mushroom,
+  playerSpawner,
   poisonousTulip,
   respawn,
   rock,

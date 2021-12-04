@@ -1,7 +1,9 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
+import { Vec2 } from '@core/math/vec2'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { PLAYER_FOOT_TAG } from '@game/entities/playerFactory'
+import { assert } from '@utils/assertion'
 
 const footCollisionCallback = (args: CollisionCallbackArgs): void => {
   const {
@@ -11,7 +13,10 @@ const footCollisionCallback = (args: CollisionCallbackArgs): void => {
   if (rigidBody.velocity.y < -1e-2) return
 
   const player = playerEntity.getComponent('Player')
-  player.landing = true
+  assert('axis' in args, '')
+  const axisLen = args.axis.length()
+  const normal = axisLen === 0 ? new Vec2(0, -1) : args.axis.div(-axisLen)
+  player.ground = { landing: true, normal }
 }
 
 export const land = function*(entity: Entity): Behaviour<void> {
@@ -23,7 +28,7 @@ export const land = function*(entity: Entity): Behaviour<void> {
   footCollider?.callbacks.add(footCollisionCallback)
 
   while (true) {
-    player.landing = false
+    player.ground = { landing: false }
     yield
   }
 }

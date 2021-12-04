@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Collider } from '@game/components/colliderComponent'
-import { collide } from '@core/collision/collision'
+import { collide, flipResult } from '@core/collision/collision'
 import { Category, CategorySet } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 import { BVH } from '@core/collision/bvh'
@@ -130,7 +130,7 @@ export default class CollisionSystem extends System {
         }
         if (mask2.has(category1)) {
           for (const callback of c2.callbacks) {
-            callback({ me: c2, other: c1, ...result })
+            callback({ me: c2, other: c1, ...flipResult(result) })
           }
         }
       }
