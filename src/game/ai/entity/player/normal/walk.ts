@@ -51,7 +51,7 @@ export const walk = function*(entity: Entity): Behaviour<void> {
       const dif = Math.min(PLAYER_SETTING.normal.walk.power, PLAYER_SETTING.normal.walk.speed - vel)
       body.velocity = body.velocity.add(dir.mul(dif))
       direction.looking = action.looking
-      if (player.ground.landing) {
+      if (player.landing) {
         soundFoot()
         animState.state = 'Walking'
       }
@@ -66,7 +66,7 @@ export const walk = function*(entity: Entity): Behaviour<void> {
 
       body.velocity = body.velocity.add(tan.mul(dif))
 
-      if (player.ground.landing) animState.state = 'Standing'
+      if (player.landing) animState.state = 'Standing'
     }
     yield
   }
