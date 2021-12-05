@@ -142,6 +142,6 @@ const locustMove = function*(locust: Entity, player: Entity): Behaviour<void> {
 export const locustAI = function*(locust: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
   yield* suspendable(isAlive(locust), locustMove(locust, player))
-  yield* emitAir(locust, world, 50)
+  yield* emitAir(locust)
   yield* kill(locust, world)
 }

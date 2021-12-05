@@ -179,7 +179,7 @@
           "y": 256
         },
         {
-          "gid": 121,
+          "gid": 129,
           "height": 16,
           "id": 35,
           "name": "",
@@ -215,7 +215,7 @@
           "y": 160
         },
         {
-          "gid": 121,
+          "gid": 129,
           "height": 16,
           "id": 39,
           "name": "",
@@ -251,7 +251,7 @@
           "y": 200
         },
         {
-          "gid": 121,
+          "gid": 129,
           "height": 16,
           "id": 42,
           "name": "",
@@ -263,7 +263,7 @@
           "y": 200
         },
         {
-          "gid": 176,
+          "gid": 184,
           "height": 16,
           "id": 43,
           "name": "",
@@ -275,7 +275,7 @@
           "y": 240
         },
         {
-          "gid": 121,
+          "gid": 129,
           "height": 16,
           "id": 46,
           "name": "",
@@ -311,7 +311,7 @@
           "y": 368
         },
         {
-          "gid": 171,
+          "gid": 179,
           "height": 96,
           "id": 49,
           "name": "",
@@ -323,7 +323,7 @@
           "y": 368
         },
         {
-          "gid": 144,
+          "gid": 152,
           "height": 56,
           "id": 51,
           "name": "",
@@ -335,7 +335,7 @@
           "y": 600
         },
         {
-          "gid": 143,
+          "gid": 151,
           "height": 56,
           "id": 52,
           "name": "",
@@ -359,7 +359,7 @@
           "y": 616
         },
         {
-          "gid": 151,
+          "gid": 159,
           "height": 32,
           "id": 41,
           "name": "",
@@ -369,18 +369,6 @@
           "width": 24,
           "x": 360,
           "y": 528
-        },
-        {
-          "gid": 104,
-          "height": 16,
-          "id": 45,
-          "name": "",
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 224,
-          "y": 456
         },
         {
           "gid": 86,
@@ -395,31 +383,7 @@
           "y": 408
         },
         {
-          "gid": 92,
-          "height": 16,
-          "id": 49,
-          "name": "",
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 96,
-          "y": 488
-        },
-        {
-          "gid": 98,
-          "height": 16,
-          "id": 50,
-          "name": "",
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 16,
-          "x": 176,
-          "y": 520
-        },
-        {
-          "gid": 151,
+          "gid": 159,
           "height": 32,
           "id": 59,
           "name": "",
@@ -431,7 +395,7 @@
           "y": 504
         },
         {
-          "gid": 177,
+          "gid": 185,
           "height": 32,
           "id": 61,
           "name": "",
@@ -443,7 +407,7 @@
           "y": 432
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 64,
           "name": "",
@@ -455,7 +419,7 @@
           "y": 336
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 65,
           "name": "",
@@ -467,7 +431,7 @@
           "y": 320
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 66,
           "name": "",
@@ -479,7 +443,7 @@
           "y": 336
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 67,
           "name": "",
@@ -491,7 +455,7 @@
           "y": 320
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 68,
           "name": "",
@@ -503,7 +467,7 @@
           "y": 304
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 69,
           "name": "",
@@ -515,7 +479,7 @@
           "y": 288
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 70,
           "name": "",
@@ -527,7 +491,7 @@
           "y": 280
         },
         {
-          "gid": 178,
+          "gid": 186,
           "height": 16,
           "id": 71,
           "name": "",
@@ -539,7 +503,7 @@
           "y": 296
         },
         {
-          "gid": 179,
+          "gid": 188,
           "height": 16,
           "id": 73,
           "name": "",
@@ -549,6 +513,42 @@
           "width": 24,
           "x": 232,
           "y": 672
+        },
+        {
+          "gid": 94,
+          "height": 16,
+          "id": 76,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 16,
+          "x": 96,
+          "y": 480
+        },
+        {
+          "gid": 110,
+          "height": 16,
+          "id": 77,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 16,
+          "x": 224,
+          "y": 456
+        },
+        {
+          "gid": 102,
+          "height": 16,
+          "id": 78,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 16,
+          "x": 176,
+          "y": 520
         }
       ],
       "opacity": 1,
@@ -3990,8 +3990,8 @@
         0,
         0,
         0,
-        120,
-        120,
+        128,
+        128,
         0,
         0,
         0,
@@ -10579,7 +10579,7 @@
     }
   ],
   "nextlayerid": 12,
-  "nextobjectid": 75,
+  "nextobjectid": 79,
   "orientation": "orthogonal",
   "renderorder": "right-up",
   "tiledversion": "1.7.2",
@@ -10614,51 +10614,51 @@
       "source": "tileset/vine.json"
     },
     {
-      "firstgid": 110,
+      "firstgid": 118,
       "source": "tileset/moss.json"
     },
     {
-      "firstgid": 111,
+      "firstgid": 119,
       "source": "tileset/sensor.json"
     },
     {
-      "firstgid": 112,
+      "firstgid": 120,
       "source": "tileset/airGeyser.json"
     },
     {
-      "firstgid": 120,
+      "firstgid": 128,
       "source": "tileset/throughFloor.json"
     },
     {
-      "firstgid": 121,
+      "firstgid": 129,
       "source": "tileset/slime1.json"
     },
     {
-      "firstgid": 143,
+      "firstgid": 151,
       "source": "tileset/mushroom.json"
     },
     {
-      "firstgid": 151,
+      "firstgid": 159,
       "source": "tileset/respawn.json"
     },
     {
-      "firstgid": 171,
+      "firstgid": 179,
       "source": "tileset/boss1.json"
     },
     {
-      "firstgid": 176,
+      "firstgid": 184,
       "source": "tileset/poisonousTulip.json"
     },
     {
-      "firstgid": 177,
+      "firstgid": 185,
       "source": "tileset/branch.json"
     },
     {
-      "firstgid": 178,
+      "firstgid": 186,
       "source": "tileset/rock.json"
     },
     {
-      "firstgid": 179,
+      "firstgid": 188,
       "source": "tileset/locust.json"
     }
   ],

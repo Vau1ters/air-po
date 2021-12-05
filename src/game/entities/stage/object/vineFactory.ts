@@ -21,7 +21,7 @@ export default class VineFactory extends ObjectEntityFactory {
 
   private calcDirection(frame: number): VineDirection {
     const dirs: Array<VineDirection> = ['Down', 'Right', 'Up', 'Left']
-    const index = Math.floor(frame / 6)
+    const index = Math.floor(frame / 8)
     assert(0 <= index && index < dirs.length, `invalid frame number ${frame}`)
     return dirs[index]
   }

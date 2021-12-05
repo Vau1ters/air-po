@@ -58,6 +58,6 @@ export const poisonousTulipAI = function*(entity: Entity, world: World): Behavio
     isAlive(entity),
     parallelAll([poisonousTulipDamaged(entity, world), poisonousTulipApproached(entity, world)])
   )
-  yield* emitAir(entity, world, 60)
+  yield* emitAir(entity)
   yield* kill(entity, world)
 }

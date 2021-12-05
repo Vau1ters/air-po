@@ -47,8 +47,8 @@ import uiAirTankBg from '@res/entity/uiAirTankBg.json'
 import uiAirTankBody from '@res/entity/uiAirTankBody.json'
 import uiAirTankTail from '@res/entity/uiAirTankTail.json'
 import uiHpHeart from '@res/entity/uiHpHeart.json'
+import uiWeapon from '@res/entity/uiWeapon.json'
 import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
-import uiWeaponGun from '@res/entity/uiWeaponGun.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
 import wall from '@res/entity/wall.json'
@@ -99,8 +99,8 @@ export const entitySetting = {
   uiAirTankBody,
   uiAirTankTail,
   uiHpHeart,
+  uiWeapon,
   uiWeaponBackground,
-  uiWeaponGun,
   vine,
   vineStalk,
   wall,

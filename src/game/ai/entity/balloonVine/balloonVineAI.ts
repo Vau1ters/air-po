@@ -27,7 +27,7 @@ export const balloonVineAI = function*(entity: Entity, world: World): Behaviour<
     parallelAll([balloonVineBehaviour(entity, world), changeState(entity)])
   )
   if (hasAir(entity)()) {
-    yield* emitAir(entity, world, 40)
+    yield* emitAir(entity)
   }
   yield* kill(entity, world)
 }

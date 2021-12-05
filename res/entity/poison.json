@@ -2,6 +2,13 @@
   "draw": {
     "name": "poison"
   },
+  "airHolder": {
+    "initialQuantity": 60,
+    "maxQuantity": 60,
+    "collectSpeed": 0,
+    "consumeSpeed": 0,
+    "shouldDamageInSuffocation": false
+  },
   "rigidBody": {
     "airResistance": 1.2
   },

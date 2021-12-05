@@ -53,6 +53,7 @@ import uiAirTankBody from '@res/sprite/uiAirtankBody.json'
 import uiAirTankTail from '@res/sprite/uiAirtankTail.json'
 import uiHpHeart from '@res/sprite/uiHpHeart.json'
 import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
+import uiWeaponEmitter from '@res/sprite/uiWeaponEmitter.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
 import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
@@ -109,6 +110,7 @@ export const spriteURL = {
   uiAirTankTail,
   uiHpHeart,
   uiWeaponBackground,
+  uiWeaponEmitter,
   uiWeaponGun,
   vine,
   wall,
