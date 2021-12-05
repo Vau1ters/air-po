@@ -1,14 +1,13 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { animate } from '../common/action/animate'
-import { hasAir } from '../common/condition/hasAir'
 import { SporeEffectFactory } from '@game/entities/effect/sporeEffectFactory'
 import { Vec2 } from '@core/math/vec2'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { CollisionResultAABBAABB } from '@core/collision/collision/AABB_AABB'
 import { suspendable } from '@core/behaviour/suspendable'
-import { not } from '../common/condition/composite'
+import { wait } from '@core/behaviour/wait'
 
 const JUMP_ACCEL = 500
 
@@ -25,6 +24,7 @@ const emitSpore = (world: World, position: Vec2): void => {
 
 export const mushroomAI = function*(entity: Entity, world: World): Behaviour<void> {
   const position = entity.getComponent('Position')
+  const airHolder = entity.getComponent('AirHolder')
 
   let landed = false
 
@@ -39,16 +39,21 @@ export const mushroomAI = function*(entity: Entity, world: World): Behaviour<voi
     emitSpore(world, position.add(new Vec2(0, 5)))
   })
 
-  yield* suspendable(not(hasAir(entity)), animate({ entity, state: 'Close', loopCount: Infinity }))
-
-  emitSpore(world, position.add(new Vec2(0, 13)))
-
-  yield* animate({ entity, state: 'Opening', waitFrames: 5 })
-
   while (true) {
-    yield* suspendable(() => !landed, animate({ entity, state: 'Open', loopCount: Infinity }))
-    yield* animate({ entity, state: 'Landed', waitFrames: 5 })
-    landed = false
-    yield
+    yield* animate({ entity, state: 'Close' })
+    yield* wait.until(() => airHolder.quantity > 0)
+    emitSpore(world, position.add(new Vec2(0, 13)))
+    yield* animate({ entity, state: 'Opening', waitFrames: 5 })
+    yield* suspendable(
+      () => airHolder.quantity > 0,
+      (function*(): Behaviour<void> {
+        while (true) {
+          yield* wait.until(() => landed)
+          landed = false
+          yield* animate({ entity, state: 'Landed', waitFrames: 5 })
+        }
+      })()
+    )
+    yield* animate({ entity, state: 'Opening', waitFrames: 5, reverse: true })
   }
 }

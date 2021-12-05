@@ -51,6 +51,7 @@
     "maxQuantity": 1,
     "collectSpeed": 1,
     "consumeSpeed": 0,
+    "emitSpeed": 0.5,
     "shouldDamageInSuffocation": false
   },
   "sound": {}
