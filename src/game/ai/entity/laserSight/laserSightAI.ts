@@ -236,6 +236,6 @@ const updateVisibleSegment = function*(laser: Entity, world: World): Behaviour<v
   }
 }
 
-export const laserSightAI = (laser: Entity, world: World): Behaviour<void> => {
-  return parallelAll([updateInvisibleSegment(laser, world), updateVisibleSegment(laser, world)])
+export const laserSightAI = function*(laser: Entity, world: World): Behaviour<void> {
+  yield* parallelAll([updateInvisibleSegment(laser, world), updateVisibleSegment(laser, world)])
 }

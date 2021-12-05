@@ -1,0 +1,14 @@
+{ "columns":1,
+ "image":"..\/..\/image\/locust.png",
+ "imageheight":16,
+ "imagewidth":24,
+ "margin":0,
+ "name":"locust",
+ "spacing":0,
+ "tilecount":1,
+ "tiledversion":"1.7.2",
+ "tileheight":16,
+ "tilewidth":24,
+ "type":"tileset",
+ "version":"1.6"
+}
