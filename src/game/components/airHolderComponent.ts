@@ -1,12 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-
-export type AirHolderSetting = {
-  initialQuantity: number
-  maxQuantity: number
-  consumeSpeed: number
-  collectSpeed: number
-  shouldDamageInSuffocation: boolean
-}
+import { AirHolderSetting } from '@game/entities/loader/component/AirHolderComponentLoader'
 
 export class AirHolderComponent {
   public quantity: number
@@ -24,7 +17,7 @@ export class AirHolderComponent {
     this.maxQuantity = airSetting.maxQuantity
     this.consumeSpeed = airSetting.consumeSpeed
     this.collectSpeed = airSetting.collectSpeed
-    this.emitSpeed = 0
+    this.emitSpeed = airSetting.emitSpeed ?? 0
     this.shouldDamageInSuffocation = airSetting.shouldDamageInSuffocation
     this.suffocationDamageCount = 0
     this.inAir = false
