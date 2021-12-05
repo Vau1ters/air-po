@@ -21,6 +21,7 @@ export class PlayerComponent {
   public itemList: Array<Item>
   private _currentWeapon: WeaponType = 'Gun'
   public readonly weaponChanged: EventNotifier<number>
+  public weaponChanging = false
   private equipmentList: Array<Equipment>
 
   constructor(private player: Entity, public ui: Entity) {
@@ -68,10 +69,12 @@ export class PlayerComponent {
   }
 
   changeWeapon(delta: number): void {
+    if (this.weaponChanging) return
     const currentIndex = this.weaponToIndex(this.currentWeapon)
     const nextIndex = (currentIndex + delta + 2) % 2
     this._currentWeapon = this.indexToWeapon(nextIndex)
     this.weaponChanged.notify(delta)
+    this.weaponChanging = true
   }
 
   private indexToWeapon(index: number): WeaponType {

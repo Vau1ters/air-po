@@ -61,5 +61,6 @@ export const hudPlayerWeaponAI = function*(ui: Ui, player: Entity): Behaviour<vo
       rotate(weaponDraw.children[1], { from: 90 - 90 * delta, to: 90 }),
     ])
     weaponDraw.removeChildAt(0)
+    playerComponent.weaponChanging = false
   }
 }
