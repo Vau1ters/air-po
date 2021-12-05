@@ -6,6 +6,7 @@ import air from 'src/game/entities/stage/object/airFactory'
 import airGeyser from 'src/game/entities/stage/object/airGeyserFactory'
 import balloonVine from 'src/game/entities/stage/object/balloonVineFactory'
 import boss1 from 'src/game/entities/stage/object/boss1Factory'
+import branch from 'src/game/entities/stage/object/branchFactory'
 import coinLarge from 'src/game/entities/stage/object/coinLargeFactory'
 import coinSmall from 'src/game/entities/stage/object/coinSmallFactory'
 import dandelion from 'src/game/entities/stage/object/dandelionFactory'
@@ -13,6 +14,7 @@ import enemy1 from 'src/game/entities/stage/object/enemy1Factory'
 import mushroom from 'src/game/entities/stage/object/mushroomFactory'
 import poisonousTulip from 'src/game/entities/stage/object/poisonousTulipFactory'
 import respawn from 'src/game/entities/stage/object/respawnFactory'
+import rock from 'src/game/entities/stage/object/rockFactory'
 import sensor from 'src/game/entities/stage/object/sensorFactory'
 import slime1 from 'src/game/entities/stage/object/slime1Factory'
 import snibee from 'src/game/entities/stage/object/snibeeFactory'
@@ -23,6 +25,7 @@ export const objectList = {
   airGeyser,
   balloonVine,
   boss1,
+  branch,
   coinLarge,
   coinSmall,
   dandelion,
@@ -30,6 +33,7 @@ export const objectList = {
   mushroom,
   poisonousTulip,
   respawn,
+  rock,
   sensor,
   slime1,
   snibee,

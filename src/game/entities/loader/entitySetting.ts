@@ -8,6 +8,7 @@ import balloonVine from '@res/entity/balloonVine.json'
 import boss1 from '@res/entity/boss1.json'
 import boss1Geyser from '@res/entity/boss1Geyser.json'
 import boss1Root from '@res/entity/boss1Root.json'
+import branch from '@res/entity/branch.json'
 import coinIconLarge from '@res/entity/coinIconLarge.json'
 import coinIconSmall from '@res/entity/coinIconSmall.json'
 import coinLarge from '@res/entity/coinLarge.json'
@@ -30,6 +31,7 @@ import playerBullet from '@res/entity/playerBullet.json'
 import poison from '@res/entity/poison.json'
 import poisonousTulip from '@res/entity/poisonousTulip.json'
 import respawn from '@res/entity/respawn.json'
+import rock from '@res/entity/rock.json'
 import sensor from '@res/entity/sensor.json'
 import shopBackground from '@res/entity/shopBackground.json'
 import shopItemFrame from '@res/entity/shopItemFrame.json'
@@ -57,6 +59,7 @@ export const entitySetting = {
   boss1,
   boss1Geyser,
   boss1Root,
+  branch,
   coinIconLarge,
   coinIconSmall,
   coinLarge,
@@ -79,6 +82,7 @@ export const entitySetting = {
   poison,
   poisonousTulip,
   respawn,
+  rock,
   sensor,
   shopBackground,
   shopItemFrame,

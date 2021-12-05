@@ -1,5 +1,6 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { wait } from '@core/behaviour/wait'
+import { assert } from '@utils/assertion'
 import { Container, ObservablePoint, Sprite, Texture } from 'pixi.js'
 import { AnimationDefinition } from './spriteBuffer'
 
@@ -11,13 +12,17 @@ class AnimationSpriteFrame extends Sprite {
   }
 
   public goto(number: number): void {
+    assert(
+      0 <= number && number < this.length,
+      `frame number ${number} is not in range [0, ${this.length})`
+    )
     this.texture = this.textures[number]
   }
 
   public *animate(option: AnimationOption): Behaviour<void> {
     const textures =
       option.reverse === true
-        ? this.textures.map((_, idx) => this.textures[this.textures.length - 1 - idx])
+        ? this.textures.map((_, idx) => this.textures[this.length - 1 - idx])
         : this.textures
     for (const texture of textures) {
       this.texture = texture
@@ -27,6 +32,10 @@ class AnimationSpriteFrame extends Sprite {
         yield* wait.frame(this.waitFrames)
       }
     }
+  }
+
+  public get length(): number {
+    return this.textures.length
   }
 }
 
@@ -85,7 +94,7 @@ export class AnimationSprite extends Container {
     return this.currentAnimationSprite.anchor
   }
 
-  private get currentAnimationSprite(): AnimationSpriteFrame {
+  public get currentAnimationSprite(): AnimationSpriteFrame {
     return this.animationSprites[this.currentState]
   }
 }
