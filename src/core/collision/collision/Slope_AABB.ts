@@ -11,7 +11,7 @@ export type CollisionResultSlopeAABB = {
 
 export const collideSlopeAABB = (slope: Slope, aabb: AABB): WithHit<CollisionResultSlopeAABB> => {
   // AABB vs Slope ではAABBは幅0であるかのように振る舞う(斜面上に立つため)
-  const pseudoAABB = new AABB(aabb.center, new Vec2(1, aabb.size.y))
+  const pseudoAABB = new AABB(aabb.center, new Vec2(0, aabb.size.y))
   const aabbResult = collideAABBAABB(slope.createBound(), pseudoAABB)
   if (!aabbResult.hit) return { hit: false }
   const axis = slope.normal.mul(-1)

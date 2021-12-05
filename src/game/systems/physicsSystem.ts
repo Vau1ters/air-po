@@ -100,8 +100,7 @@ export default class PhysicsSystem extends System {
       return
     }
 
-    const clip = collisionResult.clip
-    let axis = collisionResult.axis
+    let { clip, axis } = collisionResult
 
     const solveDirs = c1.option.solveDir.concat(c2.option.solveDir.map(d => d.mul(-1)))
 
@@ -110,6 +109,7 @@ export default class PhysicsSystem extends System {
       // 指定された解決方向に解決できそうにない場合は何もしない
       if (newAxis === undefined) return
       axis = newAxis
+      clip /= newAxis.dot(axis.normalize())
     }
 
     if (clip < 0) {
@@ -123,14 +123,11 @@ export default class PhysicsSystem extends System {
     const rest = 1 + body1.restitution * body2.restitution
 
     // 離れようとしているときに押し出さないようにする
-    // if (vDiff.dot(axis) >= 0) {
-    //   const dv = (vDiff.dot(axis) / sumMass) * rest
-    //   body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
-    //   body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
-    // }
-    const dv = (vDiff.dot(axis) / sumMass) * rest
-    body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
-    body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
+    if (vDiff.dot(axis) >= 0) {
+      const dv = (vDiff.dot(axis) / sumMass) * rest
+      body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
+      body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
+    }
 
     // 押し出し
     position1.assign(position1.add(axis.mul((-clip * body1.invMass) / sumMass)))
