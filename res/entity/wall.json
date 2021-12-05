@@ -1,14 +1,3 @@
 {
-  "collider": [
-    {
-      "geometry": {
-        "type": "AABB",
-        "size": [8, 8]
-      },
-      "category": "terrain",
-      "mask": ["physics"],
-      "tag": ["physics"]
-    }
-  ],
   "rigidBody": {}
 }

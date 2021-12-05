@@ -2,11 +2,10 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
-import { SpawnPoint } from '@game/components/gameEventComponent'
 import { loadData, StoryStatus, saveData } from '@game/playdata/playdata'
 import { animate } from '../common/action/animate'
 
-export const respawnAI = function*(entity: Entity, spawnPoint: SpawnPoint): Behaviour<void> {
+export const respawnAI = function*(entity: Entity): Behaviour<void> {
   let activated = false
   const [collider] = entity.getComponent('Collider').colliders
   collider.callbacks.add((args: CollisionCallbackArgs): void => {
@@ -17,7 +16,7 @@ export const respawnAI = function*(entity: Entity, spawnPoint: SpawnPoint): Beha
 
     const currentData = loadData()
     currentData.storyStatus = StoryStatus.Stage
-    currentData.spawnPoint = spawnPoint
+    currentData.spawnPoint = entity.getComponent('StagePoint').stagePoint
     currentData.playerData = playerData
     currentData.playerData.hp = currentData.playerData.maxHp
     currentData.playerData.air = player.getComponent('AirHolder').maxQuantity

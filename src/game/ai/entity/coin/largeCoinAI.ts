@@ -9,8 +9,6 @@ import { getSingleton } from '@game/systems/singletonSystem'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
-import { Stage } from '@game/stage/stage'
-import { hash } from '@utils/hash'
 import { loadDrawComponent } from '@game/entities/loader/component/DrawComponentLoader'
 
 const waitPlayer = function*(entity: Entity): Behaviour<void> {
@@ -36,11 +34,12 @@ const playGetAnimation = function*(entity: Entity): Behaviour<void> {
   )
 }
 
-export const largeCoinAI = function*(entity: Entity, world: World, stage: Stage): Behaviour<void> {
+export const largeCoinAI = function*(entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
-  const pos = entity.getComponent('Position')
-  const id = hash([stage.stageName, pos.x, pos.y])
-  const isDummy = player.getComponent('Player').acquiredLargeCoinList.has(id)
+  const stagePoint = entity.getComponent('StagePoint')
+  const isDummy = player
+    .getComponent('Player')
+    .acquiredLargeCoinList.has(stagePoint.stagePoint.pointID)
 
   if (isDummy) {
     entity.removeComponent('Draw')
@@ -61,7 +60,7 @@ export const largeCoinAI = function*(entity: Entity, world: World, stage: Stage)
   }
 
   yield* waitPlayer(entity)
-  player.getComponent('Player').acquiredLargeCoinList.add(id)
+  player.getComponent('Player').acquiredLargeCoinList.add(stagePoint.stagePoint.pointID)
   Sound.play('largeCoin')
   yield* playGetAnimation(entity)
   yield* kill(entity, world)

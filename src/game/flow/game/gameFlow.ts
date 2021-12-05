@@ -3,32 +3,23 @@ import { wait } from '@core/behaviour/wait'
 import { KeyController } from '@game/systems/controlSystem'
 import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
-import { loadStage } from '@game/stage/stageLoader'
 import { suspendable } from '@core/behaviour/suspendable'
 import { pauseFlow } from '../pause/pauseFlow'
 import { Flow } from '../flow'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { assert } from '@utils/assertion'
-import { BgmFactory } from '@game/entities/bgmFactory'
-import { Entity } from '@core/ecs/entity'
 import { branch, BranchController } from '@core/behaviour/branch'
 import { Behaviour } from '@core/behaviour/behaviour'
 import { inventoryFlow } from '../inventory/inventoryFlow'
-import { PlayerFactory } from '@game/entities/playerFactory'
-import { loadData, PlayerData } from '@game/playdata/playdata'
-import { SpawnPoint } from '@game/components/gameEventComponent'
+import { loadData } from '@game/playdata/playdata'
 import { GameWorldFactory } from './gameWorldFactory'
 import { shopFlow } from '../shop/shopFlow'
+import { loadStage, StageInfo } from '@game/stage/stageLoader'
 
-export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?: Entity): Flow {
+export const gameFlow = function*(stageInfo: StageInfo): Flow {
   const gameWorldFactory = new GameWorldFactory()
   const world = gameWorldFactory.create()
-  const player = new PlayerFactory(world, data).create()
-  bgm = bgm ?? new BgmFactory().create()
-  world.addEntity(bgm)
-
-  const stage = loadStage(spawnPoint.stageName, world)
-  stage.spawnPlayer(player, spawnPoint.spawnerID)
+  loadStage(world, stageInfo)
 
   const gameEvent = getSingleton('GameEvent', world).getComponent('GameEvent')
   const isGameOn = (): boolean => gameEvent.event === undefined
@@ -84,11 +75,16 @@ export const gameFlow = function*(spawnPoint: SpawnPoint, data: PlayerData, bgm?
   assert(gameEvent.event !== undefined, '')
 
   switch (gameEvent.event.type) {
-    case 'move':
-      return gameFlow(gameEvent.event.spawnPoint, player.getComponent('Player').playerData, bgm)
+    case 'move': {
+      const player = getSingleton('Player', world)
+      return gameFlow({
+        ...stageInfo,
+        spawnPoint: gameEvent.event.spawnPoint,
+        playerData: player.getComponent('Player').playerData,
+      })
+    }
     case 'playerDie': {
-      const { spawnPoint, playerData } = loadData()
-      return gameFlow(spawnPoint, playerData, bgm)
+      return gameFlow({ ...stageInfo, ...loadData() })
     }
   }
 }

@@ -1,10 +1,10 @@
+import { StagePointID } from '@game/components/stagePointComponent'
 import { saveData, loadData, clearData } from '@game/playdata/playdata'
-import { SpawnerID } from '@game/stage/stage'
 import { StageName } from '@game/stage/stageLoader'
 import DebugDrawSystem from '@game/systems/debugDrawSystem'
 
-const changeMap = (stageName: StageName, spawnerID: SpawnerID = 0): void => {
-  saveData({ ...loadData(), spawnPoint: { stageName, spawnerID } })
+const changeMap = (stageName: StageName, pointID: StagePointID = 0): void => {
+  saveData({ ...loadData(), spawnPoint: { stageName, pointID } })
 }
 
 const DebugUtility = {

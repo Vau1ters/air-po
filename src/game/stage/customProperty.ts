@@ -1,17 +1,44 @@
 import * as t from 'io-ts'
 
-const CustomPropertyValueType = t.union([t.boolean, t.number, t.string])
-export type CustomPropertyValue = t.TypeOf<typeof CustomPropertyValueType>
-
-export const CustomPropertyType = t.type({
+const IntPropertyType = t.type({
   name: t.string,
-  type: t.string,
-  value: CustomPropertyValueType,
+  type: t.literal('int'),
+  value: t.number,
 })
+
+const FloatPropertyType = t.type({
+  name: t.string,
+  type: t.literal('float'),
+  value: t.number,
+})
+
+const StringPropertyType = t.type({
+  name: t.string,
+  type: t.literal('string'),
+  value: t.string,
+})
+
+export const CustomPropertyType = t.union([IntPropertyType, FloatPropertyType, StringPropertyType])
 export type CustomProperty = t.TypeOf<typeof CustomPropertyType>
 
-export const getCustomProperty = <T extends CustomPropertyValue>(
-  object: { properties?: Array<CustomProperty> },
+interface TypeMap {
+  int: number
+  float: number
+  string: string
+}
+export type CustomPropertyTypeName = keyof TypeMap
+export type CustomPropertyValue<T extends CustomPropertyTypeName> = TypeMap[T]
+
+interface PropertyOwner {
+  properties?: Array<CustomProperty>
+}
+
+export function findCustomProperty<T extends CustomPropertyTypeName>(
+  owner: PropertyOwner,
+  type: T,
   propertyName: string
-): T | undefined =>
-  object.properties?.find(property => property.name === propertyName)?.value as T | undefined
+): CustomPropertyValue<T> | undefined {
+  const prop = owner.properties?.find(property => property.name === propertyName)
+  if (prop?.type !== type) return undefined
+  return prop.value as TypeMap[T]
+}

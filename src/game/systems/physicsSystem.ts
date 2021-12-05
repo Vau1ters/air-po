@@ -4,10 +4,13 @@ import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Collider, CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { collide, WithHit } from '@core/collision/collision'
-import { AABB } from '@core/collision/geometry/AABB'
-import { OBB } from '@core/collision/geometry/OBB'
-import { CollisionResultOBBOBB } from '@core/collision/collision/OBB_OBB'
 import { assert } from '@utils/assertion'
+import { Vec2 } from '@core/math/vec2'
+
+interface SolvableCollisionResult {
+  clip: number
+  axis: Vec2
+}
 
 export const PHYSICS_TAG = 'physics'
 
@@ -83,30 +86,31 @@ export default class PhysicsSystem extends System {
     const position1 = entity1.getComponent('Position')
     const position2 = entity2.getComponent('Position')
 
-    if (!(g1 instanceof AABB) && !(g1 instanceof OBB)) return
-    if (!(g2 instanceof AABB) && !(g2 instanceof OBB)) return
+    if (!g1.solvable()) return
+    if (!g2.solvable()) return
 
-    let obb1 = g1 instanceof AABB ? g1.asOBB() : g1
-    let obb2 = g2 instanceof AABB ? g2.asOBB() : g2
-
-    // TODO:別クラスに分ける
-    obb1 = obb1.applyPosition(position1)
-    obb2 = obb2.applyPosition(position2)
-
-    const center1 = obb1.bound.center
-    const center2 = obb2.bound.center
-
-    const pDiff = center1.sub(center2)
     const vDiff = body1.velocity.sub(body2.velocity)
 
-    const obbResult = collide(c1, c2, position1, position2) as WithHit<CollisionResultOBBOBB>
+    const collisionResult = collide(c1, c2, position1, position2) as WithHit<
+      SolvableCollisionResult
+    >
 
     // これまでのsolveですでに衝突が解消されている可能性がある
-    if (!obbResult.hit) {
+    if (!collisionResult.hit) {
       return
     }
 
-    const { clip, axis } = obbResult
+    let { clip, axis } = collisionResult
+
+    const solveDirs = c1.option.solveDir.concat(c2.option.solveDir.map(d => d.mul(-1)))
+
+    if (solveDirs.length > 0) {
+      const newAxis = solveDirs.find(dir => axis.dot(dir) > 0)
+      // 指定された解決方向に解決できそうにない場合は何もしない
+      if (newAxis === undefined) return
+      axis = newAxis
+      clip /= newAxis.dot(axis.normalize())
+    }
 
     if (clip < 0) {
       // すでに衝突は解消されている
@@ -119,7 +123,7 @@ export default class PhysicsSystem extends System {
     const rest = 1 + body1.restitution * body2.restitution
 
     // 離れようとしているときに押し出さないようにする
-    if (vDiff.dot(axis) * pDiff.dot(axis) <= 0) {
+    if (vDiff.dot(axis) >= 0) {
       const dv = (vDiff.dot(axis) / sumMass) * rest
       body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
       body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))

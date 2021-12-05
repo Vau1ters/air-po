@@ -25,6 +25,10 @@ export class Segment implements GeometryForCollision {
 
   draw(_: Graphics): void {}
 
+  solvable(): boolean {
+    return false
+  }
+
   distance(p: Vec2): number {
     const s = this.start
     const v = this.direction

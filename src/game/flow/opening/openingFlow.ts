@@ -12,6 +12,7 @@ import { OpeningWorldFactory } from '@game/flow/opening/openingWorldFactory'
 import { Flow } from '../flow'
 import { gameFlow } from '../game/gameFlow'
 import { loadData, saveData, StoryStatus } from '@game/playdata/playdata'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
 const camera = function*(world: World): Behaviour<void> {
   const camera = new Entity()
@@ -70,6 +71,7 @@ export const openingFlow = function*(): Flow {
     storyStatus: StoryStatus.Stage,
   })
 
+  const bgm = new BgmFactory().create()
   const { spawnPoint, playerData } = loadData()
-  return gameFlow(spawnPoint, playerData)
+  return gameFlow({ spawnPoint, playerData, bgm })
 }

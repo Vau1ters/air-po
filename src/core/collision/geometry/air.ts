@@ -23,4 +23,8 @@ export class Air implements GeometryForCollision {
   }
 
   draw(_: Graphics): void {}
+
+  solvable(): boolean {
+    return false
+  }
 }

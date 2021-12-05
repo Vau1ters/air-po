@@ -2,7 +2,7 @@ import { Entity } from '@core/ecs/entity'
 import { getTexture, toSpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { DrawComponent } from '@game/components/drawComponent'
-import { getCustomProperty } from '@game/stage/customProperty'
+import { findCustomProperty } from '@game/stage/customProperty'
 import { StageObject } from '@game/stage/object'
 import { TileSet, getTileSetDataFromGid } from '@game/stage/tileSet'
 import { assert } from '@utils/assertion'
@@ -31,7 +31,9 @@ export class BackgroundFactory extends EntityFactory {
   }
 
   public create(): Entity {
-    const bgType = getCustomProperty<BackgroundLayer>(this.stageObject, 'layer')
+    const bgType = findCustomProperty(this.stageObject, 'string', 'layer') as
+      | BackgroundLayer
+      | undefined
     assert(bgType !== undefined, 'background layer is not set')
     assert(this.stageObject.gid !== undefined, 'gid not found')
     const { name } = getTileSetDataFromGid(this.stageObject.gid, this.tileSets)

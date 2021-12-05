@@ -10,6 +10,8 @@ import { openingFlow } from '../opening/openingFlow'
 import { Flow } from '../flow'
 import { getTexture } from '@core/graphics/art'
 import { loadData, StoryStatus } from '@game/playdata/playdata'
+import { BgmFactory } from '@game/entities/bgmFactory'
+import { loadStage } from '@game/stage/stageLoader'
 
 const createNextFlow = (): Flow => {
   const { storyStatus, spawnPoint, playerData } = loadData()
@@ -18,7 +20,8 @@ const createNextFlow = (): Flow => {
     case StoryStatus.Opening:
       return openingFlow()
     case StoryStatus.Stage: {
-      return gameFlow(spawnPoint, playerData)
+      const bgm = new BgmFactory().create()
+      return gameFlow({ spawnPoint, playerData, bgm })
     }
   }
 }
@@ -28,6 +31,10 @@ export const titleFlow = function*(): Flow {
 
   const titleImage = new Sprite(getTexture('title'))
   world.stage.addChild(titleImage)
+
+  const bgm = new BgmFactory().create()
+  const { playerData } = loadData()
+  loadStage(world, { playerData, bgm, spawnPoint: { stageName: 'root', pointID: 0 } })
 
   yield* parallelAny([
     (function*(): Generator<void> {

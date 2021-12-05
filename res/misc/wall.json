@@ -1,0 +1,28 @@
+{
+  "typeMap": {
+    "CompletelyFilled": [9, 10, 13, 14, 17, 18, 21, 22],
+    "LackCornerLeftUp": [31],
+    "LackCornerRightUp": [28],
+    "LackCornerRightDown": [4],
+    "LackCornerLeftDown": [7],
+    "LackUp": [1, 2, 29, 30],
+    "LackRight": [11, 12, 19, 20],
+    "LackDown": [5, 6, 25, 26],
+    "LackLeft": [8, 15, 16, 23],
+    "LackLeftRight": [37],
+    "LackUpDown": [36],
+    "CornerLeftUp": [0],
+    "CornerRightUp": [3],
+    "CornerRightDown": [27],
+    "CornerLeftDown": [24],
+    "ProtrudeUp": [33],
+    "ProtrudeRight": [32],
+    "ProtrudeDown": [35],
+    "ProtrudeLeft": [34],
+    "SlopeLeftUp": [40],
+    "SlopeRightUp": [41],
+    "SlopeRightDown": [42],
+    "SlopeLeftDown": [43],
+    "Invalid": [38]
+  }
+}
