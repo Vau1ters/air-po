@@ -71,9 +71,9 @@ export default class WallFactory extends TileEntityFactory {
         ProtrudeUp: [new Vec2(-1, 0), new Vec2(+1, 0), new Vec2(0, +1)],
         ProtrudeDown: [new Vec2(-1, 0), new Vec2(+1, 0), new Vec2(0, -1)],
         SlopeLeftUp: [new Vec2(0, -1)],
-        SlopeLeftDown: [],
+        SlopeLeftDown: [new Vec2(0, +1)],
         SlopeRightUp: [new Vec2(0, -1)],
-        SlopeRightDown: [],
+        SlopeRightDown: [new Vec2(0, +1)],
       }
       assert(type in solveDirs, '')
       collider.option.solveDir = solveDirs[type as keyof typeof solveDirs] as Array<Vec2>
