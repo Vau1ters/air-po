@@ -19,7 +19,6 @@ export const collideSlopeAABB = (slope: Slope, aabb: AABB): WithHit<CollisionRes
   const corner = pseudoAABB.size.mul(axis).mul(0.5)
   const clip = corner.add(offset).dot(axis.mul(Math.SQRT1_2))
   if (clip < 0) return { hit: false }
-  // if (aabbResult.clip < clip) return aabbResult
   return {
     hit: true,
     clip: clip,
