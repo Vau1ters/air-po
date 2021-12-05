@@ -36,7 +36,8 @@ export const walk = function*(entity: Entity): Behaviour<void> {
 
   while (true) {
     const action = decideAction()
-    const normal = player.ground.landing ? player.ground.normal : new Vec2(0, -1)
+    // const normal = player.ground.landing ? player.ground.normal : new Vec2(0, -1)
+    const normal = new Vec2(0, -1)
     if (action.walking) {
       const dir = ((): Vec2 => {
         switch (action.looking) {

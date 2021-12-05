@@ -123,11 +123,14 @@ export default class PhysicsSystem extends System {
     const rest = 1 + body1.restitution * body2.restitution
 
     // 離れようとしているときに押し出さないようにする
-    if (vDiff.dot(axis) >= 0) {
-      const dv = (vDiff.dot(axis) / sumMass) * rest
-      body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
-      body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
-    }
+    // if (vDiff.dot(axis) >= 0) {
+    //   const dv = (vDiff.dot(axis) / sumMass) * rest
+    //   body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
+    //   body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
+    // }
+    const dv = (vDiff.dot(axis) / sumMass) * rest
+    body1.velocity.assign(body1.velocity.add(axis.mul(-dv * body1.invMass)))
+    body2.velocity.assign(body2.velocity.add(axis.mul(+dv * body2.invMass)))
 
     // 押し出し
     position1.assign(position1.add(axis.mul((-clip * body1.invMass) / sumMass)))

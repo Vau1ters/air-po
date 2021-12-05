@@ -15,7 +15,12 @@ export const collideSegmentSlope = (
   const { hit } = collideSegmentAABB(segment, slope.createBound())
   if (!hit) return { hit: false }
 
-  const t = slope.center.sub(segment.start).dot(segment.end.sub(segment.start))
+  // s + t1 v = c + t2 t
+  // <s + t1 v, n> = <c, n>
+  // t1 = <c - s, n> / <v, n>
+  const n = slope.normal
+  const v = segment.end.sub(segment.start)
+  const t = slope.center.sub(segment.start).dot(n) / v.dot(n)
   if (0 <= t && t <= 1) {
     return {
       hit: true,
