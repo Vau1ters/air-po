@@ -1,0 +1,23 @@
+{
+  "draw": {
+    "name": "airNade"
+  },
+  "animationState": {},
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 16]
+      },
+      "category": "bullet",
+      "mask": ["terrain"]
+    }
+  ],
+  "rigidBody": {
+    "gravityScale": 1
+  },
+  "airHolder": {
+    "initialQuantity": 20,
+    "maxQuantity": 20
+  }
+}

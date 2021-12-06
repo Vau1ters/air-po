@@ -13,12 +13,12 @@ export class AirHolderComponent {
   public hitAirs: Array<Entity> = []
 
   public constructor(airSetting: AirHolderSetting) {
-    this.quantity = airSetting.initialQuantity
-    this.maxQuantity = airSetting.maxQuantity
-    this.consumeSpeed = airSetting.consumeSpeed
-    this.collectSpeed = airSetting.collectSpeed
+    this.quantity = airSetting.initialQuantity ?? 0
+    this.maxQuantity = airSetting.maxQuantity ?? 0
+    this.consumeSpeed = airSetting.consumeSpeed ?? 0
+    this.collectSpeed = airSetting.collectSpeed ?? 0
     this.emitSpeed = airSetting.emitSpeed ?? 0
-    this.shouldDamageInSuffocation = airSetting.shouldDamageInSuffocation
+    this.shouldDamageInSuffocation = airSetting.shouldDamageInSuffocation ?? false
     this.suffocationDamageCount = 0
     this.inAir = false
   }
