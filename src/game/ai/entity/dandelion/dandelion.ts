@@ -16,7 +16,7 @@ const ROOT_OFFSET_Y = 160
 const ROPE_POINT_NUM = 10
 const HEAD_OSCILLATION_TIME_SCALE = 0.03
 
-export const dandelionBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
+export const dandelionBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
   const headPosition = entity.getComponent('Position')
   const draw = entity.getComponent('Draw')
 

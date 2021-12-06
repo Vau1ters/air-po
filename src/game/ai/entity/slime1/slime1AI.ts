@@ -9,7 +9,7 @@ import { kill } from '../common/action/kill'
 import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
 
-const slime1Jump = function*(entity: Entity, direction: MoveDirection): Behaviour<void> {
+const slime1Jump = function* (entity: Entity, direction: MoveDirection): Behaviour<void> {
   entity.getComponent('Sound').addSound('slime4')
   yield* parallelAny([
     animate({ entity, state: 'Jumping' }),
@@ -18,7 +18,7 @@ const slime1Jump = function*(entity: Entity, direction: MoveDirection): Behaviou
   yield* animate({ entity, state: 'Landing' })
 }
 
-const slime1Move = function*(entity: Entity): Behaviour<void> {
+const slime1Move = function* (entity: Entity): Behaviour<void> {
   yield* animate({ entity, state: 'Idling', loopCount: Math.random() * 3 })
   while (true) {
     yield* animate({ entity, state: 'Idling', loopCount: 3 })
@@ -28,7 +28,7 @@ const slime1Move = function*(entity: Entity): Behaviour<void> {
   }
 }
 
-export const slime1AI = function*(entity: Entity, world: World): Behaviour<void> {
+export const slime1AI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), slime1Move(entity))
   yield* emitAir(entity)
   yield* animate({ entity, state: 'Dying' })

@@ -8,7 +8,7 @@ export type Easing = (
 ) => Behaviour<void>
 
 export const ease = (easingFunction: EasingFunction): Easing =>
-  function*(
+  function* (
     duration: number,
     callback: (value: number) => void,
     valueOption: { from: number; to: number } = { from: 0, to: 1 }

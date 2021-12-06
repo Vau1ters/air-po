@@ -28,7 +28,7 @@ type FreeAimState = {
 }
 type LaserSightState = LockingAimState | FreeAimState
 
-const updateInvisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
+const updateInvisibleSegment = function* (laser: Entity, world: World): Behaviour<void> {
   const [collider] = laser.getComponent('Collider').colliders
   while (true) {
     const player = getSingleton('Player', world)
@@ -81,7 +81,7 @@ const spawnLock = (target: Entity, world: World): Lock => {
   }
 }
 
-const getLaserSightStateGenerator = function*(
+const getLaserSightStateGenerator = function* (
   player: Entity,
   laser: Entity,
   world: World
@@ -103,7 +103,7 @@ const getLaserSightStateGenerator = function*(
     maximumDistance: 300,
   })
 
-  const freeAimGenerator = function*(state: FreeAimState): Behaviour<void> {
+  const freeAimGenerator = function* (state: FreeAimState): Behaviour<void> {
     while (true) {
       const { entity } = state.hitResult
       if (entity && shouldLockEntity(entity)) return
@@ -112,7 +112,7 @@ const getLaserSightStateGenerator = function*(
     }
   }
 
-  const lockingAimGenerator = function*(entity: Entity, state: LockingAimState): Behaviour<void> {
+  const lockingAimGenerator = function* (entity: Entity, state: LockingAimState): Behaviour<void> {
     while (true) {
       const [lockingCollider] = lockingRay.getComponent('Collider').colliders
       const lockingSegment = lockingCollider.geometry as Segment
@@ -136,7 +136,7 @@ const getLaserSightStateGenerator = function*(
       yield
     }
   }
-  const lockingAimWithEasingGenerator = function*(
+  const lockingAimWithEasingGenerator = function* (
     entity: Entity,
     state: LockingAimState
   ): Behaviour<void> {
@@ -209,7 +209,7 @@ const getLaserSightStateGenerator = function*(
   }
 }
 
-const updateVisibleSegment = function*(laser: Entity, world: World): Behaviour<void> {
+const updateVisibleSegment = function* (laser: Entity, world: World): Behaviour<void> {
   const [g] = laser.getComponent('Draw').children as [Graphics]
   const player = getSingleton('Player', world)
 
@@ -236,6 +236,6 @@ const updateVisibleSegment = function*(laser: Entity, world: World): Behaviour<v
   }
 }
 
-export const laserSightAI = function*(laser: Entity, world: World): Behaviour<void> {
+export const laserSightAI = function* (laser: Entity, world: World): Behaviour<void> {
   yield* parallelAll([updateInvisibleSegment(laser, world), updateVisibleSegment(laser, world)])
 }

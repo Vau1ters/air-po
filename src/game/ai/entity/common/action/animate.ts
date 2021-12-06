@@ -9,7 +9,7 @@ export type AnimationOption = {
   reverse?: boolean
 }
 
-export const animate = function*(option: AnimationOption): Behaviour<void> {
+export const animate = function* (option: AnimationOption): Behaviour<void> {
   const entity = option.entity
   const animationState = entity.getComponent('AnimationState')
   const loopCount = option.loopCount ?? 1

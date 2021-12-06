@@ -8,7 +8,7 @@ import { findCustomProperty } from './customProperty'
 export const createBackgroundLayerLoader = (
   tileSets: Array<TileSet>
 ): ((layer: ObjectLayer) => Generator<Entity>) => {
-  return function*(layer: ObjectLayer): Generator<Entity> {
+  return function* (layer: ObjectLayer): Generator<Entity> {
     const horizontalY = findCustomProperty(layer, 'float', 'horizontalY')
     assert(horizontalY !== undefined, 'y coordinate of background is not set')
 

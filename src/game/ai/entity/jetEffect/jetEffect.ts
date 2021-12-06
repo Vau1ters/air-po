@@ -2,7 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 
-export const JetEffectBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
+export const JetEffectBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
   let t = 0
   let v = 2
 

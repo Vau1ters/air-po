@@ -6,7 +6,7 @@ import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import { isAlive } from '../common/condition/isAlive'
 
-export const geyserAI = function*(geyser: Entity, world: World): Behaviour<void> {
+export const geyserAI = function* (geyser: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(geyser), animate({ entity: geyser, loopCount: Infinity }))
   yield* kill(geyser, world)
 }

@@ -2,7 +2,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { Ui } from '@game/entities/ui/loader/uiLoader'
 
-export const hudPlayerAirTankAI = function*(ui: Ui, player: Entity): Behaviour<void> {
+export const hudPlayerAirTankAI = function* (ui: Ui, player: Entity): Behaviour<void> {
   const airTankCount = player.getComponent('Player').getEquipmentCount('airTank')
 
   const background = ui.get('airTankBg')

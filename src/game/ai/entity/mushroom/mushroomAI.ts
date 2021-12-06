@@ -22,7 +22,7 @@ const emitSpore = (world: World, position: Vec2): void => {
   }
 }
 
-export const mushroomAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const mushroomAI = function* (entity: Entity, world: World): Behaviour<void> {
   const position = entity.getComponent('Position')
   const airHolder = entity.getComponent('AirHolder')
 
@@ -46,7 +46,7 @@ export const mushroomAI = function*(entity: Entity, world: World): Behaviour<voi
     yield* animate({ entity, state: 'Opening', waitFrames: 5 })
     yield* suspendable(
       () => airHolder.quantity > 0,
-      (function*(): Behaviour<void> {
+      (function* (): Behaviour<void> {
         while (true) {
           yield* wait.until(() => landed)
           landed = false

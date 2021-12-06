@@ -7,7 +7,7 @@ import { overlayFlow } from '../common/flow/overlayFlow'
 import { createShopUI } from './shopUI'
 import { ShopWorldFactory } from './shopWorldFactory'
 
-export const shopFlow = function*(gameWorld: World): Behaviour<void> {
+export const shopFlow = function* (gameWorld: World): Behaviour<void> {
   const player = getSingleton('Player', gameWorld)
   const world = new ShopWorldFactory().create()
 

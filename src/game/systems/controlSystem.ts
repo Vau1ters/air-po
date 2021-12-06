@@ -2,6 +2,7 @@ import { application } from '@core/application'
 import { System } from '@core/ecs/system'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
+import { KeyCode } from '@utils/key'
 
 export type KeyActionType =
   | 'MoveLeft'

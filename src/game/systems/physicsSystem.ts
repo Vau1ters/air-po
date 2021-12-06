@@ -91,9 +91,12 @@ export default class PhysicsSystem extends System {
 
     const vDiff = body1.velocity.sub(body2.velocity)
 
-    const collisionResult = collide(c1, c2, position1, position2) as WithHit<
-      SolvableCollisionResult
-    >
+    const collisionResult = collide(
+      c1,
+      c2,
+      position1,
+      position2
+    ) as WithHit<SolvableCollisionResult>
 
     // これまでのsolveですでに衝突が解消されている可能性がある
     if (!collisionResult.hit) {

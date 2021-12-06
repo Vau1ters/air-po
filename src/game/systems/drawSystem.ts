@@ -36,14 +36,8 @@ export default class DrawSystem extends System {
     this.drawFamily.entityAddedEvent.addObserver(entity => this.onContainerAdded(entity))
     this.drawFamily.entityRemovedEvent.addObserver(entity => this.onContainerRemoved(entity))
 
-    this.staticDrawFamily = new FamilyBuilder(world)
-      .include('Draw')
-      .include('Static')
-      .build()
-    this.dynamicDrawFamily = new FamilyBuilder(world)
-      .include('Draw')
-      .exclude('Static')
-      .build()
+    this.staticDrawFamily = new FamilyBuilder(world).include('Draw').include('Static').build()
+    this.dynamicDrawFamily = new FamilyBuilder(world).include('Draw').exclude('Static').build()
 
     this.dynamicBVH = new BVH()
     this.staticBVH = new BVH()

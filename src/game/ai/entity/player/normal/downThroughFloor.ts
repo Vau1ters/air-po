@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { KeyController } from '@game/systems/controlSystem'
 import { PLAYER_SETTING } from '../playerAI'
 
-export const downThroughFloor = function*(entity: Entity): Behaviour<void> {
+export const downThroughFloor = function* (entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
 
   while (true) {

@@ -5,7 +5,7 @@ import { World } from '@core/ecs/world'
 import { filters, Graphics } from 'pixi.js'
 import { fadeInOut } from '../animation/fadeInOut'
 
-export const overlayFlow = function*(
+export const overlayFlow = function* (
   world: World,
   config: { until: () => boolean }
 ): Behaviour<void> {
@@ -20,7 +20,7 @@ export const overlayFlow = function*(
   world.stage.filters = world.stage.filters ?? []
   world.stage.filters.push(frontAlphaFilter)
 
-  const wait = function*(): Behaviour<void> {
+  const wait = function* (): Behaviour<void> {
     while (!config.until()) yield
   }
 

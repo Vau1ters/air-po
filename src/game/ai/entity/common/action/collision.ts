@@ -1,7 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Collider, CollisionCallbackArgs } from '@game/components/colliderComponent'
 
-export const getCollisionResult = function*(
+export const getCollisionResult = function* (
   collider: Collider
 ): Behaviour<Array<CollisionCallbackArgs>> {
   const result: Array<CollisionCallbackArgs> = []

@@ -9,7 +9,7 @@ export const branch = (branches: {
   [key: string]: (controller: BranchController) => Behaviour<void>
 }): { start: (name: string) => Behaviour<void> } => {
   return {
-    start: function*(name: string): Behaviour<void> {
+    start: function* (name: string): Behaviour<void> {
       let state = name
       let done = false
       const controller = {

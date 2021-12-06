@@ -3,17 +3,17 @@ import { EventNotifier } from '@utils/eventNotifier'
 import { Behaviour } from './behaviour'
 
 export const wait = {
-  frame: function*(duration: number): Behaviour<void> {
+  frame: function* (duration: number): Behaviour<void> {
     for (let time = 0; time < duration; time++) {
       yield
     }
   },
-  until: function*(cond: () => boolean): Behaviour<void> {
+  until: function* (cond: () => boolean): Behaviour<void> {
     while (!cond()) {
       yield
     }
   },
-  notification: function*<T>(notifier: EventNotifier<T>): Behaviour<T> {
+  notification: function* <T>(notifier: EventNotifier<T>): Behaviour<T> {
     let result: T | undefined
     const callback = (value: T): void => {
       result = value

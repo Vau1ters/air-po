@@ -3,7 +3,7 @@ import { World } from './world'
 
 const dependenciesMap = new Map<string, Dependency>()
 export function dependsOn(dependency: Dependency) {
-  return function(target: System, _: string, __: PropertyDescriptor): void {
+  return function (target: System, _: string, __: PropertyDescriptor): void {
     dependenciesMap.set(target.constructor.name, dependency)
   }
 }

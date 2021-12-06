@@ -12,7 +12,7 @@ import { useWeapon } from '../common/useWeapon'
 import { switchWeapon } from '../common/switchWeapon'
 import { collectAir } from '../common/collectAir'
 
-export const fluffAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const fluffAI = function* (entity: Entity, world: World): Behaviour<void> {
   const player = entity.getComponent('Player')
   const playerBody = entity.getComponent('RigidBody')
   const playerPosition = entity.getComponent('Position')

@@ -4,7 +4,7 @@ import { World } from '@core/ecs/world'
 import { SpeechBalloonFactory } from '@game/entities/speechBalloonFactory'
 import { KeyController } from '@game/systems/controlSystem'
 
-export const talk = function*(entity: Entity, world: World): Behaviour<void> {
+export const talk = function* (entity: Entity, world: World): Behaviour<void> {
   const talk = (serif: string): void => {
     world.addEntity(new SpeechBalloonFactory(serif, entity, world).create())
   }

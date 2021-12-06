@@ -8,7 +8,7 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/geometry/AABB'
 import { getSingleton } from '@game/systems/singletonSystem'
 
-export const balloonVineBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
+export const balloonVineBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
   const draw = entity.getComponent('Draw')
   const pickup = entity.getComponent('PickupTarget')
@@ -19,9 +19,8 @@ export const balloonVineBehaviour = function*(entity: Entity, world: World): Beh
   rope.tint = 0x22ff22
   draw.addChild(rope)
 
-  const [gripCollider, _, __, rootCollider, wallDetectionCollider] = entity.getComponent(
-    'Collider'
-  ).colliders
+  const [gripCollider, _, __, rootCollider, wallDetectionCollider] =
+    entity.getComponent('Collider').colliders
   const gripAABB = gripCollider.geometry as AABB
   const rootAABB = rootCollider.geometry as AABB
   const wallDetectionAABB = wallDetectionCollider.geometry as AABB

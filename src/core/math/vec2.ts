@@ -1,3 +1,5 @@
+import { Point } from 'pixi.js'
+
 export class Vec2 {
   public constructor(public x = 0, public y = 0) {}
 
@@ -77,7 +79,7 @@ export class Vec2 {
     return this.div(this.length())
   }
 
-  public static fromPoint(p: PIXI.Point): Vec2 {
+  public static fromPoint(p: Point): Vec2 {
     return new Vec2(p.x, p.y)
   }
 

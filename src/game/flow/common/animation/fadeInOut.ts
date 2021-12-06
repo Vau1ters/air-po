@@ -1,11 +1,11 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { ease } from '@core/behaviour/easing/easing'
 import { Out, In } from '@core/behaviour/easing/functions'
-import { filters } from 'pixi.js'
+import { AlphaFilter } from '@pixi/filter-alpha'
 
-export const fadeInOut = function*(
+export const fadeInOut = function* (
   content: Behaviour<void>,
-  alphaFilter: filters.AlphaFilter
+  alphaFilter: AlphaFilter
 ): Behaviour<void> {
   yield* ease(Out.quad)(
     10,

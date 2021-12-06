@@ -18,7 +18,7 @@ export class DamageEffectSystem extends System {
   public update(): void {
     for (const entity of this.family.entityIterator) {
       const hp = entity.getComponent('Hp')
-      const [filter] = entity.getComponent('Draw').filters
+      const [filter] = entity.getComponent('Draw').filters || []
       if (hp.damageTime > 0) {
         filter.uniforms.damaging = true
         hp.damageTime--

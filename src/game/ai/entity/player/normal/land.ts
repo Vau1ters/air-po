@@ -14,7 +14,7 @@ const footCollisionCallback = (args: CollisionCallbackArgs): void => {
   player.landing = true
 }
 
-export const land = function*(entity: Entity): Behaviour<void> {
+export const land = function* (entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
 
   const footCollider = entity

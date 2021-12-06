@@ -16,7 +16,7 @@ import { GameWorldFactory } from './gameWorldFactory'
 import { shopFlow } from '../shop/shopFlow'
 import { loadStage, StageInfo } from '@game/stage/stageLoader'
 
-export const gameFlow = function*(stageInfo: StageInfo): Flow {
+export const gameFlow = function* (stageInfo: StageInfo): Flow {
   const gameWorldFactory = new GameWorldFactory()
   const world = gameWorldFactory.create()
   loadStage(world, stageInfo)
@@ -25,8 +25,8 @@ export const gameFlow = function*(stageInfo: StageInfo): Flow {
   const isGameOn = (): boolean => gameEvent.event === undefined
 
   yield* branch({
-    Game: function*(controller: BranchController) {
-      const transitState = function*(): Behaviour<void> {
+    Game: function* (controller: BranchController) {
+      const transitState = function* (): Behaviour<void> {
         while (true) {
           if (KeyController.isActionPressed('Pause')) {
             controller.transit('Pause')
@@ -40,28 +40,28 @@ export const gameFlow = function*(stageInfo: StageInfo): Flow {
           yield
         }
       }
-      const postEffect = function*(): Generator<void> {
+      const postEffect = function* (): Generator<void> {
         yield* FadeIn(world)
         yield* Text(world, 'そうなんちてん')
       }
       yield* suspendable(isGameOn, parallelAll([transitState(), postEffect(), world.execute()]))
       controller.finish()
     },
-    Pause: function*(controller: BranchController) {
+    Pause: function* (controller: BranchController) {
       while (true) {
         yield* pauseFlow()
         controller.transit('Game')
         yield
       }
     },
-    Inventory: function*(controller: BranchController) {
+    Inventory: function* (controller: BranchController) {
       while (true) {
         yield* inventoryFlow(world)
         controller.transit('Game')
         yield
       }
     },
-    Shop: function*(controller: BranchController) {
+    Shop: function* (controller: BranchController) {
       while (true) {
         yield* shopFlow(world)
         controller.transit('Game')

@@ -41,7 +41,7 @@ export const createObjectLayerLoader = (
     })
   }
   builders.sort((a, b) => b.firstgid - a.firstgid)
-  return function*(layer: ObjectLayer): Generator<Entity> {
+  return function* (layer: ObjectLayer): Generator<Entity> {
     for (const object of layer.objects) {
       const gid = object.gid
       assert(gid !== undefined, 'object.gid must not be undefined')

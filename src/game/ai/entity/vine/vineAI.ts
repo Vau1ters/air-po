@@ -49,7 +49,7 @@ const setup = (vine: Vine): void => {
   airSensor.center.assign(airSensor.center.add(dirVec.mul(-4)))
 }
 
-const waitForStatusChange = function*(vine: Vine): Behaviour<VineStatus> {
+const waitForStatusChange = function* (vine: Vine): Behaviour<VineStatus> {
   let foundWall = false
   const wallSensorCallback = (): void => {
     foundWall = true
@@ -86,7 +86,7 @@ const waitForStatusChange = function*(vine: Vine): Behaviour<VineStatus> {
   }
 }
 
-const extend = function*(vine: Vine): Behaviour<Entity> {
+const extend = function* (vine: Vine): Behaviour<Entity> {
   if (vine.stalks.length === 0) {
     yield* animate({
       entity: vine.vine,
@@ -142,7 +142,7 @@ const extend = function*(vine: Vine): Behaviour<Entity> {
   return stalk
 }
 
-const shrink = function*(vine: Vine): Behaviour<Entity> {
+const shrink = function* (vine: Vine): Behaviour<Entity> {
   const collider = vine.vine.getComponent('Collider')
   const shift = getVector(vine.dir).mul(-16)
 
@@ -176,7 +176,11 @@ const shrink = function*(vine: Vine): Behaviour<Entity> {
   return stalk
 }
 
-export const vineAI = function*(entity: Entity, world: World, dir: VineDirection): Behaviour<void> {
+export const vineAI = function* (
+  entity: Entity,
+  world: World,
+  dir: VineDirection
+): Behaviour<void> {
   const vine: Vine = { vine: entity, world, dir, stalks: [] }
   setup(vine)
   while (true) {

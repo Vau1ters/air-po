@@ -24,5 +24,5 @@ export const buildResourceURL = (): void => {
     buildComponent(),
   ]
 
-  cp.execSync(`./node_modules/.bin/eslint --fix ${outputFiles.join(' ')}`)
+  cp.execSync(`yarn eslint --fix ${outputFiles.join(' ')}`)
 }

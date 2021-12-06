@@ -21,13 +21,10 @@ const weaponSpriteName = (type: WeaponType): SpriteName => {
 const createMask = (ui: Entity): Graphics => {
   const { x: maskX, y: maskY } = ui.getComponent('Position')
   const { width: maskWidth, height: maskHeight } = ui.getComponent('Draw')
-  return new Graphics()
-    .beginFill(0xffffff)
-    .drawRect(maskX, maskY, maskWidth, maskHeight)
-    .endFill()
+  return new Graphics().beginFill(0xffffff).drawRect(maskX, maskY, maskWidth, maskHeight).endFill()
 }
 
-export const hudPlayerWeaponAI = function*(ui: Ui, player: Entity): Behaviour<void> {
+export const hudPlayerWeaponAI = function* (ui: Ui, player: Entity): Behaviour<void> {
   const playerComponent = player.getComponent('Player')
   const weaponUi = ui.get('weapon')
   const weaponDraw = weaponUi.getComponent('Draw')

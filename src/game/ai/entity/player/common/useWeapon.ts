@@ -4,7 +4,7 @@ import { World } from '@core/ecs/world'
 import { emitAir } from './emitAir'
 import { gunShoot } from './gunShoot'
 
-export const useWeapon = function*(entity: Entity, world: World): Behaviour<void> {
+export const useWeapon = function* (entity: Entity, world: World): Behaviour<void> {
   const player = entity.getComponent('Player')
   while (true) {
     switch (player.currentWeapon) {
