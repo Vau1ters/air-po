@@ -10,7 +10,7 @@ import { emitAir } from '../common/action/emitAir'
 import { hasAir } from '../common/condition/hasAir'
 import { balloonVineBehaviour } from './balloonVine'
 
-const changeState = function*(entity: Entity): Behaviour<void> {
+const changeState = function* (entity: Entity): Behaviour<void> {
   while (true) {
     if (hasAir(entity)()) {
       yield* animate({ entity, state: 'Alive' })
@@ -21,7 +21,7 @@ const changeState = function*(entity: Entity): Behaviour<void> {
   }
 }
 
-export const balloonVineAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const balloonVineAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(
     isAlive(entity),
     parallelAll([balloonVineBehaviour(entity, world), changeState(entity)])

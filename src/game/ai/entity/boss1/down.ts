@@ -7,7 +7,7 @@ import { shakeCameraAI } from '../camera/shakeCameraAI'
 import { spline } from './spline'
 import { StemShape, StemState, transiteShape } from './stem'
 
-export const down = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
+export const down = function* (state: StemState, boss: Entity, world: World): Behaviour<void> {
   const [camera] = new FamilyBuilder(world).include('Camera').build().entityArray
   const transiteStem = transiteShape(state.stem, 100)
   const transiteArmL = transiteShape(state.arms[0], 100)

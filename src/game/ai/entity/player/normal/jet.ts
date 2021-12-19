@@ -35,7 +35,7 @@ const jetCondition = (entity: Entity): boolean => {
   )
 }
 
-export const jet = function*(entity: Entity, world: World): Behaviour<void> {
+export const jet = function* (entity: Entity, world: World): Behaviour<void> {
   const body = entity.getComponent('RigidBody')
   const airHolder = entity.getComponent('AirHolder')
   const animState = entity.getComponent('AnimationState')

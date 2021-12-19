@@ -82,7 +82,7 @@ const s = (i: number): { stem: StemShape; arms: Array<StemShape> } => {
   }
 }
 
-export const shot = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
+export const shot = function* (state: StemState, boss: Entity, world: World): Behaviour<void> {
   const [player] = new FamilyBuilder(world).include('Player').build().entityArray
   const W = 40
   const transiteStem = transiteShape(state.stem, W)

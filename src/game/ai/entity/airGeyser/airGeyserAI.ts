@@ -6,7 +6,7 @@ import { AirFactory } from '@game/entities/airFactory'
 import { AirSystem } from '@game/systems/airSystem'
 import { animate } from '../common/action/animate'
 
-const manageAir = function*(
+const manageAir = function* (
   entity: Entity,
   world: World,
   options: {
@@ -35,7 +35,7 @@ const manageAir = function*(
   }
 }
 
-export const airGeyserAI = function*(
+export const airGeyserAI = function* (
   entity: Entity,
   world: World,
   options: {

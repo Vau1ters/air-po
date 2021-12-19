@@ -20,7 +20,7 @@ const decideAction = (): WalkAction => {
   return { walking: false }
 }
 
-export const walk = function*(entity: Entity): Behaviour<void> {
+export const walk = function* (entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
   const animState = entity.getComponent('AnimationState')
   const direction = entity.getComponent('HorizontalDirection')

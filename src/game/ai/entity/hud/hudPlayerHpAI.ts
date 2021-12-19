@@ -4,7 +4,7 @@ import { Entity } from '@core/ecs/entity'
 import { Ui } from '@game/entities/ui/loader/uiLoader'
 import { animate } from '../common/action/animate'
 
-export const hudPlayerHpAI = function*(ui: Ui, player: Entity): Behaviour<void> {
+export const hudPlayerHpAI = function* (ui: Ui, player: Entity): Behaviour<void> {
   const hpHearts = ui.get('hpHearts').getComponent('TileLayout')
   const hp = player.getComponent('Hp')
   const renderingState: {
@@ -13,12 +13,12 @@ export const hudPlayerHpAI = function*(ui: Ui, player: Entity): Behaviour<void> 
     hp: 0,
   }
 
-  const healingAnimation = function*(hpHeart: Entity, isLast: boolean): Behaviour<void> {
+  const healingAnimation = function* (hpHeart: Entity, isLast: boolean): Behaviour<void> {
     yield* animate({ entity: hpHeart, state: 'Healing' })
     if (isLast) yield* animate({ entity: hpHeart, state: 'Sweat' })
     yield* animate({ entity: hpHeart, state: 'Full' })
   }
-  const damagingAnimation = function*(hpHeart: Entity): Behaviour<void> {
+  const damagingAnimation = function* (hpHeart: Entity): Behaviour<void> {
     yield* animate({ entity: hpHeart, state: 'Damaging' })
     yield* animate({ entity: hpHeart, state: 'Empty' })
   }

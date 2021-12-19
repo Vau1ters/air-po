@@ -24,7 +24,7 @@ export type SegmentSearchResult = {
   entity?: Entity
 }
 
-export const searchBySegment = function*(
+export const searchBySegment = function* (
   option: SegmentSearchOption
 ): Behaviour<SegmentSearchResult> {
   const entity = new Entity()

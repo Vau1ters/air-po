@@ -13,7 +13,7 @@ import { spawnGeyser } from './spawnGeyser'
 import { stem, StemState } from './stem'
 import { animate } from '../common/action/animate'
 
-const boss1Move = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
+const boss1Move = function* (state: StemState, boss: Entity, world: World): Behaviour<void> {
   yield* sleep(boss, world)
 
   const geyserPos = boss.getComponent('Position').add(new Vec2(32, -14))
@@ -26,7 +26,7 @@ const boss1Move = function*(state: StemState, boss: Entity, world: World): Behav
   }
 }
 
-export const boss1AI = function*(boss: Entity, world: World): Behaviour<void> {
+export const boss1AI = function* (boss: Entity, world: World): Behaviour<void> {
   const state = {
     stem: (): Vec2 => new Vec2(),
     arms: [(): Vec2 => new Vec2(), (): Vec2 => new Vec2()],

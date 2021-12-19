@@ -20,14 +20,8 @@ export default class CollisionSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.staticFamily = new FamilyBuilder(world)
-      .include('Collider')
-      .include('Static')
-      .build()
-    this.dynamicFamily = new FamilyBuilder(world)
-      .include('Collider')
-      .exclude('Static')
-      .build()
+    this.staticFamily = new FamilyBuilder(world).include('Collider').include('Static').build()
+    this.dynamicFamily = new FamilyBuilder(world).include('Collider').exclude('Static').build()
   }
 
   public init(): void {
@@ -139,7 +133,7 @@ export default class CollisionSystem extends System {
 
   public get bvhs(): IterableIterator<BVH> {
     const { staticBVHs, dynamicBVHs } = this
-    return (function*(): Generator<BVH> {
+    return (function* (): Generator<BVH> {
       for (const [_, bvh] of staticBVHs) yield bvh
       for (const [_, bvh] of dynamicBVHs) yield bvh
     })()

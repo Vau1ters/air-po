@@ -11,7 +11,7 @@ const RESISTANCE = 0.01
 const OPEN_WAIT_FRAME = 5
 const ROTATE_WAIT_FRAME = 2
 
-export const dandelionFluffBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
+export const dandelionFluffBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world).getComponent('Player')
   const position = entity.getComponent('Position')
 
@@ -35,7 +35,7 @@ export const dandelionFluffBehaviour = function*(entity: Entity, world: World): 
   }
 }
 
-export const dandelionAnimation = function*(entity: Entity): Behaviour<void> {
+export const dandelionAnimation = function* (entity: Entity): Behaviour<void> {
   yield* animate({ entity, state: 'Open' })
   for (let i = OPEN_WAIT_FRAME; i >= ROTATE_WAIT_FRAME; i--) {
     yield* animate({ entity, state: 'Rotate', loopCount: OPEN_WAIT_FRAME - i + 1, waitFrames: i })

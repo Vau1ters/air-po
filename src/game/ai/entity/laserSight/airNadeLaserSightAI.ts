@@ -42,7 +42,7 @@ const calcVel = (mousePos: Vec2, playerPos: Vec2): Vec2 => {
   return new Vec2(vx, vy).normalize().mul(AIR_NADE_VELOCITY)
 }
 
-export const airNadeLaserSightAI = function*(laser: Entity, world: World): Behaviour<void> {
+export const airNadeLaserSightAI = function* (laser: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
   const camera = getSingleton('Camera', world)
   const [g] = laser.getComponent('Draw').children as [Graphics]

@@ -15,7 +15,7 @@ import { switchWeapon } from '../common/switchWeapon'
 import { useWeapon } from '../common/useWeapon'
 import { collectAir } from '../common/collectAir'
 
-export const normalAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const normalAI = function* (entity: Entity, world: World): Behaviour<void> {
   const playerBody = entity.getComponent('RigidBody')
   playerBody.gravityScale = 1 // to reset change of gravityScale by fluff
 

@@ -1,4 +1,4 @@
-type KeyCode =
+export type KeyCode =
   | 'A'
   | 'B'
   | 'C'

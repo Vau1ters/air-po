@@ -3,7 +3,7 @@ import { Behaviour } from '@core/behaviour/behaviour'
 
 const duration = 0.15
 
-export const invincibleTime = function*(entity: Entity): Behaviour<void> {
+export const invincibleTime = function* (entity: Entity): Behaviour<void> {
   while (true) {
     const invincible = entity.getComponent('Invincible')
     if (invincible.isInvincible()) {

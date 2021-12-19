@@ -9,7 +9,7 @@ export type MoveOption = {
   duration: number
 }
 
-export const move = function*(option: MoveOption): Behaviour<void> {
+export const move = function* (option: MoveOption): Behaviour<void> {
   const position = option.entity.getComponent('Position')
   const direction = option.entity.getComponent('HorizontalDirection')
   for (let time = 0; time < option.duration; time++) {

@@ -8,7 +8,7 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Graphics } from 'pixi.js'
 
-export const laserSightLockEffectAI = function*(
+export const laserSightLockEffectAI = function* (
   lock: Entity,
   target: Entity,
   isDespawning: () => boolean,

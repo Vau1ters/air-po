@@ -10,7 +10,7 @@ import { hudPlayerHpAI } from './hudPlayerHpAI'
 import { hudPlayerWeaponAI } from './hudPlayerWeaponAI'
 import { hudPlayerWeaponAnimationAI } from './hudPlayerWeaponAnimationAI'
 
-export const hudPlayerAI = function*(world: World): Behaviour<void> {
+export const hudPlayerAI = function* (world: World): Behaviour<void> {
   const ui = loadUi('hudPlayer', world)
   const player = getSingleton('Player', world)
   yield* parallelAll([

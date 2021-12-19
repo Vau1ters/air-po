@@ -6,7 +6,7 @@ import { play, SoundName } from '@core/sound/sound'
 import { SoundInstance } from '@core/sound/soundInstance'
 import { BgmComponent } from '@game/components/bgmComponent'
 
-const crossFade = function*(
+const crossFade = function* (
   prev: SoundInstance | undefined,
   nextName: SoundName | undefined
 ): Behaviour<SoundInstance | undefined> {
@@ -23,12 +23,12 @@ const crossFade = function*(
   return next
 }
 
-const waitRequest = function*(bgm: BgmComponent): Behaviour<SoundName | undefined> {
+const waitRequest = function* (bgm: BgmComponent): Behaviour<SoundName | undefined> {
   while (bgm.requestQueue.length === 0) yield
   return bgm.requestQueue.shift()
 }
 
-export const bgmAI = function*(entity: Entity): Behaviour<void> {
+export const bgmAI = function* (entity: Entity): Behaviour<void> {
   const bgm = entity.getComponent('Bgm')
 
   let inst = undefined

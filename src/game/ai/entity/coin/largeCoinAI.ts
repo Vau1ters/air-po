@@ -11,7 +11,7 @@ import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
 import { loadDrawComponent } from '@game/entities/loader/component/DrawComponentLoader'
 
-const waitPlayer = function*(entity: Entity): Behaviour<void> {
+const waitPlayer = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
   let shouldWait = true
   collider.callbacks.add((args: CollisionCallbackArgs) => {
@@ -22,7 +22,7 @@ const waitPlayer = function*(entity: Entity): Behaviour<void> {
   yield* suspendable(() => shouldWait, animate({ entity, state: 'Normal', loopCount: Infinity }))
 }
 
-const playGetAnimation = function*(entity: Entity): Behaviour<void> {
+const playGetAnimation = function* (entity: Entity): Behaviour<void> {
   const pos = entity.getComponent('Position')
 
   yield* ease(Out.quad)(
@@ -34,7 +34,7 @@ const playGetAnimation = function*(entity: Entity): Behaviour<void> {
   )
 }
 
-export const largeCoinAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const largeCoinAI = function* (entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
   const stagePoint = entity.getComponent('StagePoint')
   const isDummy = player

@@ -46,7 +46,7 @@ const StageType = t.type({
 
 export type StageSetting = t.TypeOf<typeof StageType>
 
-const loadStageImpl = function*(stageName: StageName, world: World): Generator<Entity> {
+const loadStageImpl = function* (stageName: StageName, world: World): Generator<Entity> {
   const stage = decodeJson<StageSetting>(stageList[stageName], StageType)
   const tileSize = new Vec2(stage.tilewidth, stage.tileheight)
   const loadTileLayer = createTileLayerLoader(stage.tilesets, tileSize)

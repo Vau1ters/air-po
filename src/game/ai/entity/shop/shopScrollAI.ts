@@ -11,7 +11,7 @@ import { itemURL } from '@game/item/itemURL'
 import { MouseController } from '@game/systems/controlSystem'
 import { BitmapText, Sprite, Texture } from 'pixi.js'
 
-const waitForMouseOver = function*(entity: Entity): Behaviour<void> {
+const waitForMouseOver = function* (entity: Entity): Behaviour<void> {
   let isMouseOver = false
   const [collider] = entity.getComponent('Collider').colliders
   collider.callbacks.add((args: CollisionCallbackArgs): void => {
@@ -59,7 +59,7 @@ const createItemFrames = (world: World): { items: Array<Ui>; maxWheel: number } 
   return { items: result, maxWheel }
 }
 
-export const shopScrollAI = function*(ui: Ui, world: World): Behaviour<void> {
+export const shopScrollAI = function* (ui: Ui, world: World): Behaviour<void> {
   const { items, maxWheel } = createItemFrames(world)
   const background = ui.get('background')
   const track = ui.get('scrollBarTrack')

@@ -17,7 +17,7 @@ import GravitySystem from '@game/systems/gravitySystem'
 
 type LocustAction = 'JumpLeft' | 'JumpRight' | 'ChasePlayer'
 
-const decideAction = function*(locust: Entity, player: Entity): Behaviour<LocustAction> {
+const decideAction = function* (locust: Entity, player: Entity): Behaviour<LocustAction> {
   const collider = locust.getComponent('Collider')
   const wallSensor = collider.getByTag('LocustWallSensor')
   const playerSensor = collider.getByTag('LocustPlayerSensor')
@@ -122,7 +122,7 @@ const calcJumpOption = (locust: Entity, player: Entity, action: LocustAction): J
   }
 }
 
-const locustJump = function*(locust: Entity, player: Entity): Behaviour<void> {
+const locustJump = function* (locust: Entity, player: Entity): Behaviour<void> {
   const sound = locust.getComponent('Sound')
   const action = yield* decideAction(locust, player)
   const option = calcJumpOption(locust, player, action)
@@ -131,7 +131,7 @@ const locustJump = function*(locust: Entity, player: Entity): Behaviour<void> {
   yield* jump(option)
 }
 
-const locustMove = function*(locust: Entity, player: Entity): Behaviour<void> {
+const locustMove = function* (locust: Entity, player: Entity): Behaviour<void> {
   yield* wait.frame(Math.random() * 60)
   while (true) {
     yield* wait.frame(60)
@@ -139,7 +139,7 @@ const locustMove = function*(locust: Entity, player: Entity): Behaviour<void> {
   }
 }
 
-export const locustAI = function*(locust: Entity, world: World): Behaviour<void> {
+export const locustAI = function* (locust: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
   yield* suspendable(isAlive(locust), locustMove(locust, player))
   yield* emitAir(locust)

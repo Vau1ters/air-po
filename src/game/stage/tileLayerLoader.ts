@@ -40,7 +40,7 @@ export const createTileLayerLoader = (
   }
   builders.sort((a, b) => b.firstgid - a.firstgid)
 
-  return function*(layer: TileLayer): Generator<Entity> {
+  return function* (layer: TileLayer): Generator<Entity> {
     for (let x = 0; x < layer.width; x++) {
       for (let y = 0; y < layer.height; y++) {
         if (x < 0) continue

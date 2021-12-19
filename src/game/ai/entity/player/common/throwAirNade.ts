@@ -10,7 +10,7 @@ const SETTING = {
   COOL_TIME: 20,
 }
 
-export const throwAirNade = function*(entity: Entity, world: World): Behaviour<void> {
+export const throwAirNade = function* (entity: Entity, world: World): Behaviour<void> {
   if (!MouseController.isMousePressed('Left')) {
     yield
     return

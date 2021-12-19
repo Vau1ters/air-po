@@ -4,7 +4,7 @@ import { PauseWorldFactory } from '@game/flow/pause/pauseWorldFactory'
 import { overlayFlow } from '../common/flow/overlayFlow'
 import { loadUi } from '@game/entities/ui/loader/uiLoader'
 
-export const pauseFlow = function*(): Behaviour<void> {
+export const pauseFlow = function* (): Behaviour<void> {
   let hasResumeButtonPressed = false
 
   const world = new PauseWorldFactory().create()

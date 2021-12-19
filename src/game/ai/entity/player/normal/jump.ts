@@ -7,7 +7,7 @@ import { LandingEffectFactory } from '@game/entities/effect/landingEffectFactory
 import { KeyController } from '@game/systems/controlSystem'
 import { PLAYER_SETTING } from '../playerAI'
 
-export const jump = function*(entity: Entity, world: World): Behaviour<void> {
+export const jump = function* (entity: Entity, world: World): Behaviour<void> {
   const player = entity.getComponent('Player')
   const animState = entity.getComponent('AnimationState')
 

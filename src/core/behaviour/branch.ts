@@ -26,7 +26,7 @@ export const branch = (branches: BranchBehaviours): BranchResult => {
       done = true
     },
   }
-  const start = function*(name: string): Behaviour<void> {
+  const start = function* (name: string): Behaviour<void> {
     state = name
     const behaviours: { [key: string]: Behaviour<void> } = {}
     for (const name of Object.keys(branches)) {
@@ -37,7 +37,7 @@ export const branch = (branches: BranchBehaviours): BranchResult => {
       yield
     }
   }
-  const by = function*(name: () => string): Behaviour<void> {
+  const by = function* (name: () => string): Behaviour<void> {
     const behaviours: { [key: string]: Behaviour<void> } = {}
     for (const name of Object.keys(branches)) {
       behaviours[name] = branches[name](controller)

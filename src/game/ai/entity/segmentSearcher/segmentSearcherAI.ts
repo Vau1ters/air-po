@@ -10,7 +10,7 @@ export type SegmentHitResult = {
   entity?: Entity
 }
 
-export const segmentSearchGenerator = function*(
+export const segmentSearchGenerator = function* (
   segmentEntity: Entity,
   options?: {
     ignoreEntity?: Entity

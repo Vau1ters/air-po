@@ -26,7 +26,7 @@ const createNextFlow = (): Flow => {
   }
 }
 
-export const titleFlow = function*(): Flow {
+export const titleFlow = function* (): Flow {
   const world = new TitleWorldFactory().create()
 
   const titleImage = new Sprite(getTexture('title'))
@@ -37,7 +37,7 @@ export const titleFlow = function*(): Flow {
   loadStage(world, { playerData, bgm, spawnPoint: { stageName: 'root', pointID: 0 } })
 
   yield* parallelAny([
-    (function*(): Generator<void> {
+    (function* (): Generator<void> {
       while (!MouseController.isMousePressed('Left')) yield
       Sound.play('start')
       yield* LogoBlinking(titleImage)

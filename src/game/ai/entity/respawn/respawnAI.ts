@@ -5,7 +5,7 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { loadData, StoryStatus, saveData } from '@game/playdata/playdata'
 import { animate } from '../common/action/animate'
 
-export const respawnAI = function*(entity: Entity): Behaviour<void> {
+export const respawnAI = function* (entity: Entity): Behaviour<void> {
   let activated = false
   const [collider] = entity.getComponent('Collider').colliders
   collider.callbacks.add((args: CollisionCallbackArgs): void => {

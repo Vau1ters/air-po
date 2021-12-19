@@ -15,7 +15,7 @@ const ROOT_OFFSET_Y = 160
 const ROPE_POINT_NUM = 10
 const HEAD_OSCILLATION_TIME_SCALE = 0.03
 
-const head = function*(head: Entity): Behaviour<void> {
+const head = function* (head: Entity): Behaviour<void> {
   const headPosition = head.getComponent('Position')
   const headOrigin = headPosition.copy()
   let s = 0
@@ -27,7 +27,7 @@ const head = function*(head: Entity): Behaviour<void> {
   }
 }
 
-const rope = function*(head: Entity, world: World): Behaviour<void> {
+const rope = function* (head: Entity, world: World): Behaviour<void> {
   const headPosition = head.getComponent('Position')
 
   const closestHit = yield* searchBySegment({
@@ -60,7 +60,7 @@ const rope = function*(head: Entity, world: World): Behaviour<void> {
   }
 }
 
-const emitFluff = function*(head: Entity, world: World): Behaviour<void> {
+const emitFluff = function* (head: Entity, world: World): Behaviour<void> {
   const airHolder = head.getComponent('AirHolder')
   const factory = new DandelionFluffFactory(world, head)
 
@@ -74,7 +74,7 @@ const emitFluff = function*(head: Entity, world: World): Behaviour<void> {
   }
 }
 
-export const dandelionBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
+export const dandelionBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
   const headPosition = entity.getComponent('Position')
 
   headPosition.y += HEAD_OFFSET_Y

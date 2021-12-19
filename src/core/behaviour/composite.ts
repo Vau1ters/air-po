@@ -1,7 +1,7 @@
 import { assert } from '@utils/assertion'
 import { Behaviour } from './behaviour'
 
-export const parallelAll = function*<T>(behaviourList: Array<Behaviour<T>>): Behaviour<Array<T>> {
+export const parallelAll = function* <T>(behaviourList: Array<Behaviour<T>>): Behaviour<Array<T>> {
   while (true) {
     const results = behaviourList.map(behaviour => behaviour.next())
     const hasAllDone = results.every(result => result.done === true)
@@ -14,7 +14,7 @@ export const parallelAll = function*<T>(behaviourList: Array<Behaviour<T>>): Beh
   }
 }
 
-export const parallelAny = function*<T>(
+export const parallelAny = function* <T>(
   behaviourList: Array<Behaviour<T>>
 ): Behaviour<Array<T | undefined>> {
   while (true) {
@@ -26,7 +26,7 @@ export const parallelAny = function*<T>(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const chain = function*(behaviourList: Array<Behaviour<any>>): Behaviour<void> {
+export const chain = function* (behaviourList: Array<Behaviour<any>>): Behaviour<void> {
   for (const behaviour of behaviourList) {
     yield* behaviour
   }

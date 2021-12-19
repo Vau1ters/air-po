@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Ui } from '@game/entities/ui/loader/uiLoader'
 import { animate } from '../common/action/animate'
 
-export const hudPlayerWeaponAnimationAI = function*(ui: Ui, player: Entity): Behaviour<void> {
+export const hudPlayerWeaponAnimationAI = function* (ui: Ui, player: Entity): Behaviour<void> {
   const background = ui.get('weaponBackground')
   const transitTable: { [keys: string]: [string, string] } = {
     Default: ['SendStart1', 'Default'],

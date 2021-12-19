@@ -4,7 +4,7 @@ import { KeyController } from '@game/systems/controlSystem'
 import { assert } from '@utils/assertion'
 import { PLAYER_SETTING } from '../playerAI'
 
-export const move = function*(entity: Entity): Behaviour<void> {
+export const move = function* (entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
   const playerPosition = entity.getComponent('Position')
   const fluff = player.possessingEntity

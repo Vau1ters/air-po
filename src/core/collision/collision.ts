@@ -22,7 +22,7 @@ export type CollisionResult =
 
 export const flipResult = <R>(result: R): R => {
   if ('axis' in result) {
-    const axis = ((result as unknown) as { axis?: Vec2 })['axis'] as Vec2
+    const axis = (result as unknown as { axis?: Vec2 })['axis'] as Vec2
     return {
       ...result,
       axis: axis.mul(-1),

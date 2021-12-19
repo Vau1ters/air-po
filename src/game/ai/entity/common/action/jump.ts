@@ -13,7 +13,7 @@ export type JumpOption = {
   footTag: string
 }
 
-export const jump = function*(option: JumpOption): Behaviour<void> {
+export const jump = function* (option: JumpOption): Behaviour<void> {
   const rigidBody = option.entity.getComponent('RigidBody')
   const direction = option.entity.getComponent('HorizontalDirection')
   const collider = option.entity.getComponent('Collider')

@@ -9,7 +9,7 @@ import { kill } from '../common/action/kill'
 export const AIR_NADE_VELOCITY = 220
 export const AIR_NADE_LIFE = 60
 
-const waitForCollision = function*(entity: Entity): Behaviour<void> {
+const waitForCollision = function* (entity: Entity): Behaviour<void> {
   const collider = entity.getComponent('Collider').getByCategory('bullet')
   assert(collider !== undefined, 'collider not found')
 
@@ -21,7 +21,7 @@ const waitForCollision = function*(entity: Entity): Behaviour<void> {
   }
 }
 
-export const airNadeAI = function*(
+export const airNadeAI = function* (
   entity: Entity,
   playerEntity: Entity,
   world: World
