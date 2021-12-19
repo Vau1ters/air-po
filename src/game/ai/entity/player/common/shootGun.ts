@@ -12,7 +12,7 @@ const SETTING = {
 const bulletFactory = new BulletFactory()
 bulletFactory.offset.y = 1
 
-export const gunShoot = function*(entity: Entity, world: World): Behaviour<void> {
+export const shootGun = function*(entity: Entity, world: World): Behaviour<void> {
   if (!MouseController.isMousePressed('Left')) {
     yield
     return

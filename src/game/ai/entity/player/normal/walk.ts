@@ -38,18 +38,11 @@ export const walk = function*(entity: Entity): Behaviour<void> {
     const action = decideAction()
     const normal = new Vec2(0, -1)
     if (action.walking) {
-      const dir = ((): Vec2 => {
-        switch (action.looking) {
-          case 'Left':
-            return new Vec2(+normal.y, -normal.x)
-          case 'Right':
-            return new Vec2(-normal.y, +normal.x)
-        }
-      })()
+      direction.looking = action.looking
+      const dir = new Vec2(-normal.y, +normal.x).mul(direction.sign)
       const vel = body.velocity.dot(dir)
       const dif = Math.min(PLAYER_SETTING.normal.walk.power, PLAYER_SETTING.normal.walk.speed - vel)
       body.velocity = body.velocity.add(dir.mul(dif))
-      direction.looking = action.looking
       if (player.landing) {
         soundFoot()
         animState.state = 'Walking'

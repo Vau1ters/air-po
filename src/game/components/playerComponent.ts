@@ -8,7 +8,8 @@ import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
 import { assert } from '@utils/assertion'
 import { EventNotifier } from '@utils/eventNotifier'
 
-export type WeaponType = 'Gun' | 'Emitter'
+const WeaponTypes = ['Gun', 'AirNade'] as const
+export type WeaponType = typeof WeaponTypes[number]
 
 export class PlayerComponent {
   public landing = false
@@ -78,21 +79,14 @@ export class PlayerComponent {
   }
 
   private indexToWeapon(index: number): WeaponType {
-    switch (index) {
-      case 0:
-        return 'Gun'
-      case 1:
-        return 'Emitter'
-    }
-    assert(false, `invalid index ${index}`)
+    const type = WeaponTypes[index]
+    assert(type !== undefined, `invalid index ${index}`)
+    return type
   }
 
   private weaponToIndex(type: WeaponType): number {
-    switch (type) {
-      case 'Gun':
-        return 0
-      case 'Emitter':
-        return 1
-    }
+    const index = WeaponTypes.indexOf(type)
+    assert(index !== -1, `invalid type ${type}`)
+    return index
   }
 }
