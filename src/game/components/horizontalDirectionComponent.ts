@@ -27,6 +27,15 @@ export class HorizontalDirectionComponent {
     return this._looking
   }
 
+  get sign(): number {
+    switch (this.looking) {
+      case 'Left':
+        return -1
+      case 'Right':
+        return +1
+    }
+  }
+
   public readonly changeDirection = new EventNotifier<HorizontalDirection>()
 }
 

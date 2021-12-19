@@ -23,16 +23,7 @@ export const jump = function* (option: JumpOption): Behaviour<void> {
 
   direction.looking = option.direction
 
-  const accel = new Vec2()
-  switch (option.direction) {
-    case 'Left':
-      accel.x = -option.forwardSpeed
-      break
-    case 'Right':
-      accel.x = option.forwardSpeed
-      break
-  }
-  accel.y = -option.upSpeed
+  const accel = new Vec2(option.forwardSpeed * direction.sign, -option.upSpeed)
   rigidBody.velocity.assign(rigidBody.velocity.add(accel))
 
   let isGround = false

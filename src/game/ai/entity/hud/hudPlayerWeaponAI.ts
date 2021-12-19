@@ -13,8 +13,8 @@ const weaponSpriteName = (type: WeaponType): SpriteName => {
   switch (type) {
     case 'Gun':
       return 'uiWeaponGun'
-    case 'Emitter':
-      return 'uiWeaponEmitter'
+    case 'AirNade':
+      return 'uiWeaponAirNade'
   }
 }
 

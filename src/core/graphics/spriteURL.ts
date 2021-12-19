@@ -4,6 +4,7 @@
 
 import airGeyser from '@res/sprite/airGeyser.json'
 import airHealItem from '@res/sprite/airHealItem.json'
+import airNade from '@res/sprite/airNade.json'
 import background1 from '@res/sprite/background1.json'
 import background2 from '@res/sprite/background2.json'
 import ballBullet from '@res/sprite/ballBullet.json'
@@ -52,8 +53,8 @@ import uiAirTankBg from '@res/sprite/uiAirtankBg.json'
 import uiAirTankBody from '@res/sprite/uiAirtankBody.json'
 import uiAirTankTail from '@res/sprite/uiAirtankTail.json'
 import uiHpHeart from '@res/sprite/uiHpHeart.json'
+import uiWeaponAirNade from '@res/sprite/uiWeaponAirNade.json'
 import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
-import uiWeaponEmitter from '@res/sprite/uiWeaponEmitter.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
 import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
@@ -61,6 +62,7 @@ import wall from '@res/sprite/wall.json'
 export const spriteURL = {
   airGeyser,
   airHealItem,
+  airNade,
   background1,
   background2,
   ballBullet,
@@ -109,8 +111,8 @@ export const spriteURL = {
   uiAirTankBody,
   uiAirTankTail,
   uiHpHeart,
+  uiWeaponAirNade,
   uiWeaponBackground,
-  uiWeaponEmitter,
   uiWeaponGun,
   vine,
   wall,
