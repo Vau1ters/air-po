@@ -1,7 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { shotGun } from './shotGun'
+import { shootGun } from './shootGun'
 import { throwAirNade } from './throwAirNade'
 
 export const useWeapon = function*(entity: Entity, world: World): Behaviour<void> {
@@ -9,7 +9,7 @@ export const useWeapon = function*(entity: Entity, world: World): Behaviour<void
   while (true) {
     switch (player.currentWeapon) {
       case 'Gun':
-        yield* shotGun(entity, world)
+        yield* shootGun(entity, world)
         break
       case 'AirNade':
         yield* throwAirNade(entity, world)
