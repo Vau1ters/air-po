@@ -58,6 +58,7 @@ import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
 import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
+import wood from '@res/sprite/wood.json'
 
 export const spriteURL = {
   airGeyser,
@@ -116,4 +117,5 @@ export const spriteURL = {
   uiWeaponGun,
   vine,
   wall,
+  wood,
 }

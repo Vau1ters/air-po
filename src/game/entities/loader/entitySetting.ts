@@ -54,6 +54,7 @@ import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
 import wall from '@res/entity/wall.json'
+import wood from '@res/entity/wood.json'
 
 export const entitySetting = {
   air,
@@ -108,4 +109,5 @@ export const entitySetting = {
   vine,
   vineStalk,
   wall,
+  wood,
 }

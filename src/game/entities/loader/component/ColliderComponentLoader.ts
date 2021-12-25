@@ -16,12 +16,18 @@ const AABBSettingType = t.type({
   maxClipToTolerance: t.union([t.array(t.number), t.undefined]),
 })
 
+const SlopeSettingType = t.type({
+  type: t.literal('Slope'),
+  size: t.union([t.array(t.number), t.undefined]),
+  normal: t.array(t.number),
+})
+
 const SegmentSettingType = t.type({
   type: t.literal('Segment'),
 })
 
-const GeometrySettingType = t.union([AABBSettingType, SegmentSettingType])
-type GeometrySetting = t.TypeOf<typeof GeometrySettingType>
+const GeometrySettingType = t.union([AABBSettingType, SlopeSettingType, SegmentSettingType])
+export type GeometrySetting = t.TypeOf<typeof GeometrySettingType>
 
 const CategoryType = t.keyof(CategoryDef)
 
@@ -30,6 +36,7 @@ const ColliderSettingType = t.type({
   category: CategoryType,
   mask: t.union([t.array(CategoryType), t.undefined]),
   tag: t.union([t.array(t.string), t.undefined]),
+  solveDir: t.union([t.array(t.array(t.number)), t.undefined]),
 })
 type ColliderSetting = t.TypeOf<typeof ColliderSettingType>
 
@@ -47,6 +54,12 @@ const createGeometryBuildOption = (setting: GeometrySetting): GeometryBuildOptio
           ? new Vec2(...setting.maxClipToTolerance)
           : undefined,
       }
+    case 'Slope':
+      return {
+        type: 'Slope',
+        size: setting.size ? new Vec2(...setting.size) : undefined,
+        normal: setting.normal ? new Vec2(...setting.normal) : undefined,
+      }
     case 'Segment':
       return {
         type: 'Segment',
@@ -60,6 +73,7 @@ const createColliderBuildOption = (setting: ColliderSetting): ColliderBuildOptio
     category: setting.category,
     mask: setting.mask ? new CategorySet(...setting.mask) : undefined,
     tag: setting.tag,
+    solveDir: setting.solveDir?.map(d => new Vec2(...d)),
   }
 }
 

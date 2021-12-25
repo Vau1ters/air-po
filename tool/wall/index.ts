@@ -62,7 +62,7 @@ export class WallLoader {
     if (x >= this.layer.width) return false
     if (y >= this.layer.height) return false
     const gid = this.layer.data[x + y * this.layer.width]
-    return this.gidBegin <= gid && gid < this.gidEnd
+    return gid > 0
   }
 
   private randomChoice(candidates: number[]): number {

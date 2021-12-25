@@ -22,12 +22,11 @@ export class Slope implements GeometryForCollision {
   }
 
   draw(g: Graphics): void {
-    const corner: [number, number] = [Math.sign(-this.normal.x), Math.sign(-this.normal.y)]
-    g.beginFill()
-    g.moveTo(...corner)
-    g.lineTo(-corner[1], +corner[0])
-    g.lineTo(+corner[1], -corner[0])
-    g.endFill()
+    const corner = this.normal.mul(this.size).mul(-0.5)
+    g.moveTo(this.center.x + corner.x, this.center.y + corner.y)
+    g.lineTo(this.center.x - corner.y, this.center.y + corner.x)
+    g.lineTo(this.center.x + corner.y, this.center.y - corner.x)
+    g.lineTo(this.center.x + corner.x, this.center.y + corner.y)
   }
 
   solvable(): boolean {

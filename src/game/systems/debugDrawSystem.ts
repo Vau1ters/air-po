@@ -65,7 +65,7 @@ export default class DebugDrawSystem extends System {
         for (const c of collider.colliders) {
           const g = c.bound.applyPosition(position)
           if (cameraArea.overlap(g)) {
-            g.draw(this.graphics)
+            c.geometry.applyPosition(position).draw(this.graphics)
           }
         }
       }

@@ -1,0 +1,11 @@
+[
+    {
+        "index": 0,
+        "collider": {
+            "geometry": {
+                "type": "AABB",
+                "size": [8, 8]
+            }
+        }
+    }
+]

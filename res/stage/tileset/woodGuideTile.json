@@ -1,0 +1,14 @@
+{ "columns":25,
+ "image":"..\/..\/image\/woodGuideTile.png",
+ "imageheight":40,
+ "imagewidth":200,
+ "margin":0,
+ "name":"wood",
+ "spacing":0,
+ "tilecount":125,
+ "tiledversion":"1.7.2",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.6"
+}
