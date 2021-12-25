@@ -2,13 +2,42 @@ import { getImageData, Pixel } from '../util/image'
 import { assert } from '../../src/core/utils/assertion'
 import { loadImage } from 'node-canvas'
 import fs from 'fs'
+import { TileCollider, TileColliderGeometry } from '../../src/game/entities/tileEntityFactory'
 
 // prettier-ignore
 const aabbShape = [
-  0xff, 0xff, 0xff, 0xff,
-  0xff, 0xff, 0xff, 0xff,
-  0xff, 0xff, 0xff, 0xff,
-  0xff, 0xff, 0xff, 0xff,
+  0x00, 0x00, 0x00, 0x00,
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0x00, 0x00, 0x00,
+]
+// prettier-ignore
+const leftShape = [
+  0x00, 0x00, 0x00, 0x00,
+  0xff, 0xff, 0xff, 0x00,
+  0xff, 0xff, 0xff, 0x00,
+  0x00, 0x00, 0x00, 0x00,
+]
+// prettier-ignore
+const rightShape = [
+  0x00, 0x00, 0x00, 0x00,
+  0x00, 0xff, 0xff, 0xff,
+  0x00, 0xff, 0xff, 0xff,
+  0x00, 0x00, 0x00, 0x00,
+]
+// prettier-ignore
+const upShape = [
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0x00, 0x00, 0x00,
+]
+// prettier-ignore
+const downShape = [
+  0x00, 0x00, 0x00, 0x00,
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0xff, 0xff, 0x00,
+  0x00, 0xff, 0xff, 0x00,
 ]
 // prettier-ignore
 const leftUpSlope = [
@@ -39,20 +68,6 @@ const rightDownSlope = [
   0xff, 0x00, 0x00, 0x00,
 ]
 
-type Geometry =
-  | { type: 'AABB'; size: [number, number]; solveDir: Array<[number, number]> }
-  | {
-      type: 'Slope'
-      size: [number, number]
-      normal: [number, number]
-      solveDir: Array<[number, number]>
-    }
-
-type TileCollider = {
-  index: number
-  geometry?: Geometry
-}
-
 const extractColliders = (image: ImageData): Array<TileCollider> => {
   assert(image.width % 8 === 0, '')
   assert(image.height % 8 === 0, '')
@@ -81,18 +96,21 @@ const extractColliders = (image: ImageData): Array<TileCollider> => {
         leftDownSlope,
         rightDownSlope,
       }).find(([_, s]) => matchShape(shape, s))
-      const geometry = ((): Geometry | undefined => {
+      const geometry = ((): TileColliderGeometry | undefined => {
         if (!foundShape) return undefined
         switch (foundShape[0]) {
-          case 'aabbShape':
+          case 'aabbShape': {
+            const solveDir = new Array<[number, number]>()
+            if (matchShape(shape, leftShape)) solveDir.push([-1, 0])
+            if (matchShape(shape, rightShape)) solveDir.push([+1, 0])
+            if (matchShape(shape, upShape)) solveDir.push([0, -1])
+            if (matchShape(shape, downShape)) solveDir.push([0, +1])
             return {
               type: 'AABB',
               size: [8, 8],
-              solveDir: [
-                [0, +1],
-                [0, -1],
-              ],
-            } // for smooth walk
+              solveDir,
+            }
+          }
           case 'leftUpSlope':
             return { type: 'Slope', size: [8, 8], normal: [-1, -1], solveDir: [[0, -1]] }
           case 'rightUpSlope':
@@ -113,12 +131,20 @@ const extractColliders = (image: ImageData): Array<TileCollider> => {
   return result
 }
 
-export const buildColliders = async (): Promise<void> => {
-  const image = await loadImage(__dirname + '/../../res/image/woodGuideTile.png')
+const buildCollider = async (inputPath: string, outputPath: string): Promise<void> => {
+  const image = await loadImage(inputPath)
   const buffer = getImageData(image)
   const collider = extractColliders(buffer)
-  fs.writeFileSync(
-    __dirname + '/../../res/collider/wood.json',
-    JSON.stringify(collider, null, '  ')
+  fs.writeFileSync(outputPath, JSON.stringify(collider, null, '  '))
+}
+
+export const buildColliders = async (): Promise<void> => {
+  await buildCollider(
+    __dirname + '/../../res/image/woodGuideTile.png',
+    __dirname + '/../../res/collider/wood.json'
+  )
+  await buildCollider(
+    __dirname + '/../../res/image/wallGuide.png',
+    __dirname + '/../../res/collider/wall.json'
   )
 }
