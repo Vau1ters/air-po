@@ -1,8 +1,11 @@
 import { Entity } from '@core/ecs/entity'
+import { getSpriteBuffer, SpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { ColliderComponent } from '@game/components/colliderComponent'
+import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { assert } from '@utils/assertion'
+import { Sprite } from 'pixi.js'
 import { EntityFactory } from './entityFactory'
 import { loadColliderComponent } from './loader/component/ColliderComponentLoader'
 import { EntityName, loadEntity } from './loader/EntityLoader'
@@ -19,6 +22,11 @@ export type TileColliderGeometry =
 export type TileCollider = {
   index: number
   geometry?: TileColliderGeometry
+}
+
+export type TileMapping = {
+  src: number
+  dst: number
 }
 
 export class TileEntityFactory extends EntityFactory {
@@ -80,5 +88,34 @@ export class TileEntityFactory extends EntityFactory {
       }
     }
     return undefined
+  }
+
+  protected createDrawComponent(
+    entity: Entity,
+    spriteName: SpriteName,
+    tileMappings?: Array<TileMapping>
+  ): DrawComponent {
+    const sprite = new Sprite(
+      getSpriteBuffer(spriteName).definitions['Default'].textures[
+        this.mapIndex(this.frame, tileMappings)
+      ]
+    )
+    sprite.anchor.set(0.5)
+
+    return new DrawComponent({
+      entity,
+      child: {
+        sprite,
+      },
+    })
+  }
+
+  private mapIndex(index: number, tileMappings?: Array<TileMapping>): number {
+    if (tileMappings) {
+      const mapping = tileMappings.find(m => m.src === index)
+      assert(mapping !== undefined, `tile mapping for src = ${index} is not found`)
+      return mapping.dst
+    }
+    return index
   }
 }

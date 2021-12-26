@@ -2,6 +2,8 @@ import { Canvas, Image, loadImage } from 'node-canvas'
 import { assert } from '../../src/core/utils/assertion'
 import { Bound } from '../util/bound'
 import { getImageData, Pixel, outputCanvas } from '../util/image'
+import { TileMapping } from '../../src/game/entities/tileEntityFactory'
+import fs from 'fs'
 
 type FindCornerResult = {
   leftTop: Array<Pixel>
@@ -117,6 +119,25 @@ const packImage = (image: Image, boundMap: Array<[Bound, Bound]>): Canvas => {
   return canvas
 }
 
+const toMappingObject = (boundMap: Array<[Bound, Bound]>): Array<TileMapping> => {
+  const srcWidth =
+    boundMap.map(([src, _]) => src.x + src.width).reduce((a, b) => (a > b ? a : b)) / 8
+  const dstWidth =
+    boundMap.map(([_, dst]) => dst.x + dst.width).reduce((a, b) => (a > b ? a : b)) / 8
+  const result = new Array<TileMapping>()
+  for (const [src, dst] of boundMap) {
+    for (let y = 0; y < dst.height / 8; y++) {
+      for (let x = 0; x < dst.width / 8; x++) {
+        result.push({
+          src: (src.y / 8 + y) * srcWidth + (src.x / 8 + x),
+          dst: (dst.y / 8 + y) * dstWidth + (dst.x / 8 + x),
+        })
+      }
+    }
+  }
+  return result
+}
+
 export const packWoodImage = async (): Promise<void> => {
   const originalImage = await loadImage(__dirname + '/../../res/image/wood.png')
   const guideImage = await loadImage(__dirname + '/../../res/image/woodGuide.png')
@@ -125,11 +146,11 @@ export const packWoodImage = async (): Promise<void> => {
   const bounds = findBounds(corners)
   const boundMap = calcBoundMap(bounds)
   await outputCanvas(
-    __dirname + '/../../res/image/woodGuideTile.png',
-    packImage(guideImage, boundMap)
-  )
-  await outputCanvas(
     __dirname + '/../../res/image/woodTile.png',
     packImage(originalImage, boundMap)
+  )
+  fs.writeFileSync(
+    __dirname + '/../../res/tileMapping/wood.json',
+    JSON.stringify(toMappingObject(boundMap), null, '  ')
   )
 }
