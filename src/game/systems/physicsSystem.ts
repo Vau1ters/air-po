@@ -110,7 +110,7 @@ export default class PhysicsSystem extends System {
     if (solveDirs.length > 0) {
       const newAxis = solveDirs.reduce((a, b) => (axis.dot(a) > axis.dot(b) ? a : b))
       // 指定された解決方向に解決できそうにない場合は何もしない
-      if (axis.dot(newAxis) < 0) return
+      if (axis.dot(newAxis) <= 0) return
       axis = newAxis
       clip /= newAxis.dot(axis.normalize())
     }
