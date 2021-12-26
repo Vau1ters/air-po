@@ -107,7 +107,7 @@ export default class PhysicsSystem extends System {
 
     const solveDirs = c1.option.solveDir.concat(c2.option.solveDir.map(d => d.mul(-1)))
 
-    if (axis.x !== 0 && axis.y !== 0 && solveDirs.length > 0) {
+    if (solveDirs.length > 0) {
       const newAxis = solveDirs.reduce((a, b) => (axis.dot(a) > axis.dot(b) ? a : b))
       // 指定された解決方向に解決できそうにない場合は何もしない
       if (axis.dot(newAxis) < 0) return
