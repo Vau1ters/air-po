@@ -138,19 +138,19 @@ const toMappingObject = (boundMap: Array<[Bound, Bound]>): Array<TileMapping> =>
   return result
 }
 
-export const packWoodImage = async (): Promise<void> => {
-  const originalImage = await loadImage(__dirname + '/../../res/image/wood.png')
-  const guideImage = await loadImage(__dirname + '/../../res/image/woodGuide.png')
+export const packTreeImage = async (): Promise<void> => {
+  const originalImage = await loadImage(__dirname + '/../../res/image/tree.png')
+  const guideImage = await loadImage(__dirname + '/../../res/image/treeGuide.png')
   const buffer = getImageData(guideImage)
   const corners = findCorners(buffer)
   const bounds = findBounds(corners)
   const boundMap = calcBoundMap(bounds)
   await outputCanvas(
-    __dirname + '/../../res/image/woodTile.png',
+    __dirname + '/../../res/image/treeTile.png',
     packImage(originalImage, boundMap)
   )
   fs.writeFileSync(
-    __dirname + '/../../res/tileMapping/wood.json',
+    __dirname + '/../../res/tileMapping/tree.json',
     JSON.stringify(toMappingObject(boundMap), null, '  ')
   )
 }

@@ -1,6 +1,6 @@
 {
-  "name": "wood",
-  "path": "woodTile.png",
+  "name": "tree",
+  "path": "treeTile.png",
   "texture": {
     "size": {
       "width": 8,

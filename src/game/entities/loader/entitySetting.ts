@@ -44,6 +44,7 @@ import slime1 from '@res/entity/slime1.json'
 import snibee from '@res/entity/snibee.json'
 import sporeEffect from '@res/entity/sporeEffect.json'
 import throughFloor from '@res/entity/throughFloor.json'
+import tree from '@res/entity/tree.json'
 import uiAir from '@res/entity/uiAir.json'
 import uiAirTankBg from '@res/entity/uiAirTankBg.json'
 import uiAirTankBody from '@res/entity/uiAirTankBody.json'
@@ -54,7 +55,6 @@ import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
 import wall from '@res/entity/wall.json'
-import wood from '@res/entity/wood.json'
 
 export const entitySetting = {
   air,
@@ -99,6 +99,7 @@ export const entitySetting = {
   snibee,
   sporeEffect,
   throughFloor,
+  tree,
   uiAir,
   uiAirTankBg,
   uiAirTankBody,
@@ -109,5 +110,4 @@ export const entitySetting = {
   vine,
   vineStalk,
   wall,
-  wood,
 }

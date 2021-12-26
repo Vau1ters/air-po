@@ -48,6 +48,7 @@ import spore from '@res/sprite/spore.json'
 import testItem from '@res/sprite/testItem.json'
 import throughFloor from '@res/sprite/throughFloor.json'
 import title from '@res/sprite/title.json'
+import tree from '@res/sprite/tree.json'
 import uiAir from '@res/sprite/uiAir.json'
 import uiAirTankBg from '@res/sprite/uiAirtankBg.json'
 import uiAirTankBody from '@res/sprite/uiAirtankBody.json'
@@ -58,7 +59,6 @@ import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
 import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
-import wood from '@res/sprite/wood.json'
 
 export const spriteURL = {
   airGeyser,
@@ -107,6 +107,7 @@ export const spriteURL = {
   testItem,
   throughFloor,
   title,
+  tree,
   uiAir,
   uiAirTankBg,
   uiAirTankBody,
@@ -117,5 +118,4 @@ export const spriteURL = {
   uiWeaponGun,
   vine,
   wall,
-  wood,
 }

@@ -1,12 +1,12 @@
 import { buildColliders } from './collider/collider'
 import { buildResourceURL } from './resourceURL'
 import { updateStages } from './wall'
-import { packWoodImage } from './wood'
+import { packTreeImage } from './tree'
 ;(async function main(): Promise<void> {
   const i = setInterval((): void => {})
   buildResourceURL()
   updateStages()
-  await packWoodImage()
+  await packTreeImage()
   await buildColliders()
   clearInterval(i)
 })()
