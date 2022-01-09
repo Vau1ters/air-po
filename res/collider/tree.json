@@ -905,7 +905,15 @@
     "index": 98
   },
   {
-    "index": 99
+    "index": 99,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": []
+    }
   },
   {
     "index": 100,
