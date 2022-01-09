@@ -1,0 +1,75 @@
+{
+  "airTankBg": {
+    "type": "entity",
+    "name": "uiAirTankBg",
+    "position": [50, 34]
+  },
+  "airTankTail": {
+    "type": "entity",
+    "name": "uiAirTankTail",
+    "position": [53, 32]
+  },
+  "airTankBodies": {
+    "type": "tileLayout",
+    "element": {
+      "type": "entity",
+      "name": "uiAirTankBody"
+    },
+    "tileCount": [10, 1],
+    "fillElements": false,
+    "layoutOption": {
+      "offset": [53, 32],
+      "shift": [8, 0]
+    }
+  },
+  "airGauge": {
+    "type": "entity",
+    "name": "uiAir",
+    "position": [50, 34]
+  },
+  "weaponBackground": {
+    "type": "entity",
+    "name": "uiWeaponBackground",
+    "position": [26, 22]
+  },
+  "weapon": {
+    "type": "entity",
+    "name": "uiWeapon",
+    "position": [27, 23]
+  },
+  "hpHearts": {
+    "type": "tileLayout",
+    "element": {
+      "type": "entity",
+      "name": "uiHpHeart"
+    },
+    "tileCount": [10, 1],
+    "fillElements": false,
+    "layoutOption": {
+      "offset": [47, 22],
+      "shift": [10, 0]
+    }
+  },
+  "coinSmall": {
+    "type": "entity",
+    "name": "coinIconSmall",
+    "position": [280, 20]
+  },
+  "coinLarge": {
+    "type": "entity",
+    "name": "coinIconLarge",
+    "position": [280, 40]
+  },
+  "coinCountSmall": {
+    "type": "text",
+    "fontSize": 8,
+    "position": [300, 20],
+    "tint": 0
+  },
+  "coinCountLarge": {
+    "type": "text",
+    "fontSize": 8,
+    "position": [300, 40],
+    "tint": 0
+  }
+}

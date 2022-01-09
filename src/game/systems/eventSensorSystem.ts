@@ -6,7 +6,7 @@ import { World } from '@core/ecs/world'
 import { PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 import { StageName } from '@game/stage/stageLoader'
 import { getSingleton } from './singletonSystem'
-import { SpawnPoint } from '@game/components/gameEventComponent'
+import { StagePoint } from '@game/components/stagePointComponent'
 
 export class EventSensorSystem extends System {
   private sensorFamily: Family
@@ -32,13 +32,16 @@ export class EventSensorSystem extends System {
   private async fireEvent(event: string): Promise<void> {
     const [eventName, ...options] = event.split(' ')
     switch (eventName) {
-      case 'changeMap':
-        await this.moveEvent({ stageName: options[0] as StageName, spawnerID: Number(options[1]) })
+      case 'changeMap': {
+        const stageName = options[0] as StageName
+        const pointID = Number(options[1])
+        await this.moveEvent({ stageName, pointID })
         break
+      }
     }
   }
 
-  private async moveEvent(spawnPoint: SpawnPoint): Promise<void> {
+  private async moveEvent(spawnPoint: StagePoint): Promise<void> {
     getSingleton('GameEvent', this.world).getComponent('GameEvent').event = {
       type: 'move',
       spawnPoint,

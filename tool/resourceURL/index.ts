@@ -7,6 +7,7 @@ import { buildObject } from './object'
 import { buildComponent } from './component'
 import * as cp from 'child_process'
 import { buildItem } from './item'
+import { buildUi } from './ui'
 import { buildEquipment } from './equipment'
 
 export const buildResourceURL = (): void => {
@@ -16,11 +17,12 @@ export const buildResourceURL = (): void => {
     buildEquipment(),
     buildAudio(),
     buildEntity(),
+    buildUi(),
     buildStage(),
     buildTile(),
     buildObject(),
     buildComponent(),
   ]
 
-  cp.execSync(`./node_modules/.bin/eslint --fix ${outputFiles.join(' ')}`)
+  cp.execSync(`yarn eslint --fix ${outputFiles.join(' ')}`)
 }

@@ -4,13 +4,15 @@ import { suspendable } from '@core/behaviour/suspendable'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { assert } from '@utils/assertion'
-import { gunShoot } from '../common/gunShoot'
 import { release } from './release'
 import { PLAYER_SETTING } from '../playerAI'
 import { chase } from './chase'
 import { move } from './move'
+import { useWeapon } from '../common/useWeapon'
+import { switchWeapon } from '../common/switchWeapon'
+import { collectAir } from '../common/collectAir'
 
-export const fluffAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const fluffAI = function* (entity: Entity, world: World): Behaviour<void> {
   const player = entity.getComponent('Player')
   const playerBody = entity.getComponent('RigidBody')
   const playerPosition = entity.getComponent('Position')
@@ -25,7 +27,14 @@ export const fluffAI = function*(entity: Entity, world: World): Behaviour<void> 
     () =>
       playerPosition.sub(fluffPosition.add(PLAYER_SETTING.fluff.chase.grabPosition)).length() <
       PLAYER_SETTING.fluff.release.distance,
-    parallelAll([chase(entity), move(entity), release(entity), gunShoot(entity, world)])
+    parallelAll([
+      chase(entity),
+      move(entity),
+      release(entity),
+      collectAir(entity),
+      useWeapon(entity, world),
+      switchWeapon(entity),
+    ])
   )
   player.possessingEntity = undefined
 }

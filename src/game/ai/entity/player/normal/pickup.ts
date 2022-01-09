@@ -4,7 +4,7 @@ import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { PLAYER_SENSOR_TAG } from '@game/entities/playerFactory'
 import { KeyController } from '@game/systems/controlSystem'
 
-export const pickup = function*(entity: Entity): Behaviour<void> {
+export const pickup = function* (entity: Entity): Behaviour<void> {
   const player = entity.getComponent('Player')
   const pickupTarget = new Set<Entity>()
 

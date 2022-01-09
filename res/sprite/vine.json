@@ -9,13 +9,23 @@
   },
   "animation": {
     "state": {
-      "Root0": [0],
-      "Root1": [1],
-      "Root2": [2],
-      "Stalk0": [3],
-      "Stalk1": [4],
-      "Stalk2": [5]
+      "DownRoot": [0, 1, 2],
+      "DownRootEnd": [3],
+      "DownStalk": [4, 5, 6],
+      "DownStalkEnd": [7],
+      "RightRoot": [8, 9, 10],
+      "RightRootEnd": [11],
+      "RightStalk": [12, 13, 14],
+      "RightStalkEnd": [15],
+      "UpRoot": [16, 17, 18],
+      "UpRootEnd": [19],
+      "UpStalk": [20, 21, 22],
+      "UpStalkEnd": [23],
+      "LeftRoot": [24, 25, 26],
+      "LeftRootEnd": [27],
+      "LeftStalk": [28, 29, 30],
+      "LeftStalkEnd": [31]
     },
-    "default": "Root0"
+    "default": "DownRoot"
   }
 }

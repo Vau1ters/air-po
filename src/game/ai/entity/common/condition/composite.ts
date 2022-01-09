@@ -1,1 +1,4 @@
-export const not = (cond: () => boolean): (() => boolean) => (): boolean => !cond()
+export const not =
+  (cond: () => boolean): (() => boolean) =>
+  (): boolean =>
+    !cond()

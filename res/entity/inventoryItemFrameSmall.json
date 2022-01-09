@@ -1,6 +1,7 @@
 {
   "draw": {
-    "name": "inventoryItemFrameSmall"
+    "name": "inventoryItemFrameSmall",
+    "type": "UI"
   },
   "collider": [
     {

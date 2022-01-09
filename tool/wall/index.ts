@@ -1,51 +1,11 @@
 import { Random } from './random'
 import * as fs from 'fs'
+import { TileLayer } from '@game/stage/tileLayerLoader'
+import { StageSetting } from '@game/stage/stageLoader'
+import { TileSet } from '@game/stage/tileSet'
+import wallType from '../../res/misc/wall.json'
 
-type Stage = {
-  layers: TileLayer[]
-  tilesets: TileSet[]
-}
-
-type TileSet = {
-  firstgid: number
-  source: string
-}
-
-type TileLayer = {
-  data: number[]
-  height: number
-  id: number
-  name: string
-  opacity: number
-  type: 'tilelayer'
-  visible: boolean
-  width: number
-  x: number
-  y: number
-}
-
-// Clockwise
-type WallType =
-  | 'CompletelyFilled'
-  | 'LackCornerLeftUp'
-  | 'LackCornerRightUp'
-  | 'LackCornerRightDown'
-  | 'LackCornerLeftDown'
-  | 'LackUp'
-  | 'LackRight'
-  | 'LackDown'
-  | 'LackLeft'
-  | 'LackLeftRight'
-  | 'LackUpDown'
-  | 'CornerLeftUp'
-  | 'CornerRightUp'
-  | 'CornerRightDown'
-  | 'CornerLeftDown'
-  | 'ProtrudeUp'
-  | 'ProtrudeRight'
-  | 'ProtrudeDown'
-  | 'ProtrudeLeft'
-  | 'Invalid'
+type WallType = keyof typeof wallType.typeMap
 
 export class WallLoader {
   private rand: Random = new Random()
@@ -54,54 +14,9 @@ export class WallLoader {
 
   public getTileId(x: number, y: number): number {
     const type = this.getType(x, y)
-    const candidates = this.getIndex(type)
+    const candidates = wallType.typeMap[type]
     const tileId = this.randomChoice(candidates)
     return tileId
-  }
-
-  private getIndex(type: WallType): number[] {
-    switch (type) {
-      case 'CompletelyFilled':
-        return [9, 10, 13, 14, 17, 18, 21, 22]
-      case 'LackCornerLeftUp':
-        return [31]
-      case 'LackCornerRightUp':
-        return [28]
-      case 'LackCornerRightDown':
-        return [4]
-      case 'LackCornerLeftDown':
-        return [7]
-      case 'LackUp':
-        return [1, 2, 29, 30]
-      case 'LackRight':
-        return [11, 12, 19, 20]
-      case 'LackDown':
-        return [5, 6, 25, 26]
-      case 'LackLeft':
-        return [8, 15, 16, 23]
-      case 'LackLeftRight':
-        return [37]
-      case 'LackUpDown':
-        return [36]
-      case 'CornerLeftUp':
-        return [0]
-      case 'CornerRightUp':
-        return [3]
-      case 'CornerRightDown':
-        return [27]
-      case 'CornerLeftDown':
-        return [24]
-      case 'ProtrudeUp':
-        return [33]
-      case 'ProtrudeRight':
-        return [32]
-      case 'ProtrudeDown':
-        return [35]
-      case 'ProtrudeLeft':
-        return [34]
-      case 'Invalid':
-        return [38]
-    }
   }
 
   private getType(x: number, y: number): WallType {
@@ -147,7 +62,7 @@ export class WallLoader {
     if (x >= this.layer.width) return false
     if (y >= this.layer.height) return false
     const gid = this.layer.data[x + y * this.layer.width]
-    return this.gidBegin <= gid && gid < this.gidEnd
+    return gid > 0
   }
 
   private randomChoice(candidates: number[]): number {
@@ -160,7 +75,7 @@ const updateLayer = (layer: TileLayer, gidBegin: number, gidEnd: number): void =
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const index = x + y * layer.width
-      if (gidBegin <= layer.data[index] && layer.data[index] < gidEnd) {
+      if (gidBegin <= layer.data[index] && layer.data[index] < gidBegin + 40) {
         const tileId = loader.getTileId(x, y)
         layer.data[index] = gidBegin + tileId
       }
@@ -168,7 +83,7 @@ const updateLayer = (layer: TileLayer, gidBegin: number, gidEnd: number): void =
   }
 }
 
-const updateStage = (stage: Stage): Stage => {
+const updateStage = (stage: StageSetting): StageSetting => {
   const wallTileSetIndex = stage.tilesets.findIndex((tileSet: TileSet): boolean =>
     tileSet.source.includes('wall')
   )
@@ -176,7 +91,7 @@ const updateStage = (stage: Stage): Stage => {
   const gidEnd = stage.tilesets[wallTileSetIndex + 1].firstgid ?? Infinity
   const mapLayer = stage.layers.find(layer => layer.name === 'map')
   if (mapLayer !== undefined) {
-    updateLayer(mapLayer, gidBegin, gidEnd)
+    updateLayer(mapLayer as TileLayer, gidBegin, gidEnd)
   }
   return stage
 }

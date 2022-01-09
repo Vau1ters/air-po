@@ -1,27 +1,35 @@
+import { Vec2 } from '@core/math/vec2'
 import { Collider } from '@game/components/colliderComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { assert } from '@utils/assertion'
 import { CollisionResultAABBAABB, collideAABBAABB } from './collision/AABB_AABB'
 import { CollisionResultAirAABB, collideAirAABB } from './collision/Air_AABB'
-import { CollisionResultCircleAABB, collideCircleAABB } from './collision/Circle_AABB'
-import { CollisionResultCircleCircle, collideCircleCircle } from './collision/Circle_Circle'
-import { CollisionResultOBBOBB, collideOBBOBB } from './collision/OBB_OBB'
+import { collideSegmentSlope } from './collision/Segment_Slope'
 import { CollisionResultSegmentAABB, collideSegmentAABB } from './collision/Segment_AABB'
+import { collideSlopeAABB, CollisionResultSlopeAABB } from './collision/Slope_AABB'
 import { AABB } from './geometry/AABB'
 import { Air } from './geometry/air'
-import { Circle } from './geometry/circle'
-import { OBB } from './geometry/OBB'
 import { Segment } from './geometry/segment'
+import { Slope } from './geometry/Slope'
 
 export type WithHit<T> = { hit: false } | ({ hit: true } & T)
 
 export type CollisionResult =
   | CollisionResultAABBAABB
-  | CollisionResultOBBOBB
-  | CollisionResultCircleAABB
-  | CollisionResultCircleCircle
   | CollisionResultAirAABB
   | CollisionResultSegmentAABB
+  | CollisionResultSlopeAABB
+
+export const flipResult = <R>(result: R): R => {
+  if ('axis' in result) {
+    const axis = (result as unknown as { axis?: Vec2 })['axis'] as Vec2
+    return {
+      ...result,
+      axis: axis.mul(-1),
+    }
+  }
+  return result
+}
 
 export const collide = (
   c1: Collider,
@@ -33,18 +41,6 @@ export const collide = (
   const g2 = c2.geometry.applyPosition(position2)
   if (g1 instanceof AABB && g2 instanceof AABB) {
     return collideAABBAABB(g1, g2)
-  } else if (g1 instanceof AABB && g2 instanceof OBB) {
-    return collideOBBOBB(g1.asOBB(), g2)
-  } else if (g1 instanceof OBB && g2 instanceof AABB) {
-    return collideOBBOBB(g1, g2.asOBB())
-  } else if (g1 instanceof OBB && g2 instanceof OBB) {
-    return collideOBBOBB(g1, g2)
-  } else if (g1 instanceof AABB && g2 instanceof Circle) {
-    return collideCircleAABB(g2, g1)
-  } else if (g1 instanceof Circle && g2 instanceof AABB) {
-    return collideCircleAABB(g1, g2)
-  } else if (g1 instanceof Circle && g2 instanceof Circle) {
-    return collideCircleCircle(g1, g2)
   } else if (g1 instanceof Air && g2 instanceof AABB) {
     return collideAirAABB(g1, g2)
   } else if (g1 instanceof AABB && g2 instanceof Air) {
@@ -53,6 +49,14 @@ export const collide = (
     return collideSegmentAABB(g1, g2)
   } else if (g1 instanceof AABB && g2 instanceof Segment) {
     return collideSegmentAABB(g2, g1)
+  } else if (g1 instanceof AABB && g2 instanceof Slope) {
+    return collideSlopeAABB(g2, g1)
+  } else if (g1 instanceof Slope && g2 instanceof AABB) {
+    return flipResult(collideSlopeAABB(g1, g2))
+  } else if (g1 instanceof Segment && g2 instanceof Slope) {
+    return collideSegmentSlope(g1, g2)
+  } else if (g1 instanceof Slope && g2 instanceof Segment) {
+    return collideSegmentSlope(g2, g1)
   } else {
     assert(false, 'This collision is not implemented.')
   }

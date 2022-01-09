@@ -1,7 +1,10 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { wait } from '@core/behaviour/wait'
+import { assert } from '@utils/assertion'
 import { Container, ObservablePoint, Sprite, Texture } from 'pixi.js'
 import { AnimationDefinition } from './spriteBuffer'
+
+export type AnimationOption = { waitFrames?: number; reverse?: boolean }
 
 class AnimationSpriteFrame extends Sprite {
   public constructor(private textures: Array<Texture>, private waitFrames = 10) {
@@ -9,18 +12,30 @@ class AnimationSpriteFrame extends Sprite {
   }
 
   public goto(number: number): void {
+    assert(
+      0 <= number && number < this.length,
+      `frame number ${number} is not in range [0, ${this.length})`
+    )
     this.texture = this.textures[number]
   }
 
-  public *animate(waitFrames?: number): Behaviour<void> {
-    for (const texture of this.textures) {
+  public *animate(option: AnimationOption): Behaviour<void> {
+    const textures =
+      option.reverse === true
+        ? this.textures.map((_, idx) => this.textures[this.length - 1 - idx])
+        : this.textures
+    for (const texture of textures) {
       this.texture = texture
-      if (waitFrames) {
-        yield* wait(waitFrames)
+      if (option.waitFrames) {
+        yield* wait.frame(option.waitFrames)
       } else {
-        yield* wait(this.waitFrames)
+        yield* wait.frame(this.waitFrames)
       }
     }
+  }
+
+  public get length(): number {
+    return this.textures.length
   }
 }
 
@@ -49,8 +64,8 @@ export class AnimationSprite extends Container {
     this.currentAnimationSprite.visible = true
   }
 
-  public *animate(waitFrame?: number): Behaviour<void> {
-    yield* this.currentAnimationSprite.animate(waitFrame)
+  public *animate(option: AnimationOption): Behaviour<void> {
+    yield* this.currentAnimationSprite.animate(option)
   }
 
   public set isVisible(isVisible: boolean) {
@@ -79,7 +94,7 @@ export class AnimationSprite extends Container {
     return this.currentAnimationSprite.anchor
   }
 
-  private get currentAnimationSprite(): AnimationSpriteFrame {
+  public get currentAnimationSprite(): AnimationSpriteFrame {
     return this.animationSprites[this.currentState]
   }
 }

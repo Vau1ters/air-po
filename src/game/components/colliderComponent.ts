@@ -2,8 +2,8 @@ import { CollisionResult } from '@core/collision/collision'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Air } from '@core/collision/geometry/air'
 import { GeometryForCollision } from '@core/collision/geometry/geometry'
-import { OBB } from '@core/collision/geometry/OBB'
 import { Segment } from '@core/collision/geometry/segment'
+import { Slope } from '@core/collision/geometry/Slope'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
@@ -55,6 +55,7 @@ export type ColliderOption = {
   tag: Set<string>
   category: Category
   mask: Set<Category>
+  solveDir: Array<Vec2>
 }
 
 export type GeometryBuildOption =
@@ -65,10 +66,10 @@ export type GeometryBuildOption =
       maxClipToTolerance?: Vec2
     }
   | {
-      type: 'OBB'
+      type: 'Slope'
       offset?: Vec2
       size?: Vec2
-      angle?: number
+      normal?: Vec2
     }
   | {
       type: 'Segment'
@@ -86,6 +87,7 @@ export type ColliderBuildOption = {
   tag?: string[]
   category: Category
   mask?: Set<Category>
+  solveDir?: Array<Vec2>
   geometry: GeometryBuildOption
 }
 
@@ -93,8 +95,8 @@ const buildGeometry = (option: GeometryBuildOption): GeometryForCollision => {
   switch (option.type) {
     case 'AABB':
       return new AABB(option.offset, option.size, option.maxClipToTolerance)
-    case 'OBB':
-      return new OBB(new AABB(option.offset, option.size), option.angle)
+    case 'Slope':
+      return new Slope(option.offset, option.size, option.normal)
     case 'Segment':
       return new Segment(option.start, option.end)
     case 'Air':
@@ -110,6 +112,7 @@ export const buildCollider = (option: { entity: Entity } & ColliderBuildOption):
     tag: new Set<string>(option.tag),
     category: option.category,
     mask: option.mask ?? new Set<Category>(),
+    solveDir: option.solveDir ?? [],
   })
 }
 
@@ -130,6 +133,10 @@ export class ColliderComponent {
 
   public getByCategory(category: Category): Collider | undefined {
     return this.colliders.find(c => c.option.category === category)
+  }
+
+  public getByTag(tag: string): Collider | undefined {
+    return this.colliders.find(c => c.option.tag.has(tag))
   }
 
   public removeByTag(tag: string): void {

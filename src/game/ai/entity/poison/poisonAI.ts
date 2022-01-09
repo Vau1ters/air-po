@@ -6,9 +6,9 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { kill } from '../common/action/kill'
 
-export const poisonAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const poisonAI = function* (entity: Entity, world: World): Behaviour<void> {
   const draw = entity.getComponent('Draw')
-  yield* wait(120)
+  yield* wait.frame(120)
   yield* ease(In.quad)(
     60,
     x => {

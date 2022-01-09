@@ -11,7 +11,7 @@ type State = 'On' | 'Off'
 type OnFocusCallback = () => void
 type OnClickCallback = (button: MouseButton) => void
 
-const waitForChangeState = function*(
+const waitForChangeState = function* (
   entity: Entity,
   current: State,
   onClick: OnClickCallback
@@ -36,7 +36,7 @@ const waitForChangeState = function*(
   return state
 }
 
-export const inventoryItemCursorAI = function*(
+export const inventoryItemCursorAI = function* (
   entity: Entity,
   onFocusCallback: OnFocusCallback,
   onClickCallback: OnClickCallback

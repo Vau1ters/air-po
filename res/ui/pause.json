@@ -1,0 +1,14 @@
+{
+  "button1": {
+    "type": "button",
+    "position": [160, 70]
+  },
+  "button2": {
+    "type": "button",
+    "position": [160, 120]
+  },
+  "button3": {
+    "type": "button",
+    "position": [160, 170]
+  }
+}

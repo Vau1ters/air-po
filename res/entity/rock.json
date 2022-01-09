@@ -1,0 +1,30 @@
+{
+  "draw": {
+    "name": "rock"
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 16]
+      },
+      "category": "enemyHitbox"
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 16]
+      },
+      "category": "terrain",
+      "mask": ["physics"],
+      "tag": ["physics"]
+    }
+  ],
+  "animationState": {},
+  "rigidBody": {},
+  "hp": {
+    "max": 2,
+    "showHpBar": false,
+    "canLock": false
+  }
+}

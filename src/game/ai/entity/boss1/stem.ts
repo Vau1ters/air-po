@@ -16,14 +16,14 @@ export type StemState = {
   arms: Array<StemShape>
 }
 
-export const composite = (a: StemShape, b: StemShape, s: number): ((t: number) => Vec2) => (
-  t: number
-): Vec2 =>
-  a(t)
-    .mul(1 - s)
-    .add(b(t).mul(s))
+export const composite =
+  (a: StemShape, b: StemShape, s: number): ((t: number) => Vec2) =>
+  (t: number): Vec2 =>
+    a(t)
+      .mul(1 - s)
+      .add(b(t).mul(s))
 
-export const transiteShape = function*(
+export const transiteShape = function* (
   shape: StemShape,
   duration: number
 ): Generator<StemShape, void, StemShape> {
@@ -78,7 +78,7 @@ const fragment = (
   entity.addComponent(
     'Ai',
     new AiComponent(
-      (function*(): Generator<void> {
+      (function* (): Generator<void> {
         while (boss.getComponent('Hp').hp > 0) {
           const ls = calcLengthList()
           const lsum = ls.reduce((a, b) => a + b)
@@ -110,7 +110,7 @@ const addStem = (boss: Entity, width: number): Array<PIXI.Point> => {
   return points
 }
 
-export const stem = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
+export const stem = function* (state: StemState, boss: Entity, world: World): Behaviour<void> {
   const bossPosition = boss.getComponent('Position')
   const [_, rootCollider] = boss.getComponent('Collider').colliders
   const root = rootCollider.geometry as AABB

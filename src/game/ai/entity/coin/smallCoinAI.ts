@@ -8,7 +8,7 @@ import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
 
-const waitPlayer = function*(entity: Entity): Behaviour<void> {
+const waitPlayer = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
   let shouldWait = true
   collider.callbacks.add((args: CollisionCallbackArgs) => {
@@ -24,7 +24,7 @@ const increaseCoinCount = (world: World): void => {
   player.getComponent('Player').smallCoinCount++
 }
 
-export const smallCoinAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const smallCoinAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* waitPlayer(entity)
   increaseCoinCount(world)
   Sound.play('smallCoin')

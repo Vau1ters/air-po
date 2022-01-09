@@ -1,0 +1,10 @@
+{
+  "name": "tree",
+  "path": "treeTile.png",
+  "texture": {
+    "size": {
+      "width": 8,
+      "height": 8
+    }
+  }
+}

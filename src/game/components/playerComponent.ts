@@ -5,6 +5,11 @@ import { equipmentClass } from '@game/equipment/equipmentURL'
 import { Item } from '@game/item/item'
 import { itemClass } from '@game/item/itemURL'
 import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
+import { assert } from '@utils/assertion'
+import { EventNotifier } from '@utils/eventNotifier'
+
+const WeaponTypes = ['Gun', 'AirNade'] as const
+export type WeaponType = typeof WeaponTypes[number]
 
 export class PlayerComponent {
   public landing = false
@@ -15,6 +20,9 @@ export class PlayerComponent {
   public smallCoinCount: number
   public acquiredLargeCoinList: Set<LargeCoinID>
   public itemList: Array<Item>
+  private _currentWeapon: WeaponType = 'Gun'
+  public readonly weaponChanged: EventNotifier<number>
+  public weaponChanging = false
   private equipmentList: Array<Equipment>
 
   constructor(private player: Entity, public ui: Entity) {
@@ -31,6 +39,7 @@ export class PlayerComponent {
     for (const e of this.equipmentList) {
       e.onEquip()
     }
+    this.weaponChanged = new EventNotifier()
   }
 
   public popItem(index: number): Item {
@@ -54,5 +63,30 @@ export class PlayerComponent {
       acquiredLargeCoinList: Array.from(this.acquiredLargeCoinList),
       equipmentList: Array.from(this.equipmentList.map(e => e.name)),
     }
+  }
+
+  get currentWeapon(): WeaponType {
+    return this._currentWeapon
+  }
+
+  changeWeapon(delta: number): void {
+    if (this.weaponChanging) return
+    const currentIndex = this.weaponToIndex(this.currentWeapon)
+    const nextIndex = (currentIndex + delta + 2) % 2
+    this._currentWeapon = this.indexToWeapon(nextIndex)
+    this.weaponChanged.notify(delta)
+    this.weaponChanging = true
+  }
+
+  private indexToWeapon(index: number): WeaponType {
+    const type = WeaponTypes[index]
+    assert(type !== undefined, `invalid index ${index}`)
+    return type
+  }
+
+  private weaponToIndex(type: WeaponType): number {
+    const index = WeaponTypes.indexOf(type)
+    assert(index !== -1, `invalid type ${type}`)
+    return index
   }
 }

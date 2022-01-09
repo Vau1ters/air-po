@@ -6,4 +6,5 @@ export interface GeometryForCollision {
   createBound(): AABB
   applyPosition(pos: Vec2): GeometryForCollision
   draw(g: Graphics): void
+  solvable(): boolean
 }

@@ -57,7 +57,7 @@ const s = (i: number): { stem: StemShape; arms: Array<StemShape> } => {
   }
 }
 
-export const root = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
+export const root = function* (state: StemState, boss: Entity, world: World): Behaviour<void> {
   const W = 40
   const transiteStem = transiteShape(state.stem, W)
   const transiteArmL = transiteShape(state.arms[0], W)

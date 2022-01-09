@@ -1,8 +1,24 @@
 const DAMAGING_FRAMES = 5
 
+type HpOption = {
+  initial: number
+  max: number
+  showHpBar?: boolean
+  canLock?: boolean
+}
+
 export class HpComponent {
   public damageTime = 0
-  public constructor(private _hp: number, private _maxHp: number, public showHpBar: boolean) {}
+  private _hp: number
+  private _maxHp: number
+  public readonly showHpBar: boolean
+  public readonly canLock: boolean
+  public constructor(option: HpOption) {
+    this._hp = option.initial
+    this._maxHp = option.max
+    this.showHpBar = option.showHpBar ?? true
+    this.canLock = option.canLock ?? true
+  }
 
   decrease(damage: number): void {
     this._hp = Math.max(0, this.hp - damage)

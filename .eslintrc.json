@@ -3,13 +3,9 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-
-    "plugin:prettier/recommended",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "env": { "browser": true, "node": true, "es6": true },
   "parserOptions": {
@@ -33,15 +29,6 @@
       "always"
     ],
     "@typescript-eslint/no-empty-function": "off",
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true,
-        "semi": false,
-        "trailingComma": "es5",
-        "printWidth": 100
-      }
-    ],
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {

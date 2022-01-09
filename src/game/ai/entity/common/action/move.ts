@@ -1,35 +1,32 @@
 import { Entity } from '@core/ecs/entity'
 import { Behaviour } from '@core/behaviour/behaviour'
 
-export enum Direction {
-  Left,
-  Right,
-  Up,
-  Down,
+export type MoveDirection = 'Left' | 'Right' | 'Up' | 'Down'
+export type MoveOption = {
+  entity: Entity
+  direction: MoveDirection
+  speed: number
+  duration: number
 }
 
-export const move = function*(
-  entity: Entity,
-  direction: Direction,
-  speed: number,
-  duration: number
-): Behaviour<void> {
-  for (let time = 0; time < duration; time++) {
-    const position = entity.getComponent('Position')
-    switch (direction) {
-      case Direction.Left:
-        position.x -= speed
-        entity.getComponent('HorizontalDirection').looking = 'Left'
+export const move = function* (option: MoveOption): Behaviour<void> {
+  const position = option.entity.getComponent('Position')
+  const direction = option.entity.getComponent('HorizontalDirection')
+  for (let time = 0; time < option.duration; time++) {
+    switch (option.direction) {
+      case 'Left':
+        position.x -= option.speed
+        direction.looking = 'Left'
         break
-      case Direction.Right:
-        position.x += speed
-        entity.getComponent('HorizontalDirection').looking = 'Right'
+      case 'Right':
+        position.x += option.speed
+        direction.looking = 'Right'
         break
-      case Direction.Up:
-        position.y -= speed
+      case 'Up':
+        position.y -= option.speed
         break
-      case Direction.Down:
-        position.y += speed
+      case 'Down':
+        position.y += option.speed
         break
     }
     yield

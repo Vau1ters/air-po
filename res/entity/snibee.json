@@ -3,6 +3,13 @@
     "name": "snibee"
   },
   "animationState": {},
+  "airHolder": {
+    "initialQuantity": 50,
+    "maxQuantity": 50,
+    "collectSpeed": 0,
+    "consumeSpeed": 0,
+    "shouldDamageInSuffocation": false
+  },
   "rigidBody": {
     "mass": 10,
     "airResistance": 0.5

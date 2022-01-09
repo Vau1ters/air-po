@@ -25,7 +25,7 @@ const emitPoison = (entity: Entity, world: World): void => {
   }
 }
 
-const poisonousTulipDamaged = function*(entity: Entity, world: World): Behaviour<void> {
+const poisonousTulipDamaged = function* (entity: Entity, world: World): Behaviour<void> {
   let previousHp = entity.getComponent('Hp').hp
 
   while (true) {
@@ -36,28 +36,23 @@ const poisonousTulipDamaged = function*(entity: Entity, world: World): Behaviour
   }
 }
 
-const poisonousTulipApproached = function*(entity: Entity, world: World): Behaviour<void> {
+const poisonousTulipApproached = function* (entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
 
   while (true) {
-    while (
-      player
-        .getComponent('Position')
-        .sub(entity.getComponent('Position'))
-        .length() < 48
-    ) {
+    while (player.getComponent('Position').sub(entity.getComponent('Position')).length() < 48) {
       emitPoison(entity, world)
-      yield* wait(90)
+      yield* wait.frame(90)
     }
     yield
   }
 }
 
-export const poisonousTulipAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const poisonousTulipAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(
     isAlive(entity),
     parallelAll([poisonousTulipDamaged(entity, world), poisonousTulipApproached(entity, world)])
   )
-  yield* emitAir(entity, world, 60)
+  yield* emitAir(entity)
   yield* kill(entity, world)
 }

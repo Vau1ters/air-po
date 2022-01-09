@@ -5,7 +5,7 @@ import { animate } from '../common/action/animate'
 import { parallelAny } from '@core/behaviour/composite'
 import { kill } from '../common/action/kill'
 
-const sporeFalling = function*(entity: Entity): Behaviour<void> {
+const sporeFalling = function* (entity: Entity): Behaviour<void> {
   let t = 0
   const pos = entity.getComponent('Position')
   const initialAngle = pos.x * 10 // 適当にばらけさせる
@@ -18,7 +18,7 @@ const sporeFalling = function*(entity: Entity): Behaviour<void> {
   }
 }
 
-export const SporeEffectAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const SporeEffectAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* parallelAny([animate({ entity, state: 'Shine', waitFrames: 10 }), sporeFalling(entity)])
   yield* kill(entity, world)
 }

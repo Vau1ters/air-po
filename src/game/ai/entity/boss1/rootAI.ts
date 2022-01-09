@@ -7,7 +7,7 @@ import { Vec2 } from '@core/math/vec2'
 import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
 
-const buruburu = function*(root: Entity): Generator<void> {
+const buruburu = function* (root: Entity): Generator<void> {
   const pos = root.getComponent('Position')
   const basePos = pos.copy()
   const w = 3
@@ -17,7 +17,7 @@ const buruburu = function*(root: Entity): Generator<void> {
   }
 }
 
-export const rootAI = function*(root: Entity, world: World): Behaviour<void> {
+export const rootAI = function* (root: Entity, world: World): Behaviour<void> {
   const draw = root.getComponent('Draw')
   const pos = root.getComponent('Position')
   const attack = root.getComponent('Attack')
@@ -31,6 +31,6 @@ export const rootAI = function*(root: Entity, world: World): Behaviour<void> {
     to: basePos.y - draw.height + 10,
   })
   attack.damage = 0
-  yield* wait(50)
+  yield* wait.frame(50)
   yield* kill(root, world)
 }

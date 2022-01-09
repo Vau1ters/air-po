@@ -15,7 +15,6 @@ export const initializeApplication = (): void => {
   container.appendChild(application.view)
 
   application.stage.sortableChildren = true
-  application.renderer.autoDensity = true
 
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
   PIXI.settings.ROUND_PIXELS = true

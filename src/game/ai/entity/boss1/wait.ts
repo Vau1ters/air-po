@@ -18,7 +18,7 @@ const spiral = (n: number, r0: number, r1: number, a0: number, a1: number): Arra
   return result
 }
 
-export const wait = function*(state: StemState): Behaviour<void> {
+export const wait = function* (state: StemState): Behaviour<void> {
   const transiteStem = transiteShape(state.stem, 60)
   const transiteArmL = transiteShape(state.arms[0], 60)
   const transiteArmR = transiteShape(state.arms[1], 60)

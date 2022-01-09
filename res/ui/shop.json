@@ -1,0 +1,17 @@
+{
+  "background": {
+    "type": "entity",
+    "name": "shopBackground",
+    "position": [160, 120]
+  },
+  "scrollBarThumb": {
+    "type": "entity",
+    "name": "shopScrollBarThumb",
+    "position": [48, 120]
+  },
+  "scrollBarTrack": {
+    "type": "entity",
+    "name": "shopScrollBarTrack",
+    "position": [48, 120]
+  }
+}

@@ -5,10 +5,9 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import DandelionStem from '@res/image/dandelionStem.png'
-import { SegmentSearcherFactory } from '@game/entities/segmentSearcherFactory'
-import { segmentSearchGenerator } from '../segmentSearcher/segmentSearcherAI'
-import { assert } from '@utils/assertion'
-import { INFINITY_COORDINATE } from '@core/math/constants'
+import { searchBySegment } from '../common/action/segmentSearch'
+import { CategorySet } from '@game/entities/category'
+import { parallelAll } from '@core/behaviour/composite'
 
 const FLUFF_EMIT_INTERVAL = 200
 const HEAD_OFFSET_Y = -96
@@ -16,28 +15,30 @@ const ROOT_OFFSET_Y = 160
 const ROPE_POINT_NUM = 10
 const HEAD_OSCILLATION_TIME_SCALE = 0.03
 
-export const dandelionBehaviour = function*(entity: Entity, world: World): Behaviour<void> {
-  const headPosition = entity.getComponent('Position')
-  const draw = entity.getComponent('Draw')
+const head = function* (head: Entity): Behaviour<void> {
+  const headPosition = head.getComponent('Position')
+  const headOrigin = headPosition.copy()
+  let s = 0
+  while (true) {
+    s += HEAD_OSCILLATION_TIME_SCALE
+    const d = Math.sin(s) * 5 + Math.sin(s * 0.1) * 5
+    headPosition.x = headOrigin.x + d
+    yield
+  }
+}
 
-  headPosition.y += HEAD_OFFSET_Y
+const rope = function* (head: Entity, world: World): Behaviour<void> {
+  const headPosition = head.getComponent('Position')
 
-  const segmentSearcher = new SegmentSearcherFactory()
-    .setSegmentStart(headPosition)
-    .setSegmentEnd(headPosition.add(new Vec2(0, INFINITY_COORDINATE)))
-    .addCategoryToMask('terrain')
-    .create()
-  world.addEntity(segmentSearcher)
-  const getClosestHit = segmentSearchGenerator(segmentSearcher, { maximumDistance: ROOT_OFFSET_Y })
+  const closestHit = yield* searchBySegment({
+    start: headPosition,
+    end: headPosition.add(new Vec2(0, ROOT_OFFSET_Y)),
+    mask: new CategorySet('terrain'),
+    world,
+  })
 
-  yield
-
-  const { value: closestHit } = getClosestHit.next()
-  assert(closestHit instanceof Object, 'dandelion ai fails segment searching')
-  const rootPosition = headPosition.copy()
-  rootPosition.y = closestHit.point.y
-  world.removeEntity(segmentSearcher)
-
+  const rootPosition = closestHit.point
+  const draw = head.getComponent('Draw')
   const points = new Array<PIXI.Point>(ROPE_POINT_NUM)
   for (let i = 0; i < points.length; i++) points[i] = new PIXI.Point(0, i * 2)
   const rope = new PIXI.SimpleRope(PIXI.Texture.from(DandelionStem), points)
@@ -45,17 +46,7 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
   draw.sortableChildren = true
   draw.addChild(rope)
 
-  const headOrigin = new Vec2(headPosition.x, headPosition.y)
-  const n = headPosition.sub(rootPosition).normalize()
-  let s = 0
-  function updateHead(): void {
-    s += HEAD_OSCILLATION_TIME_SCALE
-    const d = Math.sin(s) * 5 + Math.sin(s * 0.1) * 5
-    headPosition.x = headOrigin.x + d * n.y
-    headPosition.y = headOrigin.y - d * n.x
-  }
-
-  function updateRope(): void {
+  while (true) {
     const dx = rootPosition.x - headPosition.x
     const dy = rootPosition.y - headPosition.y
     for (let i = 0; i < points.length; i++) {
@@ -65,22 +56,28 @@ export const dandelionBehaviour = function*(entity: Entity, world: World): Behav
       points[i].x = x
       points[i].y = y
     }
-  }
-
-  const factory = new DandelionFluffFactory(world, entity)
-
-  let t = 0
-  function updateFluff(): void {
-    t += 1
-    if (t % FLUFF_EMIT_INTERVAL == 0) {
-      world.addEntity(factory.create())
-    }
-  }
-
-  while (true) {
-    updateHead()
-    updateRope()
-    updateFluff()
     yield
   }
+}
+
+const emitFluff = function* (head: Entity, world: World): Behaviour<void> {
+  const airHolder = head.getComponent('AirHolder')
+  const factory = new DandelionFluffFactory(world, head)
+
+  let t = 0
+  while (true) {
+    t += 1
+    if (t % FLUFF_EMIT_INTERVAL == 0 && airHolder.quantity > 0) {
+      world.addEntity(factory.create())
+    }
+    yield
+  }
+}
+
+export const dandelionBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
+  const headPosition = entity.getComponent('Position')
+
+  headPosition.y += HEAD_OFFSET_Y
+
+  yield* parallelAll([head(entity), rope(entity, world), emitFluff(entity, world)])
 }

@@ -2,5 +2,25 @@
   "draw": {
     "name": "dandelion"
   },
-  "animationState": {}
+  "animationState": {},
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "offset": [0, 6],
+        "size": [78, 44]
+      },
+      "category": "airHolder",
+      "mask": ["air"],
+      "tag": ["airHolderBody"]
+    }
+  ],
+  "airHolder": {
+    "initialQuantity": 0,
+    "maxQuantity": 1,
+    "collectSpeed": 1,
+    "consumeSpeed": 0,
+    "emitSpeed": 0.5,
+    "shouldDamageInSuffocation": false
+  }
 }

@@ -15,7 +15,7 @@ const selectNext = (state: StemState, boss: Entity, world: World): Behaviour<voi
   }
 }
 
-export const attack = function*(state: StemState, boss: Entity, world: World): Behaviour<void> {
+export const attack = function* (state: StemState, boss: Entity, world: World): Behaviour<void> {
   while (true) {
     yield* wait(state)
     yield* selectNext(state, boss, world)

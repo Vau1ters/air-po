@@ -1,0 +1,86 @@
+{
+  "draw": {
+    "name": "locust"
+  },
+  "animationState": {},
+  "airHolder": {
+    "initialQuantity": 50,
+    "maxQuantity": 50,
+    "collectSpeed": 0,
+    "consumeSpeed": 0,
+    "shouldDamageInSuffocation": false
+  },
+  "rigidBody": {
+    "mass": 10,
+    "gravityScale": 1
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [24, 16],
+        "maxClipToTolerance": [5, 5]
+      },
+      "category": "physics",
+      "mask": ["terrain"],
+      "tag": ["physics"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [24, 16]
+      },
+      "category": "enemyHitbox",
+      "tag": ["HitBox"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [24, 16]
+      },
+      "category": "attack",
+      "mask": ["playerHitbox"],
+      "tag": ["Attack"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [26, 16]
+      },
+      "category": "sensor",
+      "mask": ["terrain"],
+      "tag": ["LocustWallSensor"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "offset": [0, 8],
+        "size": [8, 1],
+        "maxClipToTolerance": [2, 0]
+      },
+      "category": "sensor",
+      "mask": ["terrain"],
+      "tag": ["LocustFootSensor"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [200, 200]
+      },
+      "category": "sensor",
+      "mask": ["terrain"],
+      "tag": ["LocustPlayerSensor"]
+    }
+  ],
+  "hp": {
+    "max": 1
+  },
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": false
+  },
+  "sound": {},
+  "horizontalDirection": {
+    "looking": "Right"
+  }
+}

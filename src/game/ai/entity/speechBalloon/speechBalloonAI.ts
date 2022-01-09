@@ -10,15 +10,15 @@ import { Vec2 } from '@core/math/vec2'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { BitmapText, Sprite } from 'pixi.js'
 
-const chase = function*(speechBalloon: Entity, target: Entity, world: World): Behaviour<void> {
+const chase = function* (speechBalloon: Entity, target: Entity, world: World): Behaviour<void> {
   const camera = getSingleton('Camera', world)
   const ui = speechBalloon.getComponent('Draw')
   const background = ui.getChildByName('background') as Sprite
   const targetPositionOnWorld = target.getComponent('Position')
   const cameraPositionOnWorld = camera.getComponent('Position')
 
-  const [uiFilter] = ui.filters
-  const [backgroundFilter] = background.filters
+  const [uiFilter] = ui.filters || []
+  const [backgroundFilter] = background.filters || []
 
   while (true) {
     const speechBalloonPositionOnScreen = new Vec2(ui.position.x, ui.position.y)
@@ -41,10 +41,10 @@ const updateBitmapText = (bitmapText: BitmapText, newText: string): void => {
   bitmapText.updateText()
 }
 
-const animate = function*(speechBalloon: Entity): Behaviour<void> {
+const animate = function* (speechBalloon: Entity): Behaviour<void> {
   const draw = speechBalloon.getComponent('Draw')
   const bitmapText = draw.getChildByName('text') as BitmapText
-  const [filter] = draw.filters
+  const [filter] = draw.filters || []
 
   const wholeText = bitmapText.text
   updateBitmapText(bitmapText, '')
@@ -57,10 +57,10 @@ const animate = function*(speechBalloon: Entity): Behaviour<void> {
   yield* parallelAll([popInspeechBalloonScale, popInspeechBalloonAngle])
 
   while (bitmapText.text.length < wholeText.length) {
-    yield* wait(4)
+    yield* wait.frame(4)
     updateBitmapText(bitmapText, wholeText.substr(0, bitmapText.text.length + 1))
   }
-  yield* wait(100)
+  yield* wait.frame(100)
 
   const popOutspeechBalloonScale = ease(In.quad)(20, value => (filter.uniforms.scale = value), {
     from: 1,
@@ -69,10 +69,10 @@ const animate = function*(speechBalloon: Entity): Behaviour<void> {
   yield* popOutspeechBalloonScale
 }
 
-export const speechBalloonAI = function(
+export const speechBalloonAI = function* (
   speechBalloon: Entity,
   target: Entity,
   world: World
 ): Behaviour<void> {
-  return parallelAny([animate(speechBalloon), chase(speechBalloon, target, world)])
+  yield* parallelAny([animate(speechBalloon), chase(speechBalloon, target, world)])
 }

@@ -5,30 +5,51 @@ export type BranchController = {
   finish: () => void
 }
 
-export const branch = (branches: {
+export type BranchBehaviours = {
   [key: string]: (controller: BranchController) => Behaviour<void>
-}): { start: (name: string) => Behaviour<void> } => {
-  return {
-    start: function*(name: string): Behaviour<void> {
-      let state = name
-      let done = false
-      const controller = {
-        transit: (name: string): void => {
-          state = name
-        },
-        finish: (): void => {
-          done = true
-        },
-      }
+}
 
-      const behaviours: { [key: string]: Behaviour<void> } = {}
-      for (const name of Object.keys(branches)) {
-        behaviours[name] = branches[name](controller)
-      }
-      while (!done) {
-        behaviours[state].next()
-        yield
-      }
+export type BranchResult = {
+  controller: BranchController
+  start: (name: string) => Behaviour<void>
+  by: (name: () => string) => Behaviour<void>
+}
+
+export const branch = (branches: BranchBehaviours): BranchResult => {
+  let state = ''
+  let done = false
+  const controller = {
+    transit: (name: string): void => {
+      state = name
     },
+    finish: (): void => {
+      done = true
+    },
+  }
+  const start = function* (name: string): Behaviour<void> {
+    state = name
+    const behaviours: { [key: string]: Behaviour<void> } = {}
+    for (const name of Object.keys(branches)) {
+      behaviours[name] = branches[name](controller)
+    }
+    while (!done) {
+      behaviours[state].next()
+      yield
+    }
+  }
+  const by = function* (name: () => string): Behaviour<void> {
+    const behaviours: { [key: string]: Behaviour<void> } = {}
+    for (const name of Object.keys(branches)) {
+      behaviours[name] = branches[name](controller)
+    }
+    while (!done) {
+      behaviours[name()].next()
+      yield
+    }
+  }
+  return {
+    start,
+    by,
+    controller,
   }
 }

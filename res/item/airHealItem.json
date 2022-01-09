@@ -2,5 +2,6 @@
   "name": "airHealItem",
   "displayName": "くうきかいふく",
   "description": "くうきを1かいふく",
-  "spriteName": "airHealItem"
+  "spriteName": "airHealItem",
+  "price": 25
 }

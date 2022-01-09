@@ -22,7 +22,7 @@ export const SnibeeSetting = {
   maxVelocity: 200, // px/s
 }
 
-const moveAI = function*(entity: Entity, player: Entity): Behaviour<void> {
+const moveAI = function* (entity: Entity, player: Entity): Behaviour<void> {
   const direction = entity.getComponent('HorizontalDirection')
 
   while (true) {
@@ -59,7 +59,7 @@ bulletFactory.speed = 120
 bulletFactory.setRange(SnibeeSetting.exteriorDistance + 10)
 bulletFactory.offset.y = 4
 
-const shootAI = function*(entity: Entity, world: World, player: Entity): Behaviour<void> {
+const shootAI = function* (entity: Entity, world: World, player: Entity): Behaviour<void> {
   while (true) {
     const pp = player.getComponent('Position')
     const ep = entity.getComponent('Position')
@@ -72,14 +72,16 @@ const shootAI = function*(entity: Entity, world: World, player: Entity): Behavio
       bulletFactory.type = 'needle'
       world.addEntity(bulletFactory.create())
       entity.getComponent('Sound').addSound('snibee')
-      yield* wait(SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange)
+      yield* wait.frame(
+        SnibeeSetting.coolTime + (Math.random() - 0.5) * SnibeeSetting.coolTimeRange
+      )
     } else {
       yield
     }
   }
 }
 
-const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
+const aliveAI = function* (entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
   yield* parallelAll([
     moveAI(entity, player),
@@ -88,7 +90,7 @@ const aliveAI = function*(entity: Entity, world: World): Behaviour<void> {
   ])
 }
 
-const flutteringAI = function*(entity: Entity): Behaviour<void> {
+const flutteringAI = function* (entity: Entity): Behaviour<void> {
   const rigidbody = entity.getComponent('RigidBody')
   yield* animate({ entity, state: 'FlutteringLeft' })
   yield* repeat(10, () => {
@@ -104,14 +106,14 @@ const flutteringAI = function*(entity: Entity): Behaviour<void> {
   })
 }
 
-export const snibeeAI = function*(entity: Entity, world: World): Behaviour<void> {
+export const snibeeAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
   entity.getComponent('Sound').addSound('snibeeDie')
   yield* animate({ entity, state: 'Dying' })
   entity.getComponent('RigidBody').velocity.x = 0
   entity.getComponent('RigidBody').velocity.y = -3
   entity.getComponent('RigidBody').gravityScale = 0.05
-  yield* emitAir(entity, world, 50)
+  yield* emitAir(entity)
   yield* flutteringAI(entity)
   yield* kill(entity, world)
 }

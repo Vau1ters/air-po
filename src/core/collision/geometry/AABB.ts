@@ -1,7 +1,6 @@
 import { Vec2 } from '@core/math/vec2'
 import { Graphics } from 'pixi.js'
 import { GeometryForCollision } from './geometry'
-import { OBB } from './OBB'
 
 export class AABB implements GeometryForCollision {
   public constructor(
@@ -101,10 +100,6 @@ export class AABB implements GeometryForCollision {
     return this.bottomRight
   }
 
-  asOBB(): OBB {
-    return new OBB(this.clone(), 0)
-  }
-
   createBound(): AABB {
     return this.clone()
   }
@@ -115,5 +110,9 @@ export class AABB implements GeometryForCollision {
 
   draw(g: Graphics): void {
     g.drawRect(this.min.x, this.min.y, this.size.x, this.size.y)
+  }
+
+  solvable(): boolean {
+    return true
   }
 }

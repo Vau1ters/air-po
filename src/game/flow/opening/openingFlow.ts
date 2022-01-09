@@ -8,12 +8,13 @@ import { CameraComponent } from '@game/components/cameraComponent'
 import { parallelAny } from '@core/behaviour/composite'
 import { FadeOut } from '../common/animation/fadeOut'
 import { createSprite } from '@core/graphics/art'
-import { OpeningWorldFactory } from '@game/worlds/openingWorldFactory'
+import { OpeningWorldFactory } from '@game/flow/opening/openingWorldFactory'
 import { Flow } from '../flow'
 import { gameFlow } from '../game/gameFlow'
 import { loadData, saveData, StoryStatus } from '@game/playdata/playdata'
+import { BgmFactory } from '@game/entities/bgmFactory'
 
-const camera = function*(world: World): Behaviour<void> {
+const camera = function* (world: World): Behaviour<void> {
   const camera = new Entity()
   camera.addComponent('Position', new PositionComponent())
   camera.addComponent('Camera', new CameraComponent([]))
@@ -25,7 +26,7 @@ const camera = function*(world: World): Behaviour<void> {
   }
 }
 
-const player = function*(world: World): Behaviour<void> {
+const player = function* (world: World): Behaviour<void> {
   const player = new Entity()
   player.addComponent(
     'Draw',
@@ -50,14 +51,14 @@ const player = function*(world: World): Behaviour<void> {
   }
 }
 
-const waitInput = function*(): Behaviour<void> {
+const waitInput = function* (): Behaviour<void> {
   while (!MouseController.isMousePressed('Left')) yield
 }
 
-export const openingFlow = function*(): Flow {
+export const openingFlow = function* (): Flow {
   const world = new OpeningWorldFactory().create()
   yield* parallelAny([
-    (function*(): Generator<void> {
+    (function* (): Generator<void> {
       yield* parallelAny([player(world), camera(world), waitInput()])
       yield* FadeOut(world)
     })(),
@@ -70,6 +71,7 @@ export const openingFlow = function*(): Flow {
     storyStatus: StoryStatus.Stage,
   })
 
+  const bgm = new BgmFactory().create()
   const { spawnPoint, playerData } = loadData()
-  return gameFlow(spawnPoint, playerData)
+  return gameFlow({ spawnPoint, playerData, bgm })
 }

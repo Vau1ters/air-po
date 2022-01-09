@@ -3,7 +3,7 @@ import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { Collider } from '@game/components/colliderComponent'
-import { collide } from '@core/collision/collision'
+import { collide, flipResult } from '@core/collision/collision'
 import { Category, CategorySet } from '@game/entities/category'
 import { assert } from '@utils/assertion'
 import { BVH } from '@core/collision/bvh'
@@ -20,14 +20,8 @@ export default class CollisionSystem extends System {
   public constructor(world: World) {
     super(world)
 
-    this.staticFamily = new FamilyBuilder(world)
-      .include('Collider')
-      .include('Static')
-      .build()
-    this.dynamicFamily = new FamilyBuilder(world)
-      .include('Collider')
-      .exclude('Static')
-      .build()
+    this.staticFamily = new FamilyBuilder(world).include('Collider').include('Static').build()
+    this.dynamicFamily = new FamilyBuilder(world).include('Collider').exclude('Static').build()
   }
 
   public init(): void {
@@ -130,7 +124,7 @@ export default class CollisionSystem extends System {
         }
         if (mask2.has(category1)) {
           for (const callback of c2.callbacks) {
-            callback({ me: c2, other: c1, ...result })
+            callback({ me: c2, other: c1, ...flipResult(result) })
           }
         }
       }
@@ -139,7 +133,7 @@ export default class CollisionSystem extends System {
 
   public get bvhs(): IterableIterator<BVH> {
     const { staticBVHs, dynamicBVHs } = this
-    return (function*(): Generator<BVH> {
+    return (function* (): Generator<BVH> {
       for (const [_, bvh] of staticBVHs) yield bvh
       for (const [_, bvh] of dynamicBVHs) yield bvh
     })()

@@ -28,8 +28,9 @@ import { PositionComponent } from 'src/game/components/positionComponent'
 import { RigidBodyComponent } from 'src/game/components/rigidBodyComponent'
 import { SensorComponent } from 'src/game/components/sensorComponent'
 import { SoundComponent } from 'src/game/components/soundComponent'
+import { StagePointComponent } from 'src/game/components/stagePointComponent'
 import { StaticComponent } from 'src/game/components/staticComponent'
-import { VineComponent } from 'src/game/components/vineComponent'
+import { TileLayoutComponent } from 'src/game/components/tileLayoutComponent'
 export interface ComponentMap {
   Ai: AiComponent
   Air: AirComponent
@@ -55,8 +56,9 @@ export interface ComponentMap {
   RigidBody: RigidBodyComponent
   Sensor: SensorComponent
   Sound: SoundComponent
+  StagePoint: StagePointComponent
   Static: StaticComponent
-  Vine: VineComponent
+  TileLayout: TileLayoutComponent
 }
 
 export type ComponentName = keyof ComponentMap

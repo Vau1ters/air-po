@@ -4,7 +4,7 @@ import { Entity } from '@core/ecs/entity'
 const INTERVAL = 70
 const SHAKE_RADIUS = 16
 
-export const shakeCameraAI = function*(camera: Entity): Behaviour<void> {
+export const shakeCameraAI = function* (camera: Entity): Behaviour<void> {
   const pos = camera.getComponent('Position')
   const center = pos.copy()
   for (let i = 0; i < INTERVAL; i++) {

@@ -1,26 +1,24 @@
-export type AirHolderSetting = {
-  initialQuantity: number
-  maxQuantity: number
-  consumeSpeed: number
-  collectSpeed: number
-  shouldDamageInSuffocation: boolean
-}
+import { Entity } from '@core/ecs/entity'
+import { AirHolderSetting } from '@game/entities/loader/component/AirHolderComponentLoader'
 
 export class AirHolderComponent {
   public quantity: number
   public maxQuantity: number
   private consumeSpeed: number
-  private collectSpeed: number
+  public collectSpeed: number
+  public emitSpeed: number
   public readonly shouldDamageInSuffocation: boolean
   public suffocationDamageCount: number
   public inAir: boolean
+  public hitAirs: Array<Entity> = []
 
   public constructor(airSetting: AirHolderSetting) {
-    this.quantity = airSetting.initialQuantity
-    this.maxQuantity = airSetting.maxQuantity
-    this.consumeSpeed = airSetting.consumeSpeed
-    this.collectSpeed = airSetting.collectSpeed
-    this.shouldDamageInSuffocation = airSetting.shouldDamageInSuffocation
+    this.quantity = airSetting.initialQuantity ?? 0
+    this.maxQuantity = airSetting.maxQuantity ?? 0
+    this.consumeSpeed = airSetting.consumeSpeed ?? 0
+    this.collectSpeed = airSetting.collectSpeed ?? 0
+    this.emitSpeed = airSetting.emitSpeed ?? 0
+    this.shouldDamageInSuffocation = airSetting.shouldDamageInSuffocation ?? false
     this.suffocationDamageCount = 0
     this.inAir = false
   }
@@ -29,8 +27,10 @@ export class AirHolderComponent {
     this.quantity = Math.max(0, this.quantity - this.consumeSpeed)
   }
 
-  public consumeBy(consumeSpeed: number): void {
+  public consumeBy(consumeSpeed: number): number {
+    const prevQuantity = this.quantity
     this.quantity = Math.max(0, this.quantity - consumeSpeed)
+    return prevQuantity - this.quantity
   }
 
   public collect(airQuantity: number): number {

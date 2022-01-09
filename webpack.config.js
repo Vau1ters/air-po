@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ESLintWebpackPlugin = require('eslint-webpack-plugin')
+const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -10,17 +11,11 @@ module.exports = {
     filename: 'bundle.js',
   },
   devServer: {
-    contentBase: './public',
+    static: './public',
     port: 3000,
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
-      },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
@@ -65,10 +60,20 @@ module.exports = {
         configFile: 'tsconfig.json',
       }),
     ],
+    fallback: {
+      buffer: require.resolve('buffer/'),
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
+    }),
+    new ESLintWebpackPlugin({
+      extensions: ['.ts', '.js'],
+      exclude: 'node_modules',
+      fix: true,
     }),
   ],
 }

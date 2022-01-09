@@ -5,12 +5,8 @@ import { ObjectEntityFactory } from '../../objectEntityFactory'
 
 export default class AirGeyserFactory extends ObjectEntityFactory {
   public create(): Entity {
-    const maxQuantity =
-      (this.object.properties?.find(property => property.name === 'maxQuantity')
-        ?.value as number) ?? 120
-    const increaseRate =
-      (this.object.properties?.find(property => property.name === 'increaseRate')
-        ?.value as number) ?? 0.2
+    const maxQuantity = this.findProperty('float', 'maxQuantity') ?? 120
+    const increaseRate = this.findProperty('float', 'increaseRate') ?? 0.2
 
     const entity = super.create()
 

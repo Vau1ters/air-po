@@ -52,8 +52,8 @@
   ],
   "airHolder": {
     "initialQuantity": 0,
-    "maxQuantity": 10,
-    "collectSpeed": 10,
+    "maxQuantity": 40,
+    "collectSpeed": 40,
     "consumeSpeed": 0,
     "shouldDamageInSuffocation": false
   },

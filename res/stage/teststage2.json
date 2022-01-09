@@ -29,8 +29,8 @@
           "type": "",
           "visible": true,
           "width": 72,
-          "x": 180,
-          "y": -20
+          "x": 179.333333333333,
+          "y": -17.3333333333333
         },
         {
           "ellipse": true,
@@ -10300,7 +10300,7 @@
     },
     {
       "firstgid": 58,
-      "source": "tileset/player.json"
+      "source": "tileset/playerSpawner.json"
     },
     {
       "firstgid": 61,

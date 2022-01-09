@@ -8,7 +8,7 @@ export type StreamOption = {
   to: number
 }
 
-export const stream = function*(
+export const stream = function* (
   callback: (value: number) => void,
   initialValue: number,
   streamOptions: StreamOption[]
