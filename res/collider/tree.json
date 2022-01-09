@@ -1153,16 +1153,16 @@
   {
     "index": 118,
     "geometry": {
-      "type": "Slope",
+      "type": "AABB",
       "size": [
         8,
         8
       ],
-      "normal": [
-        1,
-        1
-      ],
       "solveDir": [
+        [
+          1,
+          0
+        ],
         [
           0,
           1
@@ -1527,16 +1527,16 @@
   {
     "index": 149,
     "geometry": {
-      "type": "Slope",
+      "type": "AABB",
       "size": [
         8,
         8
       ],
-      "normal": [
-        -1,
-        1
-      ],
       "solveDir": [
+        [
+          -1,
+          0
+        ],
         [
           0,
           1
@@ -2574,8 +2574,8 @@
       ],
       "solveDir": [
         [
-          0,
-          -1
+          1,
+          0
         ],
         [
           0,
@@ -2831,16 +2831,16 @@
   {
     "index": 283,
     "geometry": {
-      "type": "Slope",
+      "type": "AABB",
       "size": [
         8,
         8
       ],
-      "normal": [
-        -1,
-        1
-      ],
       "solveDir": [
+        [
+          -1,
+          0
+        ],
         [
           0,
           1
@@ -3094,16 +3094,16 @@
   {
     "index": 303,
     "geometry": {
-      "type": "Slope",
+      "type": "AABB",
       "size": [
         8,
         8
       ],
-      "normal": [
-        -1,
-        1
-      ],
       "solveDir": [
+        [
+          -1,
+          0
+        ],
         [
           0,
           1
@@ -3198,16 +3198,16 @@
   {
     "index": 310,
     "geometry": {
-      "type": "Slope",
+      "type": "AABB",
       "size": [
         8,
         8
       ],
-      "normal": [
-        1,
-        1
-      ],
       "solveDir": [
+        [
+          1,
+          0
+        ],
         [
           0,
           1
@@ -3343,16 +3343,16 @@
   {
     "index": 326,
     "geometry": {
-      "type": "Slope",
+      "type": "AABB",
       "size": [
         8,
         8
       ],
-      "normal": [
-        1,
-        1
-      ],
       "solveDir": [
+        [
+          1,
+          0
+        ],
         [
           0,
           1
