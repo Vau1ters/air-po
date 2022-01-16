@@ -1,26 +1,33 @@
 import { assert } from '@utils/assertion'
 import { Behaviour } from './behaviour'
 
-export const parallelAll = function* <T>(behaviourList: Array<Behaviour<T>>): Behaviour<Array<T>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const parallelAll = function* <T extends Array<any>>(behaviourList: {
+  [P in keyof T]: Behaviour<T[P]>
+}): Behaviour<T> {
   while (true) {
     const results = behaviourList.map(behaviour => behaviour.next())
     const hasAllDone = results.every(result => result.done === true)
-    if (hasAllDone)
+    if (hasAllDone) {
       return results.map(result => {
         assert(result.done === true, '')
         return result.value
-      })
+      }) as T
+    }
     yield
   }
 }
 
-export const parallelAny = function* <T>(
-  behaviourList: Array<Behaviour<T>>
-): Behaviour<Array<T | undefined>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const parallelAny = function* <T extends Array<any>>(behaviourList: {
+  [P in keyof T]: Behaviour<T[P]>
+}): Behaviour<Partial<T>> {
   while (true) {
     const results = behaviourList.map(behaviour => behaviour.next())
     const hasAnyDone = results.some(result => !!result.done)
-    if (hasAnyDone) return results.map(result => (result.done ? result.value : undefined))
+    if (hasAnyDone) {
+      return results.map(result => (result.done ? result.value : undefined)) as Partial<T>
+    }
     yield
   }
 }

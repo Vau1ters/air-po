@@ -3,8 +3,10 @@ import { BaseTexture, Texture, Rectangle } from 'pixi.js'
 import { AnimationSprite } from './animationSprite'
 import { SpriteBuffer, AnimationDefinition } from './spriteBuffer'
 import { spriteURL } from './spriteURL'
+import * as t from 'io-ts'
 
-export type SpriteName = keyof typeof spriteURL
+export const SpriteNameType = t.keyof(spriteURL)
+export type SpriteName = t.TypeOf<typeof SpriteNameType>
 
 export const toSpriteName = (s: string): SpriteName => {
   assert(s in spriteURL, `'${s} is not SpriteName`)

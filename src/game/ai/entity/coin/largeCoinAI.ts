@@ -48,11 +48,6 @@ export const largeCoinAI = function* (entity: Entity, world: World): Behaviour<v
       loadDrawComponent(
         {
           name: 'coinLargeDummy',
-          type: undefined,
-          scale: undefined,
-          state: undefined,
-          zIndex: undefined,
-          anchor: undefined,
         },
         entity
       )

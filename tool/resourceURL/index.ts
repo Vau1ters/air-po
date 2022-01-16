@@ -9,6 +9,7 @@ import * as cp from 'child_process'
 import { buildItem } from './item'
 import { buildUi } from './ui'
 import { buildEquipment } from './equipment'
+import { buildMovie } from './movie'
 
 export const buildResourceURL = (): void => {
   const outputFiles: Array<string> = [
@@ -22,6 +23,7 @@ export const buildResourceURL = (): void => {
     buildTile(),
     buildObject(),
     buildComponent(),
+    buildMovie(),
   ]
 
   cp.execSync(`yarn eslint --fix ${outputFiles.join(' ')}`)

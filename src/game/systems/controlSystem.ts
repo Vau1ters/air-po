@@ -14,6 +14,7 @@ export type KeyActionType =
   | 'Pause'
   | 'Inventory'
   | 'Shop'
+  | 'Movie'
 export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveLeft: 'A',
   MoveRight: 'D',
@@ -24,6 +25,7 @@ export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   Pause: 'Escape',
   Inventory: 'Tab',
   Shop: 'Space',
+  Movie: 'Enter',
 }
 
 export class KeyController {

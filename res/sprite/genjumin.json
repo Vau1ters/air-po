@@ -1,0 +1,19 @@
+{
+  "name": "genjumin",
+  "path": "genjumin.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "Standing": [0],
+      "Walking": [1, 0],
+      "Jumping": [1],
+      "Dying": [2]
+    },
+    "default": "Standing"
+  }
+}

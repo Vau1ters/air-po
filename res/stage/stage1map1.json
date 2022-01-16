@@ -33,7 +33,7 @@
       "name": "background",
       "objects": [
         {
-          "gid": 125,
+          "gid": 159,
           "height": 1200,
           "id": 55,
           "name": "",
@@ -52,7 +52,7 @@
           "y": 1200
         },
         {
-          "gid": 126,
+          "gid": 160,
           "height": 1200,
           "id": 56,
           "name": "",
@@ -90,7 +90,7 @@
       "name": "entity",
       "objects": [
         {
-          "gid": 93,
+          "gid": 127,
           "height": 128,
           "id": 51,
           "name": "",
@@ -109,7 +109,7 @@
           "y": 240
         },
         {
-          "gid": 93,
+          "gid": 127,
           "height": 128,
           "id": 43,
           "name": "",
@@ -128,7 +128,7 @@
           "y": 360
         },
         {
-          "gid": 96,
+          "gid": 130,
           "height": 32,
           "id": 46,
           "name": "",
@@ -152,7 +152,7 @@
           "y": 368
         },
         {
-          "gid": 96,
+          "gid": 130,
           "height": 32,
           "id": 47,
           "name": "",
@@ -176,7 +176,7 @@
           "y": 312
         },
         {
-          "gid": 96,
+          "gid": 130,
           "height": 32,
           "id": 52,
           "name": "",
@@ -200,7 +200,7 @@
           "y": 304
         },
         {
-          "gid": 58,
+          "gid": 66,
           "height": 16,
           "id": 42,
           "name": "",
@@ -219,7 +219,7 @@
           "y": 360
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 53,
           "name": "",
@@ -231,7 +231,7 @@
           "y": 56
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 54,
           "name": "",
@@ -243,7 +243,7 @@
           "y": 72
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 55,
           "name": "",
@@ -255,7 +255,7 @@
           "y": 104
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 56,
           "name": "",
@@ -267,7 +267,7 @@
           "y": 112
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 57,
           "name": "",
@@ -279,7 +279,7 @@
           "y": 136
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 58,
           "name": "",
@@ -291,7 +291,7 @@
           "y": 176
         },
         {
-          "gid": 86,
+          "gid": 94,
           "height": 16,
           "id": 59,
           "name": "",
@@ -303,7 +303,7 @@
           "y": 176
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 60,
           "name": "",
@@ -315,7 +315,7 @@
           "y": 184
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 61,
           "name": "",
@@ -327,7 +327,7 @@
           "y": 208
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 62,
           "name": "",
@@ -339,7 +339,7 @@
           "y": 232
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 63,
           "name": "",
@@ -351,7 +351,7 @@
           "y": 288
         },
         {
-          "gid": 79,
+          "gid": 87,
           "height": 80,
           "id": 64,
           "name": "",
@@ -363,7 +363,7 @@
           "y": 296
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 65,
           "name": "",
@@ -375,7 +375,7 @@
           "y": 320
         },
         {
-          "gid": 41,
+          "gid": 49,
           "height": 16,
           "id": 66,
           "name": "",
@@ -387,7 +387,7 @@
           "y": 320
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 67,
           "name": "",
@@ -399,7 +399,7 @@
           "y": 336
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 68,
           "name": "",
@@ -411,7 +411,7 @@
           "y": 336
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 69,
           "name": "",
@@ -423,7 +423,7 @@
           "y": 336
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 70,
           "name": "",
@@ -435,7 +435,7 @@
           "y": 344
         },
         {
-          "gid": 103,
+          "gid": 137,
           "height": 16,
           "id": 71,
           "name": "",
@@ -25679,55 +25679,55 @@
       "source": "tileset/wall.json"
     },
     {
-      "firstgid": 41,
+      "firstgid": 49,
       "source": "tileset/enemy1.json"
     },
     {
-      "firstgid": 58,
+      "firstgid": 66,
       "source": "tileset/playerSpawner.json"
     },
     {
-      "firstgid": 61,
+      "firstgid": 69,
       "source": "tileset/balloonVine.json"
     },
     {
-      "firstgid": 63,
+      "firstgid": 71,
       "source": "tileset/snibee.json"
     },
     {
-      "firstgid": 79,
+      "firstgid": 87,
       "source": "tileset/dandelion.json"
     },
     {
-      "firstgid": 86,
+      "firstgid": 94,
       "source": "tileset/vine.json"
     },
     {
-      "firstgid": 92,
+      "firstgid": 126,
       "source": "tileset/moss.json"
     },
     {
-      "firstgid": 93,
+      "firstgid": 127,
       "source": "tileset/sensor.json"
     },
     {
-      "firstgid": 94,
+      "firstgid": 128,
       "source": "tileset/airGeyser.json"
     },
     {
-      "firstgid": 102,
+      "firstgid": 136,
       "source": "tileset/throughFloor.json"
     },
     {
-      "firstgid": 103,
+      "firstgid": 137,
       "source": "tileset/slime1.json"
     },
     {
-      "firstgid": 125,
+      "firstgid": 159,
       "source": "tileset/background1.json"
     },
     {
-      "firstgid": 126,
+      "firstgid": 160,
       "source": "tileset/background2.json"
     }
   ],

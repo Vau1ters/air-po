@@ -1,0 +1,66 @@
+import { SpriteNameType } from '@core/graphics/art'
+import { movieList } from './movieList'
+import * as t from 'io-ts'
+
+export type MovieName = keyof typeof movieList
+
+export const ActorNameType = t.string
+
+export const MoviePositionType = t.intersection([
+  t.type({
+    baseName: ActorNameType,
+  }),
+  t.partial({
+    offset: t.tuple([t.number, t.number]),
+  }),
+])
+
+export const CameraActionTypeType = t.union([t.literal('ease'), t.literal('warp')])
+
+export const CameraActionType = t.type({
+  action: t.literal('camera'),
+  to: MoviePositionType,
+  type: CameraActionTypeType,
+  chase: t.boolean,
+})
+
+export const TalkActionType = t.type({
+  action: t.literal('talk'),
+  speaker: ActorNameType,
+  content: t.string,
+})
+
+export const MoveActionTypeType = t.union([t.literal('walk'), t.literal('warp')])
+
+export const MoveActionType = t.type({
+  action: t.literal('move'),
+  mover: ActorNameType,
+  to: MoviePositionType,
+  type: MoveActionTypeType,
+})
+
+export const ShowSpriteActionType = t.type({
+  action: t.literal('showSprite'),
+  sprite: SpriteNameType,
+  pos: MoviePositionType,
+})
+
+export const ActionType = t.union([
+  CameraActionType,
+  TalkActionType,
+  MoveActionType,
+  ShowSpriteActionType,
+])
+
+export const MovieType = t.array(ActionType)
+
+export type Movie = t.TypeOf<typeof MovieType>
+export type Action = t.TypeOf<typeof ActionType>
+export type CameraAction = t.TypeOf<typeof CameraActionType>
+export type CameraActionType = t.TypeOf<typeof CameraActionTypeType>
+export type TalkAction = t.TypeOf<typeof TalkActionType>
+export type MoveAction = t.TypeOf<typeof MoveActionType>
+export type MoveActionType = t.TypeOf<typeof MoveActionTypeType>
+export type ShowSpriteAction = t.TypeOf<typeof ShowSpriteActionType>
+export type ActorName = t.TypeOf<typeof ActorNameType>
+export type MoviePosition = t.TypeOf<typeof MoviePositionType>
