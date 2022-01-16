@@ -11,7 +11,8 @@
     "state": {
       "Close": [0],
       "Opening": [1, 2, 3, 4, 5, 6, 7],
-      "Landed": [3, 4, 5, 6]
+      "Landed": [3, 4, 5, 6],
+      "Closing": [7, 2, 1]
     },
     "default": "Close"
   }

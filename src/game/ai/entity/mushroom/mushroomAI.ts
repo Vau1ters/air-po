@@ -54,6 +54,6 @@ export const mushroomAI = function* (entity: Entity, world: World): Behaviour<vo
         }
       })()
     )
-    yield* animate({ entity, state: 'Opening', waitFrames: 5, reverse: true })
+    yield* animate({ entity, state: 'Closing', waitFrames: 5 })
   }
 }
