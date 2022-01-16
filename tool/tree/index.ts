@@ -69,7 +69,7 @@ const calcBoundMap = (bounds: Array<Bound>): Array<[Bound, Bound]> => {
     )
     if (spaceIndex !== -1) {
       const [space] = spaces.splice(spaceIndex, 1)
-      // 空き領域が見つかっのでそこに詰める
+      // 空き領域が見つかったのでそこに詰める
       boundMap.push([bound, new Bound(space.x, space.y, bound.width, bound.height)])
 
       // 空き領域を分割(分割のしかたについては諸説)
@@ -80,7 +80,12 @@ const calcBoundMap = (bounds: Array<Bound>): Array<[Bound, Bound]> => {
       }
       if (bound.height < space.height) {
         spaces.push(
-          new Bound(space.x, space.y + bound.height, space.width, space.height - bound.height)
+          new Bound(
+            space.x,
+            space.y + bound.height,
+            space.width - bound.width,
+            space.height - bound.height
+          )
         )
       }
     } else {
