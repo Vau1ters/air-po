@@ -1,0 +1,14 @@
+{ "columns":18,
+ "image":"..\/..\/image\/treeGuide.png",
+ "imageheight":216,
+ "imagewidth":144,
+ "margin":0,
+ "name":"tree",
+ "spacing":0,
+ "tilecount":486,
+ "tiledversion":"1.7.2",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.6"
+}

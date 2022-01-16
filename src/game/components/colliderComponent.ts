@@ -87,6 +87,7 @@ export type ColliderBuildOption = {
   tag?: string[]
   category: Category
   mask?: Set<Category>
+  solveDir?: Array<Vec2>
   geometry: GeometryBuildOption
 }
 
@@ -111,7 +112,7 @@ export const buildCollider = (option: { entity: Entity } & ColliderBuildOption):
     tag: new Set<string>(option.tag),
     category: option.category,
     mask: option.mask ?? new Set<Category>(),
-    solveDir: [],
+    solveDir: option.solveDir ?? [],
   })
 }
 

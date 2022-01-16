@@ -48,6 +48,7 @@ import spore from '@res/sprite/spore.json'
 import testItem from '@res/sprite/testItem.json'
 import throughFloor from '@res/sprite/throughFloor.json'
 import title from '@res/sprite/title.json'
+import tree from '@res/sprite/tree.json'
 import uiAir from '@res/sprite/uiAir.json'
 import uiAirTankBg from '@res/sprite/uiAirtankBg.json'
 import uiAirTankBody from '@res/sprite/uiAirtankBody.json'
@@ -106,6 +107,7 @@ export const spriteURL = {
   testItem,
   throughFloor,
   title,
+  tree,
   uiAir,
   uiAirTankBg,
   uiAirTankBody,

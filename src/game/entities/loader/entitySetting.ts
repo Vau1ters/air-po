@@ -44,6 +44,7 @@ import slime1 from '@res/entity/slime1.json'
 import snibee from '@res/entity/snibee.json'
 import sporeEffect from '@res/entity/sporeEffect.json'
 import throughFloor from '@res/entity/throughFloor.json'
+import tree from '@res/entity/tree.json'
 import uiAir from '@res/entity/uiAir.json'
 import uiAirTankBg from '@res/entity/uiAirTankBg.json'
 import uiAirTankBody from '@res/entity/uiAirTankBody.json'
@@ -98,6 +99,7 @@ export const entitySetting = {
   snibee,
   sporeEffect,
   throughFloor,
+  tree,
   uiAir,
   uiAirTankBg,
   uiAirTankBody,

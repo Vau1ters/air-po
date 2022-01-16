@@ -30,6 +30,7 @@
     "html-loader": "^3.0.1",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.4",
+    "node-canvas": "^2.7.0",
     "prettier": "^2.5.1",
     "raw-loader": "^4.0.0",
     "stream-browserify": "^3.0.0",
