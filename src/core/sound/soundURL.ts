@@ -19,6 +19,7 @@ import foot3 from '@res/audio/foot3.json'
 import foot4 from '@res/audio/foot4.json'
 import getAirTank from '@res/audio/getAirTank.json'
 import grab from '@res/audio/grab.json'
+import hpHeal from '@res/audio/hpHeal.json'
 import largeCoin from '@res/audio/largeCoin.json'
 import mushroom from '@res/audio/mushroom.json'
 import peti from '@res/audio/peti.json'
@@ -65,6 +66,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   foot4,
   getAirTank,
   grab,
+  hpHeal,
   largeCoin,
   mushroom,
   peti,
