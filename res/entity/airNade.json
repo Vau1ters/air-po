@@ -17,7 +17,7 @@
     "gravityScale": 0.8
   },
   "airHolder": {
-    "initialQuantity": 20,
-    "maxQuantity": 20
+    "initialQuantity": 200,
+    "maxQuantity": 200
   }
 }

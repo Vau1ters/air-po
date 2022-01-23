@@ -17,6 +17,7 @@ import foot1 from '@res/audio/foot1.json'
 import foot2 from '@res/audio/foot2.json'
 import foot3 from '@res/audio/foot3.json'
 import foot4 from '@res/audio/foot4.json'
+import gaslack from '@res/audio/gaslack.json'
 import getAirTank from '@res/audio/getAirTank.json'
 import grab from '@res/audio/grab.json'
 import hpHeal from '@res/audio/hpHeal.json'
@@ -64,6 +65,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   foot2,
   foot3,
   foot4,
+  gaslack,
   getAirTank,
   grab,
   hpHeal,

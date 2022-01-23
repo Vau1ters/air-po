@@ -18,6 +18,7 @@ export const throwAirNade = function* (entity: Entity, world: World): Behaviour<
   // 空気の消費
   const airHolder = entity.getComponent('AirHolder')
   if (airHolder.quantity < airNadeSetting.airHolder.maxQuantity) {
+    entity.getComponent('Sound').addSound('gaslack')
     yield
     return
   }
