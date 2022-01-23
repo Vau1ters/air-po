@@ -24,9 +24,11 @@ export const respawnAI = function* (entity: Entity): Behaviour<void> {
     saveData(currentData)
     activated = true
   })
+  const sound = entity.getComponent('Sound')
 
   yield* wait.until(() => activated)
 
+  sound.addSound('flag')
   yield* animate({
     entity,
     state: 'Activating',
