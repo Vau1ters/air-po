@@ -11,6 +11,7 @@ import danball from '@res/audio/danball.json'
 import dandelionShot from '@res/audio/dandelionShot.json'
 import enemyHit from '@res/audio/enemyHit.json'
 import fire from '@res/audio/fire.json'
+import flag from '@res/audio/flag.json'
 import foot from '@res/audio/foot.json'
 import foot1 from '@res/audio/foot1.json'
 import foot2 from '@res/audio/foot2.json'
@@ -56,6 +57,7 @@ export const soundURL: { [key: string]: AudioSetting } = {
   dandelionShot,
   enemyHit,
   fire,
+  flag,
   foot,
   foot1,
   foot2,
