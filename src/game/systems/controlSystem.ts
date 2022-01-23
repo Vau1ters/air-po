@@ -178,19 +178,20 @@ export class MouseController {
   }
 
   public static init(): void {
-    window.addEventListener('mousedown', e => {
+    const container = document.getElementById('container') as HTMLElement
+    container.addEventListener('mousedown', e => {
       const button = MouseController.numberToMouseButton(e.button)
       if (button) {
         this.pressMouse(button)
       }
     })
-    window.addEventListener('mouseup', e => {
+    container.addEventListener('mouseup', e => {
       const button = MouseController.numberToMouseButton(e.button)
       if (button) {
         this.releaseMouse(button)
       }
     })
-    window.addEventListener('wheel', e => {
+    container.addEventListener('wheel', e => {
       this.wheelDelta = e.deltaY
     })
   }
