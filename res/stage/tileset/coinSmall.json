@@ -1,14 +1,14 @@
 { "columns":1,
  "image":"..\/..\/image\/coinSmall.png",
- "imageheight":6,
- "imagewidth":6,
+ "imageheight":8,
+ "imagewidth":8,
  "margin":0,
  "name":"coinSmall",
  "spacing":0,
  "tilecount":1,
  "tiledversion":"2021.03.23",
- "tileheight":6,
- "tilewidth":6,
+ "tileheight":8,
+ "tilewidth":8,
  "type":"tileset",
  "version":1.5
 }
