@@ -15,6 +15,20 @@ export const MoviePositionType = t.intersection([
   }),
 ])
 
+export const BlackActionTypeType = t.union([t.literal('in'), t.literal('out')])
+
+export const BlackActionType = t.type({
+  action: t.literal('black'),
+  type: BlackActionTypeType,
+})
+
+export const CinemaScopeActionTypeType = t.union([t.literal('in'), t.literal('out')])
+
+export const CinemaScopeActionType = t.type({
+  action: t.literal('cinemaScope'),
+  type: CinemaScopeActionTypeType,
+})
+
 export const CameraActionTypeType = t.union([t.literal('ease'), t.literal('warp')])
 
 export const CameraActionType = t.type({
@@ -46,6 +60,8 @@ export const ShowSpriteActionType = t.type({
 })
 
 export const ActionType = t.union([
+  BlackActionType,
+  CinemaScopeActionType,
   CameraActionType,
   TalkActionType,
   MoveActionType,
@@ -56,6 +72,10 @@ export const MovieType = t.array(ActionType)
 
 export type Movie = t.TypeOf<typeof MovieType>
 export type Action = t.TypeOf<typeof ActionType>
+export type BlackAction = t.TypeOf<typeof BlackActionType>
+export type BlackActionType = t.TypeOf<typeof BlackActionTypeType>
+export type CinemaScopeAction = t.TypeOf<typeof CinemaScopeActionType>
+export type CinemaScopeActionType = t.TypeOf<typeof CinemaScopeActionTypeType>
 export type CameraAction = t.TypeOf<typeof CameraActionType>
 export type CameraActionType = t.TypeOf<typeof CameraActionTypeType>
 export type TalkAction = t.TypeOf<typeof TalkActionType>

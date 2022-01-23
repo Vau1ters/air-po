@@ -1,4 +1,33 @@
 [
+    {
+        "action": "black",
+        "type": "in"
+    },
+    {
+        "action": "move",
+        "mover": "player",
+        "to": {
+            "baseName": "shopKeeper",
+            "offset": [-96, 0]
+        },
+        "type": "warp"
+    },
+	{
+        "action": "camera",
+        "to": {
+            "baseName": "player"
+        },
+        "type": "warp",
+        "chase": true
+	},
+    {
+        "action": "black",
+        "type": "out"
+    },
+    {
+        "action": "cinemaScope",
+        "type": "in"
+    },
 	{
         "action": "camera",
         "to": {
@@ -41,5 +70,9 @@
         "action": "talk",
         "speaker": "player",
         "content": "i think that is this"
+    },
+    {
+        "action": "cinemaScope",
+        "type": "out"
     }
 ]
