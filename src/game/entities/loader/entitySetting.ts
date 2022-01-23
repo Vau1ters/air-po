@@ -18,7 +18,6 @@ import dandelion from '@res/entity/dandelion.json'
 import dandelionFluff from '@res/entity/dandelionFluff.json'
 import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
-import genjumin from '@res/entity/genjumin.json'
 import inventoryBackground from '@res/entity/inventoryBackground.json'
 import inventoryItemFrameLarge from '@res/entity/inventoryItemFrameLarge.json'
 import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
@@ -52,6 +51,7 @@ import uiAirTankTail from '@res/entity/uiAirTankTail.json'
 import uiHpHeart from '@res/entity/uiHpHeart.json'
 import uiWeapon from '@res/entity/uiWeapon.json'
 import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
+import villager from '@res/entity/villager.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
 import wall from '@res/entity/wall.json'
@@ -73,7 +73,6 @@ export const entitySetting = {
   dandelionFluff,
   enemy1,
   enemyBullet,
-  genjumin,
   inventoryBackground,
   inventoryItemFrameLarge,
   inventoryItemFrameSmall,
@@ -107,6 +106,7 @@ export const entitySetting = {
   uiHpHeart,
   uiWeapon,
   uiWeaponBackground,
+  villager,
   vine,
   vineStalk,
   wall,

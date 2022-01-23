@@ -2,7 +2,7 @@ import { Entity } from '@core/ecs/entity'
 import { NameComponent } from '@game/components/nameComponent'
 import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 
-export default class GenjuminFactory extends ObjectEntityFactory {
+export default class VillagerFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
     const name = this.findProperty('string', 'name')

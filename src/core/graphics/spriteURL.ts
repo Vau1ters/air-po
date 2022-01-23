@@ -22,7 +22,6 @@ import cursor from '@res/sprite/cursor.json'
 import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
-import genjumin from '@res/sprite/genjumin.json'
 import hpHealItem from '@res/sprite/hpHealItem.json'
 import inventoryBackground from '@res/sprite/inventoryBackgroud.json'
 import inventoryItemFrameLarge from '@res/sprite/inventoryItemFrameLarge.json'
@@ -57,6 +56,7 @@ import uiHpHeart from '@res/sprite/uiHpHeart.json'
 import uiWeaponAirNade from '@res/sprite/uiWeaponAirNade.json'
 import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
+import villager from '@res/sprite/villager.json'
 import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
 
@@ -81,7 +81,6 @@ export const spriteURL = {
   dandelion,
   dandelionFluff,
   enemy1,
-  genjumin,
   hpHealItem,
   inventoryBackground,
   inventoryItemFrameLarge,
@@ -116,6 +115,7 @@ export const spriteURL = {
   uiWeaponAirNade,
   uiWeaponBackground,
   uiWeaponGun,
+  villager,
   vine,
   wall,
 }
