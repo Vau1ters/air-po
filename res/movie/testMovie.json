@@ -1,0 +1,78 @@
+[
+    {
+        "action": "black",
+        "type": "in"
+    },
+    {
+        "action": "move",
+        "mover": "player",
+        "to": {
+            "baseName": "shopKeeper",
+            "offset": [-96, 0]
+        },
+        "type": "warp"
+    },
+	{
+        "action": "camera",
+        "to": {
+            "baseName": "player"
+        },
+        "type": "warp",
+        "chase": true
+	},
+    {
+        "action": "black",
+        "type": "out"
+    },
+    {
+        "action": "cinemaScope",
+        "type": "in"
+    },
+	{
+        "action": "camera",
+        "to": {
+            "baseName": "player"
+        },
+        "type": "ease",
+        "chase": true
+	},
+    {
+        "action": "talk",
+        "speaker": "shopKeeper",
+        "content": "aiueo"
+    },
+	{
+        "action": "camera",
+        "to": {
+            "baseName": "shopKeeper"
+        },
+        "type": "ease",
+        "chase": false
+	},
+    {
+        "action": "move",
+        "mover": "player",
+        "to": {
+            "baseName": "shopKeeper",
+            "offset": [-48, 0]
+        },
+        "type": "walk"
+    },
+    {
+        "action": "showSprite",
+        "sprite": "testItem",
+        "pos": {
+            "baseName": "shopKeeper",
+            "offset": [24, -24]
+        }
+    },
+    {
+        "action": "talk",
+        "speaker": "player",
+        "content": "i think that is this"
+    },
+    {
+        "action": "cinemaScope",
+        "type": "out"
+    }
+]

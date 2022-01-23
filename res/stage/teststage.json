@@ -311,18 +311,6 @@
           "y": 368
         },
         {
-          "gid": 187,
-          "height": 96,
-          "id": 49,
-          "name": "",
-          "rotation": 0,
-          "type": "",
-          "visible": true,
-          "width": 96,
-          "x": 584,
-          "y": 368
-        },
-        {
           "gid": 160,
           "height": 56,
           "id": 51,
@@ -561,9 +549,54 @@
           "width": 16,
           "x": 224,
           "y": 448
+        },
+        {
+          "gid": 197,
+          "height": 16,
+          "id": 79,
+          "name": "",
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "shopKeeper"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 16,
+          "x": 648,
+          "y": 368
+        },
+        {
+          "gid": 127,
+          "height": 128,
+          "id": 82,
+          "name": "",
+          "properties": [
+            {
+              "name": "event",
+              "type": "string",
+              "value": "movie testMovie"
+            }
+          ],
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 128,
+          "x": 552,
+          "y": 360
         }
       ],
       "opacity": 1,
+      "properties": [
+        {
+          "name": "event",
+          "type": "string",
+          "value": "movie testMovie"
+        }
+      ],
       "type": "objectgroup",
       "visible": true,
       "x": 0,
@@ -10591,7 +10624,7 @@
     }
   ],
   "nextlayerid": 12,
-  "nextobjectid": 79,
+  "nextobjectid": 83,
   "orientation": "orthogonal",
   "renderorder": "right-up",
   "tiledversion": "1.7.2",
@@ -10672,6 +10705,10 @@
     {
       "firstgid": 196,
       "source": "tileset/locust.json"
+    },
+    {
+      "firstgid": 197,
+      "source": "tileset/villager.json"
     }
   ],
   "tilewidth": 8,

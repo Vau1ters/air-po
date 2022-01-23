@@ -20,6 +20,7 @@ import rock from 'src/game/entities/stage/object/rockFactory'
 import sensor from 'src/game/entities/stage/object/sensorFactory'
 import slime1 from 'src/game/entities/stage/object/slime1Factory'
 import snibee from 'src/game/entities/stage/object/snibeeFactory'
+import villager from 'src/game/entities/stage/object/villagerFactory'
 import vine from 'src/game/entities/stage/object/vineFactory'
 
 export const objectList = {
@@ -41,5 +42,6 @@ export const objectList = {
   sensor,
   slime1,
   snibee,
+  villager,
   vine,
 }

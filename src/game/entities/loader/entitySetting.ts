@@ -52,6 +52,7 @@ import uiAirTankTail from '@res/entity/uiAirTankTail.json'
 import uiHpHeart from '@res/entity/uiHpHeart.json'
 import uiWeapon from '@res/entity/uiWeapon.json'
 import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
+import villager from '@res/entity/villager.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
 import wall from '@res/entity/wall.json'
@@ -107,6 +108,7 @@ export const entitySetting = {
   uiHpHeart,
   uiWeapon,
   uiWeaponBackground,
+  villager,
   vine,
   vineStalk,
   wall,

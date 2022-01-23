@@ -13,6 +13,13 @@ export const wait = {
       yield
     }
   },
+  untilDefined: function* <T, K extends keyof T>(
+    base: T,
+    key: K
+  ): Behaviour<Exclude<T[K], undefined>> {
+    while (base[key] === undefined) yield
+    return base[key] as Exclude<T[K], undefined>
+  },
   notification: function* <T>(notifier: EventNotifier<T>): Behaviour<T> {
     let result: T | undefined
     const callback = (value: T): void => {

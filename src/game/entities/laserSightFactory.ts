@@ -3,6 +3,7 @@ import { World } from '@core/ecs/world'
 import { laserSightAI } from '@game/ai/entity/laserSight/laserSightAI'
 import { AiComponent } from '@game/components/aiComponent'
 import { DrawComponent } from '@game/components/drawComponent'
+import { NameComponent } from '@game/components/nameComponent'
 import { Graphics } from 'pixi.js'
 import { EntityFactory } from './entityFactory'
 import { SegmentSearcherFactory } from './segmentSearcherFactory'
@@ -38,6 +39,7 @@ export class LaserSightFactory extends EntityFactory {
         },
       })
     )
+    entity.addComponent('Name', new NameComponent('LaserSight'))
 
     return entity
   }

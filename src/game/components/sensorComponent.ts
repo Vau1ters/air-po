@@ -1,3 +1,3 @@
 export class SensorComponent {
-  constructor(public event: string) {}
+  constructor(public event: string, public isEnabled = true) {}
 }

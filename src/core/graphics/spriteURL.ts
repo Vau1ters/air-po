@@ -57,6 +57,7 @@ import uiHpHeart from '@res/sprite/uiHpHeart.json'
 import uiWeaponAirNade from '@res/sprite/uiWeaponAirNade.json'
 import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
+import villager from '@res/sprite/villager.json'
 import vine from '@res/sprite/vine.json'
 import wall from '@res/sprite/wall.json'
 
@@ -116,6 +117,7 @@ export const spriteURL = {
   uiWeaponAirNade,
   uiWeaponBackground,
   uiWeaponGun,
+  villager,
   vine,
   wall,
 }

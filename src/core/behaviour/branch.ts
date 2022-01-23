@@ -1,51 +1,57 @@
 import { Behaviour } from './behaviour'
 
-export type BranchController = {
-  transit: (name: string) => void
-  finish: () => void
+export type BranchController<T> = {
+  transit: (name: string, args?: [unknown]) => void
+  finish: (arg: T) => void
 }
 
-export type BranchBehaviours = {
-  [key: string]: (controller: BranchController) => Behaviour<void>
+export type BranchBehaviours<T> = {
+  [key: string]: (controller: BranchController<T>) => Behaviour<void>
 }
 
-export type BranchResult = {
-  controller: BranchController
-  start: (name: string) => Behaviour<void>
-  by: (name: () => string) => Behaviour<void>
+export type BranchResult<T> = {
+  controller: BranchController<T>
+  start: (name: string) => Behaviour<T>
+  by: (name: () => string) => Behaviour<T>
 }
 
-export const branch = (branches: BranchBehaviours): BranchResult => {
+export const branch = <T>(branches: BranchBehaviours<T>): BranchResult<T> => {
   let state = ''
-  let done = false
+  let result: { done: false } | { done: true; value: T } = { done: false }
+
+  let args: [] | [unknown] = []
+
   const controller = {
-    transit: (name: string): void => {
+    transit: (name: string, givenArgs?: [unknown]): void => {
       state = name
+      args = givenArgs ?? []
     },
-    finish: (): void => {
-      done = true
+    finish: (arg: T): void => {
+      result = { done: true, value: arg }
     },
   }
-  const start = function* (name: string): Behaviour<void> {
+  const start = function* (name: string): Behaviour<T> {
     state = name
     const behaviours: { [key: string]: Behaviour<void> } = {}
     for (const name of Object.keys(branches)) {
       behaviours[name] = branches[name](controller)
     }
-    while (!done) {
-      behaviours[state].next()
+    while (!result.done) {
+      behaviours[state].next(args)
       yield
     }
+    return result.value
   }
-  const by = function* (name: () => string): Behaviour<void> {
+  const by = function* (name: () => string): Behaviour<T> {
     const behaviours: { [key: string]: Behaviour<void> } = {}
     for (const name of Object.keys(branches)) {
       behaviours[name] = branches[name](controller)
     }
-    while (!done) {
+    while (!result.done) {
       behaviours[name()].next()
       yield
     }
+    return result.value
   }
   return {
     start,

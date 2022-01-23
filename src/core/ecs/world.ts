@@ -2,8 +2,8 @@ import { Entity } from './entity'
 import { System } from './system'
 import { EventNotifier } from '@utils/eventNotifier'
 import { Container } from 'pixi.js'
-import { ProcessManager } from '@utils/proc'
 import { application } from '@core/application'
+import { ProcessManager } from '@core/process/processManager'
 
 export class World {
   private readonly entities: Set<Entity>

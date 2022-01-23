@@ -1,17 +1,5 @@
-import { assert } from './assertion'
-
-export type Dependency = {
-  before?: string[]
-  after?: string[]
-}
-
-export class Process {
-  constructor(private func: () => void, public name?: string, public dependency: Dependency = {}) {}
-
-  execute(): void {
-    this.func()
-  }
-}
+import { assert } from '@utils/assertion'
+import { Process } from './process'
 
 export class ProcessManager {
   private processList: Process[] = []
@@ -25,6 +13,10 @@ export class ProcessManager {
     for (const proc of this.processList) {
       proc.execute()
     }
+  }
+
+  public get processes(): Process[] {
+    return this.processList
   }
 
   public addProcess(proc: Process): void {

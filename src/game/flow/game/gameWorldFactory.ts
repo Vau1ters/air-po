@@ -50,6 +50,7 @@ export class GameWorldFactory {
     debugContainer.zIndex = Infinity
 
     const uiContainer = new Container()
+    uiContainer.name = 'uiContainer'
     uiContainer.zIndex = Infinity
 
     world.stage.addChild(filterContainer)

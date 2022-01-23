@@ -1,0 +1,9 @@
+{
+  "draw": {
+    "name": "villager"
+  },
+  "animationState": {},
+  "horizontalDirection": {
+    "looking": "Right"
+  }
+}

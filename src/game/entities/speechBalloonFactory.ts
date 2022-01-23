@@ -10,17 +10,29 @@ import { windowSize } from '@core/application'
 import { normalizeText } from '@utils/text'
 import { TextFactory } from './textFactory'
 import { World } from '@core/ecs/world'
+import { Behaviour } from '@core/behaviour/behaviour'
+
+export type SpeechBalloonConfig = {
+  fontSize: number
+  tint: number
+  waitForEnd: Behaviour<void>
+}
 
 export class SpeechBalloonFactory extends EntityFactory {
-  constructor(private text: string, private target: Entity, private world: World) {
+  constructor(
+    private text: string,
+    private target: Entity,
+    private world: World,
+    private config: SpeechBalloonConfig
+  ) {
     super()
   }
 
   create(): Entity {
     const entity = new TextFactory({
       text: normalizeText(this.text),
-      fontSize: 8,
-      tint: 0x000000,
+      fontSize: this.config.fontSize,
+      tint: this.config.tint,
     }).create()
 
     const tailSize = 20
@@ -63,7 +75,15 @@ export class SpeechBalloonFactory extends EntityFactory {
 
     ui.addChildAt(sprite, 0)
 
-    entity.addComponent('Ai', new AiComponent(speechBalloonAI(entity, this.target, this.world)))
+    entity.addComponent(
+      'Ai',
+      new AiComponent({
+        behaviour: speechBalloonAI(entity, this.target, this.world, this.config.waitForEnd),
+        dependency: {
+          before: ['ControlSystem:update'],
+        },
+      })
+    )
     entity.getComponent('Position').x = windowSize.width * 0.5
     entity.getComponent('Position').y = sprite.height * 0.5
     return entity
