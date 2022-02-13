@@ -78,7 +78,7 @@ export class SliderFactory extends EntityFactory {
       updateSlider(e)
     })
     drawContainer.on('mousemove', (e: InteractionEvent): void => {
-      dragging = MouseController.isMousePressing('Left')
+      dragging = dragging && MouseController.isMousePressing('Left')
       updateSlider(e)
     })
 
