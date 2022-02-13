@@ -1,3 +1,4 @@
+import { windowResizeEvent } from '@core/application'
 import { Entity } from '@core/ecs/entity'
 import { createSprite } from '@core/graphics/art'
 import { CheckboxComponent } from '@game/components/checkboxComponent'
@@ -30,6 +31,7 @@ export class CheckboxFactory extends EntityFactory {
     drawContainer.on('click', (): void => {
       const checkbox = entity.getComponent('Checkbox')
       checkbox.value = !checkbox.value
+      windowResizeEvent.notify()
     })
 
     entity.addComponent(

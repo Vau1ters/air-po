@@ -1,3 +1,4 @@
+import { EventNotifier } from '@utils/eventNotifier'
 import * as PIXI from 'pixi.js'
 
 export const windowSize = {
@@ -16,6 +17,8 @@ export const applicationSetting: {
 } = {
   screenScaleMode: 'Integer',
 }
+
+export const windowResizeEvent = new EventNotifier<void>()
 
 export const initializeApplication = (): void => {
   const container = document.getElementById('container')
@@ -40,5 +43,6 @@ export const initializeApplication = (): void => {
     application.view.style.setProperty('height', `${windowSize.height * scale}px`)
   }
   onResizeCallback()
-  window.addEventListener('resize', onResizeCallback)
+  windowResizeEvent.addObserver(onResizeCallback)
+  window.addEventListener('resize', () => windowResizeEvent.notify())
 }
