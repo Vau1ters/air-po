@@ -15,6 +15,7 @@ import boss1Needle from '@res/sprite/boss1Needle.json'
 import boss1Root from '@res/sprite/boss1Root.json'
 import boss1Stem from '@res/sprite/boss1Stem.json'
 import branch from '@res/sprite/branch.json'
+import checkbox from '@res/sprite/checkbox.json'
 import coinLarge from '@res/sprite/coinLarge.json'
 import coinLargeDummy from '@res/sprite/coinLargeDummy.json'
 import coinSmall from '@res/sprite/coinSmall.json'
@@ -42,6 +43,7 @@ import shopBackground from '@res/sprite/shopBackground.json'
 import shopItemFrame from '@res/sprite/shopItemFrame.json'
 import shopScrollBarThumb from '@res/sprite/shopScrollBarThumb.json'
 import shopScrollBarTrack from '@res/sprite/shopScrollBarTrack.json'
+import sliderCursor from '@res/sprite/sliderCursor.json'
 import slime1 from '@res/sprite/slime1.json'
 import snibee from '@res/sprite/snibee.json'
 import spore from '@res/sprite/spore.json'
@@ -75,6 +77,7 @@ export const spriteURL = {
   boss1Root,
   boss1Stem,
   branch,
+  checkbox,
   coinLarge,
   coinLargeDummy,
   coinSmall,
@@ -102,6 +105,7 @@ export const spriteURL = {
   shopItemFrame,
   shopScrollBarThumb,
   shopScrollBarTrack,
+  sliderCursor,
   slime1,
   snibee,
   spore,

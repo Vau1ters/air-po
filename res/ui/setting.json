@@ -1,0 +1,31 @@
+{
+  "background": {
+    "type": "entity",
+    "name": "shopBackground",
+    "position": [160, 120]
+  },
+  "soundVolumeText": {
+    "type": "text",
+    "fontSize": 8,
+    "position": [50, 75],
+    "tint": 0,
+    "text": "おんりょう"
+  },
+  "soundVolumeSlider": {
+    "type": "slider",
+    "position": [60, 100],
+    "min": 0,
+    "max": 1
+  },
+  "pixelPerfectText": {
+    "type": "text",
+    "fontSize": 8,
+    "position": [50, 120],
+    "tint": 0,
+    "text": "ピクセルパーフェクト"
+  },
+  "pixelPerfectCheckbox": {
+    "type": "checkbox",
+    "position": [60, 140]
+  }
+}

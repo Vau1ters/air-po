@@ -17,6 +17,7 @@ export const DrawSettingType = t.intersection([
     zIndex: t.number,
     scale: t.number,
     anchor: t.tuple([t.number, t.number]),
+    interactive: t.boolean,
   }),
 ])
 export type DrawSetting = t.TypeOf<typeof DrawSettingType>
@@ -26,6 +27,7 @@ export const loadDrawComponent = (setting: DrawSetting, entity: Entity): DrawCom
     entity,
     type: setting.type,
     scale: setting.scale,
+    interactive: setting.interactive,
     child: {
       sprite: createSprite(
         setting.name,

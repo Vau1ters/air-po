@@ -2,7 +2,8 @@
   "draw": {
     "name": "shopBackground",
     "type": "UI",
-    "zIndex": -1
+    "zIndex": -1,
+    "interactive": true
   },
   "collider": [
     {

@@ -1,14 +1,20 @@
 {
-  "button1": {
+  "resumeButton": {
     "type": "button",
-    "position": [160, 70]
+    "position": [160, 70],
+    "text": "Resume Game",
+    "fontSize": 16
   },
-  "button2": {
+  "settingButton": {
     "type": "button",
-    "position": [160, 120]
+    "position": [160, 120],
+    "text": "Open Setting",
+    "fontSize": 16
   },
-  "button3": {
+  "titleButton": {
     "type": "button",
-    "position": [160, 170]
+    "position": [160, 170],
+    "text": "Go to Title",
+    "fontSize": 16
   }
 }

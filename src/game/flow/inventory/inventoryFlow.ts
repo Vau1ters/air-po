@@ -1,4 +1,5 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { wait } from '@core/behaviour/wait'
 import { World } from '@core/ecs/world'
 import { MouseCursorFactory } from '@game/entities/mouseCursorFactory'
 import { KeyController } from '@game/systems/controlSystem'
@@ -17,5 +18,7 @@ export const inventoryFlow = function* (gameWorld: World): Behaviour<void> {
   const cursor = new MouseCursorFactory().create()
   world.addEntity(cursor)
 
-  yield* overlayFlow(world, { until: () => KeyController.isActionPressed('Inventory') })
+  yield* overlayFlow(world, {
+    behaviour: wait.until(() => KeyController.isActionPressed('Inventory')),
+  })
 }

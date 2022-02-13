@@ -9,12 +9,21 @@ import { loadTileLayoutUi, TileLayoutUiSettingType } from './tileLayoutLoader'
 import { World } from '@core/ecs/world'
 import { assert } from '@utils/assertion'
 import { Vec2 } from '@core/math/vec2'
+import { loadSliderUi, SliderUiSettingType } from './sliderUiLoader'
+import { CheckboxUiSettingType, loadCheckboxUi } from './checkboxUiLoader'
 
 export type UiName = keyof typeof uiSetting
 
 export const UiSettingType = t.record(
   t.string,
-  t.union([ButtonUiSettingType, TextUiSettingType, EntityUiSettingType, TileLayoutUiSettingType])
+  t.union([
+    ButtonUiSettingType,
+    SliderUiSettingType,
+    CheckboxUiSettingType,
+    TextUiSettingType,
+    EntityUiSettingType,
+    TileLayoutUiSettingType,
+  ])
 )
 export type UiSetting = t.TypeOf<typeof UiSettingType>
 
@@ -52,6 +61,12 @@ export const loadUi = (name: UiName, world: World): Ui => {
     switch (setting?.type) {
       case 'button':
         world.addEntity((result[name] = loadButtonUi(setting)))
+        break
+      case 'slider':
+        world.addEntity((result[name] = loadSliderUi(setting)))
+        break
+      case 'checkbox':
+        world.addEntity((result[name] = loadCheckboxUi(setting)))
         break
       case 'text':
         world.addEntity((result[name] = loadTextUi(setting)))

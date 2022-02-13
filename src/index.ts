@@ -4,6 +4,7 @@ import * as Sound from '@core/sound/sound'
 import * as Font from '@core/font/font'
 import { totalFlow } from '@game/flow/flow'
 import { exportDebugUtilityToGlobal } from '@game/debug/debug'
+import { loadData } from '@game/playdata/playdata'
 
 export class Main {
   /*+.† INITIALIZATION †.+*/
@@ -13,6 +14,8 @@ export class Main {
     await Sound.init()
     Font.init()
     exportDebugUtilityToGlobal()
+
+    Sound.setMasterVolume(loadData().masterVolume)
 
     const flow = totalFlow()
     application.ticker.add(() => {
