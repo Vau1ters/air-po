@@ -3,6 +3,7 @@ import { getTexture } from '@core/graphics/art'
 import { DrawComponent } from '@game/components/drawComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { SliderComponent } from '@game/components/sliderComponent'
+import { MouseController } from '@game/systems/controlSystem'
 import { BitmapText, Container, Graphics, InteractionEvent, Rectangle, Sprite } from 'pixi.js'
 import { EntityFactory } from '../entityFactory'
 import { SliderUiSetting } from './loader/sliderUiLoader'
@@ -76,10 +77,8 @@ export class SliderFactory extends EntityFactory {
       dragging = true
       updateSlider(e)
     })
-    drawContainer.on('mouseup', (): void => {
-      dragging = false
-    })
     drawContainer.on('mousemove', (e: InteractionEvent): void => {
+      dragging = MouseController.isMousePressing('Left')
       updateSlider(e)
     })
 
