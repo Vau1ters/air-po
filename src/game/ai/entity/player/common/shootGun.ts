@@ -19,7 +19,10 @@ export const shootGun = function* (entity: Entity, world: World): Behaviour<void
   }
   // 空気の消費
   const airHolder = entity.getComponent('AirHolder')
-  if (airHolder.quantity < SETTING.CONSUME_SPEED) return
+  if (airHolder.quantity < SETTING.CONSUME_SPEED) {
+    yield
+    return
+  }
   airHolder.consumeBy(SETTING.CONSUME_SPEED)
 
   entity.getComponent('Sound').addSound('shot')
