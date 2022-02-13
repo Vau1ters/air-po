@@ -46,6 +46,7 @@ export const walk = function* (entity: Entity): Behaviour<void> {
       if (player.landing) {
         soundFoot()
         animState.state = 'Walking'
+        console.log(`frame: ${animState.animation.currentAnimationSprite.currentFrame}`)
       }
     } else {
       let tan = new Vec2(-normal.y, +normal.x)
