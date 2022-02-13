@@ -12,6 +12,7 @@ export const toSoundName = (s: string): SoundName => {
 export type PlayOptions = {
   pan?: number
   volume?: number
+  isRandomisePitch?: boolean
 }
 
 type SoundBuffer = {
@@ -40,6 +41,10 @@ export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance 
     source.loopEnd = buffer.loop.end
   } else {
     source.loop = false
+  }
+  if (options.isRandomisePitch) {
+    const amp = 0.5
+    source.playbackRate.value = 1 + amp * (Math.random() - 0.5)
   }
 
   let node: AudioNode = source
