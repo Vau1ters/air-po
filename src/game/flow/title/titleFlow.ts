@@ -1,7 +1,6 @@
 import { MouseController } from '@game/systems/controlSystem'
 import * as Sound from '@core/sound/sound'
 import { LogoBlinking } from './logoBlinking'
-import { FadeOut } from '../common/animation/fadeOut'
 import { Sprite } from 'pixi.js'
 import { TitleWorldFactory } from '@game/flow/title/titleWorldFactory'
 import { parallelAny } from '@core/behaviour/composite'
@@ -12,6 +11,7 @@ import { getTexture } from '@core/graphics/art'
 import { loadData, StoryStatus } from '@game/playdata/playdata'
 import { BgmFactory } from '@game/entities/bgmFactory'
 import { loadStage } from '@game/stage/stageLoader'
+import { fadeBlack } from '../common/animation/fadeBlack'
 
 const createNextFlow = (): Flow => {
   const { storyStatus, spawnPoint, playerData } = loadData()
@@ -41,7 +41,7 @@ export const titleFlow = function* (): Flow {
       while (!MouseController.isMousePressed('Left')) yield
       Sound.play('start')
       yield* LogoBlinking(titleImage)
-      yield* FadeOut(world)
+      yield* fadeBlack(world, { mode: 'out' })
     })(),
     world.execute(),
   ])

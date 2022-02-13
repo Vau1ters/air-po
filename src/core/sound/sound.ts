@@ -11,6 +11,7 @@ export const toSoundName = (s: string): SoundName => {
 
 export type PlayOptions = {
   pan?: number
+  volume?: number
   isRandomisePitch?: boolean
 }
 
@@ -25,6 +26,7 @@ type SoundBuffer = {
 
 const ctx = new AudioContext()
 const soundStore: { [key in SoundName]?: SoundBuffer } = {}
+const globalGainNode = ctx.createGain()
 
 export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance => {
   const buffer = soundStore[name]
@@ -48,7 +50,7 @@ export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance 
   let node: AudioNode = source
 
   const gainNode = ctx.createGain()
-  gainNode.gain.value = buffer.maxVolume
+  gainNode.gain.value = buffer.maxVolume * (options.volume ?? 1)
   node.connect(gainNode)
   node = gainNode
 
@@ -59,7 +61,7 @@ export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance 
     node.connect(panNode)
     node = panNode
   }
-  node.connect(ctx.destination)
+  node.connect(globalGainNode)
 
   const instance = new SoundInstance(buffer.maxVolume, source, gainNode, panNode)
 
@@ -90,4 +92,9 @@ export const init = async (): Promise<void> => {
       loop: sound.loop,
     }
   }
+  globalGainNode.connect(ctx.destination)
+}
+
+export const setMasterVolume = (volume: number): void => {
+  globalGainNode.gain.value = volume
 }

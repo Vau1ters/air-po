@@ -5,10 +5,10 @@ import { World } from '@core/ecs/world'
 import { filters, Graphics } from 'pixi.js'
 import { fadeInOut } from '../animation/fadeInOut'
 
-export const overlayFlow = function* (
+export const overlayFlow = function* <T>(
   world: World,
-  config: { until: () => boolean }
-): Behaviour<void> {
+  config: { behaviour: Behaviour<T> }
+): Behaviour<T> {
   const backAlphaFilter = new filters.AlphaFilter(0)
   const frontAlphaFilter = new filters.AlphaFilter(0)
   const background = new Graphics()
@@ -20,13 +20,10 @@ export const overlayFlow = function* (
   world.stage.filters = world.stage.filters ?? []
   world.stage.filters.push(frontAlphaFilter)
 
-  const wait = function* (): Behaviour<void> {
-    while (!config.until()) yield
-  }
+  const fade = fadeInOut(config.behaviour, [backAlphaFilter, frontAlphaFilter])
 
-  const fadeBack = fadeInOut(wait(), backAlphaFilter)
-  const fadeFront = fadeInOut(wait(), frontAlphaFilter)
-
-  yield* parallelAny([fadeBack, fadeFront, world.execute()])
+  const [result] = yield* parallelAny([fade, world.execute()])
   world.end()
+
+  return result
 }

@@ -5,21 +5,27 @@ import { In } from '@core/behaviour/easing/functions'
 import { World } from '@core/ecs/world'
 import { Graphics } from 'pixi.js'
 
-export const FadeOut = (world: World): Behaviour<void> => {
+type FadeOption = {
+  duration?: number
+  mode: 'in' | 'out'
+}
+
+export function* fadeBlack(world: World, option: FadeOption): Behaviour<void> {
   const black = new Graphics()
   black.beginFill(0)
   black.drawRect(0, 0, windowSize.width, windowSize.height)
   black.endFill()
-  black.alpha = 0
   world.stage.addChild(black)
-  return ease(In.linear)(
-    30,
+
+  const animation = ease(In.linear)(
+    option.duration ?? 30,
     (value: number) => {
       black.alpha = value
     },
     {
-      from: 0,
-      to: 1,
+      from: option.mode === 'in' ? 1 : 0,
+      to: option.mode === 'in' ? 0 : 1,
     }
   )
+  yield* animation
 }

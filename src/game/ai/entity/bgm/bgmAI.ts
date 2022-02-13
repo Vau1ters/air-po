@@ -31,9 +31,8 @@ const waitRequest = function* (bgm: BgmComponent): Behaviour<SoundName | undefin
 export const bgmAI = function* (entity: Entity): Behaviour<void> {
   const bgm = entity.getComponent('Bgm')
 
-  let inst = undefined
   while (true) {
     const nextRequest = yield* waitRequest(bgm)
-    inst = yield* crossFade(inst, nextRequest)
+    bgm.instance = yield* crossFade(bgm.instance, nextRequest)
   }
 }

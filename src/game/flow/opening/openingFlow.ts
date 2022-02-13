@@ -6,13 +6,13 @@ import { MouseController } from '@game/systems/controlSystem'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CameraComponent } from '@game/components/cameraComponent'
 import { parallelAny } from '@core/behaviour/composite'
-import { FadeOut } from '../common/animation/fadeOut'
 import { createSprite } from '@core/graphics/art'
 import { OpeningWorldFactory } from '@game/flow/opening/openingWorldFactory'
 import { Flow } from '../flow'
 import { gameFlow } from '../game/gameFlow'
 import { loadData, saveData, StoryStatus } from '@game/playdata/playdata'
 import { BgmFactory } from '@game/entities/bgmFactory'
+import { fadeBlack } from '../common/animation/fadeBlack'
 
 const camera = function* (world: World): Behaviour<void> {
   const camera = new Entity()
@@ -60,7 +60,7 @@ export const openingFlow = function* (): Flow {
   yield* parallelAny([
     (function* (): Generator<void> {
       yield* parallelAny([player(world), camera(world), waitInput()])
-      yield* FadeOut(world)
+      yield* fadeBlack(world, { mode: 'out' })
     })(),
     world.execute(),
   ])

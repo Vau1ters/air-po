@@ -14,6 +14,7 @@ import { BgmComponent } from 'src/game/components/bgmComponent'
 import { BulletComponent } from 'src/game/components/bulletComponent'
 import { ButtonComponent } from 'src/game/components/buttonComponent'
 import { CameraComponent } from 'src/game/components/cameraComponent'
+import { CheckboxComponent } from 'src/game/components/checkboxComponent'
 import { ColliderComponent } from 'src/game/components/colliderComponent'
 import { DrawComponent } from 'src/game/components/drawComponent'
 import { GameEventComponent } from 'src/game/components/gameEventComponent'
@@ -27,6 +28,7 @@ import { PlayerComponent } from 'src/game/components/playerComponent'
 import { PositionComponent } from 'src/game/components/positionComponent'
 import { RigidBodyComponent } from 'src/game/components/rigidBodyComponent'
 import { SensorComponent } from 'src/game/components/sensorComponent'
+import { SliderComponent } from 'src/game/components/sliderComponent'
 import { SoundComponent } from 'src/game/components/soundComponent'
 import { StagePointComponent } from 'src/game/components/stagePointComponent'
 import { StaticComponent } from 'src/game/components/staticComponent'
@@ -42,6 +44,7 @@ export interface ComponentMap {
   Bullet: BulletComponent
   Button: ButtonComponent
   Camera: CameraComponent
+  Checkbox: CheckboxComponent
   Collider: ColliderComponent
   Draw: DrawComponent
   GameEvent: GameEventComponent
@@ -55,6 +58,7 @@ export interface ComponentMap {
   Position: PositionComponent
   RigidBody: RigidBodyComponent
   Sensor: SensorComponent
+  Slider: SliderComponent
   Sound: SoundComponent
   StagePoint: StagePointComponent
   Static: StaticComponent

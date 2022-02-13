@@ -3,13 +3,15 @@ import { EquipmentName } from '@game/equipment/equipment'
 import { ItemName } from '@game/item/item'
 
 export type LargeCoinID = number
-export const SaveDataVersion = '0.0.1'
+export const SaveDataVersion = '0.0.2'
 
 export type SaveData = {
   version: string
   storyStatus: StoryStatus
   spawnPoint: StagePoint
   playerData: PlayerData
+  masterVolume: number
+  pixelPerfect: boolean
 }
 
 export type PlayerData = {
@@ -43,25 +45,34 @@ export const InitialSaveData: SaveData = {
     acquiredLargeCoinList: [],
     equipmentList: ['airTank', 'airTank'],
   },
+  masterVolume: 1,
+  pixelPerfect: true,
 }
+
+let saveDataCache: SaveData | undefined = undefined
 
 export const clearData = (): void => {
   localStorage.clear()
+  saveDataCache = undefined
 }
 
 export const saveData = (data: SaveData): void => {
   localStorage.setItem('playdata', JSON.stringify(data))
+  saveDataCache = undefined
 }
 
 export const loadData = (): SaveData => {
+  if (saveDataCache !== undefined) return saveDataCache
   const data = localStorage.getItem('playdata')
   if (data) {
     const result = JSON.parse(data) as SaveData
     if (result.version === SaveDataVersion) {
+      saveDataCache = result
       return result
     }
   }
 
   saveData(InitialSaveData)
+  saveDataCache = InitialSaveData
   return InitialSaveData
 }

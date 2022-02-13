@@ -1,7 +1,6 @@
 import { parallelAll } from '@core/behaviour/composite'
 import { wait } from '@core/behaviour/wait'
 import { KeyController } from '@game/systems/controlSystem'
-import { FadeIn } from '../common/animation/fadeIn'
 import { Text } from './text'
 import { pauseFlow } from '../pause/pauseFlow'
 import { Flow } from '../flow'
@@ -16,6 +15,8 @@ import { loadStage, StageInfo } from '@game/stage/stageLoader'
 import { World } from '@core/ecs/world'
 import { movieFlow } from '../movie/movieFlow'
 import { Movie } from '@game/movie/movie'
+import { fadeBlack } from '../common/animation/fadeBlack'
+import { fadeBgm } from '../common/animation/fadeBgm'
 
 const transitState = function* (controller: BranchController<Flow>): Behaviour<void> {
   while (true) {
@@ -33,7 +34,7 @@ const transitState = function* (controller: BranchController<Flow>): Behaviour<v
 }
 
 const postEffect = function* (world: World): Generator<void> {
-  yield* FadeIn(world)
+  yield* fadeBlack(world, { mode: 'in' })
   yield* Text(world, 'そうなんちてん')
 }
 
@@ -87,8 +88,16 @@ export const gameFlow = function* (stageInfo: StageInfo): Flow {
     },
     Pause: function* (controller: BranchController<Flow>) {
       while (true) {
-        yield* pauseFlow()
-        controller.transit('Game')
+        const next = yield* pauseFlow()
+        if (next !== undefined) {
+          yield* parallelAll([
+            fadeBlack(world, { mode: 'out', duration: 100 }),
+            fadeBgm(stageInfo.bgm),
+          ])
+          controller.finish(next)
+        } else {
+          controller.transit('Game')
+        }
         yield
       }
     },
@@ -114,7 +123,6 @@ export const gameFlow = function* (stageInfo: StageInfo): Flow {
       }
     },
   }).start('Game')
-  yield* wait.frame(60)
   world.end()
   return next
 }

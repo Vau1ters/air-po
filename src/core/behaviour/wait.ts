@@ -21,14 +21,16 @@ export const wait = {
     return base[key] as Exclude<T[K], undefined>
   },
   notification: function* <T>(notifier: EventNotifier<T>): Behaviour<T> {
-    let result: T | undefined
+    type State = { done: boolean; value?: T }
+    let state: State = { done: false }
     const callback = (value: T): void => {
-      result = value
+      state = { done: true, value }
     }
     notifier.addObserver(callback)
-    yield* wait.until((): boolean => result !== undefined)
+    yield* wait.until((): boolean => state.done === true)
     notifier.removeObserver(callback)
-    assert(result !== undefined, '')
-    return result
+    assert(state.done === true, '')
+    assert('value' in state, '')
+    return state.value as T
   },
 }

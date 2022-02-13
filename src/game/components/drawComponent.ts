@@ -9,6 +9,7 @@ export type DrawComponentOption = {
   entity: Entity
   type?: ContainerType
   scale?: number
+  interactive?: boolean
   child?: { sprite: DisplayObject; zIndex?: number; state?: string }
 }
 
@@ -21,6 +22,7 @@ export class DrawComponent extends Container {
     this.entity = option.entity
     this.type = option.type ?? 'World'
     this.scale.set(option.scale ?? 1)
+    this.interactive = option.interactive ?? false
     if (option.child) {
       this.addChild(option.child.sprite)
       if (option.child.zIndex) {
