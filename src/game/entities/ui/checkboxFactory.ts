@@ -20,6 +20,9 @@ export class CheckboxFactory extends EntityFactory {
 
     const sprite = createSprite('checkbox')
     drawContainer.addChild(sprite)
+    entity.getComponent('Checkbox').addCallback((value: boolean): void => {
+      sprite.state = value ? 'On' : 'Off'
+    })
 
     drawContainer.interactive = true
     drawContainer.buttonMode = true
@@ -27,8 +30,6 @@ export class CheckboxFactory extends EntityFactory {
     drawContainer.on('click', (): void => {
       const checkbox = entity.getComponent('Checkbox')
       checkbox.value = !checkbox.value
-
-      sprite.state = checkbox.value ? 'On' : 'Off'
     })
 
     entity.addComponent(
