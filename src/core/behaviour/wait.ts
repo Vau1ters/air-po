@@ -1,3 +1,4 @@
+import { Collider, CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { assert } from '@utils/assertion'
 import { EventNotifier } from '@utils/eventNotifier'
 import { Behaviour } from './behaviour'
@@ -32,5 +33,22 @@ export const wait = {
     assert(state.done === true, '')
     assert('value' in state, '')
     return state.value as T
+  },
+  collision: function* (
+    collider: Collider,
+    option?: { allowNoCollision: boolean }
+  ): Behaviour<Array<CollisionCallbackArgs>> {
+    const result: Array<CollisionCallbackArgs> = []
+    const callback = (args: CollisionCallbackArgs): void => {
+      result.push(args)
+    }
+    collider.notifier.addObserver(callback)
+    if (option?.allowNoCollision ?? false) {
+      yield // wait for being callback called
+    } else {
+      yield* wait.until((): boolean => result.length > 0)
+    }
+    collider.notifier.removeObserver(callback)
+    return result
   },
 }

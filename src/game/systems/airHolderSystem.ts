@@ -89,7 +89,7 @@ export class AirHolderSystem extends System {
             `Collider with '${AIR_HOLDER_TAG}' tag must have AIR_HOLDER category`
           )
           assert(c.mask.has('air'), `Collider with '${AIR_HOLDER_TAG}' tag must have AIR mask`)
-          c.callbacks.add(AirHolderSystem.airHolderSensor)
+          c.notifier.addObserver(AirHolderSystem.airHolderSensor)
         }
       }
     }
@@ -100,7 +100,7 @@ export class AirHolderSystem extends System {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
         if (c.tag.has(AIR_HOLDER_TAG)) {
-          c.callbacks.delete(AirHolderSystem.airHolderSensor)
+          c.notifier.removeObserver(AirHolderSystem.airHolderSensor)
         }
       }
     }

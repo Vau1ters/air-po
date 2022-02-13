@@ -30,7 +30,7 @@ export default class PhysicsSystem extends System {
                 c.mask.has('physics') || c.mask.has('terrain'),
                 `Collider with '${PHYSICS_TAG}' tag and PHYSICS category must have PHYSICS or TERRAIN mask`
               )
-              c.callbacks.add((args: CollisionCallbackArgs) => {
+              c.notifier.addObserver((args: CollisionCallbackArgs) => {
                 const { me, other } = args
                 this.solve(me, other)
               })
@@ -40,7 +40,7 @@ export default class PhysicsSystem extends System {
                 c.mask.has('physics'),
                 `Collider with '${PHYSICS_TAG}' tag and TERRAIN category must have PHYSICS mask`
               )
-              c.callbacks.add((args: CollisionCallbackArgs) => {
+              c.notifier.addObserver((args: CollisionCallbackArgs) => {
                 const { me, other } = args
                 this.solve(me, other)
               })
@@ -105,7 +105,7 @@ export default class PhysicsSystem extends System {
 
     let { clip, axis } = collisionResult
 
-    const solveDirs = c1.option.solveDir.concat(c2.option.solveDir.map(d => d.mul(-1)))
+    const solveDirs = c1.solveDir.concat(c2.solveDir.map(d => d.mul(-1)))
 
     if (solveDirs.length > 0) {
       const newAxis = solveDirs.reduce((a, b) => (axis.dot(a) > axis.dot(b) ? a : b))

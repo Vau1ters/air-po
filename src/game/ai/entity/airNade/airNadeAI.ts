@@ -1,8 +1,8 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { assert } from '@utils/assertion'
-import { getCollisionResult } from '../common/action/collision'
 import { emitAir } from '../common/action/emitAir'
 import { kill } from '../common/action/kill'
 
@@ -14,7 +14,7 @@ const waitForCollision = function* (entity: Entity): Behaviour<void> {
   assert(collider !== undefined, 'collider not found')
 
   for (let i = 0; i < AIR_NADE_LIFE; i++) {
-    const collisionResult = yield* getCollisionResult(collider)
+    const collisionResult = yield* wait.collision(collider, { allowNoCollision: true }) // not to consume more than 1 frame
     if (collisionResult.find(args => !args.other.entity.hasComponent('Player'))) {
       return
     }

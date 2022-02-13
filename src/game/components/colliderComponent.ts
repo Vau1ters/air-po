@@ -8,6 +8,7 @@ import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { Category } from '@game/entities/category'
+import { EventNotifier } from '@utils/eventNotifier'
 
 export type CollisionCondition = (me: Collider, other: Collider) => boolean
 export type CollisionCallbackArgs = CollisionResult & {
@@ -15,14 +16,22 @@ export type CollisionCallbackArgs = CollisionResult & {
   other: Collider
 }
 export type CollisionCallback = (args: CollisionCallbackArgs) => void
+export type CollisionNotifier = EventNotifier<CollisionCallbackArgs>
 
 export class Collider {
+  public readonly notifier: CollisionNotifier
+
   constructor(
     public entity: Entity,
     public bound: AABB,
     public geometry: GeometryForCollision,
-    public option: ColliderOption
-  ) {}
+    private option: ColliderOption
+  ) {
+    this.notifier = new EventNotifier<CollisionCallbackArgs>()
+    for (const cb of this.option.callbacks) {
+      this.notifier.addObserver(cb)
+    }
+  }
 
   get condition(): CollisionCondition {
     return this.option.condition
@@ -30,10 +39,6 @@ export class Collider {
 
   set condition(condition: CollisionCondition) {
     this.option.condition = condition
-  }
-
-  get callbacks(): Set<CollisionCallback> {
-    return this.option.callbacks
   }
 
   get tag(): Set<string> {
@@ -46,6 +51,10 @@ export class Collider {
 
   get mask(): Set<Category> {
     return this.option.mask
+  }
+
+  get solveDir(): Array<Vec2> {
+    return this.option.solveDir
   }
 }
 
@@ -132,16 +141,16 @@ export class ColliderComponent {
   }
 
   public getByCategory(category: Category): Collider | undefined {
-    return this.colliders.find(c => c.option.category === category)
+    return this.colliders.find(c => c.category === category)
   }
 
   public getByTag(tag: string): Collider | undefined {
-    return this.colliders.find(c => c.option.tag.has(tag))
+    return this.colliders.find(c => c.tag.has(tag))
   }
 
   public removeByTag(tag: string): void {
     while (true) {
-      const idx = this.colliders.findIndex(c => c.option.tag.has(tag))
+      const idx = this.colliders.findIndex(c => c.tag.has(tag))
       if (idx === -1) return
       this.colliders.splice(idx, 1)
     }

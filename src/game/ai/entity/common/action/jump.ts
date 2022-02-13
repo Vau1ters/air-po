@@ -26,13 +26,7 @@ export const jump = function* (option: JumpOption): Behaviour<void> {
   const accel = new Vec2(option.forwardSpeed * direction.sign, -option.upSpeed)
   rigidBody.velocity.assign(rigidBody.velocity.add(accel))
 
-  let isGround = false
-  const footCallback = (): void => {
-    isGround = true
-  }
-  footCollider.callbacks.add(footCallback)
+  yield* wait.collision(footCollider)
 
-  yield* wait.until(() => isGround)
-  footCollider.callbacks.delete(footCallback)
   rigidBody.velocity.assign(new Vec2())
 }

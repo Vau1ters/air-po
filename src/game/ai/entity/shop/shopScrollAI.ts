@@ -1,10 +1,10 @@
 import { windowSize } from '@core/application'
 import { Behaviour } from '@core/behaviour/behaviour'
+import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { getTexture, toSpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
-import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { loadUi, Ui } from '@game/entities/ui/loader/uiLoader'
 import { ItemName } from '@game/item/item'
 import { itemURL } from '@game/item/itemURL'
@@ -12,13 +12,11 @@ import { MouseController } from '@game/systems/controlSystem'
 import { BitmapText, Sprite, Texture } from 'pixi.js'
 
 const waitForMouseOver = function* (entity: Entity): Behaviour<void> {
-  let isMouseOver = false
   const [collider] = entity.getComponent('Collider').colliders
-  collider.callbacks.add((args: CollisionCallbackArgs): void => {
-    if (!args.other.tag.has('mouse')) return
-    isMouseOver = true
-  })
-  while (!isMouseOver) yield
+  while (true) {
+    const collisionResults = yield* wait.collision(collider)
+    if (collisionResults.find(r => r.other.tag.has('mouse'))) return
+  }
 }
 
 const setText = (entity: Entity, text: string): void => {
