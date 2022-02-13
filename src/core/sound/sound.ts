@@ -41,7 +41,7 @@ export const play = (name: SoundName, options: PlayOptions = {}): SoundInstance 
     source.loop = false
   }
   if (options.isRandomisePitch) {
-    const amp = 0.03
+    const amp = 0.5
     source.playbackRate.value = 1 + amp * (Math.random() - 0.5)
   }
 
