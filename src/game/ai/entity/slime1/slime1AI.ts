@@ -10,7 +10,7 @@ import { emitAir } from '../common/action/emitAir'
 import { parallelAny } from '@core/behaviour/composite'
 
 const slime1Jump = function* (entity: Entity, direction: MoveDirection): Behaviour<void> {
-  entity.getComponent('Sound').addSound('slime4')
+  entity.getComponent('Sound').addSound('slime4', { isRandomisePitch: true })
   yield* parallelAny([
     animate({ entity, state: 'Jumping' }),
     move({ entity, direction, speed: 0.5, duration: Infinity }),
