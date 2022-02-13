@@ -64,12 +64,12 @@
     "type": "text",
     "fontSize": 8,
     "position": [300, 20],
-    "tint": 0
+    "tint": 16777215
   },
   "coinCountLarge": {
     "type": "text",
     "fontSize": 8,
     "position": [300, 40],
-    "tint": 0
+    "tint": 16777215
   }
 }

@@ -11,6 +11,7 @@ import * as Sound from '@core/sound/sound'
 import { loadDrawComponent } from '@game/entities/loader/component/DrawComponentLoader'
 import { wait } from '@core/behaviour/wait'
 import { parallelAny } from '@core/behaviour/composite'
+import { GamingFilter } from '@game/filters/gamingFilter'
 
 const waitPlayer = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
@@ -62,9 +63,31 @@ const largeCoinMainAI = function* (entity: Entity, world: World): Behaviour<void
   yield* kill(entity, world)
 }
 
+export const gamingAI = function* (entity: Entity): Behaviour<void> {
+  const draw = entity.getComponent('Draw')
+
+  const filter = new GamingFilter()
+  draw.filters = [filter]
+
+  let phase = 0
+  while (true) {
+    // H ぐるぐる
+    // S 60/100
+    // V 100
+    filter.dstColor = [
+      1 - 0.6 * (Math.sin(phase + (0 / 3) * Math.PI) * 0.5 + 0.5),
+      1 - 0.6 * (Math.sin(phase + (2 / 3) * Math.PI) * 0.5 + 0.5),
+      1 - 0.6 * (Math.sin(phase + (4 / 3) * Math.PI) * 0.5 + 0.5),
+    ]
+    phase += 0.1
+    yield
+  }
+}
+
 export const largeCoinAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* parallelAny([
     largeCoinMainAI(entity, world),
     animate({ entity, state: 'Normal', loopCount: Infinity }),
+    gamingAI(entity),
   ])
 }
