@@ -9,13 +9,13 @@ type Options = {
 export class SoundComponent {
   public sounds: Array<SoundInstance> = []
 
-  addSound(name: SoundName, options?: Options): void {
-    const defaultOption = {
+  addSound(
+    name: SoundName,
+    options: Options = {
       volume: 0.1,
       isRandomisePitch: false,
     }
-    const opt = options === undefined ? defaultOption : options
-    opt.volume = defaultOption.volume
-    this.sounds.push(play(name, { pan: 0, ...opt }))
+  ): void {
+    this.sounds.push(play(name, { pan: 0, ...options }))
   }
 }
