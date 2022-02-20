@@ -11,6 +11,7 @@ import boss1Geyser from '@res/entity/boss1Geyser.json'
 import boss1Root from '@res/entity/boss1Root.json'
 import branch from '@res/entity/branch.json'
 import coinLarge from '@res/entity/coinLarge.json'
+import coinLargeFragment from '@res/entity/coinLargeFragment.json'
 import coinLargeIcon from '@res/entity/coinLargeIcon.json'
 import coinSmall from '@res/entity/coinSmall.json'
 import coinSmallIcon from '@res/entity/coinSmallIcon.json'
@@ -67,6 +68,7 @@ export const entitySetting = {
   boss1Root,
   branch,
   coinLarge,
+  coinLargeFragment,
   coinLargeIcon,
   coinSmall,
   coinSmallIcon,

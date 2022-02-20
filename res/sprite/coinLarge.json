@@ -9,10 +9,12 @@
   },
   "animation": {
     "state": {
-      "Normal": [0, 1, 2, 3, 4, 5]
+      "Normal": [0, 1, 2, 3, 4, 5],
+      "Breaking": [6, 7, 8, 9, 10]
     },
     "speed": {
-      "Normal": 6
+      "Normal": 6,
+      "Breaking": 6
     },
     "default": "Normal"
   }

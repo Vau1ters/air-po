@@ -18,6 +18,7 @@ import branch from '@res/sprite/branch.json'
 import checkbox from '@res/sprite/checkbox.json'
 import coinLarge from '@res/sprite/coinLarge.json'
 import coinLargeDummy from '@res/sprite/coinLargeDummy.json'
+import coinLargeFragment from '@res/sprite/coinLargeFragment.json'
 import coinLargeIcon from '@res/sprite/coinLargeIcon.json'
 import coinSmall from '@res/sprite/coinSmall.json'
 import coinSmallIcon from '@res/sprite/coinSmallIcon.json'
@@ -82,6 +83,7 @@ export const spriteURL = {
   checkbox,
   coinLarge,
   coinLargeDummy,
+  coinLargeFragment,
   coinLargeIcon,
   coinSmall,
   coinSmallIcon,

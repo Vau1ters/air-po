@@ -1,6 +1,4 @@
 import { Behaviour } from '@core/behaviour/behaviour'
-import { ease } from '@core/behaviour/easing/easing'
-import { Out } from '@core/behaviour/easing/functions'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { CollisionCallbackArgs } from '@game/components/colliderComponent'
@@ -12,6 +10,7 @@ import { loadDrawComponent } from '@game/entities/loader/component/DrawComponent
 import { wait } from '@core/behaviour/wait'
 import { parallelAny } from '@core/behaviour/composite'
 import { GamingFilter } from '@game/filters/gamingFilter'
+import { CoinGetEffectFactory } from '@game/entities/effect/coinGetEffectFactory'
 
 const waitPlayer = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
@@ -24,19 +23,11 @@ const waitPlayer = function* (entity: Entity): Behaviour<void> {
   yield* wait.until((): boolean => shouldWait === false)
 }
 
-const playGetAnimation = function* (entity: Entity): Behaviour<void> {
-  const pos = entity.getComponent('Position')
-
-  yield* ease(Out.quad)(
-    100,
-    (value: number) => {
-      pos.y = value
-    },
-    { from: pos.y, to: pos.y - 20 }
-  )
-}
-
-const largeCoinMainAI = function* (entity: Entity, world: World): Behaviour<void> {
+const largeCoinMainAI = function* (
+  entity: Entity,
+  world: World,
+  filter: GamingFilter
+): Behaviour<void> {
   const player = getSingleton('Player', world)
   const stagePoint = entity.getComponent('StagePoint')
   const isDummy = player
@@ -56,17 +47,22 @@ const largeCoinMainAI = function* (entity: Entity, world: World): Behaviour<void
     )
   }
 
-  yield* waitPlayer(entity)
+  yield* parallelAny([
+    waitPlayer(entity),
+    animate({ entity, state: 'Normal', loopCount: Infinity }),
+  ])
   player.getComponent('Player').acquiredLargeCoinList.add(stagePoint.stagePoint.pointID)
   Sound.play('largeCoin')
-  yield* playGetAnimation(entity)
+  for (let i = 0; i < 10; i++) {
+    world.addEntity(new CoinGetEffectFactory(entity, world, filter, i).create())
+  }
+  yield* animate({ entity, state: 'Breaking', loopCount: 1 })
   yield* kill(entity, world)
 }
 
-export const gamingAI = function* (entity: Entity): Behaviour<void> {
+export const gamingAI = function* (entity: Entity, filter: GamingFilter): Behaviour<void> {
   const draw = entity.getComponent('Draw')
 
-  const filter = new GamingFilter()
   draw.filters = [filter]
 
   let phase = 0
@@ -85,9 +81,6 @@ export const gamingAI = function* (entity: Entity): Behaviour<void> {
 }
 
 export const largeCoinAI = function* (entity: Entity, world: World): Behaviour<void> {
-  yield* parallelAny([
-    largeCoinMainAI(entity, world),
-    animate({ entity, state: 'Normal', loopCount: Infinity }),
-    gamingAI(entity),
-  ])
+  const filter = new GamingFilter()
+  yield* parallelAny([largeCoinMainAI(entity, world, filter), gamingAI(entity, filter)])
 }
