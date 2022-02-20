@@ -26,12 +26,18 @@ export const walk = function* (entity: Entity): Behaviour<void> {
   const direction = entity.getComponent('HorizontalDirection')
 
   const body = entity.getComponent('RigidBody')
-  let t = 0
-  let s = 0
+  let played = false
   const footSounds = ['foot1', 'foot2', 'foot3', 'foot4']
 
-  const soundFoot = (): void => {
-    if (t++ % 8 == 0) entity.getComponent('Sound').addSound(footSounds[s++ % 4])
+  const soundFoot = (frame: number): void => {
+    if (frame == 0) {
+      if (!played) {
+        entity.getComponent('Sound').addSound(footSounds[Math.floor(Math.random() * 4)])
+        played = true
+      }
+    } else {
+      played = false
+    }
   }
 
   while (true) {
@@ -44,7 +50,7 @@ export const walk = function* (entity: Entity): Behaviour<void> {
       const dif = Math.min(PLAYER_SETTING.normal.walk.power, PLAYER_SETTING.normal.walk.speed - vel)
       body.velocity = body.velocity.add(dir.mul(dif))
       if (player.landing) {
-        soundFoot()
+        soundFoot(animState.animation.currentAnimationSprite.currentFrame)
         animState.state = 'Walking'
         console.log(`frame: ${animState.animation.currentAnimationSprite.currentFrame}`)
       }
