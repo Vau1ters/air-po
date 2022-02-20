@@ -50,9 +50,8 @@ export const walk = function* (entity: Entity): Behaviour<void> {
       const dif = Math.min(PLAYER_SETTING.normal.walk.power, PLAYER_SETTING.normal.walk.speed - vel)
       body.velocity = body.velocity.add(dir.mul(dif))
       if (player.landing) {
-        soundFoot(animState.animation.currentAnimationSprite.currentFrame)
         animState.state = 'Walking'
-        console.log(`frame: ${animState.animation.currentAnimationSprite.currentFrame}`)
+        soundFoot(animState.animation.currentAnimationSprite.currentFrame)
       }
     } else {
       let tan = new Vec2(-normal.y, +normal.x)
