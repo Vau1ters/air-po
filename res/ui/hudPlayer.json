@@ -52,12 +52,12 @@
   },
   "coinSmall": {
     "type": "entity",
-    "name": "coinIconSmall",
+    "name": "coinSmallIcon",
     "position": [280, 20]
   },
   "coinLarge": {
     "type": "entity",
-    "name": "coinIconLarge",
+    "name": "coinLargeIcon",
     "position": [280, 40]
   },
   "coinCountSmall": {
