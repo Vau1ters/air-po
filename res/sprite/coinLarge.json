@@ -14,7 +14,7 @@
     },
     "speed": {
       "Normal": 6,
-      "Breaking": 6
+      "Breaking": 3
     },
     "default": "Normal"
   }
