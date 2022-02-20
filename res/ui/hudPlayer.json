@@ -25,7 +25,7 @@
   "airGauge": {
     "type": "entity",
     "name": "uiAir",
-    "position": [50, 34]
+    "position": [49, 34]
   },
   "weaponBackground": {
     "type": "entity",
