@@ -1,5 +1,13 @@
 import { spawnSync } from 'child_process'
 
-const { status } = spawnSync('git', ['status', '--porcelain'])
+const { output } = spawnSync('git', ['status', '--porcelain'], { encoding: 'ascii' })
 
-process.exit(status ?? 1)
+let code = 0
+for (const line of output) {
+  if (line !== null && line !== '') {
+    console.error(line)
+    code = 1
+  }
+}
+
+process.exit(code)
