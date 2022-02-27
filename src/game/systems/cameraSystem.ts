@@ -20,6 +20,6 @@ export default class CameraSystem extends System {
     const position = camera.getComponent('Position')
     const offsetX = windowSize.width / 2 - position.x
     const offsetY = windowSize.height / 2 - position.y
-    this.target.position.set(+offsetX, +offsetY)
+    this.target.position.set(Math.floor(offsetX), Math.floor(offsetY))
   }
 }
