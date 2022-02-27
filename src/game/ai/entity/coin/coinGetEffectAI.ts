@@ -9,6 +9,7 @@ import { Vec2 } from '@core/math/vec2'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
+import { gamingAI, GamingState } from './largeCoinAI'
 
 const coinGetEffectMovement = function* (
   entity: Entity,
@@ -35,11 +36,13 @@ const coinGetEffectMovement = function* (
 export const coinGetEffectAI = function* (
   entity: Entity,
   world: World,
+  state: GamingState,
   index: number
 ): Behaviour<void> {
   yield* parallelAny([
     coinGetEffectMovement(entity, world, index),
-    animate({ entity, state: 'Normal', loopCount: 1, waitFrames: 120 / 4 }),
+    gamingAI(entity, { phase: state.phase }),
+    animate({ entity, state: 'Normal', loopCount: Infinity, waitFrames: 4 }),
   ])
   yield* kill(entity, world)
 }
