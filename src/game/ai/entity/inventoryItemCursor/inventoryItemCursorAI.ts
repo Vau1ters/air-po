@@ -1,9 +1,9 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { ease } from '@core/behaviour/easing/easing'
 import { convertToEaseOut, quad } from '@core/behaviour/easing/functions'
+import { wait } from '@core/behaviour/wait'
 import { Entity } from '@core/ecs/entity'
 import { getTexture } from '@core/graphics/art'
-import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { MouseButton, MouseController } from '@game/systems/controlSystem'
 import { Graphics } from 'pixi.js'
 
@@ -11,29 +11,21 @@ type State = 'On' | 'Off'
 type OnFocusCallback = () => void
 type OnClickCallback = (button: MouseButton) => void
 
-const waitForChangeState = function* (
-  entity: Entity,
-  current: State,
-  onClick: OnClickCallback
-): Generator<void, State> {
-  let state: State = current
-  const callbacks = entity.getComponent('Collider').colliders[0].callbacks
-  const callback = (arg: CollisionCallbackArgs): void => {
-    if (!arg.other.tag.has('mouse')) return
-    if (MouseController.isMousePressed('Left')) onClick('Left')
-    if (MouseController.isMousePressed('Right')) onClick('Right')
-    state = 'On'
+const getState = function* (entity: Entity): Behaviour<State> {
+  const [collider] = entity.getComponent('Collider').colliders
+  const results = yield* wait.collision(collider, { allowNoCollision: true })
+  if (results.find(r => r.other.tag.has('mouse'))) {
+    return 'On'
+  } else {
+    return 'Off'
   }
-  callbacks.add(callback)
+}
 
+const waitForChangeState = function* (entity: Entity, current: State): Behaviour<State> {
   while (true) {
-    if (state !== current) break
-    state = 'Off'
-    yield
+    const state = yield* getState(entity)
+    if (state !== current) return state
   }
-
-  callbacks.delete(callback)
-  return state
 }
 
 export const inventoryItemCursorAI = function* (
@@ -54,7 +46,7 @@ export const inventoryItemCursorAI = function* (
 
   let state: State = 'Off'
   while (true) {
-    state = yield* waitForChangeState(entity, state, onClickCallback)
+    state = yield* waitForChangeState(entity, state)
 
     const easeOption = ((): { from: number; to: number } => {
       switch (state) {
@@ -65,7 +57,11 @@ export const inventoryItemCursorAI = function* (
       }
     })()
 
-    if (state === 'On') onFocusCallback()
+    if (state === 'On') {
+      onFocusCallback()
+      if (MouseController.isMousePressed('Left')) onClickCallback('Left')
+      if (MouseController.isMousePressed('Right')) onClickCallback('Right')
+    }
 
     yield* ease(convertToEaseOut(quad))(
       10,

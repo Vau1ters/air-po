@@ -1,26 +1,22 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { wait } from '@core/behaviour/wait'
+import { parallelAny } from '@core/behaviour/composite'
+import { GamingFilter } from '@game/filters/gamingFilter'
+import { CoinGetEffectFactory } from '@game/entities/effect/coinGetEffectFactory'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
-import { CollisionCallbackArgs } from '@game/components/colliderComponent'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
 import { loadDrawComponent } from '@game/entities/loader/component/DrawComponentLoader'
-import { wait } from '@core/behaviour/wait'
-import { parallelAny } from '@core/behaviour/composite'
-import { GamingFilter } from '@game/filters/gamingFilter'
-import { CoinGetEffectFactory } from '@game/entities/effect/coinGetEffectFactory'
 
 const waitPlayer = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
-  let shouldWait = true
-  collider.callbacks.add((args: CollisionCallbackArgs) => {
-    if (args.other.tag.has('PlayerSensor')) {
-      shouldWait = false
-    }
-  })
-  yield* wait.until((): boolean => shouldWait === false)
+  while (true) {
+    const collisionResults = yield* wait.collision(collider)
+    if (collisionResults.find(r => r.other.tag.has('PlayerSensor'))) return
+  }
 }
 
 const largeCoinMainAI = function* (

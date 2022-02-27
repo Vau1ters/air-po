@@ -35,7 +35,7 @@ export class DamageSystem extends System {
           c.mask.has('playerHitbox') || c.mask.has('enemyHitbox'),
           `Collider with '${ATTACK_TAG}' tag must have HITBOX mask`
         )
-        c.callbacks.add(this.attackCollisionCallback)
+        c.notifier.addObserver(this.attackCollisionCallback)
       }
     }
     assert(
@@ -49,7 +49,7 @@ export class DamageSystem extends System {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
         if (c.tag.has(ATTACK_TAG)) {
-          c.callbacks.delete(this.attackCollisionCallback)
+          c.notifier.removeObserver(this.attackCollisionCallback)
         }
       }
     }

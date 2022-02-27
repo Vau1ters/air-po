@@ -10,7 +10,6 @@ import { jump, JumpOption } from '../common/action/jump'
 import { CollisionResultAABBAABB } from '@core/collision/collision/AABB_AABB'
 import { getSingleton } from '@game/systems/singletonSystem'
 import { assert } from '@utils/assertion'
-import { getCollisionResult } from '../common/action/collision'
 import { parallelAll } from '@core/behaviour/composite'
 import { Vec2 } from '@core/math/vec2'
 import GravitySystem from '@game/systems/gravitySystem'
@@ -25,8 +24,8 @@ const decideAction = function* (locust: Entity, player: Entity): Behaviour<Locus
   assert(playerSensor !== undefined, '')
 
   const [wallCollisionResults, playerCollisionoResults] = yield* parallelAll([
-    getCollisionResult(wallSensor),
-    getCollisionResult(playerSensor),
+    wait.collision(wallSensor, { allowNoCollision: true }),
+    wait.collision(playerSensor, { allowNoCollision: true }),
   ])
   const foundLeftWall = wallCollisionResults.find(
     result => (result as CollisionResultAABBAABB).axis.x === -1

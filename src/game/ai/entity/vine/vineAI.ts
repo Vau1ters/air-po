@@ -1,5 +1,6 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAll } from '@core/behaviour/composite'
+import { wait } from '@core/behaviour/wait'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
@@ -50,39 +51,25 @@ const setup = (vine: Vine): void => {
 }
 
 const waitForStatusChange = function* (vine: Vine): Behaviour<VineStatus> {
-  let foundWall = false
-  const wallSensorCallback = (): void => {
-    foundWall = true
-  }
   const wallSensor = vine.vine.getComponent('Collider').getByTag(VINE_TERRAIN_SENSOR_TAG)
-
-  let inAir = false
-  const airSensorCallback = (): void => {
-    inAir = true
-  }
   const airSensor = vine.vine.getComponent('Collider').getByTag(VINE_AIR_SENSOR_TAG)
 
-  const addCallbacks = (): void => {
-    wallSensor?.callbacks.add(wallSensorCallback)
-    airSensor?.callbacks.add(airSensorCallback)
-  }
-  const deleteCallbacks = (): void => {
-    wallSensor?.callbacks.delete(wallSensorCallback)
-    airSensor?.callbacks.delete(airSensorCallback)
-  }
-  addCallbacks()
+  assert(wallSensor !== undefined, '')
+  assert(airSensor !== undefined, '')
+
   while (true) {
-    yield
+    const [wallSensorResult, airSensorResult] = yield* parallelAll([
+      wait.collision(wallSensor, { allowNoCollision: true }),
+      wait.collision(airSensor, { allowNoCollision: true }),
+    ])
+    const foundWall = wallSensorResult.length > 0
+    const inAir = airSensorResult.length > 0
     if (!foundWall && inAir) {
-      deleteCallbacks()
       return 'Extend'
     }
     if (!inAir && vine.stalks.length > 0) {
-      deleteCallbacks()
       return 'Shrink'
     }
-    foundWall = false
-    inAir = false
   }
 }
 

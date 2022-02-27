@@ -118,14 +118,10 @@ export default class CollisionSystem extends System {
         const result = collide(c1, c2, position1, position2)
         if (result.hit === false) continue
         if (mask1.has(category2)) {
-          for (const callback of c1.callbacks) {
-            callback({ me: c1, other: c2, ...result })
-          }
+          c1.notifier.notify({ me: c1, other: c2, ...result })
         }
         if (mask2.has(category1)) {
-          for (const callback of c2.callbacks) {
-            callback({ me: c2, other: c1, ...flipResult(result) })
-          }
+          c2.notifier.notify({ me: c2, other: c1, ...flipResult(result) })
         }
       }
     }

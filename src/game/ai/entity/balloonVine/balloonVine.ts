@@ -4,9 +4,28 @@ import { Behaviour } from '@core/behaviour/behaviour'
 import { Vec2 } from '@core/math/vec2'
 import * as PIXI from 'pixi.js'
 import { PositionComponent } from '@game/components/positionComponent'
-import { CollisionCallbackArgs } from '@game/components/colliderComponent'
+import { Collider } from '@game/components/colliderComponent'
 import { AABB } from '@core/collision/geometry/AABB'
 import { getSingleton } from '@game/systems/singletonSystem'
+import { wait } from '@core/behaviour/wait'
+
+const findAppropriateWall = function* (
+  wallDetectionCollider: Collider
+): Behaviour<PositionComponent | undefined> {
+  const wallDetectionAABB = wallDetectionCollider.geometry as AABB
+  const collisionResults = yield* wait.collision(wallDetectionCollider, { allowNoCollision: true })
+  const walls = collisionResults.map(r => r.other.entity)
+
+  if (walls.length === 0) return
+  return walls
+    .map(wall => {
+      const p = wall.getComponent('Position')
+      const v = p.sub(wallDetectionAABB.center)
+      return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
+    })
+    .filter(w => w.value > 0)
+    .reduce((a, b) => (a.value > b.value ? a : b))?.p
+}
 
 export const balloonVineBehaviour = function* (entity: Entity, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
@@ -25,39 +44,9 @@ export const balloonVineBehaviour = function* (entity: Entity, world: World): Be
   const rootAABB = rootCollider.geometry as AABB
   const wallDetectionAABB = wallDetectionCollider.geometry as AABB
 
-  const targetWall = ((): { update: () => void; get: () => PositionComponent | undefined } => {
-    let walls: Array<Entity> = []
-    let targetWall: PositionComponent | undefined = undefined
-
-    wallDetectionCollider.callbacks.add((args: CollisionCallbackArgs) => {
-      walls.push(args.other.entity)
-    })
-
-    const findAppropriateWall = (): PositionComponent | undefined => {
-      if (walls.length === 0) return
-      return walls
-        .map(wall => {
-          const p = wall.getComponent('Position')
-          const v = p.sub(wallDetectionAABB.center)
-          return { p, value: v.div(v.lengthSq()).dot(new Vec2(0, 1)) }
-        })
-        .filter(w => w.value > 0)
-        .reduce((a, b) => (a.value > b.value ? a : b))?.p
-    }
-
-    return {
-      update: (): void => {
-        if (pickup.isPossessed) targetWall = undefined
-        else if (!targetWall) targetWall = findAppropriateWall()
-        walls = []
-      },
-      get: (): PositionComponent | undefined => targetWall,
-    }
-  })()
-
   while (true) {
-    targetWall.update()
-    const target = pickup.isPossessed ? player.getComponent('Position') : targetWall.get()
+    const targetWall = yield* findAppropriateWall(wallDetectionCollider)
+    const target = pickup.isPossessed ? player.getComponent('Position') : targetWall
 
     if (target) {
       const po = target
@@ -108,7 +97,7 @@ export const balloonVineBehaviour = function* (entity: Entity, world: World): Be
 
     const rigidBody = entity.getComponent('RigidBody')
 
-    if (!pickup.isPossessed && !targetWall.get()) {
+    if (target === undefined) {
       rigidBody.gravityScale = 0.5
       if (rigidBody.velocity.length() > 400) {
         rigidBody.velocity = rigidBody.velocity.mul(400 / rigidBody.velocity.length())
@@ -117,7 +106,5 @@ export const balloonVineBehaviour = function* (entity: Entity, world: World): Be
       rigidBody.gravityScale = 0
       rigidBody.velocity = new Vec2(0, 0)
     }
-
-    yield
   }
 }
