@@ -52,24 +52,24 @@
   },
   "coinSmall": {
     "type": "entity",
-    "name": "coinIconSmall",
+    "name": "coinSmallIcon",
     "position": [232, 32]
   },
   "coinLarge": {
     "type": "entity",
-    "name": "coinIconLarge",
-    "position": [273, 32]
+    "name": "coinLargeIcon",
+    "position": [272, 32]
   },
   "coinCountSmall": {
     "type": "text",
     "fontSize": 8,
-    "position": [239, 32],
+    "position": [238, 32],
     "tint": 16777215
   },
   "coinCountLarge": {
     "type": "text",
     "fontSize": 8,
-    "position": [280, 32],
+    "position": [279, 32],
     "tint": 16777215
   }
 }

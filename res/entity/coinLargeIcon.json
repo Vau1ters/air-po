@@ -1,8 +1,8 @@
 {
   "draw": {
-    "name": "coinSmall",
+    "name": "coinLargeIcon",
     "type": "UI",
-    "scale": 1.5
+    "scale": 1
   },
   "animationState": {}
 }
