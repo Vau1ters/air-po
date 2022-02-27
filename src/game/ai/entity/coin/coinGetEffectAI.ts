@@ -39,7 +39,7 @@ export const coinGetEffectAI = function* (
 ): Behaviour<void> {
   yield* parallelAny([
     coinGetEffectMovement(entity, world, index),
-    animate({ entity, state: 'Normal', loopCount: 1, waitFrames: 120 / 4 }),
+    animate({ entity, state: 'Normal', loopCount: Infinity, waitFrames: 4 }),
   ])
   yield* kill(entity, world)
 }
