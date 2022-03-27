@@ -1,6 +1,6 @@
 import { assert } from '@utils/assertion'
 import { SoundInstance } from './soundInstance'
-import { soundURL } from './soundURL'
+import { soundURL } from './soundURL.autogen'
 
 export type SoundName = keyof typeof soundURL
 

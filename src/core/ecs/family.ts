@@ -1,5 +1,5 @@
 import { Entity } from './entity'
-import { ComponentName } from './component'
+import { ComponentName } from './component.autogen'
 import { World } from './world'
 import { EventNotifier } from '@utils/eventNotifier'
 

@@ -1,5 +1,5 @@
 import { SpriteNameType } from '@core/graphics/art'
-import { movieList } from './movieList'
+import { movieList } from './movieList.autogen'
 import * as t from 'io-ts'
 
 export type MovieName = keyof typeof movieList

@@ -141,10 +141,10 @@ const buildCollider = async (inputPath: string, outputPath: string): Promise<voi
 export const buildColliders = async (): Promise<void> => {
   await buildCollider(
     __dirname + '/../../res/image/treeGuide.png',
-    __dirname + '/../../res/collider/tree.json'
+    __dirname + '/../../res/collider/tree.autogen.json'
   )
   await buildCollider(
     __dirname + '/../../res/image/wallGuide.png',
-    __dirname + '/../../res/collider/wall.json'
+    __dirname + '/../../res/collider/wall.autogen.json'
   )
 }

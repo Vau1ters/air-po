@@ -7,7 +7,7 @@ export const buildSprite = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/core/graphics/spriteURL.ts',
+    outputPath: 'src/core/graphics/spriteURL.autogen.ts',
     watchDir: 'res/sprite',
     templatePath: 'spriteURL.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

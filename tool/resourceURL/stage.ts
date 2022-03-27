@@ -7,13 +7,15 @@ export const buildStage = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/stage/stageList.ts',
+    outputPath: 'src/game/stage/stageList.autogen.ts',
     watchDir: 'res/stage',
     templatePath: 'stageList.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {
       if (e.isFile() === false) return
       const filename = e.name
-      const name = path.parse(filename).name
+      const baseName = path.parse(filename).name
+      const match = /^(.*)\.autogen$/.exec(baseName)
+      const name = (match ?? [])[1]
       importList.push(`import ${name} from '@${watchDir}/${filename}'`)
       nameList.push(`${name},`)
     },

@@ -7,7 +7,7 @@ import { getTexture, toSpriteName } from '@core/graphics/art'
 import { Vec2 } from '@core/math/vec2'
 import { loadUi, Ui } from '@game/entities/ui/loader/uiLoader'
 import { ItemName } from '@game/item/item'
-import { itemURL } from '@game/item/itemURL'
+import { itemURL } from '@game/item/itemURL.autogen'
 import { MouseController } from '@game/systems/controlSystem'
 import { BitmapText, Sprite, Texture } from 'pixi.js'
 
