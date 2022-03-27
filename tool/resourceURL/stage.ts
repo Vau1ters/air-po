@@ -15,7 +15,8 @@ export const buildStage = (): string => {
       const filename = e.name
       const baseName = path.parse(filename).name
       const match = /^(.*)\.autogen$/.exec(baseName)
-      const name = (match ?? [])[1]
+      if (match == null) return
+      const name = match[1]
       importList.push(`import ${name} from '@${watchDir}/${filename}'`)
       nameList.push(`${name},`)
     },
