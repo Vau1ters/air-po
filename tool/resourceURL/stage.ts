@@ -8,7 +8,7 @@ export const buildStage = (): string => {
 
   return buildMetaSource({
     outputPath: 'src/game/stage/stageList.autogen.ts',
-    watchDir: 'res/stage',
+    watchDir: 'res/stage/autogen',
     templatePath: 'stageList.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {
       if (e.isFile() === false) return

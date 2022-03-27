@@ -2,7 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintWebpackPlugin = require('eslint-webpack-plugin')
 const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin')
-const { exec } = require('child_process')
+const { execSync } = require('child_process')
 
 module.exports = {
   mode: 'development',
@@ -83,7 +83,7 @@ module.exports = {
       apply(compiler) {
         compiler.hooks.beforeCompile.tapAsync('MetabuildPlugin', (params, callback) => {
           console.log('metabuild running...')
-          exec('yarn metabuild')
+          execSync('yarn metabuild')
           callback()
         })
       }
