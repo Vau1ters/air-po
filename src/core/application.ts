@@ -34,13 +34,20 @@ export const initializeApplication = (): void => {
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()
 
-    let scale = Math.min(rect.width / windowSize.width, rect.height / windowSize.height)
+    let scale =
+      Math.min(rect.width / windowSize.width, rect.height / windowSize.height) * devicePixelRatio
     if (applicationSetting.screenScaleMode === 'Integer') {
       scale = Math.floor(scale)
     }
 
-    application.view.style.setProperty('width', `${windowSize.width * scale}px`)
-    application.view.style.setProperty('height', `${windowSize.height * scale}px`)
+    application.view.style.setProperty(
+      'width',
+      `${(windowSize.width * scale) / devicePixelRatio}px`
+    )
+    application.view.style.setProperty(
+      'height',
+      `${(windowSize.height * scale) / devicePixelRatio}px`
+    )
   }
   onResizeCallback()
   windowResizeEvent.addObserver(onResizeCallback)
