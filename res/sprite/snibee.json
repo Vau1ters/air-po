@@ -10,9 +10,9 @@
   "animation": {
     "state": {
       "Alive": [0, 1, 2, 3, 4, 5, 6, 7],
-      "Dying": [8, 9, 10],
-      "FlutteringRight": [11],
-      "FlutteringLeft": [12]
+      "Dying": [8, 9, 10, 11],
+      "FlutteringRight": [12],
+      "FlutteringLeft": [13]
     },
     "speed": {
       "Alive": 6,
