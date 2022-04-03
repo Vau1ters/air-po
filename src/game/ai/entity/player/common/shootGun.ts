@@ -6,7 +6,7 @@ import { wait } from '@core/behaviour/wait'
 import { MouseController } from '@game/systems/controlSystem'
 
 const SETTING = {
-  CONSUME_SPEED: 2,
+  CONSUME_SPEED: 2.5,
   COOL_TIME: 20,
 }
 const bulletFactory = new BulletFactory()

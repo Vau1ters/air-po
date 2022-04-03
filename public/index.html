@@ -9,16 +9,23 @@
       <button id="clearButton">Clear</button>
       <select id="mapSelector"></select>
       <div class='checkboxContainer'>
-        <input type='checkbox' id='positionDrawCheckbox'>
         <label for='positionDrawCheckbox'>Position</label>
-      </div>
-      <div class='checkboxContainer'>
-        <input type='checkbox' id='colliderDrawCheckbox'>
+        <input type='checkbox' id='positionDrawCheckbox'>
+
         <label for='colliderDrawCheckbox'>Collider</label>
+        <input type='checkbox' id='colliderDrawCheckbox'>
+
+        <label for='bvhDrawCheckbox'>BVH</label>
+        <input type='checkbox' id='bvhDrawCheckbox'>
       </div>
       <div class='checkboxContainer'>
-        <input type='checkbox' id='bvhDrawCheckbox'>
-        <label for='bvhDrawCheckbox'>BVH</label>
+        <input type='button' value='Submit' id='statusSubmitButton' />
+
+        <label for='airInput'>Air</label>
+        <input type='number' id='airInput'>
+
+        <label for='maxAirInput'>Max Air</label>
+        <input type='number' id='maxAirInput'>
       </div>
     </div>
   </body>

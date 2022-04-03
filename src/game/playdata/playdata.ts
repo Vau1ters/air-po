@@ -43,7 +43,7 @@ export const InitialSaveData: SaveData = {
     itemList: ['testItem', 'testItem', 'hpHealItem', 'airHealItem'],
     smallCoinCount: 0,
     acquiredLargeCoinList: [],
-    equipmentList: ['airTank', 'airTank'],
+    equipmentList: ['airTank'],
   },
   masterVolume: 1,
   pixelPerfect: true,

@@ -1,7 +1,7 @@
 import { Equipment } from './equipment'
 
 export class AirTank extends Equipment {
-  public static readonly QUANTITY = 400
+  public static readonly QUANTITY = 100
 
   onEquip(): void {
     const airHolder = this.player.getComponent('AirHolder')

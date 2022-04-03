@@ -47,7 +47,7 @@
     }
   ],
   "hp": {
-    "max": 2
+    "max": 1
   },
   "attack": {
     "damage": 1,

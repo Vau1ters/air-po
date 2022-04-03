@@ -63,6 +63,18 @@ export class PlayerFactory extends EntityFactory {
       }
     }
 
+    const submitButton = document.getElementById('statusSubmitButton') as HTMLButtonElement
+    const airInput = document.getElementById('airInput') as HTMLInputElement
+    const maxAirInput = document.getElementById('maxAirInput') as HTMLInputElement
+
+    airInput.value = entity.getComponent('AirHolder').quantity.toString()
+    maxAirInput.value = entity.getComponent('AirHolder').maxQuantity.toString()
+
+    submitButton.onclick = () => {
+      entity.getComponent('AirHolder').quantity = Number.parseFloat(airInput.value)
+      entity.getComponent('AirHolder').maxQuantity = Number.parseFloat(maxAirInput.value)
+    }
+
     return entity
   }
 }

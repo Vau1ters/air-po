@@ -6,7 +6,7 @@ export const collectAir = function* (entity: Entity): Behaviour<void> {
   while (true) {
     entity.getComponent('AirHolder').collectSpeed = MouseController.isMousePressing('Right')
       ? 1
-      : 0.05
+      : 0.125
     yield
   }
 }
