@@ -28,7 +28,7 @@ float air(ivec2 coord) {
     }
   }
   if (metaball < 1.0) {
-    return 1. * (1. - pow(metaball, 2.) * 0.3);
+    return .5 * (1. - pow(metaball, 2.) * 0.9);
   } else {
     return 1.;
   }
@@ -65,11 +65,12 @@ void main() {
   vec4 color = texture2D(uSampler, vTextureCoord);
   vec2 uv = vTextureCoord / (inputSize.zw * outputFrame.zw);
   ivec2 coord = ivec2(uv * displaySize) + camera;
+  float rate = 0.;
   if (enableAntiAlias) {
-    color *= shouldAntiAlias(coord) ? (1. + air(coord)) * .5 : air(coord);
+    rate = shouldAntiAlias(coord) ? (1. + air(coord)) * .5 : air(coord);
   } else {
-    color *= air(coord);
+    rate = air(coord);
   }
-  gl_FragColor = color;
+  gl_FragColor = mix(vec4(.5, .4, .5, 1), color, rate);
   gl_FragColor.rgb *= mix(pow(cos(0.7 * length(uv - 0.5) * 3.141592 * .5), 4.), 1., inAirRate);
 }
