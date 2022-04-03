@@ -13,6 +13,7 @@ import { assert } from '@utils/assertion'
 import { parallelAll } from '@core/behaviour/composite'
 import { Vec2 } from '@core/math/vec2'
 import GravitySystem from '@game/systems/gravitySystem'
+import { animate } from '../common/action/animate'
 
 type LocustAction = 'JumpLeft' | 'JumpRight' | 'ChasePlayer'
 
@@ -125,7 +126,6 @@ const locustJump = function* (locust: Entity, player: Entity): Behaviour<void> {
   const sound = locust.getComponent('Sound')
   const action = yield* decideAction(locust, player)
   const option = calcJumpOption(locust, player, action)
-  yield* wait.frame(10)
   sound.addSound('foot1')
   yield* jump(option)
 }
@@ -133,8 +133,14 @@ const locustJump = function* (locust: Entity, player: Entity): Behaviour<void> {
 const locustMove = function* (locust: Entity, player: Entity): Behaviour<void> {
   yield* wait.frame(Math.random() * 60)
   while (true) {
-    yield* wait.frame(60)
-    yield* locustJump(locust, player)
+    yield* parallelAll([
+      animate({ entity: locust, state: 'Charging', loopCount: 1 }),
+      wait.frame(60),
+    ])
+    yield* parallelAll([
+      animate({ entity: locust, state: 'Default', loopCount: 1 }),
+      locustJump(locust, player),
+    ])
   }
 }
 

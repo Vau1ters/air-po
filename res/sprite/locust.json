@@ -9,7 +9,8 @@
   },
   "animation": {
     "state": {
-      "Default": [0]
+      "Default": [0],
+      "Charging": [1]
     },
     "default": "Default"
   }
