@@ -15,6 +15,8 @@ const weaponSpriteName = (type: WeaponType): SpriteName => {
       return 'uiWeaponGun'
     case 'AirNade':
       return 'uiWeaponAirNade'
+    case 'Search':
+      return 'uiWeaponSearch'
   }
 }
 

@@ -6,15 +6,19 @@ export type MovieName = keyof typeof movieList
 
 export const ActorNameType = t.string
 
-export const MoviePositionType = t.intersection([
-  t.type({
-    baseName: ActorNameType,
-  }),
-  t.partial({
-    offset: t.tuple([t.number, t.number]),
-  }),
-])
+export const MovieVec2Type = t.tuple([t.number, t.number])
 
+export const MoviePositionType = t.union([
+  MovieVec2Type,
+  t.intersection([
+    t.type({
+      baseName: ActorNameType,
+    }),
+    t.partial({
+      offset: MovieVec2Type,
+    }),
+  ]),
+])
 export const BlackActionTypeType = t.union([t.literal('in'), t.literal('out')])
 
 export const BlackActionType = t.type({
@@ -44,7 +48,7 @@ export const TalkActionType = t.type({
   content: t.string,
 })
 
-export const MoveActionTypeType = t.union([t.literal('walk'), t.literal('warp')])
+export const MoveActionTypeType = t.union([t.literal('walk'), t.literal('warp'), t.literal('ease')])
 
 export const MoveActionType = t.type({
   action: t.literal('move'),

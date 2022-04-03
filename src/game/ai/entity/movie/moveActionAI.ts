@@ -1,5 +1,7 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { parallelAny } from '@core/behaviour/composite'
+import { ease } from '@core/behaviour/easing/easing'
+import { Out } from '@core/behaviour/easing/functions'
 import { Entity } from '@core/ecs/entity'
 import { Family } from '@core/ecs/family'
 import { Vec2 } from '@core/math/vec2'
@@ -30,6 +32,7 @@ const walkTo = function* (actor: Entity, speed: number, arrival: Vec2): Behaviou
 export const moveActionAI = function* (action: MoveAction, nameFamily: Family): Behaviour<void> {
   const actor = findActor(action.mover, nameFamily)
   const pos = actor.getComponent('Position')
+  const start = pos.copy()
   const end = resolvePosition(action.to, nameFamily)
 
   switch (action.type) {
@@ -50,6 +53,11 @@ export const moveActionAI = function* (action: MoveAction, nameFamily: Family): 
       break
     case 'warp':
       pos.assign(end)
+      break
+    case 'ease':
+      yield* ease(Out.quad)(50, (value: number): void => {
+        pos.assign(Vec2.mix(start, end, value))
+      })
       break
   }
 }

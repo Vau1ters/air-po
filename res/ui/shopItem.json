@@ -23,7 +23,7 @@
   },
   "coin": {
     "type": "entity",
-    "name": "coinIconSmall",
+    "name": "coinSmallIcon",
     "position": [60, 0]
   },
   "price": {

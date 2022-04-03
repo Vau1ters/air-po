@@ -20,6 +20,7 @@ import { assert } from '@utils/assertion'
 import { PlayerFactory } from '@game/entities/playerFactory'
 import { PlayerData } from '@game/playdata/playdata'
 import { findCustomProperty } from './customProperty'
+import { DroneFactory } from '@game/entities/droneFactory'
 
 export type StageName = keyof typeof stageList
 
@@ -96,12 +97,14 @@ export const loadStage = (world: World, stageInfo: StageInfo): void => {
   } = stageInfo
 
   const player = new PlayerFactory(world, playerData).create()
+  const drone = new DroneFactory(world).create()
   const camera = new CameraFactory().create()
   const laserSight = new LaserSightFactory(world).create()
 
   camera.getComponent('Camera').aiStack.push(chaseCameraAI(camera, player))
 
   world.addEntity(player)
+  world.addEntity(drone)
   world.addEntity(camera)
   world.addEntity(laserSight)
   world.addEntity(player.getComponent('Player').ui)

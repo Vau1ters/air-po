@@ -17,6 +17,7 @@ import coinSmall from '@res/entity/coinSmall.json'
 import coinSmallIcon from '@res/entity/coinSmallIcon.json'
 import dandelion from '@res/entity/dandelion.json'
 import dandelionFluff from '@res/entity/dandelionFluff.json'
+import drone from '@res/entity/drone.json'
 import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
 import explosionEffect from '@res/entity/explosionEffect.json'
@@ -26,6 +27,7 @@ import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
 import jetEffect from '@res/entity/jetEffect.json'
 import jumpingEffect from '@res/entity/jumpingEffect.json'
 import landingEffect from '@res/entity/landingEffect.json'
+import laserSight from '@res/entity/laserSight.json'
 import locust from '@res/entity/locust.json'
 import moss from '@res/entity/moss.json'
 import mouseCursor from '@res/entity/mouseCursor.json'
@@ -75,6 +77,7 @@ export const entitySetting = {
   coinSmallIcon,
   dandelion,
   dandelionFluff,
+  drone,
   enemy1,
   enemyBullet,
   explosionEffect,
@@ -84,6 +87,7 @@ export const entitySetting = {
   jetEffect,
   jumpingEffect,
   landingEffect,
+  laserSight,
   locust,
   moss,
   mouseCursor,

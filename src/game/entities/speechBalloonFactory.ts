@@ -41,8 +41,8 @@ export class SpeechBalloonFactory extends EntityFactory {
     const border = 1
     const sprite = new Sprite()
     sprite.name = 'background'
-    sprite.width = windowSize.width
-    sprite.height = windowSize.height * 0.4
+    sprite.width = windowSize.width * 0.5
+    sprite.height = windowSize.height * 0.35
     sprite.anchor.set(0.5)
     sprite.filters = [
       new Filter(undefined, speechBalloonFragmentShader, {
