@@ -1,4 +1,4 @@
-import { ComponentName } from '@core/ecs/component'
+import { ComponentName } from '@core/ecs/component.autogen'
 import { Entity } from '@core/ecs/entity'
 import { Family, FamilyBuilder } from '@core/ecs/family'
 import { System } from '@core/ecs/system'

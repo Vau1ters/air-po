@@ -7,7 +7,7 @@ export const buildTile = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/stage/tileList.ts',
+    outputPath: 'src/game/stage/tileList.autogen.ts',
     watchDir: 'src/game/entities/stage/tile',
     templatePath: 'tileList.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

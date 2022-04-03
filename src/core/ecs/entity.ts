@@ -1,4 +1,4 @@
-import { ComponentName, ComponentMap } from './component'
+import { ComponentName, ComponentMap } from './component.autogen'
 import { EventNotifier } from '@utils/eventNotifier'
 import { assert } from '@utils/assertion'
 

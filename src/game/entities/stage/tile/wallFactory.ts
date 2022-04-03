@@ -1,7 +1,7 @@
 import { Entity } from '@core/ecs/entity'
 import { StaticComponent } from '@game/components/staticComponent'
 import { TileCollider, TileEntityFactory } from '@game/entities/tileEntityFactory'
-import wallCollider from '@res/collider/wall.json'
+import wallCollider from '@res/collider/wall.autogen.json'
 
 export default class WallFactory extends TileEntityFactory {
   public create(): Entity {

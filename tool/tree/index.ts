@@ -157,11 +157,11 @@ export const packTreeImage = async (): Promise<void> => {
   const bounds = findBounds(corners)
   const boundMap = calcBoundMap(bounds)
   await outputCanvas(
-    __dirname + '/../../res/image/treeTile.png',
+    __dirname + '/../../res/image/treeTile.autogen.png',
     packImage(originalImage, boundMap)
   )
   fs.writeFileSync(
-    __dirname + '/../../res/tileMapping/tree.json',
+    __dirname + '/../../res/tileMapping/tree.autogen.json',
     JSON.stringify(toMappingObject(boundMap), null, '  ')
   )
 }

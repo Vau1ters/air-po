@@ -1,6 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { assert } from '@utils/assertion'
-import { ItemSetting, itemURL } from './itemURL'
+import { ItemSetting, itemURL } from './itemURL.autogen'
 
 export type ItemName = keyof typeof itemURL
 

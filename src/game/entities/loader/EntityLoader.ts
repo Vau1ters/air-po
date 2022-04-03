@@ -8,7 +8,7 @@ import {
 import { CollidersSettingType, loadColliderComponent } from './component/ColliderComponentLoader'
 import { loadDrawComponent, DrawSettingType } from './component/DrawComponentLoader'
 import { loadRigidBodyComponent, RigidBodySettingType } from './component/RigidBodyComponentLoader'
-import { entitySetting } from './entitySetting'
+import { entitySetting } from './entitySetting.autogen'
 import { assert } from '@utils/assertion'
 import { HpSettingType, loadHpComponent } from './component/HpComponentLoader'
 import { AttackSettingType, loadAttackComponent } from './component/AttackComponentLoader'

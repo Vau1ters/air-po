@@ -99,10 +99,13 @@ const updateStage = (stage: StageSetting): StageSetting => {
 export const updateStages = (): void => {
   for (const e of fs.readdirSync('res/stage', { withFileTypes: true })) {
     if (e.isFile()) {
-      const path = `res/stage/${e.name}`
-      const content = fs.readFileSync(path, 'ascii')
+      const match = /^(.*)\.json$/.exec(e.name)
+      if (match == null) continue
+      const name = match[1]
+      if (name.includes('autogen')) continue
+      const content = fs.readFileSync(`res/stage/${e.name}`, 'ascii')
       const result = JSON.stringify(updateStage(JSON.parse(content)), null, '  ')
-      fs.writeFileSync(path, result)
+      fs.writeFileSync(`res/stage/autogen/${name}.autogen.json`, result)
     }
   }
 }

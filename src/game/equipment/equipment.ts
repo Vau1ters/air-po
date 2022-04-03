@@ -1,5 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-import { equipmentURL } from './equipmentURL'
+import { equipmentURL } from './equipmentURL.autogen'
 
 export type EquipmentName = keyof typeof equipmentURL
 

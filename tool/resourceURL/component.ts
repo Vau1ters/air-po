@@ -7,7 +7,7 @@ export const buildComponent = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/core/ecs/component.ts',
+    outputPath: 'src/core/ecs/component.autogen.ts',
     watchDir: 'src/game/components',
     templatePath: 'component.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

@@ -7,7 +7,7 @@ export const buildEntity = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/entities/loader/entitySetting.ts',
+    outputPath: 'src/game/entities/loader/entitySetting.autogen.ts',
     watchDir: 'res/entity',
     templatePath: 'entitySetting.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

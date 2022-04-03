@@ -6,8 +6,8 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "yarn metabuild && webpack serve",
-    "build": "yarn metabuild && webpack build",
+    "start": "webpack serve",
+    "build": "webpack build",
     "lint": "yarn eslint-lint && yarn prettier-lint",
     "format": "yarn eslint-format && yarn prettier-format",
     "eslint-lint": "eslint './**/*.ts' './**/*.json'",

@@ -11,7 +11,7 @@ export const buildItem = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/item/itemURL.ts',
+    outputPath: 'src/game/item/itemURL.autogen.ts',
     watchDir: 'res/item',
     templatePath: 'itemURL.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {
