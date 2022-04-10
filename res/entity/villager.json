@@ -3,6 +3,23 @@
     "name": "villager"
   },
   "animationState": {},
+  "rigidBody": {
+    "mass": 10,
+    "gravityScale": 1,
+    "airResistance": 2.25
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [13, 16],
+        "maxClipToTolerance": [3, 4]
+      },
+      "category": "physics",
+      "mask": ["terrain"],
+      "tag": ["physics"]
+    }
+  ],
   "horizontalDirection": {
     "looking": "Right"
   }
