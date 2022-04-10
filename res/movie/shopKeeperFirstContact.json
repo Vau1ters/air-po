@@ -1,0 +1,63 @@
+[
+  {
+    "action": "camera",
+    "to": {
+      "baseName": "shopKeeper"
+    },
+    "type": "ease",
+    "chase": true
+  },
+  {
+    "action": "talk",
+    "speaker": "shopKeeper",
+    "content": "おはゆいちゃん"
+  },
+  {
+    "action": "camera",
+    "to": {
+      "baseName": "player"
+    },
+    "type": "ease",
+    "chase": true
+  },
+  {
+    "action": "talk",
+    "speaker": "player",
+    "content": "だれですか"
+  },
+  {
+    "action": "camera",
+    "to": {
+      "baseName": "shopKeeper"
+    },
+    "type": "ease",
+    "chase": true
+  },
+  {
+    "action": "talk",
+    "speaker": "shopKeeper",
+    "content": "ゆいちゃんです"
+  },
+  {
+    "action": "move",
+    "mover": "shopKeeper",
+    "to": {
+      "baseName": "shopKeeper",
+      "offset": [64, 32]
+    },
+    "type": "walk"
+  },
+  {
+    "action": "talk",
+    "speaker": "shopKeeper",
+    "content": "これあげる"
+  },
+  {
+    "action": "showSprite",
+    "sprite": "testItem",
+    "pos": {
+      "baseName": "shopKeeper",
+      "offset": [24, -24]
+    }
+  }
+]
