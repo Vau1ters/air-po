@@ -59,5 +59,19 @@
       "baseName": "shopKeeper",
       "offset": [24, -24]
     }
+  },
+  {
+    "action": "talk",
+    "speaker": "shopKeeper",
+    "content": "さようなら"
+  },
+  {
+    "action": "move",
+    "mover": "shopKeeper",
+    "to": {
+      "baseName": "shopKeeper",
+      "offset": [1000, 1000]
+    },
+    "type": "warp"
   }
 ]
