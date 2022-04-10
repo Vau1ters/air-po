@@ -11,6 +11,7 @@ import { parallelAll } from '@core/behaviour/composite'
 import { animate } from '@game/ai/entity/common/action/animate'
 import { repeat } from '@core/behaviour/repeat'
 import { getSingleton } from '@game/systems/singletonSystem'
+import { ExplosionEffectFactory } from '@game/entities/effect/explosionEffectFactory'
 
 export const SnibeeSetting = {
   interiorDistance: 80,
@@ -108,6 +109,10 @@ const flutteringAI = function* (entity: Entity): Behaviour<void> {
 
 export const snibeeAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), aliveAI(entity, world))
+  const explosionEffectFactory = new ExplosionEffectFactory(world).setPosition(
+    entity.getComponent('Position')
+  )
+  world.addEntity(explosionEffectFactory.create())
   entity.getComponent('Sound').addSound('snibeeDie')
   yield* animate({ entity, state: 'Dying' })
   entity.getComponent('RigidBody').velocity.x = 0
