@@ -50,7 +50,7 @@ export class AirHolderSystem extends System {
       // air consume
       airHolder.consume()
       if (airHolder.shouldDamageInSuffocation && airHolder.quantity === 0) {
-        if (airHolder.suffocationDamageCount++ % SUFFOCATION_DAMAGE_INTERVAL === 0) {
+        if (++airHolder.suffocationDamageCount % SUFFOCATION_DAMAGE_INTERVAL === 0) {
           entity.getComponent('Hp').decrease(1)
           entity.getComponent('Invincible').setInvincible()
         }
