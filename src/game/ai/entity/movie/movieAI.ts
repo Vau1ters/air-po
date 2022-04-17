@@ -12,6 +12,7 @@ import { jumpActionAI } from './jumpActionAI'
 import { moveActionAI } from './moveActionAI'
 import { showSpriteActionAI } from './showSpriteActionAI'
 import { talkActionAI } from './talkActionAI'
+import { throwAirNadeAI } from './throwAirNade'
 
 export const movieAI = function* (movie: Movie, g: Graphics, world: World): Behaviour<void> {
   const player = getSingleton('Player', world)
@@ -40,6 +41,9 @@ export const movieAI = function* (movie: Movie, g: Graphics, world: World): Beha
         break
       case 'showSprite':
         yield* showSpriteActionAI(action, world, nameFamily)
+        break
+      case 'throwAirNade':
+        yield* throwAirNadeAI(action, world, nameFamily)
         break
     }
   }

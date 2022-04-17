@@ -50,6 +50,13 @@
         "chase": false
 	},
     {
+        "action": "throwAirNade",
+        "thrower": "shopKeeper",
+        "to": {
+            "baseName": "player"
+        }
+    },
+    {
         "action": "move",
         "mover": "player",
         "to": {

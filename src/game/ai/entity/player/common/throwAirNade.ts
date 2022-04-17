@@ -10,22 +10,26 @@ const SETTING = {
   COOL_TIME: 20,
 }
 
-export const throwAirNade = function* (entity: Entity, world: World): Behaviour<void> {
+export const throwAirNade = function* (player: Entity, world: World): Behaviour<void> {
+  const airHolder = player.getComponent('AirHolder')
+  const sound = player.getComponent('Sound')
+  const targetPos = player.getComponent('Player').targetPosition
+
   if (!MouseController.isMousePressed('Left')) {
     yield
     return
   }
   // 空気の消費
-  const airHolder = entity.getComponent('AirHolder')
   if (airHolder.quantity < airNadeSetting.airHolder.maxQuantity) {
     yield
     return
   }
   airHolder.consumeBy(airNadeSetting.airHolder.maxQuantity)
 
-  entity.getComponent('Sound').addSound('shot')
+  sound.addSound('shot')
+
   // 弾を打つ
-  const airNade = new AirNadeFactory(entity, world).create()
+  const airNade = new AirNadeFactory(player, world, targetPos).create()
   world.addEntity(airNade)
   yield* wait.frame(SETTING.COOL_TIME)
 }

@@ -64,6 +64,12 @@ export const ShowSpriteActionType = t.type({
   pos: MoviePositionType,
 })
 
+export const ThrowAirNadeActionType = t.type({
+  action: t.literal('throwAirNade'),
+  thrower: ActorNameType,
+  to: MoviePositionType,
+})
+
 export const ActionType = t.union([
   BlackActionType,
   CinemaScopeActionType,
@@ -72,6 +78,7 @@ export const ActionType = t.union([
   MoveActionType,
   JumpActionType,
   ShowSpriteActionType,
+  ThrowAirNadeActionType,
 ])
 
 export const MovieType = t.array(ActionType)
@@ -89,5 +96,6 @@ export type MoveAction = t.TypeOf<typeof MoveActionType>
 export type MoveActionType = t.TypeOf<typeof MoveActionTypeType>
 export type JumpAction = t.TypeOf<typeof JumpActionType>
 export type ShowSpriteAction = t.TypeOf<typeof ShowSpriteActionType>
+export type ThrowAirNadeAction = t.TypeOf<typeof ThrowAirNadeActionType>
 export type ActorName = t.TypeOf<typeof ActorNameType>
 export type MoviePosition = t.TypeOf<typeof MoviePositionType>
