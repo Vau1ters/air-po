@@ -1,0 +1,19 @@
+{
+  "name": "explosionEffect",
+  "path": "explosionEffect.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 16
+    }
+  },
+  "animation": {
+    "state": {
+      "Default": [0, 1, 2, 3]
+    },
+    "speed": {
+      "Default": 5
+    },
+    "default": "Default"
+  }
+}
