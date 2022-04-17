@@ -53,5 +53,11 @@
   "sound": {},
   "horizontalDirection": {
     "looking": "Right"
+  },
+  "library": {
+    "description": [
+      "とっても あぶない はちです。",
+      "とばしてくる とげに ちゅうい。"
+    ]
   }
 }

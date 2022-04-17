@@ -26,5 +26,11 @@
     "max": 1,
     "showHpBar": false,
     "canLock": false
+  },
+  "library": {
+    "description": [
+      "みちをふさぐ えだです。",
+      "こうげきすると こわせます。"
+    ]
   }
 }

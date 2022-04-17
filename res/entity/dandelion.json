@@ -22,5 +22,11 @@
     "consumeSpeed": 0,
     "emitSpeed": 0.5,
     "shouldDamageInSuffocation": false
+  },
+  "library": {
+    "description": [
+      "おおきなたんぽぽです。",
+      "くうきがあると わたげをだします。"
+    ]
   }
 }

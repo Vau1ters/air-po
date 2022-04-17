@@ -54,5 +54,11 @@
     "emitSpeed": 0.5,
     "shouldDamageInSuffocation": false
   },
-  "sound": {}
+  "sound": {},
+  "library": {
+    "description": [
+      "きょだいな きのこです。",
+      "かさをひらいて うえにのると だいジャンプ。"
+    ]
+  }
 }

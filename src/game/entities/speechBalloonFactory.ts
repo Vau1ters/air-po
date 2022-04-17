@@ -35,23 +35,9 @@ export class SpeechBalloonFactory extends EntityFactory {
       tint: this.config.tint,
     }).create()
 
-    const tailSize = 20
     const radius = 10
     const padding = radius / Math.sqrt(2)
     const border = 1
-    const sprite = new Sprite()
-    sprite.name = 'background'
-    sprite.width = windowSize.width * 0.5
-    sprite.height = windowSize.height * 0.35
-    sprite.anchor.set(0.5)
-    sprite.filters = [
-      new Filter(undefined, speechBalloonFragmentShader, {
-        displaySize: [sprite.width, sprite.height],
-        tailSize,
-        radius,
-        border,
-      }),
-    ]
 
     const ui = entity.getComponent('Draw')
     ui.filters = [
@@ -68,6 +54,23 @@ export class SpeechBalloonFactory extends EntityFactory {
     text.roundPixels = true
     text.filters = [new Filter(undefined, speechBalloonTextFragmentShader)]
     text.zIndex = 1
+
+    const tailSize = text.height
+
+    const sprite = new Sprite()
+    sprite.name = 'background'
+    sprite.width = text.width + (padding + tailSize) * 2
+    sprite.height = text.height + (padding + tailSize) * 2
+    sprite.anchor.set(0.5)
+    sprite.filters = [
+      new Filter(undefined, speechBalloonFragmentShader, {
+        displaySize: [sprite.width, sprite.height],
+        tailSize,
+        radius,
+        border,
+      }),
+    ]
+
     text.position.set(
       tailSize + padding - sprite.width * 0.5,
       tailSize + padding - sprite.height * 0.5

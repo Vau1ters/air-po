@@ -15,5 +15,11 @@
       "tag": ["physics"]
     }
   ],
-  "rigidBody": {}
+  "rigidBody": {},
+  "library": {
+    "description": [
+      "くうきをだす なぞの かんけつせんです。",
+      "あんぜんちたいで ほっとひといき。"
+    ]
+  }
 }
