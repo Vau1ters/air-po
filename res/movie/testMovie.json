@@ -54,9 +54,13 @@
         "mover": "player",
         "to": {
             "baseName": "shopKeeper",
-            "offset": [-48, 0]
+            "offset": [-40, 0]
         },
         "type": "walk"
+    },
+    {
+        "action": "jump",
+        "mover": "player"
     },
     {
         "action": "showSprite",

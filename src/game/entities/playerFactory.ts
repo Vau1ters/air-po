@@ -15,7 +15,7 @@ import { loadEntity } from './loader/EntityLoader'
 import { THROUGH_FLOOR_TAG } from './stage/tile/throughFloorFactory'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
-export const PLAYER_FOOT_TAG = 'PlayerFoot'
+export const PLAYER_FOOT_TAG = 'Foot'
 
 export class PlayerFactory extends EntityFactory {
   constructor(private world: World, private playerData: PlayerData) {

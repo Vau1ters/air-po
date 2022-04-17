@@ -56,7 +56,7 @@
       },
       "category": "sensor",
       "mask": ["terrain"],
-      "tag": ["PlayerFoot"]
+      "tag": ["Foot"]
     }
   ],
   "airHolder": {
