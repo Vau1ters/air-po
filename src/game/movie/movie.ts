@@ -53,6 +53,11 @@ export const MoveActionType = t.type({
   type: MoveActionTypeType,
 })
 
+export const JumpActionType = t.type({
+  action: t.literal('jump'),
+  mover: ActorNameType,
+})
+
 export const ShowSpriteActionType = t.type({
   action: t.literal('showSprite'),
   sprite: SpriteNameType,
@@ -65,6 +70,7 @@ export const ActionType = t.union([
   CameraActionType,
   TalkActionType,
   MoveActionType,
+  JumpActionType,
   ShowSpriteActionType,
 ])
 
@@ -81,6 +87,7 @@ export type CameraActionType = t.TypeOf<typeof CameraActionTypeType>
 export type TalkAction = t.TypeOf<typeof TalkActionType>
 export type MoveAction = t.TypeOf<typeof MoveActionType>
 export type MoveActionType = t.TypeOf<typeof MoveActionTypeType>
+export type JumpAction = t.TypeOf<typeof JumpActionType>
 export type ShowSpriteAction = t.TypeOf<typeof ShowSpriteActionType>
 export type ActorName = t.TypeOf<typeof ActorNameType>
 export type MoviePosition = t.TypeOf<typeof MoviePositionType>
