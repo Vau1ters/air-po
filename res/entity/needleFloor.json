@@ -1,0 +1,31 @@
+{
+  "draw": {
+    "name": "needleFloor"
+  },
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [8, 8]
+      },
+      "category": "terrain",
+      "mask": ["physics"],
+      "tag": ["physics"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [8, 8]
+      },
+      "category": "attack",
+      "mask": ["playerHitbox"],
+      "tag": ["Attack"]
+    }
+  ],
+  "attack": {
+    "damage": 1,
+    "shouldCounterbalance": false
+  },
+  "rigidBody": {},
+  "sound": {}
+}

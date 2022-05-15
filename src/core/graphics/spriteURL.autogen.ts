@@ -38,6 +38,7 @@ import locust from '@res/sprite/locust.json'
 import moss from '@res/sprite/moss.json'
 import mushroom from '@res/sprite/mushroom.json'
 import needleBullet from '@res/sprite/needleBullet.json'
+import needleFloor from '@res/sprite/needleFloor.json'
 import player from '@res/sprite/player.json'
 import poison from '@res/sprite/poison.json'
 import poisonousTulip from '@res/sprite/poisonousTulip.json'
@@ -104,6 +105,7 @@ export const spriteURL = {
   moss,
   mushroom,
   needleBullet,
+  needleFloor,
   player,
   poison,
   poisonousTulip,
