@@ -61,6 +61,13 @@
     }
   },
   {
+      "action": "throwAirNade",
+      "thrower": "shopKeeper",
+      "to": {
+          "baseName": "mushroomShopKeeperOpen"
+      }
+  },
+  {
     "action": "talk",
     "speaker": "shopKeeper",
     "content": "さようなら"
