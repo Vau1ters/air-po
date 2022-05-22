@@ -130,14 +130,7 @@
           "gid": 655,
           "height": 16,
           "id": 58,
-          "name": "",
-          "properties": [
-            {
-              "name": "name",
-              "type": "string",
-              "value": "shopKeeper"
-            }
-          ],
+          "name": "shopKeeper",
           "rotation": 0,
           "type": "",
           "visible": true,
