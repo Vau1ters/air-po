@@ -6,7 +6,7 @@
     {
       "geometry": {
         "type": "AABB",
-        "size": [8, 8]
+        "size": [6, 6]
       },
       "category": "terrain",
       "mask": ["physics"],
@@ -15,7 +15,7 @@
     {
       "geometry": {
         "type": "AABB",
-        "size": [8, 8]
+        "size": [6, 6]
       },
       "category": "attack",
       "mask": ["playerHitbox"],

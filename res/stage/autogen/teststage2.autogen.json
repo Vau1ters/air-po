@@ -93,7 +93,7 @@
       "name": "entity",
       "objects": [
         {
-          "gid": 93,
+          "gid": 125,
           "height": 64,
           "id": 22,
           "name": "",
@@ -112,7 +112,7 @@
           "y": 367.5
         },
         {
-          "gid": 58,
+          "gid": 66,
           "height": 16,
           "id": 24,
           "name": "",
@@ -131,7 +131,7 @@
           "y": 272
         },
         {
-          "gid": 41,
+          "gid": 49,
           "height": 16,
           "id": 31,
           "name": "",
@@ -143,7 +143,7 @@
           "y": 120
         },
         {
-          "gid": 41,
+          "gid": 49,
           "height": 16,
           "id": 32,
           "name": "",
@@ -155,7 +155,7 @@
           "y": 160
         },
         {
-          "gid": 86,
+          "gid": 92,
           "height": 16,
           "id": 33,
           "name": "",
@@ -167,7 +167,7 @@
           "y": 168
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 34,
           "name": "",
@@ -179,7 +179,7 @@
           "y": 192
         },
         {
-          "gid": 94,
+          "gid": 126,
           "height": 16,
           "id": 35,
           "name": "",
@@ -191,7 +191,7 @@
           "y": 192
         },
         {
-          "gid": 63,
+          "gid": 71,
           "height": 16,
           "id": 36,
           "name": "",
@@ -203,7 +203,7 @@
           "y": 200
         },
         {
-          "gid": 94,
+          "gid": 126,
           "height": 16,
           "id": 37,
           "name": "",
@@ -215,7 +215,7 @@
           "y": 344
         },
         {
-          "gid": 94,
+          "gid": 126,
           "height": 16,
           "id": 38,
           "name": "",
@@ -227,7 +227,7 @@
           "y": 352
         },
         {
-          "gid": 79,
+          "gid": 85,
           "height": 80,
           "id": 39,
           "name": "",
@@ -239,7 +239,7 @@
           "y": 368
         },
         {
-          "gid": 41,
+          "gid": 49,
           "height": 16,
           "id": 40,
           "name": "",
@@ -251,7 +251,7 @@
           "y": 368
         },
         {
-          "gid": 61,
+          "gid": 69,
           "height": 16,
           "id": 41,
           "name": "",
@@ -4495,8 +4495,8 @@
         0,
         0,
         0,
-        0,
-        39,
+        148,
+        2,
         39,
         0,
         0,
@@ -4593,10 +4593,10 @@
         0,
         0,
         0,
-        0,
-        0,
+        148,
+        148,
         39,
-        39,
+        28,
         0,
         0,
         0,
@@ -4693,8 +4693,8 @@
         0,
         0,
         0,
-        1,
-        31,
+        16,
+        23,
         20,
         0,
         0,
@@ -4791,8 +4791,8 @@
         0,
         0,
         0,
-        0,
-        1,
+        148,
+        2,
         32,
         15,
         29,
@@ -4891,8 +4891,8 @@
         30,
         30,
         3,
-        30,
         32,
+        19,
         11,
         11,
         22,
@@ -10295,40 +10295,44 @@
       "source": "tileset/wall.json"
     },
     {
-      "firstgid": 41,
+      "firstgid": 49,
       "source": "tileset/enemy1.json"
     },
     {
-      "firstgid": 58,
+      "firstgid": 66,
       "source": "tileset/playerSpawner.json"
     },
     {
-      "firstgid": 61,
+      "firstgid": 69,
       "source": "tileset/balloonVine.json"
     },
     {
-      "firstgid": 63,
+      "firstgid": 71,
       "source": "tileset/snibee.json"
     },
     {
-      "firstgid": 79,
+      "firstgid": 85,
       "source": "tileset/dandelion.json"
     },
     {
-      "firstgid": 86,
+      "firstgid": 92,
       "source": "tileset/vine.json"
     },
     {
-      "firstgid": 92,
+      "firstgid": 124,
       "source": "tileset/moss.json"
     },
     {
-      "firstgid": 93,
+      "firstgid": 125,
       "source": "tileset/sensor.json"
     },
     {
-      "firstgid": 94,
+      "firstgid": 126,
       "source": "tileset/slime1.json"
+    },
+    {
+      "firstgid": 148,
+      "source": "tileset/needleFloor.json"
     }
   ],
   "tilewidth": 8,
