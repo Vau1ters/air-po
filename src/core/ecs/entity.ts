@@ -30,6 +30,7 @@ export class Entity {
   }
 
   public addComponent<K extends ComponentName>(componentName: K, component: ComponentMap[K]): void {
+    assert(!(componentName in this.componentMap), `Component '${componentName}' is already added`)
     this.componentMap[componentName] = component
     this.componentChangedEvent.notify(this)
   }
