@@ -1,4 +1,5 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { Entity } from '@core/ecs/entity'
 import { Process } from '@core/process/process'
 import { ProcessDependency } from '@core/process/processDependency'
 
@@ -7,14 +8,13 @@ export class AiComponent {
   private _isAlive = true
 
   public constructor(
-    arg:
-      | Behaviour<void>
-      | { behaviour: Behaviour<void>; name?: string; dependency: ProcessDependency }
+    entity: Entity,
+    arg: Behaviour<void> | { behaviour: Behaviour<void>; dependency: ProcessDependency }
   ) {
+    const name = entity.hasComponent('Name') ? entity.getComponent('Name').name : ''
     if ('behaviour' in arg) {
-      const { behaviour, name, dependency } = arg as {
+      const { behaviour, dependency } = arg as {
         behaviour: Behaviour<void>
-        name: string
         dependency: ProcessDependency
       }
       this.proc = new Process({
@@ -26,6 +26,7 @@ export class AiComponent {
     } else {
       this.proc = new Process({
         func: () => this.step(arg),
+        name,
         tag: new Set<string>(),
       })
     }

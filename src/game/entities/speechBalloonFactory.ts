@@ -77,7 +77,7 @@ export class SpeechBalloonFactory extends EntityFactory {
 
     entity.addComponent(
       'Ai',
-      new AiComponent({
+      new AiComponent(entity, {
         behaviour: speechBalloonAI(entity, this.target, this.world, this.config.waitForEnd),
         dependency: {
           before: ['ControlSystem:update'],

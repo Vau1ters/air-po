@@ -7,7 +7,7 @@ export default class DandelionFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(dandelionAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, dandelionAI(entity, this.world)))
     return entity
   }
 }

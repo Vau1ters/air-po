@@ -25,7 +25,7 @@ export class CoinGetEffectFactory extends EntityFactory {
     entity.addComponent('Position', new PositionComponent(pos.x, pos.y))
     entity.addComponent(
       'Ai',
-      new AiComponent(coinGetEffectAI(entity, this.world, this.state, this.index))
+      new AiComponent(entity, coinGetEffectAI(entity, this.world, this.state, this.index))
     )
 
     return entity

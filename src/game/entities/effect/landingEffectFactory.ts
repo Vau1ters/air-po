@@ -25,7 +25,7 @@ export class LandingEffectFactory extends EntityFactory {
     assert(this.position !== undefined, 'position is not defined')
 
     const entity = loadEntity('landingEffect')
-    entity.addComponent('Ai', new AiComponent(effectAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, effectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
     const direction = new HorizontalDirectionComponent(entity, this.direction.looking)
     entity.addComponent('HorizontalDirection', direction)

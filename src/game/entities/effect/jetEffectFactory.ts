@@ -26,7 +26,7 @@ export class JetEffectFactory extends EntityFactory {
     const shooterPosition = this.shooter.getComponent('Position')
 
     const entity = loadEntity('jetEffect')
-    entity.addComponent('Ai', new AiComponent(JetEffectAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, JetEffectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(shooterPosition.x, shooterPosition.y))
 
     return entity

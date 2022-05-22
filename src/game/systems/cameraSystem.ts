@@ -13,7 +13,7 @@ export default class CameraSystem extends System {
   }
 
   @dependsOn({
-    after: ['Camera:AI'],
+    after: ['Camera'],
   })
   public update(): void {
     const camera = getSingleton('Camera', this.world)

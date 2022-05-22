@@ -12,7 +12,7 @@ export default class AirGeyserFactory extends ObjectEntityFactory {
 
     entity.addComponent(
       'Ai',
-      new AiComponent({
+      new AiComponent(entity, {
         behaviour: airGeyserAI(entity, this.world, {
           maxQuantity,
           increaseRate,

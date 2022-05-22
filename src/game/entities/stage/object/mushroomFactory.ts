@@ -6,7 +6,7 @@ import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 export default class MushroomFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
-    entity.addComponent('Ai', new AiComponent(mushroomAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, mushroomAI(entity, this.world)))
 
     const airHolder = entity.getComponent('AirHolder')
     const colliders = entity.getComponent('Collider').colliders.slice(0, 2)

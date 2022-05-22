@@ -30,7 +30,7 @@ export class MovieFactory extends EntityFactory {
       })
     )
     entity.addComponent('Position', new PositionComponent())
-    entity.addComponent('Ai', new AiComponent(movieAI(this.movie, g, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, movieAI(this.movie, g, this.world)))
     return entity
   }
 }

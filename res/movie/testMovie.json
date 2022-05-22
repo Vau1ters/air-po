@@ -1,89 +1,101 @@
-[
-    {
-        "action": "black",
-        "type": "in"
-    },
-    {
-        "action": "move",
-        "mover": "player",
-        "to": {
-            "baseName": "shopKeeper",
-            "offset": [-96, 0]
+{
+    "actions": [
+        {
+            "action": "black",
+            "type": "in"
         },
-        "type": "warp"
-    },
-	{
-        "action": "camera",
-        "to": {
-            "baseName": "player"
+        {
+            "action": "move",
+            "mover": "Player",
+            "to": {
+                "baseName": "shopKeeper",
+                "offset": [
+                    -96,
+                    0
+                ]
+            },
+            "type": "warp"
         },
-        "type": "warp",
-        "chase": true
-	},
-    {
-        "action": "black",
-        "type": "out"
-    },
-    {
-        "action": "cinemaScope",
-        "type": "in"
-    },
-	{
-        "action": "camera",
-        "to": {
-            "baseName": "player"
+        {
+            "action": "camera",
+            "to": {
+                "baseName": "Player"
+            },
+            "type": "warp",
+            "chase": true
         },
-        "type": "ease",
-        "chase": true
-	},
-    {
-        "action": "talk",
-        "speaker": "shopKeeper",
-        "content": "aiueo"
-    },
-	{
-        "action": "camera",
-        "to": {
-            "baseName": "shopKeeper"
+        {
+            "action": "black",
+            "type": "out"
         },
-        "type": "ease",
-        "chase": false
-	},
-    {
-        "action": "throwAirNade",
-        "thrower": "shopKeeper",
-        "to": {
-            "baseName": "player"
+        {
+            "action": "cinemaScope",
+            "type": "in"
+        },
+        {
+            "action": "camera",
+            "to": {
+                "baseName": "Player"
+            },
+            "type": "ease",
+            "chase": true
+        },
+        {
+            "action": "talk",
+            "speaker": "shopKeeper",
+            "content": "aiueo"
+        },
+        {
+            "action": "camera",
+            "to": {
+                "baseName": "shopKeeper"
+            },
+            "type": "ease",
+            "chase": false
+        },
+        {
+            "action": "throwAirNade",
+            "thrower": "shopKeeper",
+            "to": {
+                "baseName": "Player"
+            }
+        },
+        {
+            "action": "move",
+            "mover": "Player",
+            "to": {
+                "baseName": "shopKeeper",
+                "offset": [
+                    -40,
+                    0
+                ]
+            },
+            "type": "walk"
+        },
+        {
+            "action": "jump",
+            "mover": "Player"
+        },
+        {
+            "action": "showSprite",
+            "sprite": "testItem",
+            "pos": {
+                "baseName": "shopKeeper",
+                "offset": [
+                    24,
+                    -24
+                ]
+            }
+        },
+        {
+            "action": "talk",
+            "speaker": "Player",
+            "content": "i think that is this"
+        },
+        {
+            "action": "cinemaScope",
+            "type": "out"
         }
-    },
-    {
-        "action": "move",
-        "mover": "player",
-        "to": {
-            "baseName": "shopKeeper",
-            "offset": [-40, 0]
-        },
-        "type": "walk"
-    },
-    {
-        "action": "jump",
-        "mover": "player"
-    },
-    {
-        "action": "showSprite",
-        "sprite": "testItem",
-        "pos": {
-            "baseName": "shopKeeper",
-            "offset": [24, -24]
-        }
-    },
-    {
-        "action": "talk",
-        "speaker": "player",
-        "content": "i think that is this"
-    },
-    {
-        "action": "cinemaScope",
-        "type": "out"
-    }
-]
+    ],
+    "participants": []
+}

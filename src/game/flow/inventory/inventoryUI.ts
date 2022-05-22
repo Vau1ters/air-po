@@ -92,7 +92,7 @@ export const createInventoryUI = (world: World, playerEntity: Entity): void => {
     setupAsItemFrame(frame, changeItemReceiver)
     frame.addComponent(
       'Ai',
-      new AiComponent({
+      new AiComponent(frame, {
         behaviour: inventoryItemCursorAI(
           frame,
           (): void => focusItemNotifier.notify(index),

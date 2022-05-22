@@ -25,7 +25,10 @@ export class LaserSightLockFactory extends EntityFactory {
     )
     lock.addComponent(
       'Ai',
-      new AiComponent(laserSightLockEffectAI(lock, this.target, this.isDespawning, this.world))
+      new AiComponent(
+        lock,
+        laserSightLockEffectAI(lock, this.target, this.isDespawning, this.world)
+      )
     )
     return lock
   }
