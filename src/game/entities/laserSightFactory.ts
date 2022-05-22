@@ -29,7 +29,6 @@ export class LaserSightFactory extends EntityFactory {
         type: 'WorldUI',
       })
     )
-    entity.addComponent('Name', new NameComponent('LaserSight'))
     entity.addComponent(
       'Ai',
       new AiComponent(entity, {
