@@ -1,0 +1,14 @@
+{ "columns":8,
+ "image":"../../image/wallRock.png",
+ "imageheight":32,
+ "imagewidth":64,
+ "margin":0,
+ "name":"wallRock",
+ "spacing":0,
+ "tilecount":32,
+ "tiledversion":"1.3.3",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":1.2
+}

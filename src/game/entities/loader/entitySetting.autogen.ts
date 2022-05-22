@@ -58,7 +58,8 @@ import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
 import villager from '@res/entity/villager.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
-import wall from '@res/entity/wall.json'
+import wallRock from '@res/entity/wallRock.json'
+import wallSoil from '@res/entity/wallSoil.json'
 
 export const entitySetting = {
   air,
@@ -117,5 +118,6 @@ export const entitySetting = {
   villager,
   vine,
   vineStalk,
-  wall,
+  wallRock,
+  wallSoil,
 }
