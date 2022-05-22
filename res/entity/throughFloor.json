@@ -7,7 +7,7 @@
     {
       "geometry": {
         "type": "AABB",
-        "offset": [0, -2],
+        "offset": [0, -4],
         "size": [8, 0]
       },
       "category": "terrain",
