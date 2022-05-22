@@ -4433,10 +4433,10 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        200,
+        229,
+        229,
+        203,
         0,
         0,
         0,
@@ -4533,10 +4533,10 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        216,
+        213,
+        218,
+        211,
         0,
         0,
         0,
@@ -4633,10 +4633,10 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        224,
+        206,
+        205,
+        227,
         0,
         0,
         0,
@@ -10620,12 +10620,12 @@
   "nextobjectid": 83,
   "orientation": "orthogonal",
   "renderorder": "right-up",
-  "tiledversion": "1.7.2",
+  "tiledversion": "1.8.5",
   "tileheight": 8,
   "tilesets": [
     {
       "firstgid": 1,
-      "source": "tileset/wall.json"
+      "source": "tileset/wallSoil.json"
     },
     {
       "firstgid": 49,
@@ -10706,10 +10706,14 @@
     {
       "firstgid": 199,
       "source": "tileset/needleFloor.json"
+    },
+    {
+      "firstgid": 200,
+      "source": "tileset/wallRock.json"
     }
   ],
   "tilewidth": 8,
   "type": "map",
-  "version": "1.6",
+  "version": "1.8",
   "width": 100
 }
