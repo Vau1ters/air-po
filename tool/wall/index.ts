@@ -2,7 +2,6 @@ import { Random } from './random'
 import * as fs from 'fs'
 import { TileLayer } from '@game/stage/tileLayerLoader'
 import { StageSetting } from '@game/stage/stageLoader'
-import { TileSet } from '@game/stage/tileSet'
 import wallType from '../../res/misc/wall.json'
 
 type WallType = keyof typeof wallType.typeMap
@@ -84,14 +83,15 @@ const updateLayer = (layer: TileLayer, gidBegin: number, gidEnd: number): void =
 }
 
 const updateStage = (stage: StageSetting): StageSetting => {
-  const wallTileSetIndex = stage.tilesets.findIndex((tileSet: TileSet): boolean =>
-    tileSet.source.includes('wall')
-  )
-  const gidBegin = stage.tilesets[wallTileSetIndex].firstgid
-  const gidEnd = stage.tilesets[wallTileSetIndex + 1].firstgid ?? Infinity
-  const mapLayer = stage.layers.find(layer => layer.name === 'map')
-  if (mapLayer !== undefined) {
-    updateLayer(mapLayer as TileLayer, gidBegin, gidEnd)
+  for (let i = 0; i < stage.tilesets.length; i++) {
+    const tileSet = stage.tilesets[i]
+    if (!tileSet.source.includes('wall')) continue
+    const gidBegin = stage.tilesets[i].firstgid
+    const gidEnd = stage.tilesets[i + 1]?.firstgid ?? Infinity
+    const mapLayer = stage.layers.find(layer => layer.name === 'map')
+    if (mapLayer !== undefined) {
+      updateLayer(mapLayer as TileLayer, gidBegin, gidEnd)
+    }
   }
   return stage
 }

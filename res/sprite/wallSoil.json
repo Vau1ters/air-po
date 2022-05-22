@@ -1,6 +1,6 @@
 {
-  "name": "wall",
-  "path": "wall.png",
+  "name": "wallSoil",
+  "path": "wallSoil.png",
   "texture": {
     "size": {
       "width": 8,

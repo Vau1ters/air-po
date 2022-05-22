@@ -25676,7 +25676,7 @@
   "tilesets": [
     {
       "firstgid": 1,
-      "source": "tileset/wall.json"
+      "source": "tileset/wallSoil.json"
     },
     {
       "firstgid": 49,
