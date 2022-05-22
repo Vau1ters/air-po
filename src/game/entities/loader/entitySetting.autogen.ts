@@ -30,6 +30,7 @@ import locust from '@res/entity/locust.json'
 import moss from '@res/entity/moss.json'
 import mouseCursor from '@res/entity/mouseCursor.json'
 import mushroom from '@res/entity/mushroom.json'
+import needleFloor from '@res/entity/needleFloor.json'
 import player from '@res/entity/player.json'
 import playerBullet from '@res/entity/playerBullet.json'
 import playerSpawner from '@res/entity/playerSpawner.json'
@@ -88,6 +89,7 @@ export const entitySetting = {
   moss,
   mouseCursor,
   mushroom,
+  needleFloor,
   player,
   playerBullet,
   playerSpawner,

@@ -1,0 +1,14 @@
+{ "columns":1,
+ "image":"..\/..\/image\/needleFloor.png",
+ "imageheight":8,
+ "imagewidth":8,
+ "margin":0,
+ "name":"needleFloor",
+ "spacing":0,
+ "tilecount":1,
+ "tiledversion":"1.7.2",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.6"
+}
