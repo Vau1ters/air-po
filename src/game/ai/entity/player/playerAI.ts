@@ -23,7 +23,8 @@ export const PLAYER_SETTING = {
       coolTime: 10,
     },
     jump: {
-      speed: 280,
+      // 40px=5マス分のジャンプ力
+      speed: 300,
     },
     walk: {
       power: 10,
