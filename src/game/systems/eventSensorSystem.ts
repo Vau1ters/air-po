@@ -29,13 +29,13 @@ export class EventSensorSystem extends System {
       c.notifier.addObserver(async (args: CollisionCallbackArgs) => {
         if (!args.other.tag.has(PLAYER_SENSOR_TAG)) return
         if (!sensor.isEnabled) return
-        await this.fireEvent(sensor.event, args.me.entity)
+        await this.fireEvent(sensor.event)
         sensor.isEnabled = false
       })
     }
   }
 
-  private async fireEvent(event: string, sensor: Entity): Promise<void> {
+  private async fireEvent(event: string): Promise<void> {
     const [eventName, ...options] = event.split(' ')
     switch (eventName) {
       case 'changeMap': {
@@ -46,7 +46,7 @@ export class EventSensorSystem extends System {
       }
       case 'movie': {
         const movieName = options[0] as MovieName
-        await this.movieEvent(movieName, sensor)
+        await this.movieEvent(movieName)
         break
       }
     }
@@ -59,11 +59,10 @@ export class EventSensorSystem extends System {
     })
   }
 
-  private movieEvent(movieName: MovieName, sensor: Entity): void {
+  private movieEvent(movieName: MovieName): void {
     this.postEvent({
       type: 'movie',
       movie: decodeJson<Movie>(movieList[movieName], MovieType),
-      sensor,
     })
   }
 

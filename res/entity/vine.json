@@ -9,6 +9,14 @@
         "type": "AABB",
         "size": [16, 16]
       },
+      "category": "enemyHitbox",
+      "mask": []
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 16]
+      },
       "category": "terrain",
       "mask": ["physics"],
       "tag": ["physics", "Vine"]
@@ -32,5 +40,11 @@
       "tag": ["VineAirSensor"]
     }
   ],
-  "rigidBody": {}
+  "rigidBody": {},
+  "library": {
+    "description": [
+      "みちをふさぐ がんじょうな つたです。",
+      "ねもとに くうきがあると つたをのばします。"
+    ]
+  }
 }

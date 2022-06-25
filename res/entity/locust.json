@@ -82,5 +82,11 @@
   "sound": {},
   "horizontalDirection": {
     "looking": "Right"
+  },
+  "library": {
+    "description": [
+      "きょだいな バッタです。",
+      "とつぜんのジャンプに ちゅうい。"
+    ]
   }
 }

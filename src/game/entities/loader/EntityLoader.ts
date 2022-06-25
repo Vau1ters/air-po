@@ -18,6 +18,7 @@ import {
   loadHorizontalDirectionComponent,
 } from './component/HorizontalDirectionLoader'
 import { decodeJson } from '@utils/json'
+import { LibrarySettingType, loadLibraryComponent } from './component/LibraryComponentLoader'
 
 export type EntityName = keyof typeof entitySetting
 
@@ -26,16 +27,17 @@ export const toEntityName = (s: string): EntityName => {
   return s as EntityName
 }
 
-const EntitySettingType = t.type({
-  draw: t.union([DrawSettingType, t.undefined]),
-  animationState: t.union([AnimationStateSettingType, t.undefined]),
-  collider: t.union([CollidersSettingType, t.undefined]),
-  rigidBody: t.union([RigidBodySettingType, t.undefined]),
-  airHolder: t.union([AirHolderSettingType, t.undefined]),
-  hp: t.union([HpSettingType, t.undefined]),
-  attack: t.union([AttackSettingType, t.undefined]),
-  sound: t.union([SoundSettingType, t.undefined]),
-  horizontalDirection: t.union([HorizontalDirectionSettingType, t.undefined]),
+const EntitySettingType = t.partial({
+  draw: DrawSettingType,
+  animationState: AnimationStateSettingType,
+  collider: CollidersSettingType,
+  rigidBody: RigidBodySettingType,
+  airHolder: AirHolderSettingType,
+  hp: HpSettingType,
+  attack: AttackSettingType,
+  sound: SoundSettingType,
+  horizontalDirection: HorizontalDirectionSettingType,
+  library: LibrarySettingType,
 })
 type EntitySetting = t.TypeOf<typeof EntitySettingType>
 
@@ -74,6 +76,9 @@ export const loadEntity = (name: EntityName): Entity => {
       'HorizontalDirection',
       loadHorizontalDirectionComponent(setting.horizontalDirection, entity)
     )
+  }
+  if (setting.library) {
+    entity.addComponent('Library', loadLibraryComponent(setting.library))
   }
   return entity
 }

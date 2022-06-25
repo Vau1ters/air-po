@@ -8,7 +8,7 @@ import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
 import { assert } from '@utils/assertion'
 import { EventNotifier } from '@utils/eventNotifier'
 
-const WeaponTypes = ['Gun', 'AirNade'] as const
+const WeaponTypes = ['Gun', 'AirNade', 'Search'] as const
 export type WeaponType = typeof WeaponTypes[number]
 
 export class PlayerComponent {
@@ -16,6 +16,7 @@ export class PlayerComponent {
   public possessingEntity: Entity | undefined = undefined
   public throughFloorIgnoreCount = 0
   public targetPosition = new Vec2()
+  public searchTarget: Entity | undefined = undefined
   public hasShot = false // for Weapon Background UI
   public smallCoinCount: number
   public acquiredLargeCoinList: Set<LargeCoinID>
@@ -72,7 +73,7 @@ export class PlayerComponent {
   changeWeapon(delta: number): void {
     if (this.weaponChanging) return
     const currentIndex = this.weaponToIndex(this.currentWeapon)
-    const nextIndex = (currentIndex + delta + 2) % 2
+    const nextIndex = (currentIndex + delta + WeaponTypes.length) % WeaponTypes.length
     this._currentWeapon = this.indexToWeapon(nextIndex)
     this.weaponChanged.notify(delta)
     this.weaponChanging = true

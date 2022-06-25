@@ -13,23 +13,19 @@ const SETTING = {
 export const throwAirNade = function* (player: Entity, world: World): Behaviour<void> {
   const airHolder = player.getComponent('AirHolder')
   const sound = player.getComponent('Sound')
-  const targetPos = player.getComponent('Player').targetPosition
+  while (true) {
+    yield* wait.until(
+      () =>
+        MouseController.isMousePressed('Left') &&
+        airHolder.quantity >= airNadeSetting.airHolder.maxQuantity
+    )
+    airHolder.consumeBy(airNadeSetting.airHolder.maxQuantity)
 
-  if (!MouseController.isMousePressed('Left')) {
-    yield
-    return
+    sound.addSound('shot')
+    // 弾を打つ
+    const targetPos = player.getComponent('Player').targetPosition
+    const airNade = new AirNadeFactory(player, world, targetPos).create()
+    world.addEntity(airNade)
+    yield* wait.frame(SETTING.COOL_TIME)
   }
-  // 空気の消費
-  if (airHolder.quantity < airNadeSetting.airHolder.maxQuantity) {
-    yield
-    return
-  }
-  airHolder.consumeBy(airNadeSetting.airHolder.maxQuantity)
-
-  sound.addSound('shot')
-
-  // 弾を打つ
-  const airNade = new AirNadeFactory(player, world, targetPos).create()
-  world.addEntity(airNade)
-  yield* wait.frame(SETTING.COOL_TIME)
 }

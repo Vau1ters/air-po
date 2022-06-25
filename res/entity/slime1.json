@@ -56,5 +56,11 @@
   "sound": {},
   "horizontalDirection": {
     "looking": "Right"
+  },
+  "library": {
+    "description": [
+      "このほしの げんしてきな せいぶつです。",
+      "かわいい。"
+    ]
   }
 }

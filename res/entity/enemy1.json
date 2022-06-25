@@ -57,5 +57,11 @@
   "sound": {},
   "horizontalDirection": {
     "looking": "Right"
+  },
+  "library": {
+    "description": [
+      "このほしの てきたいせいぶつです。",
+      "おそいかかってきます。こわい。"
+    ]
   }
 }

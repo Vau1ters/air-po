@@ -1,0 +1,19 @@
+{
+  "name": "drone",
+  "path": "drone.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height": 24
+    }
+  },
+  "animation": {
+    "state": {
+      "Normal": [0]
+    },
+    "speed": {
+      "Normal": 18
+    },
+    "default": "Normal"
+  }
+}

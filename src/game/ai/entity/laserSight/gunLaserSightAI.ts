@@ -29,7 +29,7 @@ type FreeAimState = {
 type LaserSightState = LockingAimState | FreeAimState
 
 const updateInvisibleSegment = function* (laser: Entity, world: World): Behaviour<void> {
-  const [collider] = laser.getComponent('Collider').colliders
+  const [collider, _] = laser.getComponent('Collider').colliders
   while (true) {
     const player = getSingleton('Player', world)
     const camera = getSingleton('Camera', world)
@@ -54,6 +54,7 @@ const updateInvisibleSegment = function* (laser: Entity, world: World): Behaviou
 
     segment.start = playerPosition
     segment.end = segment.start.add(dir.mul(t))
+    laser.getComponent('Position').assign(new Vec2(0))
     yield
   }
 }

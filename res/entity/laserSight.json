@@ -1,0 +1,19 @@
+{
+  "collider": [
+    {
+      "geometry": {
+        "type": "Segment"
+      },
+      "category": "sensor",
+      "mask": ["enemyHitbox", "terrain"]
+    },
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [2, 2]
+      },
+      "category": "sensor",
+      "mask": ["enemyHitbox"]
+    }
+  ]
+}

@@ -26,5 +26,11 @@
     "max": 2,
     "showHpBar": false,
     "canLock": false
+  },
+  "library": {
+    "description": [
+      "みちをじゃまする おおきないわです。",
+      "こうげきすると こわせます。"
+    ]
   }
 }

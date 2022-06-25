@@ -21,6 +21,7 @@ import { GameEventComponent } from 'src/game/components/gameEventComponent'
 import { HorizontalDirectionComponent } from 'src/game/components/horizontalDirectionComponent'
 import { HpComponent } from 'src/game/components/hpComponent'
 import { InvincibleComponent } from 'src/game/components/invincibleComponent'
+import { LibraryComponent } from 'src/game/components/libraryComponent'
 import { LightComponent } from 'src/game/components/lightComponent'
 import { NameComponent } from 'src/game/components/nameComponent'
 import { PickupTargetComponent } from 'src/game/components/pickupTargetComponent'
@@ -51,6 +52,7 @@ export interface ComponentMap {
   HorizontalDirection: HorizontalDirectionComponent
   Hp: HpComponent
   Invincible: InvincibleComponent
+  Library: LibraryComponent
   Light: LightComponent
   Name: NameComponent
   PickupTarget: PickupTargetComponent

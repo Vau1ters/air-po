@@ -1,0 +1,7 @@
+{
+  "draw": {
+    "name": "drone",
+    "zIndex": 50
+  },
+  "animationState": {}
+}

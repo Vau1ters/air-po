@@ -11,11 +11,15 @@ export const findActor = (name: string, nameFamily: Family): Entity => {
 }
 
 export const resolvePosition = (pos: MoviePosition, nameFamily: Family): Vec2 => {
-  const actor = findActor(pos.baseName, nameFamily)
-  const result = actor.getComponent('Position')
-  if (pos.offset) {
-    return result.add(new Vec2(...pos.offset))
+  if ('baseName' in pos) {
+    const actor = findActor(pos.baseName, nameFamily)
+    const result = actor.getComponent('Position')
+    if (pos.offset) {
+      return result.add(new Vec2(...pos.offset))
+    } else {
+      return result.copy()
+    }
   } else {
-    return result.copy()
+    return new Vec2(...pos)
   }
 }
