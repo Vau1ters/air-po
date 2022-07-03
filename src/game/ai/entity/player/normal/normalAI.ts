@@ -13,7 +13,6 @@ import { pickup } from './pickup'
 import { talk } from './talk'
 import { switchWeapon } from '../common/switchWeapon'
 import { useWeapon } from '../common/useWeapon'
-import { collectAir } from '../common/collectAir'
 
 export const normalAI = function* (entity: Entity, world: World): Behaviour<void> {
   const playerBody = entity.getComponent('RigidBody')
@@ -29,7 +28,6 @@ export const normalAI = function* (entity: Entity, world: World): Behaviour<void
     talk(entity, world),
     animate({ entity, loopCount: Infinity }),
     invincibleTime(entity),
-    collectAir(entity),
     useWeapon(entity, world),
     switchWeapon(entity),
   ])
