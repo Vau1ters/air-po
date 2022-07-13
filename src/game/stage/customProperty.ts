@@ -39,6 +39,17 @@ export function findCustomProperty<T extends CustomPropertyTypeName>(
   propertyName: string
 ): CustomPropertyValue<T> | undefined {
   const prop = owner.properties?.find(property => property.name === propertyName)
-  if (prop?.type !== type) return undefined
+  if (prop?.type !== type) {
+    console.warn(
+      'property name ' +
+        propertyName +
+        ' is found but its type is not ' +
+        type +
+        ". It's " +
+        prop?.type +
+        '.'
+    )
+    return undefined
+  }
   return prop.value as TypeMap[T]
 }
