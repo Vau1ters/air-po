@@ -9,6 +9,13 @@ export const hudPlayerAirGaugeAI = function* (ui: Ui, player: Entity): Behaviour
   const background = ui.get('airTankBg')
   const airGauge = ui.get('airGauge')
 
+  const hasTank = () => {
+    return airTankCount != 0
+  }
+
+  background.getComponent('Draw').renderable = hasTank()
+  airGauge.getComponent('Draw').renderable = hasTank()
+
   while (true) {
     // 割合計算
     const maxQuantity = AirTank.QUANTITY * airTankCount

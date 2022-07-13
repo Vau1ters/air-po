@@ -9,6 +9,16 @@ export const hudPlayerAirTankAI = function* (ui: Ui, player: Entity): Behaviour<
   const tail = ui.get('airTankTail')
   const tankBodies = ui.get('airTankBodies').getComponent('TileLayout')
 
+  const hasTank = () => {
+    return airTankCount != 0
+  }
+
+  background.getComponent('Draw').renderable = hasTank()
+  tail.getComponent('Draw').renderable = hasTank()
+  tankBodies.entities.map(x => {
+    x.getComponent('Draw').renderable = hasTank()
+  })
+
   while (true) {
     tankBodies.count = airTankCount
     const calcPos = (i: number): number => tankBodies.calcPos(i)[0]
