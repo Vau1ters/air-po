@@ -135,7 +135,7 @@
             },
             {
               "name": "maxQuantity",
-              "type": "int",
+              "type": "float",
               "value": 250
             }
           ],

@@ -127,7 +127,7 @@
                         }, 
                         {
                          "name":"maxQuantity",
-                         "type":"int",
+                         "type":"float",
                          "value":250
                         }],
                  "rotation":0,

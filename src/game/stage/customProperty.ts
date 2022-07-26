@@ -39,11 +39,14 @@ export function findCustomProperty<T extends CustomPropertyTypeName>(
   propertyName: string
 ): CustomPropertyValue<T> | undefined {
   const prop = owner.properties?.find(property => property.name === propertyName)
+  if (prop == undefined) {
+    return undefined
+  }
   if (prop?.type !== type) {
     console.warn(
       'property name ' +
         propertyName +
-        ' is found but its type is not ' +
+        " is found but it's  not " +
         type +
         ". It's " +
         prop?.type +
