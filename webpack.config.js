@@ -15,6 +15,7 @@ module.exports = {
     static: './public',
     port: 3000,
   },
+  devtool: "eval-source-map",
   watchOptions: {
     ignored: /autogen/,
   },
