@@ -1,6 +1,7 @@
 import { Entity } from '@core/ecs/entity'
 import { airGeyserAI } from '@game/ai/entity/airGeyser/airGeyserAI'
 import { AiComponent } from '@game/components/aiComponent'
+import { NameComponent } from '@game/components/nameComponent'
 import { ObjectEntityFactory } from '../../objectEntityFactory'
 
 export default class AirGeyserFactory extends ObjectEntityFactory {
@@ -10,6 +11,7 @@ export default class AirGeyserFactory extends ObjectEntityFactory {
 
     const entity = super.create()
 
+    entity.addComponent('Name', new NameComponent('airGayser'))
     entity.addComponent(
       'Ai',
       new AiComponent(entity, {
