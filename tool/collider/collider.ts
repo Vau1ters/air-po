@@ -144,7 +144,11 @@ export const buildColliders = async (): Promise<void> => {
     __dirname + '/../../res/collider/tree.autogen.json'
   )
   await buildCollider(
-    __dirname + '/../../res/image/wallGuide.png',
-    __dirname + '/../../res/collider/wall.autogen.json'
+    __dirname + '/../../res/image/wallSoilGuide.png',
+    __dirname + '/../../res/collider/wallSoil.autogen.json'
+  )
+  await buildCollider(
+    __dirname + '/../../res/image/wallRockGuide.png',
+    __dirname + '/../../res/collider/wallRock.autogen.json'
   )
 }

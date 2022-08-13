@@ -1,0 +1,616 @@
+[
+  {
+    "index": 0,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 1,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 2,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 3,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 4
+  },
+  {
+    "index": 5,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 6,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 7
+  },
+  {
+    "index": 8,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 9
+  },
+  {
+    "index": 10
+  },
+  {
+    "index": 11,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 12,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 13
+  },
+  {
+    "index": 14
+  },
+  {
+    "index": 15,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 16,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 17
+  },
+  {
+    "index": 18
+  },
+  {
+    "index": 19,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 20,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 21
+  },
+  {
+    "index": 22
+  },
+  {
+    "index": 23,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 24,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 25,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 26,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 27,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 28
+  },
+  {
+    "index": 29,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 30,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 31
+  },
+  {
+    "index": 32,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 33,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 34,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 35,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 36,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 37,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "index": 38,
+    "geometry": {
+      "type": "AABB",
+      "size": [
+        8,
+        8
+      ],
+      "solveDir": []
+    }
+  },
+  {
+    "index": 39
+  },
+  {
+    "index": 40,
+    "geometry": {
+      "type": "Slope",
+      "size": [
+        8,
+        8
+      ],
+      "normal": [
+        -1,
+        -1
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 41,
+    "geometry": {
+      "type": "Slope",
+      "size": [
+        8,
+        8
+      ],
+      "normal": [
+        1,
+        -1
+      ],
+      "solveDir": [
+        [
+          0,
+          -1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 42,
+    "geometry": {
+      "type": "Slope",
+      "size": [
+        8,
+        8
+      ],
+      "normal": [
+        1,
+        1
+      ],
+      "solveDir": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 43,
+    "geometry": {
+      "type": "Slope",
+      "size": [
+        8,
+        8
+      ],
+      "normal": [
+        -1,
+        1
+      ],
+      "solveDir": [
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "index": 44
+  },
+  {
+    "index": 45
+  },
+  {
+    "index": 46
+  },
+  {
+    "index": 47
+  }
+]

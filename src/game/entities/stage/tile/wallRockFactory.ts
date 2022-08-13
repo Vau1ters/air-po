@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { StaticComponent } from '@game/components/staticComponent'
 import { TileCollider, TileEntityFactory } from '@game/entities/tileEntityFactory'
-import wallCollider from '@res/collider/wall.autogen.json'
+import wallCollider from '@res/collider/wallRock.autogen.json'
 
-export default class WallFactory extends TileEntityFactory {
+export default class WallRockFactory extends TileEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
@@ -12,7 +12,7 @@ export default class WallFactory extends TileEntityFactory {
       entity.addComponent('Collider', colliderComponent)
     }
 
-    entity.addComponent('Draw', this.createDrawComponent(entity, 'wall'))
+    entity.addComponent('Draw', this.createDrawComponent(entity, 'wallRock'))
     entity.addComponent('Static', new StaticComponent())
 
     return entity

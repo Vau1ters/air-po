@@ -1,0 +1,10 @@
+{
+  "name": "wallRock",
+  "path": "wallRock.png",
+  "texture": {
+    "size": {
+      "width": 8,
+      "height": 8
+    }
+  }
+}
