@@ -14,7 +14,7 @@ export class Boss1GeyserFactory extends EntityFactory {
   public create(): Entity {
     const entity = loadEntity('boss1Geyser')
 
-    entity.addComponent('Ai', new AiComponent(geyserAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, geyserAI(entity, this.world)))
     entity.addComponent('Position', this.pos)
     return entity
   }

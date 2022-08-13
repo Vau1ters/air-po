@@ -8,7 +8,7 @@ export default class RespawnFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
     entity.addComponent('StagePoint', StagePointComponent.autoGenerate(entity, this.stageName))
-    entity.addComponent('Ai', new AiComponent(respawnAI(entity)))
+    entity.addComponent('Ai', new AiComponent(entity, respawnAI(entity)))
     return entity
   }
 }

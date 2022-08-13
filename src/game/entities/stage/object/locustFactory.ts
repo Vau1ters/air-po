@@ -7,7 +7,7 @@ export default class LocustFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(locustAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, locustAI(entity, this.world)))
     return entity
   }
 }

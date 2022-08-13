@@ -27,7 +27,7 @@ export class PoisonFactory extends EntityFactory {
   public create(): Entity {
     const entity = loadEntity('poison')
 
-    entity.addComponent('Ai', new AiComponent(poisonAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, poisonAI(entity, this.world)))
     entity.addComponent('Position', this.position)
     entity.getComponent('RigidBody').velocity = this.direction.normalize().mul(20)
 

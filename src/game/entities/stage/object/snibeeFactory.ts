@@ -7,7 +7,7 @@ export default class SnibeeFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(snibeeAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, snibeeAI(entity, this.world)))
     return entity
   }
 }

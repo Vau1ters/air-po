@@ -23,7 +23,7 @@ export class SporeEffectFactory extends EntityFactory {
     assert(this.position !== undefined, 'mushroom is not defined')
 
     const entity = loadEntity('sporeEffect')
-    entity.addComponent('Ai', new AiComponent(SporeEffectAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, SporeEffectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
 
     return entity
