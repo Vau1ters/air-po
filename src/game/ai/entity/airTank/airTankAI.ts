@@ -8,17 +8,17 @@ import * as Sound from '@core/sound/sound'
 import { parallelAny } from '@core/behaviour/composite'
 import { waitPlayer } from '../common/action/waitPlayer'
 
-const increaseCoinCount = (world: World): void => {
+const increaseAirTankCount = (world: World): void => {
   const player = getSingleton('Player', world)
-  player.getComponent('Player').smallCoinCount++
+  player.getComponent('Player').playerData
 }
 
-export const smallCoinAI = function* (entity: Entity, world: World): Behaviour<void> {
+export const airTankAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* parallelAny([
     waitPlayer(entity),
     animate({ entity, state: 'Normal', loopCount: Infinity }),
   ])
-  increaseCoinCount(world)
+  increaseAirTankCount(world)
   Sound.play('smallCoin')
   yield* kill(entity, world)
 }

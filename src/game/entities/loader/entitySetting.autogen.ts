@@ -5,6 +5,7 @@
 import air from '@res/entity/air.json'
 import airGeyser from '@res/entity/airGeyser.json'
 import airNade from '@res/entity/airNade.json'
+import airTank from '@res/entity/airTank.json'
 import balloonVine from '@res/entity/balloonVine.json'
 import boss1 from '@res/entity/boss1.json'
 import boss1Geyser from '@res/entity/boss1Geyser.json'
@@ -65,6 +66,7 @@ export const entitySetting = {
   air,
   airGeyser,
   airNade,
+  airTank,
   balloonVine,
   boss1,
   boss1Geyser,

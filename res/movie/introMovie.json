@@ -1,0 +1,35 @@
+[
+  {
+    "action": "camera",
+    "to": {
+      "baseName": "player"
+    },
+    "type": "warp",
+    "chase": true
+  },
+  {
+    "action": "black",
+    "type": "out"
+  },
+  {
+    "action": "cinemaScope",
+    "type": "in"
+  },
+  {
+    "action": "camera",
+    "to": {
+      "baseName": "player"
+    },
+    "type": "ease",
+    "chase": true
+  },
+  {
+    "action": "talk",
+    "speaker": "player",
+    "content": "aiueo"
+  },
+  {
+    "action": "cinemaScope",
+    "type": "out"
+  }
+]
