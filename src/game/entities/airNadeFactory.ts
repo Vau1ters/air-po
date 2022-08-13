@@ -23,7 +23,7 @@ export class AirNadeFactory extends EntityFactory {
     )
     entity.addComponent(
       'Ai',
-      new AiComponent(airNadeAI(entity, this.thrower, this.targetPos, this.world))
+      new AiComponent(entity, airNadeAI(entity, this.thrower, this.targetPos, this.world))
     )
 
     return entity

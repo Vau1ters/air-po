@@ -7,7 +7,7 @@ export default class CoinSmallFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(smallCoinAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, smallCoinAI(entity, this.world)))
 
     return entity
   }

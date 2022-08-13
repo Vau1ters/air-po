@@ -81,7 +81,10 @@ export const ActionType = t.union([
   ThrowAirNadeActionType,
 ])
 
-export const MovieType = t.array(ActionType)
+export const MovieType = t.type({
+  participants: t.array(t.string),
+  actions: t.array(ActionType),
+})
 
 export type Movie = t.TypeOf<typeof MovieType>
 export type Action = t.TypeOf<typeof ActionType>

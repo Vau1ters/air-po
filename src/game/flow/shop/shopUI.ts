@@ -27,7 +27,7 @@ export const createShopUI = (world: World): void => {
   uiContainer.mask = createMask(background)
   background.addComponent(
     'Ai',
-    new AiComponent({
+    new AiComponent(background, {
       behaviour: shopScrollAI(ui, world),
       dependency: {
         before: ['ControlSystem:update'],

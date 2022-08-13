@@ -9,7 +9,7 @@ export default class CoinLargeFactory extends ObjectEntityFactory {
     const entity = super.create()
 
     entity.addComponent('StagePoint', StagePointComponent.autoGenerate(entity, this.stageName))
-    entity.addComponent('Ai', new AiComponent(largeCoinAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, largeCoinAI(entity, this.world)))
 
     return entity
   }

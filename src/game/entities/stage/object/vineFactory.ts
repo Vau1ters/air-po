@@ -14,7 +14,7 @@ export default class VineFactory extends ObjectEntityFactory {
     const entity = super.create()
     entity.addComponent(
       'Ai',
-      new AiComponent(vineAI(entity, this.world, this.calcDirection(this.frame)))
+      new AiComponent(entity, vineAI(entity, this.world, this.calcDirection(this.frame)))
     )
     return entity
   }

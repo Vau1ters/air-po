@@ -24,7 +24,7 @@ export class ExplosionEffectFactory extends EntityFactory {
     assert(this.position !== undefined, 'position is not defined')
 
     const entity = loadEntity('explosionEffect')
-    entity.addComponent('Ai', new AiComponent(effectAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, effectAI(entity, this.world)))
     entity.addComponent('Position', new PositionComponent(this.position.x, this.position.y))
 
     return entity

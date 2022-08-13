@@ -19,7 +19,7 @@ export const movieAI = function* (movie: Movie, g: Graphics, world: World): Beha
   player.getComponent('RigidBody').velocity = new Vec2(0)
 
   const nameFamily = new FamilyBuilder(world).include('Name').build()
-  for (const action of movie) {
+  for (const action of movie.actions) {
     switch (action.action) {
       case 'black':
         yield* blackActionAI(action, g)

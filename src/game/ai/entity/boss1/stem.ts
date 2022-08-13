@@ -78,6 +78,7 @@ const fragment = (
   entity.addComponent(
     'Ai',
     new AiComponent(
+      entity,
       (function* (): Generator<void> {
         while (boss.getComponent('Hp').hp > 0) {
           const ls = calcLengthList()
