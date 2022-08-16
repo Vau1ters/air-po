@@ -1,0 +1,39 @@
+{
+  "actions": [
+    {
+      "action": "camera",
+      "to": {
+        "baseName": "airTank"
+      },
+      "type": "ease",
+      "chase": true
+    },
+    {
+      "action": "cinemaScope",
+      "type": "in"
+    },
+    {
+      "action": "talk",
+      "speaker": "Player",
+      "content": "あんなところに くうきタンク が ある"
+    },
+    {
+      "action": "camera",
+      "to": {
+        "baseName": "Player"
+      },
+      "type": "ease",
+      "chase": true
+    },
+    {
+      "action": "talk",
+      "speaker": "Player",
+      "content": "でも くうきが とぎれている。。。\nこらえながら いくしかない"
+    },
+    {
+      "action": "cinemaScope",
+      "type": "out"
+    }
+  ],
+  "participants": ["airGayser", "airTank"]
+}

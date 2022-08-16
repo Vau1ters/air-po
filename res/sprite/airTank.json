@@ -12,7 +12,7 @@
       "Normal": [0, 1, 2, 3]
     },
     "speed": {
-      "Normal": 6
+      "Normal": 10
     },
     "default": "Normal"
   }

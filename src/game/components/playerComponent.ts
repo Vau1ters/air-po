@@ -42,6 +42,11 @@ export class PlayerComponent {
     this.weaponChanged = new EventNotifier()
   }
 
+  public addEquipment(e: Equipment): void {
+    this.equipmentList.push(e)
+    e.onEquip()
+  }
+
   public popItem(index: number): Item {
     const [item] = this.itemList.splice(index, 1)
     return item

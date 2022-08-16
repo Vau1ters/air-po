@@ -7,10 +7,11 @@ import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
 import { parallelAny } from '@core/behaviour/composite'
 import { waitPlayer } from '../common/action/waitPlayer'
+import { AirTank } from '@game/equipment/airTank'
 
 const increaseAirTankCount = (world: World): void => {
   const player = getSingleton('Player', world)
-  player.getComponent('Player').playerData
+  player.getComponent('Player').addEquipment(new AirTank('airTank', player))
 }
 
 export const airTankAI = function* (entity: Entity, world: World): Behaviour<void> {

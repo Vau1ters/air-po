@@ -2,10 +2,14 @@
 // this file is automatically written by script.
 // you can update this file by type "yarn metabuild" command.
 
-import introMovie from '@res/movie/introMovie.json'
+import stage1map1findAirTankMovie from '@res/movie/stage1map1findAirTankMovie.json'
+import stage1map1introMovie from '@res/movie/stage1map1introMovie.json'
+import stage1map1openingMovie from '@res/movie/stage1map1openingMovie.json'
 import testMovie from '@res/movie/testMovie.json'
 
 export const movieList = {
-  introMovie,
+  stage1map1findAirTankMovie,
+  stage1map1introMovie,
+  stage1map1openingMovie,
   testMovie,
 }
