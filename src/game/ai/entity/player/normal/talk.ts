@@ -21,7 +21,7 @@ export const talk = function* (entity: Entity, world: World): Behaviour<void> {
     }
     if (KeyController.isKeyPressed('C')) {
       talk(
-        'いろはにほへどちりぬるを\nわかよたれそつねならむ\nうゐのおくやまけふこえて\nあさきゆめみしゑいもせす'
+        'いろはにほへどちりぬるを\nわかよたれそつねならむ\nうゐのおくやまけふこえて\nあさきゆめみしゑひもせす'
       )
     }
     if (KeyController.isKeyPressed('V')) {
