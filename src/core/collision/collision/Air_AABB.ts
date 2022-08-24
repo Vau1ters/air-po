@@ -13,7 +13,7 @@ export const collideAirAABB = (airs: Air, aabb: AABB): WithHit<CollisionResultAi
   for (const air of airs.family.entityIterator) {
     const airComponent = air.getComponent('Air')
     const pos = air.getComponent('Position')
-    const r2 = airComponent.quantity * airComponent.quantity
+    const r2 = airComponent.radius * airComponent.radius
     const d2 = pos.sub(aabb.center).lengthSq()
     const R2 = Air.EFFECTIVE_RADIUS * Air.EFFECTIVE_RADIUS
     const hit = d2 < R2
