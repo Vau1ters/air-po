@@ -27,7 +27,7 @@
     {
       "action": "talk",
       "speaker": "Player",
-      "content": "こんにちは\nクリック で もじおくり\nWASD で いどうできます"
+      "content": "こんにちは\nクリック でもじおくり\nWASD でいどうできます"
     },
     {
       "action": "cinemaScope",
