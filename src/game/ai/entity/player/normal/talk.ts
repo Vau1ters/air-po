@@ -27,6 +27,11 @@ export const talk = function* (entity: Entity, world: World): Behaviour<void> {
     if (KeyController.isKeyPressed('V')) {
       talk('Windows　でコンピュータのせかいがひろがります。')
     }
+    if (KeyController.isKeyPressed('B')) {
+      talk(
+        'イロハニホヘドチリヌルヲ\nワカヨタレソツネナラム\nウヰノオクヤマケフコエテ\nアサキユメミシヱヒモセス'
+      )
+    }
     yield
   }
 }
