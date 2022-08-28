@@ -69,8 +69,8 @@
                  "type":"",
                  "visible":true,
                  "width":212,
-                 "x":1374.5,
-                 "y":178.75
+                 "x":1461.16666666667,
+                 "y":181.416666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -263,7 +263,7 @@
                         {
                          "name":"event",
                          "type":"string",
-                         "value":"changeMap teststage 1"
+                         "value":"changeMap stage1map2 0"
                         }],
                  "rotation":0,
                  "type":"",
