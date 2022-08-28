@@ -9,8 +9,11 @@ const updateTextAI = function* (ui: Ui, player: Entity): Behaviour<void> {
   const [smallCoinText] = ui.get('coinCountSmall').getComponent('Draw').children as [BitmapText]
   const [largeCoinText] = ui.get('coinCountLarge').getComponent('Draw').children as [BitmapText]
   while (true) {
-    smallCoinText.text = `${player.getComponent('Player').smallCoinCount}`
-    largeCoinText.text = `${player.getComponent('Player').acquiredLargeCoinList.size}`
+    smallCoinText.text = `${player.getComponent('Player').smallCoinCount}`.padStart(3, '0')
+    largeCoinText.text = `${player.getComponent('Player').acquiredLargeCoinList.size}`.padStart(
+      2,
+      '0'
+    )
     yield
   }
 }

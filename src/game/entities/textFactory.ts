@@ -26,6 +26,7 @@ export class TextFactory extends EntityFactory {
       fontSize: this.setting.fontSize,
       tint: this.setting.tint,
     })
+    t.anchor.set(0, 0.5)
 
     ui.addChild(t)
     entity.addComponent('Position', new PositionComponent(this.setting.pos?.x, this.setting.pos?.y))
