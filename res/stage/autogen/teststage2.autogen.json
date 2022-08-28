@@ -93,7 +93,7 @@
       "name": "entity",
       "objects": [
         {
-          "gid": 125,
+          "gid": 130,
           "height": 64,
           "id": 22,
           "name": "",
@@ -155,7 +155,7 @@
           "y": 160
         },
         {
-          "gid": 92,
+          "gid": 97,
           "height": 16,
           "id": 33,
           "name": "",
@@ -167,7 +167,7 @@
           "y": 168
         },
         {
-          "gid": 71,
+          "gid": 76,
           "height": 16,
           "id": 34,
           "name": "",
@@ -179,7 +179,7 @@
           "y": 192
         },
         {
-          "gid": 126,
+          "gid": 131,
           "height": 16,
           "id": 35,
           "name": "",
@@ -191,7 +191,7 @@
           "y": 192
         },
         {
-          "gid": 71,
+          "gid": 76,
           "height": 16,
           "id": 36,
           "name": "",
@@ -203,7 +203,7 @@
           "y": 200
         },
         {
-          "gid": 126,
+          "gid": 131,
           "height": 16,
           "id": 37,
           "name": "",
@@ -215,7 +215,7 @@
           "y": 344
         },
         {
-          "gid": 126,
+          "gid": 131,
           "height": 16,
           "id": 38,
           "name": "",
@@ -227,7 +227,7 @@
           "y": 352
         },
         {
-          "gid": 85,
+          "gid": 90,
           "height": 80,
           "id": 39,
           "name": "",
@@ -251,7 +251,7 @@
           "y": 368
         },
         {
-          "gid": 69,
+          "gid": 74,
           "height": 16,
           "id": 41,
           "name": "",
@@ -4495,7 +4495,7 @@
         0,
         0,
         0,
-        148,
+        153,
         39,
         39,
         0,
@@ -4593,8 +4593,8 @@
         0,
         0,
         0,
-        148,
-        148,
+        153,
+        153,
         39,
         39,
         0,
@@ -4791,7 +4791,7 @@
         0,
         0,
         0,
-        148,
+        153,
         1,
         32,
         15,
@@ -10303,35 +10303,35 @@
       "source": "tileset/playerSpawner.json"
     },
     {
-      "firstgid": 69,
+      "firstgid": 74,
       "source": "tileset/balloonVine.json"
     },
     {
-      "firstgid": 71,
+      "firstgid": 76,
       "source": "tileset/snibee.json"
     },
     {
-      "firstgid": 85,
+      "firstgid": 90,
       "source": "tileset/dandelion.json"
     },
     {
-      "firstgid": 92,
+      "firstgid": 97,
       "source": "tileset/vine.json"
     },
     {
-      "firstgid": 124,
+      "firstgid": 129,
       "source": "tileset/moss.json"
     },
     {
-      "firstgid": 125,
+      "firstgid": 130,
       "source": "tileset/sensor.json"
     },
     {
-      "firstgid": 126,
+      "firstgid": 131,
       "source": "tileset/slime1.json"
     },
     {
-      "firstgid": 148,
+      "firstgid": 153,
       "source": "tileset/needleFloor.json"
     }
   ],
