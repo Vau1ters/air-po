@@ -1,5 +1,4 @@
 import { Behaviour } from '@core/behaviour/behaviour'
-import { wait } from '@core/behaviour/wait'
 import { parallelAny } from '@core/behaviour/composite'
 import { GamingFilter } from '@game/filters/gamingFilter'
 import { CoinGetEffectFactory } from '@game/entities/effect/coinGetEffectFactory'
@@ -10,16 +9,9 @@ import { animate } from '../common/action/animate'
 import { kill } from '../common/action/kill'
 import * as Sound from '@core/sound/sound'
 import { loadDrawComponent } from '@game/entities/loader/component/DrawComponentLoader'
+import { waitPlayer } from '../common/action/waitPlayer'
 
 export type GamingState = { phase: number }
-
-const waitPlayer = function* (entity: Entity): Behaviour<void> {
-  const [collider] = entity.getComponent('Collider').colliders
-  while (true) {
-    const collisionResults = yield* wait.collision(collider)
-    if (collisionResults.find(r => r.other.tag.has('PlayerSensor'))) return
-  }
-}
 
 const largeCoinMainAI = function* (
   entity: Entity,

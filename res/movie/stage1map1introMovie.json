@@ -1,0 +1,38 @@
+{
+  "actions": [
+    {
+      "action": "camera",
+      "to": {
+        "baseName": "Player"
+      },
+      "type": "warp",
+      "chase": true
+    },
+    {
+      "action": "black",
+      "type": "out"
+    },
+    {
+      "action": "cinemaScope",
+      "type": "in"
+    },
+    {
+      "action": "camera",
+      "to": {
+        "baseName": "Player"
+      },
+      "type": "ease",
+      "chase": true
+    },
+    {
+      "action": "talk",
+      "speaker": "Player",
+      "content": "こんにちは\nクリック でもじおくり\nWASD でいどうできます"
+    },
+    {
+      "action": "cinemaScope",
+      "type": "out"
+    }
+  ],
+  "participants": ["airGayser"]
+}

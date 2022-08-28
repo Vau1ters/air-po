@@ -4,6 +4,7 @@
 
 import air from 'src/game/entities/stage/object/airFactory'
 import airGeyser from 'src/game/entities/stage/object/airGeyserFactory'
+import airTank from 'src/game/entities/stage/object/airTankFactory'
 import balloonVine from 'src/game/entities/stage/object/balloonVineFactory'
 import boss1 from 'src/game/entities/stage/object/boss1Factory'
 import branch from 'src/game/entities/stage/object/branchFactory'
@@ -26,6 +27,7 @@ import vine from 'src/game/entities/stage/object/vineFactory'
 export const objectList = {
   air,
   airGeyser,
+  airTank,
   balloonVine,
   boss1,
   branch,

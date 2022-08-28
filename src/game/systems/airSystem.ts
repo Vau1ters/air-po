@@ -4,6 +4,7 @@ import { FamilyBuilder, Family } from '@core/ecs/family'
 import { World } from '@core/ecs/world'
 import { PositionComponent } from '@game/components/positionComponent'
 import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
+import { AirComponent } from '@game/components/airComponent'
 
 export const AIR_TAG = 'Air'
 
@@ -12,8 +13,10 @@ export class AirSystem extends System {
 
   private entity: Entity
 
-  public static readonly AIR_SHRINK_QUANTITY_THRESHOLD = 10
-  private static readonly AIR_SHRINK_QUANTITY_SPEED = 0.3
+  public static readonly AIR_SHRINK_RADIUS_THRESHOLD = 10
+  public static readonly AIR_SHRINK_QUANTITY_THRESHOLD =
+    AirSystem.AIR_SHRINK_RADIUS_THRESHOLD / AirComponent.QUANTITY_RADIUS_RATE
+  private static readonly AIR_SHRINK_QUANTITY_SPEED = 3
 
   public constructor(world: World) {
     super(world)

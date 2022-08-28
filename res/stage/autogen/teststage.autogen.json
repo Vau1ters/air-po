@@ -127,6 +127,18 @@
           "width": 35.5,
           "x": 88,
           "y": 456
+        },
+        {
+          "ellipse": true,
+          "height": 256,
+          "id": 85,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 256,
+          "x": 320,
+          "y": 424
         }
       ],
       "opacity": 1,
@@ -179,7 +191,7 @@
           "y": 256
         },
         {
-          "gid": 135,
+          "gid": 140,
           "height": 16,
           "id": 35,
           "name": "",
@@ -215,7 +227,7 @@
           "y": 160
         },
         {
-          "gid": 135,
+          "gid": 140,
           "height": 16,
           "id": 39,
           "name": "",
@@ -227,7 +239,7 @@
           "y": 184
         },
         {
-          "gid": 71,
+          "gid": 76,
           "height": 16,
           "id": 40,
           "name": "",
@@ -239,7 +251,7 @@
           "y": 192
         },
         {
-          "gid": 71,
+          "gid": 76,
           "height": 16,
           "id": 41,
           "name": "",
@@ -251,7 +263,7 @@
           "y": 200
         },
         {
-          "gid": 135,
+          "gid": 140,
           "height": 16,
           "id": 42,
           "name": "",
@@ -263,7 +275,7 @@
           "y": 200
         },
         {
-          "gid": 190,
+          "gid": 195,
           "height": 16,
           "id": 43,
           "name": "",
@@ -275,7 +287,7 @@
           "y": 240
         },
         {
-          "gid": 135,
+          "gid": 140,
           "height": 16,
           "id": 46,
           "name": "",
@@ -287,7 +299,7 @@
           "y": 336
         },
         {
-          "gid": 85,
+          "gid": 90,
           "height": 80,
           "id": 47,
           "name": "",
@@ -299,7 +311,7 @@
           "y": 368
         },
         {
-          "gid": 69,
+          "gid": 74,
           "height": 16,
           "id": 48,
           "name": "",
@@ -307,11 +319,11 @@
           "type": "",
           "visible": true,
           "width": 16,
-          "x": 296,
-          "y": 368
+          "x": 360,
+          "y": 312
         },
         {
-          "gid": 158,
+          "gid": 163,
           "height": 56,
           "id": 51,
           "name": "",
@@ -323,7 +335,7 @@
           "y": 600
         },
         {
-          "gid": 157,
+          "gid": 162,
           "height": 56,
           "id": 52,
           "name": "",
@@ -335,7 +347,7 @@
           "y": 600
         },
         {
-          "gid": 70,
+          "gid": 75,
           "height": 16,
           "id": 53,
           "name": "",
@@ -343,11 +355,11 @@
           "type": "",
           "visible": true,
           "width": 16,
-          "x": 448,
-          "y": 616
+          "x": 616,
+          "y": 600
         },
         {
-          "gid": 165,
+          "gid": 170,
           "height": 32,
           "id": 41,
           "name": "",
@@ -359,7 +371,7 @@
           "y": 528
         },
         {
-          "gid": 92,
+          "gid": 97,
           "height": 16,
           "id": 48,
           "name": "",
@@ -371,7 +383,7 @@
           "y": 408
         },
         {
-          "gid": 165,
+          "gid": 170,
           "height": 32,
           "id": 59,
           "name": "",
@@ -383,7 +395,7 @@
           "y": 504
         },
         {
-          "gid": 191,
+          "gid": 196,
           "height": 32,
           "id": 61,
           "name": "",
@@ -395,7 +407,7 @@
           "y": 432
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 64,
           "name": "",
@@ -407,7 +419,7 @@
           "y": 336
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 65,
           "name": "",
@@ -419,7 +431,7 @@
           "y": 320
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 66,
           "name": "",
@@ -431,7 +443,7 @@
           "y": 336
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 67,
           "name": "",
@@ -443,7 +455,7 @@
           "y": 320
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 68,
           "name": "",
@@ -455,7 +467,7 @@
           "y": 304
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 69,
           "name": "",
@@ -467,7 +479,7 @@
           "y": 288
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 70,
           "name": "",
@@ -479,7 +491,7 @@
           "y": 280
         },
         {
-          "gid": 192,
+          "gid": 197,
           "height": 16,
           "id": 71,
           "name": "",
@@ -491,7 +503,7 @@
           "y": 296
         },
         {
-          "gid": 194,
+          "gid": 199,
           "height": 16,
           "id": 73,
           "name": "",
@@ -503,7 +515,7 @@
           "y": 672
         },
         {
-          "gid": 165,
+          "gid": 170,
           "height": 32,
           "id": 75,
           "name": "",
@@ -515,7 +527,7 @@
           "y": 720
         },
         {
-          "gid": 100,
+          "gid": 105,
           "height": 16,
           "id": 76,
           "name": "",
@@ -527,7 +539,7 @@
           "y": 488
         },
         {
-          "gid": 108,
+          "gid": 113,
           "height": 16,
           "id": 77,
           "name": "",
@@ -539,7 +551,7 @@
           "y": 520
         },
         {
-          "gid": 116,
+          "gid": 121,
           "height": 16,
           "id": 78,
           "name": "",
@@ -551,7 +563,7 @@
           "y": 448
         },
         {
-          "gid": 196,
+          "gid": 201,
           "height": 16,
           "id": 79,
           "name": "shopKeeper",
@@ -563,7 +575,7 @@
           "y": 368
         },
         {
-          "gid": 125,
+          "gid": 130,
           "height": 128,
           "id": 82,
           "name": "",
@@ -582,7 +594,7 @@
           "y": 360
         },
         {
-          "gid": 126,
+          "gid": 131,
           "height": 32,
           "id": 84,
           "name": "",
@@ -4052,8 +4064,8 @@
         0,
         0,
         0,
-        134,
-        134,
+        0,
+        0,
         0,
         0,
         0,
@@ -4152,8 +4164,8 @@
         0,
         0,
         0,
-        0,
-        0,
+        139,
+        139,
         0,
         0,
         0,
@@ -4457,10 +4469,10 @@
         0,
         0,
         0,
-        200,
-        229,
-        229,
-        203,
+        205,
+        234,
+        234,
+        208,
         0,
         0,
         0,
@@ -4557,10 +4569,10 @@
         0,
         0,
         0,
-        216,
-        213,
+        221,
         218,
-        211,
+        223,
+        216,
         0,
         0,
         0,
@@ -4657,10 +4669,10 @@
         0,
         0,
         0,
-        224,
-        206,
-        205,
-        227,
+        229,
+        211,
+        210,
+        232,
         0,
         0,
         0,
@@ -6093,13 +6105,13 @@
         25,
         7,
         28,
-        199,
-        199,
-        199,
-        199,
-        199,
-        199,
-        199,
+        204,
+        204,
+        204,
+        204,
+        204,
+        204,
+        204,
         0,
         0,
         0,
@@ -7361,7 +7373,7 @@
         10,
         10,
         21,
-        199,
+        204,
         1,
         31,
         32,
@@ -7372,8 +7384,8 @@
         2,
         4,
         0,
-        199,
-        199,
+        204,
+        204,
         0,
         0,
         0,
@@ -9188,7 +9200,7 @@
         0,
         0,
         0,
-        199,
+        204,
         16,
         22,
         11,
@@ -9288,7 +9300,7 @@
         0,
         0,
         0,
-        199,
+        204,
         16,
         23,
         23,
@@ -9388,7 +9400,7 @@
         0,
         0,
         0,
-        199,
+        204,
         16,
         14,
         10,
@@ -9488,7 +9500,7 @@
         0,
         0,
         0,
-        199,
+        204,
         16,
         11,
         22,
@@ -9588,7 +9600,7 @@
         0,
         0,
         0,
-        199,
+        204,
         9,
         10,
         23,
@@ -10641,7 +10653,7 @@
     }
   ],
   "nextlayerid": 12,
-  "nextobjectid": 85,
+  "nextobjectid": 86,
   "orientation": "orthogonal",
   "renderorder": "right-up",
   "tiledversion": "1.7.2",
@@ -10660,79 +10672,79 @@
       "source": "tileset/playerSpawner.json"
     },
     {
-      "firstgid": 69,
+      "firstgid": 74,
       "source": "tileset/balloonVine.json"
     },
     {
-      "firstgid": 71,
+      "firstgid": 76,
       "source": "tileset/snibee.json"
     },
     {
-      "firstgid": 85,
+      "firstgid": 90,
       "source": "tileset/dandelion.json"
     },
     {
-      "firstgid": 92,
+      "firstgid": 97,
       "source": "tileset/vine.json"
     },
     {
-      "firstgid": 124,
+      "firstgid": 129,
       "source": "tileset/moss.json"
     },
     {
-      "firstgid": 125,
+      "firstgid": 130,
       "source": "tileset/sensor.json"
     },
     {
-      "firstgid": 126,
+      "firstgid": 131,
       "source": "tileset/airGeyser.json"
     },
     {
-      "firstgid": 134,
+      "firstgid": 139,
       "source": "tileset/throughFloor.json"
     },
     {
-      "firstgid": 135,
+      "firstgid": 140,
       "source": "tileset/slime1.json"
     },
     {
-      "firstgid": 157,
+      "firstgid": 162,
       "source": "tileset/mushroom.json"
     },
     {
-      "firstgid": 165,
+      "firstgid": 170,
       "source": "tileset/respawn.json"
     },
     {
-      "firstgid": 185,
+      "firstgid": 190,
       "source": "tileset/boss1.json"
     },
     {
-      "firstgid": 190,
+      "firstgid": 195,
       "source": "tileset/poisonousTulip.json"
     },
     {
-      "firstgid": 191,
+      "firstgid": 196,
       "source": "tileset/branch.json"
     },
     {
-      "firstgid": 192,
+      "firstgid": 197,
       "source": "tileset/rock.json"
     },
     {
-      "firstgid": 194,
+      "firstgid": 199,
       "source": "tileset/locust.json"
     },
     {
-      "firstgid": 196,
+      "firstgid": 201,
       "source": "tileset/villager.json"
     },
     {
-      "firstgid": 199,
+      "firstgid": 204,
       "source": "tileset/needleFloor.json"
     },
     {
-      "firstgid": 200,
+      "firstgid": 205,
       "source": "tileset/wallRock.json"
     }
   ],

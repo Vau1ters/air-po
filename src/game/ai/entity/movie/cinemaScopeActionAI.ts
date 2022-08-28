@@ -11,7 +11,7 @@ export const cinemaScopeActionAI = function* (
 ): Behaviour<void> {
   const option = action.type === 'in' ? { from: 0, to: 1 } : { from: 1, to: 0 }
   yield* ease(Out.quad)(
-    150,
+    50,
     (value: number): void => {
       const height = windowSize.height * 0.1 * value
       g.clear()

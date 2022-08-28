@@ -1,0 +1,19 @@
+{
+  "name": "airTank",
+  "path": "airTank.png",
+  "texture": {
+    "size": {
+      "width": 16,
+      "height":16 
+    }
+  },
+  "animation": {
+    "state": {
+      "Normal": [0, 1, 2, 3]
+    },
+    "speed": {
+      "Normal": 10
+    },
+    "default": "Normal"
+  }
+}

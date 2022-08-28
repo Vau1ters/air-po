@@ -5,6 +5,7 @@
 import airGeyser from '@res/sprite/airGeyser.json'
 import airHealItem from '@res/sprite/airHealItem.json'
 import airNade from '@res/sprite/airNade.json'
+import airTank from '@res/sprite/airTank.json'
 import background1 from '@res/sprite/background1.json'
 import background2 from '@res/sprite/background2.json'
 import ballBullet from '@res/sprite/ballBullet.json'
@@ -73,6 +74,7 @@ export const spriteURL = {
   airGeyser,
   airHealItem,
   airNade,
+  airTank,
   background1,
   background2,
   ballBullet,

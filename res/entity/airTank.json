@@ -1,0 +1,16 @@
+{
+  "draw": {
+    "name": "airTank"
+  },
+  "animationState": {},
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [16, 16]
+      },
+      "category": "item",
+      "mask": ["sensor"]
+    }
+  ]
+}
