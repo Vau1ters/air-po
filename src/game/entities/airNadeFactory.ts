@@ -5,16 +5,26 @@ import { loadEntity } from './loader/EntityLoader'
 import { airNadeAI } from '@game/ai/entity/airNade/airNadeAI'
 import { World } from '@core/ecs/world'
 import { AiComponent } from '@game/components/aiComponent'
+import { Vec2 } from '@core/math/vec2'
 
 export class AirNadeFactory extends EntityFactory {
-  constructor(public player: Entity, public world: World) {
+  constructor(public thrower: Entity, public world: World, private targetPos: Vec2) {
     super()
   }
 
   public create(): Entity {
     const entity = loadEntity('airNade')
-    entity.addComponent('Position', new PositionComponent())
-    entity.addComponent('Ai', new AiComponent(airNadeAI(entity, this.player, this.world)))
+    entity.addComponent(
+      'Position',
+      new PositionComponent(
+        this.thrower.getComponent('Position').x,
+        this.thrower.getComponent('Position').y
+      )
+    )
+    entity.addComponent(
+      'Ai',
+      new AiComponent(entity, airNadeAI(entity, this.thrower, this.targetPos, this.world))
+    )
 
     return entity
   }

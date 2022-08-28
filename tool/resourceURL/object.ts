@@ -7,7 +7,7 @@ export const buildObject = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/stage/objectList.ts',
+    outputPath: 'src/game/stage/objectList.autogen.ts',
     watchDir: 'src/game/entities/stage/object',
     templatePath: 'objectList.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

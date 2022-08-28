@@ -5,6 +5,7 @@
 import air from '@res/entity/air.json'
 import airGeyser from '@res/entity/airGeyser.json'
 import airNade from '@res/entity/airNade.json'
+import airTank from '@res/entity/airTank.json'
 import balloonVine from '@res/entity/balloonVine.json'
 import boss1 from '@res/entity/boss1.json'
 import boss1Geyser from '@res/entity/boss1Geyser.json'
@@ -19,6 +20,7 @@ import dandelion from '@res/entity/dandelion.json'
 import dandelionFluff from '@res/entity/dandelionFluff.json'
 import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
+import explosionEffect from '@res/entity/explosionEffect.json'
 import inventoryBackground from '@res/entity/inventoryBackground.json'
 import inventoryItemFrameLarge from '@res/entity/inventoryItemFrameLarge.json'
 import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
@@ -29,6 +31,7 @@ import locust from '@res/entity/locust.json'
 import moss from '@res/entity/moss.json'
 import mouseCursor from '@res/entity/mouseCursor.json'
 import mushroom from '@res/entity/mushroom.json'
+import needleFloor from '@res/entity/needleFloor.json'
 import player from '@res/entity/player.json'
 import playerBullet from '@res/entity/playerBullet.json'
 import playerSpawner from '@res/entity/playerSpawner.json'
@@ -56,12 +59,14 @@ import uiWeaponBackground from '@res/entity/uiWeaponBackground.json'
 import villager from '@res/entity/villager.json'
 import vine from '@res/entity/vine.json'
 import vineStalk from '@res/entity/vineStalk.json'
-import wall from '@res/entity/wall.json'
+import wallRock from '@res/entity/wallRock.json'
+import wallSoil from '@res/entity/wallSoil.json'
 
 export const entitySetting = {
   air,
   airGeyser,
   airNade,
+  airTank,
   balloonVine,
   boss1,
   boss1Geyser,
@@ -76,6 +81,7 @@ export const entitySetting = {
   dandelionFluff,
   enemy1,
   enemyBullet,
+  explosionEffect,
   inventoryBackground,
   inventoryItemFrameLarge,
   inventoryItemFrameSmall,
@@ -86,6 +92,7 @@ export const entitySetting = {
   moss,
   mouseCursor,
   mushroom,
+  needleFloor,
   player,
   playerBullet,
   playerSpawner,
@@ -113,5 +120,6 @@ export const entitySetting = {
   villager,
   vine,
   vineStalk,
-  wall,
+  wallRock,
+  wallSoil,
 }

@@ -15,7 +15,7 @@ import { loadEntity } from './loader/EntityLoader'
 import { THROUGH_FLOOR_TAG } from './stage/tile/throughFloorFactory'
 
 export const PLAYER_SENSOR_TAG = 'PlayerSensor'
-export const PLAYER_FOOT_TAG = 'PlayerFoot'
+export const PLAYER_FOOT_TAG = 'Foot'
 
 export class PlayerFactory extends EntityFactory {
   constructor(private world: World, private playerData: PlayerData) {
@@ -41,11 +41,11 @@ export class PlayerFactory extends EntityFactory {
     const airHolder = entity.getComponent('AirHolder')
     airHolder.quantity = Math.min(this.playerData.air, airHolder.maxQuantity)
 
+    entity.addComponent('Name', new NameComponent('Player'))
     entity.addComponent(
       'Ai',
-      new AiComponent({
+      new AiComponent(entity, {
         behaviour: playerAI(entity, this.world),
-        name: 'Player:AI',
         dependency: {
           before: ['ControlSystem:update'],
         },
@@ -53,7 +53,6 @@ export class PlayerFactory extends EntityFactory {
     )
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('Player', player)
-    entity.addComponent('Name', new NameComponent('player'))
 
     const colliders = entity.getComponent('Collider').colliders.filter(c => c.mask.has('terrain'))
     for (const c of colliders) {

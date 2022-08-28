@@ -19,7 +19,7 @@ const findCorners = (image: ImageData): FindCornerResult => {
     const check = (c1?: Pixel, c2?: Pixel): boolean => {
       if (!c0 || !c1 || !c2) return false
       const colors = [c0.rgba, c1.rgba, c2.rgba]
-      return colors.every(c => c.b === 0xff)
+      return colors.every(c => c.r == 0x00 && c.g == 0x00 && c.b === 0xff)
     }
     if (check(c0.right(), c0.down())) result.leftTop.push(c0)
     if (check(c0.left(), c0.down())) result.rightTop.push(c0)
@@ -40,12 +40,18 @@ const findBounds = (corners: FindCornerResult): Array<Bound> => {
     const endX = Math.min(...rightTopCandidates.map(c => c.x))
     const endY = Math.min(...leftBottomCandidates.map(c => c.y))
     const end = corners.rightBottom.find(c => c.x === endX && c.y == endY)
-    assert(end, '')
+    assert(end, `Could not find right bottom corner (${endX}, ${endY})`)
     const bound = Bound.fromCorner(start, end)
     if (bound.width <= 2) continue
     if (bound.height <= 2) continue
-    assert(bound.width % 8 === 0, '')
-    assert(bound.height % 8 === 0, '')
+    assert(
+      bound.width % 8 === 0,
+      `width of bound must be multiple of 8: (x, y, w, h) = (${bound.x}, ${bound.y}, ${bound.width}, ${bound.height})`
+    )
+    assert(
+      bound.height % 8 === 0,
+      `height of bound must be multiple of 8: (x, y, w, h) = (${bound.x}, ${bound.y}, ${bound.width}, ${bound.height})`
+    )
     bounds.push(bound)
   }
   return bounds
@@ -151,11 +157,11 @@ export const packTreeImage = async (): Promise<void> => {
   const bounds = findBounds(corners)
   const boundMap = calcBoundMap(bounds)
   await outputCanvas(
-    __dirname + '/../../res/image/treeTile.png',
+    __dirname + '/../../res/image/treeTile.autogen.png',
     packImage(originalImage, boundMap)
   )
   fs.writeFileSync(
-    __dirname + '/../../res/tileMapping/tree.json',
+    __dirname + '/../../res/tileMapping/tree.autogen.json',
     JSON.stringify(toMappingObject(boundMap), null, '  ')
   )
 }

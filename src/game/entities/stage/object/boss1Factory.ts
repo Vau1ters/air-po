@@ -7,7 +7,7 @@ import { ObjectEntityFactory } from '@game/entities/objectEntityFactory'
 export default class Boss1Factory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
-    entity.addComponent('Ai', new AiComponent(boss1AI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, boss1AI(entity, this.world)))
     entity.addComponent('Invincible', new InvincibleComponent())
     return entity
   }

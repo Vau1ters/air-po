@@ -7,7 +7,7 @@ export default class PoisonousTulipFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(poisonousTulipAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, poisonousTulipAI(entity, this.world)))
 
     return entity
   }

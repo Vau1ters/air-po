@@ -1,4 +1,5 @@
 export class AirComponent {
+  public static readonly QUANTITY_RADIUS_RATE = 0.1
   private static readonly QUANTITY_ACTUALIZE_MIN_SPEED = 1
   private static readonly QUANTITY_ACTUALIZE_RATE = 0.5
   private _quantity: number
@@ -11,6 +12,10 @@ export class AirComponent {
 
   public get quantity(): number {
     return this._quantity
+  }
+
+  public get radius(): number {
+    return this._quantity * AirComponent.QUANTITY_RADIUS_RATE
   }
 
   public get alive(): boolean {

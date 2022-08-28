@@ -7,7 +7,7 @@ export const buildUi = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/entities/ui/loader/uiSetting.ts',
+    outputPath: 'src/game/entities/ui/loader/uiSetting.autogen.ts',
     watchDir: 'res/ui',
     templatePath: 'uiSetting.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

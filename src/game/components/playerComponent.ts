@@ -1,9 +1,9 @@
 import { Entity } from '@core/ecs/entity'
 import { Vec2 } from '@core/math/vec2'
 import { Equipment, EquipmentName } from '@game/equipment/equipment'
-import { equipmentClass } from '@game/equipment/equipmentURL'
+import { equipmentClass } from '@game/equipment/equipmentURL.autogen'
 import { Item } from '@game/item/item'
-import { itemClass } from '@game/item/itemURL'
+import { itemClass } from '@game/item/itemURL.autogen'
 import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
 import { assert } from '@utils/assertion'
 import { EventNotifier } from '@utils/eventNotifier'
@@ -40,6 +40,11 @@ export class PlayerComponent {
       e.onEquip()
     }
     this.weaponChanged = new EventNotifier()
+  }
+
+  public addEquipment(e: Equipment): void {
+    this.equipmentList.push(e)
+    e.onEquip()
   }
 
   public popItem(index: number): Item {

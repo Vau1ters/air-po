@@ -5,6 +5,7 @@
 import airGeyser from '@res/sprite/airGeyser.json'
 import airHealItem from '@res/sprite/airHealItem.json'
 import airNade from '@res/sprite/airNade.json'
+import airTank from '@res/sprite/airTank.json'
 import background1 from '@res/sprite/background1.json'
 import background2 from '@res/sprite/background2.json'
 import ballBullet from '@res/sprite/ballBullet.json'
@@ -26,6 +27,7 @@ import cursor from '@res/sprite/cursor.json'
 import dandelion from '@res/sprite/dandelion.json'
 import dandelionFluff from '@res/sprite/dandelionFluff.json'
 import enemy1 from '@res/sprite/enemy1.json'
+import explosionEffect from '@res/sprite/explosionEffect.json'
 import hpHealItem from '@res/sprite/hpHealItem.json'
 import inventoryBackground from '@res/sprite/inventoryBackgroud.json'
 import inventoryItemFrameLarge from '@res/sprite/inventoryItemFrameLarge.json'
@@ -37,6 +39,7 @@ import locust from '@res/sprite/locust.json'
 import moss from '@res/sprite/moss.json'
 import mushroom from '@res/sprite/mushroom.json'
 import needleBullet from '@res/sprite/needleBullet.json'
+import needleFloor from '@res/sprite/needleFloor.json'
 import player from '@res/sprite/player.json'
 import poison from '@res/sprite/poison.json'
 import poisonousTulip from '@res/sprite/poisonousTulip.json'
@@ -64,12 +67,14 @@ import uiWeaponBackground from '@res/sprite/uiWeaponBackground.json'
 import uiWeaponGun from '@res/sprite/uiWeaponGun.json'
 import villager from '@res/sprite/villager.json'
 import vine from '@res/sprite/vine.json'
-import wall from '@res/sprite/wall.json'
+import wallRock from '@res/sprite/wallRock.json'
+import wallSoil from '@res/sprite/wallSoil.json'
 
 export const spriteURL = {
   airGeyser,
   airHealItem,
   airNade,
+  airTank,
   background1,
   background2,
   ballBullet,
@@ -91,6 +96,7 @@ export const spriteURL = {
   dandelion,
   dandelionFluff,
   enemy1,
+  explosionEffect,
   hpHealItem,
   inventoryBackground,
   inventoryItemFrameLarge,
@@ -102,6 +108,7 @@ export const spriteURL = {
   moss,
   mushroom,
   needleBullet,
+  needleFloor,
   player,
   poison,
   poisonousTulip,
@@ -129,5 +136,6 @@ export const spriteURL = {
   uiWeaponGun,
   villager,
   vine,
-  wall,
+  wallRock,
+  wallSoil,
 }

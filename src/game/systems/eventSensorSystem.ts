@@ -9,7 +9,7 @@ import { getSingleton } from './singletonSystem'
 import { StagePoint } from '@game/components/stagePointComponent'
 import { Movie, MovieName, MovieType } from '@game/movie/movie'
 import { GameEvent } from '@game/components/gameEventComponent'
-import { movieList } from '@game/movie/movieList'
+import { movieList } from '@game/movie/movieList.autogen'
 import { decodeJson } from '@utils/json'
 
 export class EventSensorSystem extends System {
@@ -26,7 +26,7 @@ export class EventSensorSystem extends System {
   private onSensorAdded(entity: Entity): void {
     const sensor = entity.getComponent('Sensor')
     for (const c of entity.getComponent('Collider').colliders) {
-      c.callbacks.add(async (args: CollisionCallbackArgs) => {
+      c.notifier.addObserver(async (args: CollisionCallbackArgs) => {
         if (!args.other.tag.has(PLAYER_SENSOR_TAG)) return
         if (!sensor.isEnabled) return
         await this.fireEvent(sensor.event, args.me.entity)

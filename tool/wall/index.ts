@@ -2,7 +2,6 @@ import { Random } from './random'
 import * as fs from 'fs'
 import { TileLayer } from '@game/stage/tileLayerLoader'
 import { StageSetting } from '@game/stage/stageLoader'
-import { TileSet } from '@game/stage/tileSet'
 import wallType from '../../res/misc/wall.json'
 
 type WallType = keyof typeof wallType.typeMap
@@ -62,7 +61,7 @@ export class WallLoader {
     if (x >= this.layer.width) return false
     if (y >= this.layer.height) return false
     const gid = this.layer.data[x + y * this.layer.width]
-    return gid > 0
+    return this.gidBegin <= gid && gid < this.gidEnd
   }
 
   private randomChoice(candidates: number[]): number {
@@ -84,14 +83,15 @@ const updateLayer = (layer: TileLayer, gidBegin: number, gidEnd: number): void =
 }
 
 const updateStage = (stage: StageSetting): StageSetting => {
-  const wallTileSetIndex = stage.tilesets.findIndex((tileSet: TileSet): boolean =>
-    tileSet.source.includes('wall')
-  )
-  const gidBegin = stage.tilesets[wallTileSetIndex].firstgid
-  const gidEnd = stage.tilesets[wallTileSetIndex + 1].firstgid ?? Infinity
-  const mapLayer = stage.layers.find(layer => layer.name === 'map')
-  if (mapLayer !== undefined) {
-    updateLayer(mapLayer as TileLayer, gidBegin, gidEnd)
+  for (let i = 0; i < stage.tilesets.length; i++) {
+    const tileSet = stage.tilesets[i]
+    if (!tileSet.source.includes('wall')) continue
+    const gidBegin = stage.tilesets[i].firstgid
+    const gidEnd = stage.tilesets[i + 1]?.firstgid ?? Infinity
+    const mapLayer = stage.layers.find(layer => layer.name === 'map')
+    if (mapLayer !== undefined) {
+      updateLayer(mapLayer as TileLayer, gidBegin, gidEnd)
+    }
   }
   return stage
 }
@@ -99,10 +99,13 @@ const updateStage = (stage: StageSetting): StageSetting => {
 export const updateStages = (): void => {
   for (const e of fs.readdirSync('res/stage', { withFileTypes: true })) {
     if (e.isFile()) {
-      const path = `res/stage/${e.name}`
-      const content = fs.readFileSync(path, 'ascii')
+      const match = /^(.*)\.json$/.exec(e.name)
+      if (match == null) continue
+      const name = match[1]
+      if (name.includes('autogen')) continue
+      const content = fs.readFileSync(`res/stage/${e.name}`, 'ascii')
       const result = JSON.stringify(updateStage(JSON.parse(content)), null, '  ')
-      fs.writeFileSync(path, result)
+      fs.writeFileSync(`res/stage/autogen/${name}.autogen.json`, result)
     }
   }
 }

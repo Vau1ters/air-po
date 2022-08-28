@@ -1,8 +1,8 @@
 import { Entity } from '@core/ecs/entity'
 import { StaticComponent } from '@game/components/staticComponent'
 import { TileCollider, TileEntityFactory } from '@game/entities/tileEntityFactory'
-import treeCollider from '@res/collider/tree.json'
-import treeTileMapping from '@res/tileMapping/tree.json'
+import treeCollider from '@res/collider/tree.autogen.json'
+import treeTileMapping from '@res/tileMapping/tree.autogen.json'
 
 export default class TreeFactory extends TileEntityFactory {
   public create(): Entity {

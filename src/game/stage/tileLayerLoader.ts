@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 import { Vec2 } from '@core/math/vec2'
 import { assert } from '@utils/assertion'
-import { tileList } from './tileList'
+import { tileList } from './tileList.autogen'
 import { CustomPropertyType } from './customProperty'
 import { TileSet } from './tileSet'
 import { Entity } from '@core/ecs/entity'

@@ -9,7 +9,7 @@ export default class BalloonVineFactory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(balloonVineAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, balloonVineAI(entity, this.world)))
 
     entity.addComponent('Invincible', new InvincibleComponent())
     entity.addComponent('PickupTarget', new PickupTargetComponent(false))

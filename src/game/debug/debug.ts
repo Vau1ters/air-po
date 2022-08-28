@@ -1,6 +1,6 @@
 import { StagePointID } from '@game/components/stagePointComponent'
 import { saveData, loadData, clearData } from '@game/playdata/playdata'
-import { stageList } from '@game/stage/stageList'
+import { stageList } from '@game/stage/stageList.autogen'
 import { StageName } from '@game/stage/stageLoader'
 import DebugDrawSystem from '@game/systems/debugDrawSystem'
 import { assert } from '@utils/assertion'

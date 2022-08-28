@@ -7,7 +7,7 @@ export const buildMovie = (): string => {
   const nameList: string[] = []
 
   return buildMetaSource({
-    outputPath: 'src/game/movie/movieList.ts',
+    outputPath: 'src/game/movie/movieList.autogen.ts',
     watchDir: 'res/movie',
     templatePath: 'movieList.ts',
     onInput: (watchDir: string, e: fs.Dirent) => {

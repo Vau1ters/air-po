@@ -29,6 +29,13 @@ export class DarknessFilter extends Filter {
       this.uniforms.points.push(light.center.y)
       this.uniforms.points.push(light.intensity)
     }
+
+    // 長さが0の配列が許されてなさそう
+    // そもそも暗いところで光るギミック使うところ以外Filterを消してしまって良さそう
+    if (lights.length == 0) {
+      this.uniforms.points = [0, 0, 0]
+    }
+
     this.uniforms.pointNum = lights.length
   }
 }

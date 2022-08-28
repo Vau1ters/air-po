@@ -2,7 +2,7 @@ import * as t from 'io-ts'
 import { Entity } from '@core/ecs/entity'
 import { createSprite } from '@core/graphics/art'
 import { DrawComponent } from '@game/components/drawComponent'
-import { spriteURL } from '@core/graphics/spriteURL'
+import { spriteURL } from '@core/graphics/spriteURL.autogen'
 
 export const ContainerTypes = t.union([t.literal('World'), t.literal('WorldUI'), t.literal('UI')])
 export type ContainerType = t.TypeOf<typeof ContainerTypes>

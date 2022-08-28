@@ -1,6 +1,6 @@
 {
   "name": "tree",
-  "path": "treeTile.png",
+  "path": "treeTile.autogen.png",
   "texture": {
     "size": {
       "width": 8,

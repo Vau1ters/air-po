@@ -56,14 +56,14 @@
       },
       "category": "sensor",
       "mask": ["terrain"],
-      "tag": ["PlayerFoot"]
+      "tag": ["Foot"]
     }
   ],
   "airHolder": {
     "initialQuantity": 0,
-    "maxQuantity": 0,
-    "collectSpeed": 0.05,
-    "consumeSpeed": 0.025,
+    "maxQuantity": 2,
+    "collectSpeed": 3,
+    "consumeSpeed": 1,
     "shouldDamageInSuffocation": true
   },
   "sound": {},

@@ -1,6 +1,6 @@
 import { Behaviour } from '@core/behaviour/behaviour'
 import { Entity } from '@core/ecs/entity'
-import { ComponentName } from '@core/ecs/component'
+import { ComponentName } from '@core/ecs/component.autogen'
 
 export const removeComponentNode = function* (
   entity: Entity,

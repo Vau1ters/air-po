@@ -7,7 +7,7 @@ export default class Slime1Factory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(slime1AI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, slime1AI(entity, this.world)))
     return entity
   }
 }

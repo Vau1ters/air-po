@@ -21,11 +21,25 @@ export const talk = function* (entity: Entity, world: World): Behaviour<void> {
     }
     if (KeyController.isKeyPressed('C')) {
       talk(
-        'いろはにほへどちりぬるを\nわかよたれそつねならむ\nうゐのおくやまけふこえて\nあさきゆめみしゑいもせす'
+        'いろはにほへどちりぬるを\nわかよたれそつねならむ\nうゐのおくやまけふこえて\nあさきゆめみしゑひもせす'
       )
     }
     if (KeyController.isKeyPressed('V')) {
       talk('Windows　でコンピュータのせかいがひろがります。')
+    }
+    if (KeyController.isKeyPressed('B')) {
+      talk(
+        'イロハニホヘドチリヌルヲ\nワカヨタレソツネナラム\nウヰノオクヤマケフコエテ\nアサキユメミシヱヒモセス'
+      )
+    }
+    if (KeyController.isKeyPressed('N')) {
+      talk('the quick brown fox\njumps over the lazy dog')
+    }
+    if (KeyController.isKeyPressed('M')) {
+      talk('THE QUICK BROWN FOX\nJUMPS OVER THE LAZY DOG')
+    }
+    if (KeyController.isKeyPressed('L')) {
+      talk('The Quick Brown Fox\nJumps Over The Lazy Dog')
     }
     yield
   }

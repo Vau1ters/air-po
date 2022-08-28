@@ -8,7 +8,7 @@ export class BgmFactory extends EntityFactory {
   public create(): Entity {
     const entity = new Entity()
     entity.addComponent('Bgm', new BgmComponent())
-    entity.addComponent('Ai', new AiComponent(bgmAI(entity)))
+    entity.addComponent('Ai', new AiComponent(entity, bgmAI(entity)))
     return entity
   }
 }

@@ -20,7 +20,7 @@ export const movieFlow = function* (gameWorld: World, movie: Movie): Behaviour<v
   const [laserSightGraphics] = laserSight.getComponent('Draw').children
   const uiContainer = gameWorld.stage.getChildByName('uiContainer', true) as Container
   const procs = gameWorld.processManager.processes.filter(
-    p => p.tag?.has('AI') || p.name === 'PhysicsSystem:update' || p.name === 'GravitySystem:update'
+    p => p.tag?.has('AI') && !movie.participants.includes(p.name)
   )
   const movieEntity = new MovieFactory(movie, gameWorld).create()
 

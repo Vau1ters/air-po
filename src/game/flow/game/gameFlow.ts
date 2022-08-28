@@ -1,7 +1,7 @@
 import { parallelAll } from '@core/behaviour/composite'
 import { wait } from '@core/behaviour/wait'
 import { KeyController } from '@game/systems/controlSystem'
-import { Text } from './text'
+// import { Text } from './text'
 import { pauseFlow } from '../pause/pauseFlow'
 import { Flow } from '../flow'
 import { getSingleton } from '@game/systems/singletonSystem'
@@ -33,10 +33,10 @@ const transitState = function* (controller: BranchController<Flow>): Behaviour<v
   }
 }
 
-const postEffect = function* (world: World): Generator<void> {
-  yield* fadeBlack(world, { mode: 'in' })
-  yield* Text(world, 'そうなんちてん')
-}
+// const postEffect = function* (world: World): Generator<void> {
+//   yield* fadeBlack(world, { mode: 'in' })
+//   yield* Text(world, 'そうなんちてん')
+// }
 
 const handleEvent = function* (
   world: World,
@@ -81,7 +81,7 @@ export const gameFlow = function* (stageInfo: StageInfo): Flow {
     Game: function* (controller: BranchController<Flow>) {
       yield* parallelAll([
         transitState(controller),
-        postEffect(world),
+        // postEffect(world),
         handleEvent(world, stageInfo, controller),
         world.execute(),
       ])

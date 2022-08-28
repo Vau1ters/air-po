@@ -105,7 +105,7 @@ export class FilterSystem extends System {
       const air = entity.getComponent('Air')
       const position = entity.getComponent('Position')
 
-      const radius = air.quantity
+      const radius = air.radius
 
       airs.push({
         center: new PositionComponent(

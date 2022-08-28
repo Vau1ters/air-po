@@ -1,5 +1,5 @@
 import { Entity } from '@core/ecs/entity'
-import { uiSetting } from './uiSetting'
+import { uiSetting } from './uiSetting.autogen'
 import * as t from 'io-ts'
 import { ButtonUiSettingType, loadButtonUi } from './buttonUiLoader'
 import { decodeJson } from '@utils/json'

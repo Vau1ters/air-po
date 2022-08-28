@@ -21,7 +21,7 @@ export const segmentSearchGenerator = function* (
   const segment = collider.geometry as Segment
 
   let hitInfo: Array<SegmentHitResult> = []
-  collider.callbacks.add((args: CollisionCallbackArgs) => {
+  collider.notifier.addObserver((args: CollisionCallbackArgs) => {
     const { other } = args
     const { hitPoint } = args as CollisionResultSegmentAABB
     if (options?.ignoreEntity && other.entity === options.ignoreEntity) return

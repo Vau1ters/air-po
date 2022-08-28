@@ -2,7 +2,7 @@ import { assert } from '@utils/assertion'
 import { BaseTexture, Texture, Rectangle } from 'pixi.js'
 import { AnimationSprite } from './animationSprite'
 import { SpriteBuffer, AnimationDefinition } from './spriteBuffer'
-import { spriteURL } from './spriteURL'
+import { spriteURL } from './spriteURL.autogen'
 import * as t from 'io-ts'
 
 export const SpriteNameType = t.keyof(spriteURL)
@@ -40,7 +40,7 @@ const spriteStore: { [key: string]: SpriteBuffer } = {}
 
 const loadTexture = async (path: string): Promise<BaseTexture> => {
   return new Promise((resolve, reject) => {
-    const name = path.split('.')[0]
+    const name = (/^(.*)\.png/.exec(path) ?? [])[1]
     const { default: url } = require(`/res/image/${name}.png`) // eslint-disable-line  @typescript-eslint/no-var-requires
     const texture = BaseTexture.from(url)
     if (texture.width > 0) resolve(texture)

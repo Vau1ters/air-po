@@ -11,7 +11,7 @@ export class HudFactory extends EntityFactory {
 
   public create(): Entity {
     const entity = new Entity()
-    entity.addComponent('Ai', new AiComponent(hudPlayerAI(this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, hudPlayerAI(this.world)))
 
     return entity
   }

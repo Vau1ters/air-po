@@ -1,5 +1,5 @@
 import { SpriteNameType } from '@core/graphics/art'
-import { movieList } from './movieList'
+import { movieList } from './movieList.autogen'
 import * as t from 'io-ts'
 
 export type MovieName = keyof typeof movieList
@@ -53,10 +53,21 @@ export const MoveActionType = t.type({
   type: MoveActionTypeType,
 })
 
+export const JumpActionType = t.type({
+  action: t.literal('jump'),
+  mover: ActorNameType,
+})
+
 export const ShowSpriteActionType = t.type({
   action: t.literal('showSprite'),
   sprite: SpriteNameType,
   pos: MoviePositionType,
+})
+
+export const ThrowAirNadeActionType = t.type({
+  action: t.literal('throwAirNade'),
+  thrower: ActorNameType,
+  to: MoviePositionType,
 })
 
 export const ActionType = t.union([
@@ -65,10 +76,15 @@ export const ActionType = t.union([
   CameraActionType,
   TalkActionType,
   MoveActionType,
+  JumpActionType,
   ShowSpriteActionType,
+  ThrowAirNadeActionType,
 ])
 
-export const MovieType = t.array(ActionType)
+export const MovieType = t.type({
+  participants: t.array(t.string),
+  actions: t.array(ActionType),
+})
 
 export type Movie = t.TypeOf<typeof MovieType>
 export type Action = t.TypeOf<typeof ActionType>
@@ -81,6 +97,8 @@ export type CameraActionType = t.TypeOf<typeof CameraActionTypeType>
 export type TalkAction = t.TypeOf<typeof TalkActionType>
 export type MoveAction = t.TypeOf<typeof MoveActionType>
 export type MoveActionType = t.TypeOf<typeof MoveActionTypeType>
+export type JumpAction = t.TypeOf<typeof JumpActionType>
 export type ShowSpriteAction = t.TypeOf<typeof ShowSpriteActionType>
+export type ThrowAirNadeAction = t.TypeOf<typeof ThrowAirNadeActionType>
 export type ActorName = t.TypeOf<typeof ActorNameType>
 export type MoviePosition = t.TypeOf<typeof MoviePositionType>

@@ -24,14 +24,14 @@ export class LightSystem extends System {
             `Collider with '${LIGHT_TAG}' tag must have LIGHT category`
           )
           assert(c.mask.has('air'), `Collider with '${LIGHT_TAG}' tag must have AIR mask`)
-          c.callbacks.add(LightSystem.lightAirCollision)
+          c.notifier.addObserver(LightSystem.lightAirCollision)
         }
       }
     })
     this.family.entityAddedEvent.removeObserver((e: Entity) => {
       for (const c of e.getComponent('Collider').colliders) {
         if (c.tag.has(LIGHT_TAG)) {
-          c.callbacks.delete(LightSystem.lightAirCollision)
+          c.notifier.removeObserver(LightSystem.lightAirCollision)
         }
       }
     })

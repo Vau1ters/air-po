@@ -29,7 +29,9 @@ export class BulletSystem extends System {
             `Collider with '${BULLET_TAG}' tag must have BULLET category`
           )
           assert(c.mask.has('terrain'), `Collider with '${BULLET_TAG}' tag must have TERRAIN mask`)
-          c.callbacks.add((args: CollisionCallbackArgs) => this.bulletCollisionCallback(args))
+          c.notifier.addObserver((args: CollisionCallbackArgs) =>
+            this.bulletCollisionCallback(args)
+          )
         }
       }
     }

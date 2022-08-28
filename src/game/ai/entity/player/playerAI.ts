@@ -23,7 +23,8 @@ export const PLAYER_SETTING = {
       coolTime: 10,
     },
     jump: {
-      speed: 280,
+      // 40px=5マス分のジャンプ力
+      speed: 300,
     },
     walk: {
       power: 10,
@@ -74,6 +75,7 @@ const playerControl = function* (entity: Entity, world: World): Behaviour<void> 
 
 export const playerAI = function* (entity: Entity, world: World): Behaviour<void> {
   yield* suspendable(isAlive(entity), playerControl(entity, world))
+  entity.getComponent('Invincible').setInvincible(1000000) // stop damaging SE (#468)
   yield* animate({ entity, state: 'Dying' })
   yield* wait.frame(60)
   getSingleton('GameEvent', world).getComponent('GameEvent').event = {

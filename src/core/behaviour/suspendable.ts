@@ -1,12 +1,13 @@
 import { Behaviour } from './behaviour'
 
-export const suspendable = function* (
+export const suspendable = function* <T>(
   condition: () => boolean,
-  executionBehaviour: Behaviour<any> // eslint-disable-line @typescript-eslint/no-explicit-any
-): Behaviour<void> {
+  executionBehaviour: Behaviour<T>
+): Behaviour<T | undefined> {
   while (condition()) {
-    const { done } = executionBehaviour.next()
-    if (done) return
+    const result = executionBehaviour.next()
+    if (result.done === true) return result.value
     yield
   }
+  return
 }

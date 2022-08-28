@@ -7,6 +7,8 @@ import { AnimationDefinition } from './spriteBuffer'
 export type AnimationOption = { waitFrames?: number; reverse?: boolean }
 
 class AnimationSpriteFrame extends Sprite {
+  private _currentFrame = 0
+
   public constructor(private textures: Array<Texture>, private waitFrames = 10) {
     super(textures[0])
   }
@@ -24,8 +26,10 @@ class AnimationSpriteFrame extends Sprite {
       option.reverse === true
         ? this.textures.map((_, idx) => this.textures[this.length - 1 - idx])
         : this.textures
-    for (const texture of textures) {
-      this.texture = texture
+    for (let i = 0; i < textures.length; i++) {
+      this.texture = textures[i]
+      this._currentFrame = i
+
       if (option.waitFrames) {
         yield* wait.frame(option.waitFrames)
       } else {
@@ -36,6 +40,10 @@ class AnimationSpriteFrame extends Sprite {
 
   public get length(): number {
     return this.textures.length
+  }
+
+  public get currentFrame(): number {
+    return this._currentFrame
   }
 }
 

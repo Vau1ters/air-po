@@ -7,7 +7,7 @@ export default class Enemy1Factory extends ObjectEntityFactory {
   public create(): Entity {
     const entity = super.create()
 
-    entity.addComponent('Ai', new AiComponent(enemy1AI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, enemy1AI(entity, this.world)))
     return entity
   }
 }

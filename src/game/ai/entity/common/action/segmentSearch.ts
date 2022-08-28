@@ -1,14 +1,11 @@
 import { Behaviour } from '@core/behaviour/behaviour'
+import { wait } from '@core/behaviour/wait'
 import { CollisionResultSegmentAABB } from '@core/collision/collision/Segment_AABB'
 import { Segment } from '@core/collision/geometry/segment'
 import { Entity } from '@core/ecs/entity'
 import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
-import {
-  buildCollider,
-  ColliderComponent,
-  CollisionCallbackArgs,
-} from '@game/components/colliderComponent'
+import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 import { PositionComponent } from '@game/components/positionComponent'
 import { CategorySet } from '@game/entities/category'
 
@@ -44,20 +41,18 @@ export const searchBySegment = function* (
 
   option.world.addEntity(entity)
 
-  const results: Array<SegmentSearchResult> = []
-  collider.callbacks.add((args: CollisionCallbackArgs) => {
+  const collisionResults = yield* wait.collision(collider, { allowNoCollision: true })
+  const searchResults = collisionResults.map(args => {
     const { other } = args
     const { hitPoint } = args as CollisionResultSegmentAABB
-    results.push({ point: hitPoint, entity: other.entity })
+    return { point: hitPoint, entity: other.entity }
   })
-
-  yield
 
   option.world.removeEntity(entity)
 
   const segment = collider.geometry as Segment
 
-  return results.reduce(
+  return searchResults.reduce(
     (a, b) => (a.point.sub(segment.start).length() < b.point.sub(segment.start).length() ? a : b),
     {
       point: segment.end,

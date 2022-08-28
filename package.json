@@ -6,8 +6,8 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "yarn metabuild && webpack serve",
-    "build": "yarn metabuild && webpack build",
+    "start": "webpack serve",
+    "build": "webpack build",
     "lint": "yarn eslint-lint && yarn prettier-lint",
     "format": "yarn eslint-format && yarn prettier-format",
     "eslint-lint": "eslint './**/*.ts' './**/*.json'",
@@ -41,7 +41,7 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.6.0"
+    "webpack-dev-server": "^4.9.2"
   },
   "dependencies": {
     "@types/stats": "^0.16.30",

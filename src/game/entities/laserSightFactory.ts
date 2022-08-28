@@ -31,11 +31,10 @@ export class LaserSightFactory extends EntityFactory {
     )
     entity.addComponent(
       'Ai',
-      new AiComponent({
+      new AiComponent(entity, {
         behaviour: laserSightAI(entity, this.world),
-        name: 'LaserSight:AI',
         dependency: {
-          after: ['Player:AI', 'PhysicsSystem:update'],
+          after: ['Player', 'PhysicsSystem:update'],
         },
       })
     )

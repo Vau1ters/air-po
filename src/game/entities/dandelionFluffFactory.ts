@@ -18,7 +18,7 @@ export class DandelionFluffFactory extends EntityFactory {
   public create(): Entity {
     const entity = loadEntity('dandelionFluff')
 
-    entity.addComponent('Ai', new AiComponent(dandelionFluffAI(entity, this.world)))
+    entity.addComponent('Ai', new AiComponent(entity, dandelionFluffAI(entity, this.world)))
     entity.addComponent(
       'Position',
       new PositionComponent().add(this.parent.getComponent('Position').add(EMIT_POS_DIFF))
