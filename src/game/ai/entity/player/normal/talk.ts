@@ -32,6 +32,15 @@ export const talk = function* (entity: Entity, world: World): Behaviour<void> {
         'イロハニホヘドチリヌルヲ\nワカヨタレソツネナラム\nウヰノオクヤマケフコエテ\nアサキユメミシヱヒモセス'
       )
     }
+    if (KeyController.isKeyPressed('N')) {
+      talk('the quick brown fox\njumps over the lazy dog')
+    }
+    if (KeyController.isKeyPressed('M')) {
+      talk('THE QUICK BROWN FOX\nJUMPS OVER THE LAZY DOG')
+    }
+    if (KeyController.isKeyPressed('L')) {
+      talk('The Quick Brown Fox\nJumps Over The Lazy Dog')
+    }
     yield
   }
 }
