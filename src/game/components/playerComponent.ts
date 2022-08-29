@@ -4,7 +4,7 @@ import { Equipment, EquipmentName } from '@game/equipment/equipment'
 import { equipmentClass } from '@game/equipment/equipmentURL.autogen'
 import { Item } from '@game/item/item'
 import { itemClass } from '@game/item/itemURL.autogen'
-import { LargeCoinID, loadData, PlayerData } from '@game/playdata/playdata'
+import { LargeCoinID, PlayerData } from '@game/playdata/playdata'
 import { assert } from '@utils/assertion'
 import { EventNotifier } from '@utils/eventNotifier'
 
@@ -25,9 +25,7 @@ export class PlayerComponent {
   public weaponChanging = false
   private equipmentList: Array<Equipment>
 
-  constructor(private player: Entity, public ui: Entity) {
-    const { playerData } = loadData()
-
+  constructor(private player: Entity, playerData: PlayerData, public ui: Entity) {
     this.smallCoinCount = playerData.smallCoinCount
     this.acquiredLargeCoinList = new Set(playerData.acquiredLargeCoinList)
     this.itemList = playerData.itemList.map(
