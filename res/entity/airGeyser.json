@@ -1,6 +1,7 @@
 {
   "draw": {
-    "name": "airGeyser"
+    "name": "airGeyser",
+    "zIndex": -1
   },
   "animationState": {}
 }
