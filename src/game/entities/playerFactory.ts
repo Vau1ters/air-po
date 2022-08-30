@@ -36,7 +36,7 @@ export class PlayerFactory extends EntityFactory {
       })
     )
 
-    const player = new PlayerComponent(entity, new HudFactory(this.world).create())
+    const player = new PlayerComponent(entity, this.playerData, new HudFactory(this.world).create())
 
     const airHolder = entity.getComponent('AirHolder')
     airHolder.quantity = Math.min(this.playerData.air, airHolder.maxQuantity)
