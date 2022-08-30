@@ -2,18 +2,5 @@
   "draw": {
     "name": "airGeyser"
   },
-  "animationState": {},
-  "collider": [
-    {
-      "geometry": {
-        "type": "AABB",
-        "offset": [0, 9],
-        "size": [10, 14]
-      },
-      "category": "terrain",
-      "mask": ["physics"],
-      "tag": ["physics"]
-    }
-  ],
-  "rigidBody": {}
+  "animationState": {}
 }
