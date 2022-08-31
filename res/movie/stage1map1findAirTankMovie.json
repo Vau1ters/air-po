@@ -1,16 +1,16 @@
 {
   "actions": [
     {
+      "action": "cinemaScope",
+      "type": "in"
+    },
+    {
       "action": "camera",
       "to": {
         "baseName": "airTank"
       },
       "type": "ease",
       "chase": true
-    },
-    {
-      "action": "cinemaScope",
-      "type": "in"
     },
     {
       "action": "talk",

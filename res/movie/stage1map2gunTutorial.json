@@ -1,0 +1,30 @@
+{
+  "actions": [
+    {
+      "action": "cinemaScope",
+      "type": "in"
+    },
+    {
+      "action": "camera",
+      "to": {
+        "baseName": "Player",
+        "offset": [
+          128,
+          0
+        ]
+      },
+      "type": "ease",
+      "chase": true
+    },
+    {
+      "action": "talk",
+      "speaker": "Player",
+      "content": "いわ だ\nクリック でうって はかいしよう"
+    },
+    {
+      "action": "cinemaScope",
+      "type": "out"
+    }
+  ],
+  "participants": ["airGayser"]
+}
