@@ -1,0 +1,14 @@
+{ "columns":25,
+ "image":"..\/..\/image\/heart.png",
+ "imageheight":8,
+ "imagewidth":200,
+ "margin":0,
+ "name":"heart",
+ "spacing":0,
+ "tilecount":25,
+ "tiledversion":"1.7.2",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.6"
+}

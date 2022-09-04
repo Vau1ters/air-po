@@ -1,0 +1,16 @@
+{
+  "draw": {
+    "name": "heart"
+  },
+  "animationState": {},
+  "collider": [
+    {
+      "geometry": {
+        "type": "AABB",
+        "size": [8, 8]
+      },
+      "category": "item",
+      "mask": ["sensor"]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import coinLarge from 'src/game/entities/stage/object/coinLargeFactory'
 import coinSmall from 'src/game/entities/stage/object/coinSmallFactory'
 import dandelion from 'src/game/entities/stage/object/dandelionFactory'
 import enemy1 from 'src/game/entities/stage/object/enemy1Factory'
+import heart from 'src/game/entities/stage/object/heartFactory'
 import locust from 'src/game/entities/stage/object/locustFactory'
 import mushroom from 'src/game/entities/stage/object/mushroomFactory'
 import playerSpawner from 'src/game/entities/stage/object/playerSpawnerFactory'
@@ -35,6 +36,7 @@ export const objectList = {
   coinSmall,
   dandelion,
   enemy1,
+  heart,
   locust,
   mushroom,
   playerSpawner,

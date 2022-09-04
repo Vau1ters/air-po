@@ -21,6 +21,7 @@ import dandelionFluff from '@res/entity/dandelionFluff.json'
 import enemy1 from '@res/entity/enemy1.json'
 import enemyBullet from '@res/entity/enemyBullet.json'
 import explosionEffect from '@res/entity/explosionEffect.json'
+import heart from '@res/entity/heart.json'
 import inventoryBackground from '@res/entity/inventoryBackground.json'
 import inventoryItemFrameLarge from '@res/entity/inventoryItemFrameLarge.json'
 import inventoryItemFrameSmall from '@res/entity/inventoryItemFrameSmall.json'
@@ -82,6 +83,7 @@ export const entitySetting = {
   enemy1,
   enemyBullet,
   explosionEffect,
+  heart,
   inventoryBackground,
   inventoryItemFrameLarge,
   inventoryItemFrameSmall,

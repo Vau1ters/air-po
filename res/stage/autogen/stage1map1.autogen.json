@@ -80,7 +80,7 @@
       ],
       "opacity": 1,
       "type": "objectgroup",
-      "visible": true,
+      "visible": false,
       "x": 0,
       "y": 0
     },
@@ -286,6 +286,42 @@
           "width": 64,
           "x": 1544,
           "y": 336
+        },
+        {
+          "gid": 702,
+          "height": 8,
+          "id": 83,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 8,
+          "x": 1288,
+          "y": 208
+        },
+        {
+          "gid": 702,
+          "height": 8,
+          "id": 84,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 8,
+          "x": 1336,
+          "y": 256
+        },
+        {
+          "gid": 702,
+          "height": 8,
+          "id": 85,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 8,
+          "x": 1296,
+          "y": 304
         }
       ],
       "opacity": 1,
@@ -12309,7 +12345,7 @@
     }
   ],
   "nextlayerid": 17,
-  "nextobjectid": 83,
+  "nextobjectid": 86,
   "orientation": "orthogonal",
   "renderorder": "right-up",
   "tiledversion": "1.7.2",
@@ -12382,6 +12418,10 @@
     {
       "firstgid": 654,
       "source": "tileset/wallRock.json"
+    },
+    {
+      "firstgid": 702,
+      "source": "tileset/heart.json"
     }
   ],
   "tilewidth": 8,
