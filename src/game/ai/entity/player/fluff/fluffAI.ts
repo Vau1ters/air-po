@@ -10,7 +10,6 @@ import { chase } from './chase'
 import { move } from './move'
 import { useWeapon } from '../common/useWeapon'
 import { switchWeapon } from '../common/switchWeapon'
-import { collectAir } from '../common/collectAir'
 
 export const fluffAI = function* (entity: Entity, world: World): Behaviour<void> {
   const player = entity.getComponent('Player')
@@ -31,7 +30,6 @@ export const fluffAI = function* (entity: Entity, world: World): Behaviour<void>
       chase(entity),
       move(entity),
       release(entity),
-      collectAir(entity),
       useWeapon(entity, world),
       switchWeapon(entity),
     ])
