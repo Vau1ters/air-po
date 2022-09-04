@@ -22,8 +22,8 @@
                  "type":"",
                  "visible":true,
                  "width":1600,
-                 "x":72,
-                 "y":2544
+                 "x":0,
+                 "y":2550
                 }, 
                 {
                  "gid":163,
@@ -40,18 +40,18 @@
                  "type":"",
                  "visible":true,
                  "width":1600,
-                 "x":72,
-                 "y":2552
+                 "x":0,
+                 "y":2550
                 }],
          "opacity":1,
          "properties":[
                 {
                  "name":"horizontalY",
                  "type":"float",
-                 "value":368
+                 "value":1814
                 }],
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
