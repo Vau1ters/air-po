@@ -9,7 +9,7 @@ import { AIR_TAG } from './airSystem'
 import { AirFactory } from '@game/entities/airFactory'
 
 export const AIR_HOLDER_TAG = 'airHolderBody'
-export const SUFFOCATION_DAMAGE_INTERVAL = 180
+export const SUFFOCATION_DAMAGE_INTERVAL = 120
 
 export class AirHolderSystem extends System {
   private family: Family
