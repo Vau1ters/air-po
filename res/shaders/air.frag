@@ -72,5 +72,5 @@ void main() {
     rate = air(coord);
   }
   gl_FragColor = mix(vec4(.5, .4, .5, 1), color, rate);
-  gl_FragColor.rgb *= mix(pow(cos(0.7 * length(uv - 0.5) * 3.141592 * .5), 4.), 1., inAirRate);
+  gl_FragColor.rgb *= mix(pow(cos(0.7 * length(uv - 0.5) * 3.141592 * .5), 2.), 1., inAirRate);
 }
