@@ -8,7 +8,7 @@ import { hudPlayerAirTankAI } from './hudPlayerAirTankAI'
 import { hudPlayerCoinAI } from './hudPlayerCoinAI'
 import { hudPlayerHpAI } from './hudPlayerHpAI'
 import { hudPlayerWeaponAI } from './hudPlayerWeaponAI'
-import { hudPlayerWeaponAnimationAI } from './hudPlayerWeaponAnimationAI'
+// import { hudPlayerWeaponAnimationAI } from './hudPlayerWeaponAnimationAI'
 
 export const hudPlayerAI = function* (world: World): Behaviour<void> {
   const ui = loadUi('hudPlayer', world)
@@ -17,7 +17,7 @@ export const hudPlayerAI = function* (world: World): Behaviour<void> {
     hudPlayerAirTankAI(ui, player),
     hudPlayerAirGaugeAI(ui, player),
     hudPlayerWeaponAI(ui, player),
-    hudPlayerWeaponAnimationAI(ui, player),
+    // hudPlayerWeaponAnimationAI(ui, player),
     hudPlayerHpAI(ui, player),
     hudPlayerCoinAI(ui, player),
   ])
