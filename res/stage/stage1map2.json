@@ -360,6 +360,24 @@
                  "width":16,
                  "x":1744,
                  "y":616
+                }, 
+                {
+                 "gid":130,
+                 "height":128,
+                 "id":119,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"event",
+                         "type":"string",
+                         "value":"movie stage1map2enemyTutorial"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":30.6667,
+                 "x":1464,
+                 "y":616
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -380,7 +398,7 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":119,
+ "nextobjectid":120,
  "orientation":"orthogonal",
  "renderorder":"right-up",
  "tiledversion":"1.7.2",

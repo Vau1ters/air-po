@@ -22,9 +22,9 @@ const slime1Move = function* (entity: Entity): Behaviour<void> {
   yield* animate({ entity, state: 'Idling', loopCount: Math.random() * 3 })
   while (true) {
     yield* animate({ entity, state: 'Idling', loopCount: 3 })
-    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, 'Right')
+    for (let i = 0; i < 1; i++) yield* slime1Jump(entity, 'Right')
     yield* animate({ entity, state: 'Idling', loopCount: 3 })
-    for (let i = 0; i < 5; i++) yield* slime1Jump(entity, 'Left')
+    for (let i = 0; i < 1; i++) yield* slime1Jump(entity, 'Left')
   }
 }
 
