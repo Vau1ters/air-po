@@ -20,7 +20,7 @@ export const KeyConfig: { [K in KeyActionType]: KeyCode } = {
   MoveRight: 'D',
   MoveUp: 'W',
   MoveDown: 'S',
-  Jump: 'Space',
+  Jump: 'W',
   Jet: 'Shift',
   Pause: 'Escape',
   Inventory: 'Tab',

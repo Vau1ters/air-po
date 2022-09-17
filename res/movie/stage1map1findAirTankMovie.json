@@ -15,7 +15,7 @@
     {
       "action": "talk",
       "speaker": "Player",
-      "content": "あんなところに くうきタンク がある"
+      "content": "あんなところに くうきタンク が!\nあれがあれば くうきのそと でも\nいき ができるようになる!"
     },
     {
       "action": "camera",
@@ -28,7 +28,7 @@
     {
       "action": "talk",
       "speaker": "Player",
-      "content": "でも くうきがとぎれている。。。\nこらえながら いくしかない"
+      "content": "でも ここでくうきがとぎれている・・・\nこらえながら いくしかない"
     },
     {
       "action": "cinemaScope",

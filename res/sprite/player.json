@@ -12,7 +12,7 @@
       "Standing": [0],
       "Walking": [1, 0],
       "Jumping": [1],
-      "Dying": [2]
+      "Dying": [4, 5, 6, 7]
     },
     "default": "Standing"
   }

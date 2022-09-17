@@ -15,7 +15,12 @@
     {
       "action": "talk",
       "speaker": "Player",
-      "content": "はぁ。。。はぁ。。。しぬかとおもった。。。"
+      "content": "はぁ・・・はぁ・・・しぬかとおもった。\nでもこれでいきができる・・・"
+    },
+    {
+      "action": "talk",
+      "speaker": "Player",
+      "content": "・・・これ こわれてて 2びょう しかもたないな。"
     },
     {
       "action": "cinemaScope",

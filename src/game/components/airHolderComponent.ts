@@ -1,5 +1,6 @@
 import { Entity } from '@core/ecs/entity'
 import { AirHolderSetting } from '@game/entities/loader/component/AirHolderComponentLoader'
+import { AirComponent } from './airComponent'
 
 export class AirHolderComponent {
   public quantity: number
@@ -13,8 +14,8 @@ export class AirHolderComponent {
   public hitAirs: Array<Entity> = []
 
   public constructor(airSetting: AirHolderSetting) {
-    this.quantity = airSetting.initialQuantity ?? 0
-    this.maxQuantity = airSetting.maxQuantity ?? 0
+    this.quantity = (airSetting.initialQuantity ?? 0) / AirComponent.QUANTITY_RADIUS_RATE
+    this.maxQuantity = (airSetting.maxQuantity ?? 0) / AirComponent.QUANTITY_RADIUS_RATE
     this.consumeSpeed = airSetting.consumeSpeed ?? 0
     this.collectSpeed = airSetting.collectSpeed ?? 0
     this.emitSpeed = airSetting.emitSpeed ?? 0
