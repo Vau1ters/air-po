@@ -1,10 +1,6 @@
 {
   "actions": [
     {
-      "action": "cinemaScope",
-      "type": "in"
-    },
-    {
       "action": "camera",
       "to": {
         "baseName": "Player"
@@ -15,16 +11,12 @@
     {
       "action": "talk",
       "speaker": "Player",
-      "content": "はぁ・・・はぁ・・・しぬかとおもった。\nでもこれでいきができる・・・"
+      "content": "はぁ・・・はぁ・・・しぬかとおもった\nでもこれでいきができる・・・"
     },
     {
       "action": "talk",
       "speaker": "Player",
-      "content": "・・・これ こわれてて 2びょう しかもたないな。"
-    },
-    {
-      "action": "cinemaScope",
-      "type": "out"
+      "content": "・・・これ こわれてて 2びょう しかもたないな"
     }
   ],
   "participants": ["airGayser", "airTank"]

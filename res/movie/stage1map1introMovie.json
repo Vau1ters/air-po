@@ -13,10 +13,6 @@
       "type": "out"
     },
     {
-      "action": "cinemaScope",
-      "type": "in"
-    },
-    {
       "action": "camera",
       "to": {
         "baseName": "Player"
@@ -28,10 +24,6 @@
       "action": "talk",
       "speaker": "Player",
       "content": "クリック でもじおくり\nWASD でいどう"
-    },
-    {
-      "action": "cinemaScope",
-      "type": "out"
     }
   ],
   "participants": ["airGayser"]
