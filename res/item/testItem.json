@@ -1,7 +1,7 @@
 {
   "name": "testItem",
-  "displayName": "うんこ",
-  "description": "くさい。\nかいふくしない。",
+  "displayName": "test",
+  "description": "わすれられたふ゛んめいのいふ゛つ。\nつかってもなにもおこらない。",
   "spriteName": "testItem",
   "price": 1
 }
