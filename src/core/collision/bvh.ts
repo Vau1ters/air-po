@@ -30,31 +30,56 @@ export class BVHLeaf {
 }
 
 export class BVHNode {
-  public readonly child: (BVHNode | BVHLeaf)[]
-  public readonly bound: AABB
+  public _childA: BVHNode | BVHLeaf
+  public _childB: BVHNode | BVHLeaf
+  public _bound: AABB
 
-  public constructor(child: (BVHNode | BVHLeaf)[]) {
-    this.child = child
-    this.bound = child.map(c => c.bound).reduce((a, b) => a.merge(b))
+  public constructor(childA: BVHNode | BVHLeaf, childB: BVHNode | BVHLeaf) {
+    this._childA = childA
+    this._childB = childB
+    this._bound = childA.bound.merge(childB.bound)
+  }
+
+  public reconstruct(childA: BVHNode | BVHLeaf, childB: BVHNode | BVHLeaf) {
+    this._childA = childA
+    this._childB = childB
+    this._bound = childA.bound.merge(childB.bound)
+  }
+
+  public get childA(): BVHNode | BVHLeaf {
+    return this._childA
+  }
+
+  public get childB(): BVHNode | BVHLeaf {
+    return this._childB
+  }
+
+  public get bound(): AABB {
+    return this._bound
   }
 
   public query(bound: AABB, result: ReservedArray<Collider>): void {
     if (!this.bound.overlap(bound)) return
-    for (const c of this.child) {
-      c.query(bound, result)
-    }
+    this._childA.query(bound, result)
+    this._childB.query(bound, result)
   }
 
   public querySegment(ray: Segment, result: ReservedArray<Collider>): void {
     if (!collideSegmentAABB(ray, this.bound).hit) return
-    for (const c of this.child) {
-      c.querySegment(ray, result)
-    }
+    this._childA.querySegment(ray, result)
+    this._childB.querySegment(ray, result)
   }
 }
 
 export class BVH {
   public root?: BVHNode | BVHLeaf
+  private pool: BVHNode[]
+  private count: number
+
+  public constructor() {
+    this.pool = new Array<BVHNode>()
+    this.count = 0
+  }
 
   public query(bound: AABB): Collider[] {
     const result = new ReservedArray<Collider>(100)
@@ -73,25 +98,38 @@ export class BVH {
   }
 
   public build(colliders: Collider[]): void {
-    const leafList = colliders.map(c => new BVHLeaf(c))
-    const root = BVH.fromBoundsImpl(leafList, 'x')
+    const leafList = colliders.map(c => c.bvhLeaf)
+    this.count = 0
+    const root = this.fromBoundsImpl(leafList, 'x')
     this.root = root
   }
 
-  private static fromBoundsImpl(leafList: BVHLeaf[], axis: Axis): BVHNode | BVHLeaf | undefined {
+  private getNode(childA: BVHNode | BVHLeaf, childB: BVHNode | BVHLeaf): BVHNode {
+    if (this.count < this.pool.length) {
+      const node = this.pool[this.count++]
+      node.reconstruct(childA, childB)
+      return node
+    } else {
+      this.pool.push(new BVHNode(childA, childB))
+      const node = this.pool[this.count++]
+      return node
+    }
+  }
+
+  private fromBoundsImpl(leafList: BVHLeaf[], axis: Axis): BVHNode | BVHLeaf | undefined {
     if (leafList.length === 0) return undefined
     if (leafList.length === 1) return leafList[0]
     leafList = leafList.sort((a, b) => a.bound.center[axis] - b.bound.center[axis])
 
     const other = (axis: Axis): Axis => (axis === 'x' ? 'y' : 'x')
-    const left = BVH.fromBoundsImpl(leafList.slice(0, leafList.length >> 1), other(axis))
-    const right = BVH.fromBoundsImpl(leafList.slice(leafList.length >> 1), other(axis))
+    const left = this.fromBoundsImpl(leafList.slice(0, leafList.length >> 1), other(axis))
+    const right = this.fromBoundsImpl(leafList.slice(leafList.length >> 1), other(axis))
     if (!left) {
       throw new Error('There are any bugs.')
     }
     if (!right) {
       throw new Error('There are any bugs.')
     }
-    return new BVHNode([left, right])
+    return this.getNode(left, right)
   }
 }

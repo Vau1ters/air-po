@@ -25,9 +25,9 @@ export default class CollisionSystem extends System {
   }
 
   public init(): void {
-    for (const c of CategorySet.ALL) {
-      this.staticBVHs.set(c, new BVH())
-      this.dynamicBVHs.set(c, new BVH())
+    for (const category of CategorySet.ALL) {
+      this.staticBVHs.set(category, new BVH())
+      this.dynamicBVHs.set(category, new BVH())
     }
     this.needsStaticInitialize = true
   }

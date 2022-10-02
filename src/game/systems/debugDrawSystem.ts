@@ -83,7 +83,8 @@ export default class DebugDrawSystem extends System {
             g.draw(this.graphics)
           }
           if (n instanceof BVHNode) {
-            for (const c of n.child) draw(c)
+            draw(n.childA)
+            draw(n.childB)
           }
         }
 

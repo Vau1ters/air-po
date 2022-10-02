@@ -1,3 +1,4 @@
+import { BVHLeaf } from '@core/collision/bvh'
 import { CollisionResult } from '@core/collision/collision'
 import { AABB } from '@core/collision/geometry/AABB'
 import { Air } from '@core/collision/geometry/air'
@@ -20,6 +21,7 @@ export type CollisionNotifier = EventNotifier<CollisionCallbackArgs>
 
 export class Collider {
   public readonly notifier: CollisionNotifier
+  private _bvhLeaf: BVHLeaf
 
   constructor(
     public entity: Entity,
@@ -28,6 +30,7 @@ export class Collider {
     private option: ColliderOption
   ) {
     this.notifier = new EventNotifier<CollisionCallbackArgs>()
+    this._bvhLeaf = new BVHLeaf(this)
     for (const cb of this.option.callbacks) {
       this.notifier.addObserver(cb)
     }
@@ -55,6 +58,10 @@ export class Collider {
 
   get solveDir(): Array<Vec2> {
     return this.option.solveDir
+  }
+
+  get bvhLeaf(): BVHLeaf {
+    return this._bvhLeaf
   }
 }
 

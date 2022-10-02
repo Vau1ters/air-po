@@ -1,14 +1,14 @@
 export class ReservedArray<T> {
-  private a: Array<T>
+  private arr: Array<T>
   private len: number
 
   public constructor(cap: number) {
-    this.a = new Array<T>(cap)
+    this.arr = new Array<T>(cap)
     this.len = 0
   }
 
   public at(idx: number): T {
-    return this.a[idx]
+    return this.arr[idx]
   }
 
   public get length(): number {
@@ -16,9 +16,9 @@ export class ReservedArray<T> {
   }
 
   public push(e: T): void {
-    this.a[this.len++] = e
-    if (this.len === this.a.length) {
-      this.a = this.a.concat(this.a)
+    this.arr[this.len++] = e
+    if (this.len === this.arr.length) {
+      this.arr = this.arr.concat(this.arr)
     }
   }
 
