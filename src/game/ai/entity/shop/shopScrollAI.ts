@@ -15,7 +15,7 @@ const waitForMouseOver = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
   while (true) {
     const collisionResults = yield* wait.collision(collider)
-    if (collisionResults.find(r => r.other.tag.has('mouse'))) return
+    if (collisionResults.find(r => r.other.hasTag('mouse'))) return
   }
 }
 

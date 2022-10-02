@@ -57,7 +57,7 @@ export class PlayerFactory extends EntityFactory {
     const colliders = entity.getComponent('Collider').colliders.filter(c => c.mask.has('terrain'))
     for (const c of colliders) {
       c.condition = (me: Collider, other: Collider): boolean => {
-        if (player.throughFloorIgnoreCount > 0 && other.tag.has(THROUGH_FLOOR_TAG)) return false
+        if (player.throughFloorIgnoreCount > 0 && other.hasTag(THROUGH_FLOOR_TAG)) return false
         return true
       }
     }

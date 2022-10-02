@@ -26,7 +26,7 @@ export class DamageSystem extends System {
   private entityAdded(entity: Entity): void {
     const collider = entity.getComponent('Collider')
     for (const c of collider.colliders) {
-      if (c.tag.has(ATTACK_TAG)) {
+      if (c.hasTag(ATTACK_TAG)) {
         assert(
           c.category === 'attack',
           `Collider with '${ATTACK_TAG}' tag must have ATTACK category`
@@ -48,7 +48,7 @@ export class DamageSystem extends System {
     if (entity.hasComponent('Collider')) {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
-        if (c.tag.has(ATTACK_TAG)) {
+        if (c.hasTag(ATTACK_TAG)) {
           c.notifier.removeObserver(this.attackCollisionCallback)
         }
       }

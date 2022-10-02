@@ -69,7 +69,7 @@ export class FilterSystem extends System {
           callbacks: [
             (args: CollisionCallbackArgs): void => {
               const { other } = args
-              if (!other.tag.has(LIGHT_TAG)) return
+              if (!other.hasTag(LIGHT_TAG)) return
               this.lights.push(other.entity)
             },
           ],

@@ -14,7 +14,7 @@ type OnClickCallback = (button: MouseButton) => void
 const getState = function* (entity: Entity): Behaviour<State> {
   const [collider] = entity.getComponent('Collider').colliders
   const results = yield* wait.collision(collider, { allowNoCollision: true })
-  if (results.find(r => r.other.tag.has('mouse'))) {
+  if (results.find(r => r.other.hasTag('mouse'))) {
     return 'On'
   } else {
     return 'Off'

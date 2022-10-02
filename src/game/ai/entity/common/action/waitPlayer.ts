@@ -6,6 +6,6 @@ export const waitPlayer = function* (entity: Entity): Behaviour<void> {
   const [collider] = entity.getComponent('Collider').colliders
   while (true) {
     const collisionResults = yield* wait.collision(collider)
-    if (collisionResults.find(r => r.other.tag.has('PlayerSensor'))) return
+    if (collisionResults.find(r => r.other.hasTag('PlayerSensor'))) return
   }
 }

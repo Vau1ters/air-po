@@ -8,6 +8,7 @@ import {
   GeometryBuildOption,
 } from '@game/components/colliderComponent'
 import { CategoryDef, CategorySet } from '@game/entities/category'
+import { StringSet } from '@utils/stringSet'
 
 const AABBSettingType = t.type({
   type: t.literal('AABB'),
@@ -72,7 +73,7 @@ const createColliderBuildOption = (setting: ColliderSetting): ColliderBuildOptio
     geometry: createGeometryBuildOption(setting.geometry),
     category: setting.category,
     mask: setting.mask ? new CategorySet(...setting.mask) : undefined,
-    tag: setting.tag,
+    tag: new StringSet(setting.tag),
     solveDir: setting.solveDir?.map(d => new Vec2(...d)),
   }
 }

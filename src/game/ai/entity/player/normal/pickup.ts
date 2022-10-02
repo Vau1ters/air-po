@@ -10,7 +10,7 @@ export const pickup = function* (entity: Entity): Behaviour<void> {
 
   const sensorCollider = entity
     .getComponent('Collider')
-    .colliders.find(c => c.tag.has(PLAYER_SENSOR_TAG))
+    .colliders.find(c => c.hasTag(PLAYER_SENSOR_TAG))
   assert(sensorCollider !== undefined, '')
 
   while (true) {

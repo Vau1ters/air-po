@@ -23,7 +23,7 @@ export class BulletSystem extends System {
     const collider = entity.getComponent('Collider')
     if (collider) {
       for (const c of collider.colliders) {
-        if (c.tag.has(BULLET_TAG)) {
+        if (c.hasTag(BULLET_TAG)) {
           assert(
             c.category === 'bullet',
             `Collider with '${BULLET_TAG}' tag must have BULLET category`

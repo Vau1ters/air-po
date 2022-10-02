@@ -50,7 +50,7 @@ type PlayerMode = 'Normal' | 'Fluff'
 const getCurrentPlayerMode = (entity: Entity): PlayerMode => {
   const player = entity.getComponent('Player')
   if (player.possessingEntity !== undefined) {
-    if (player.possessingEntity.getComponent('Collider').colliders[0].tag.has(FLUFF_TAG)) {
+    if (player.possessingEntity.getComponent('Collider').colliders[0].hasTag(FLUFF_TAG)) {
       return 'Fluff'
     }
   }

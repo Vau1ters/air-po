@@ -27,7 +27,7 @@ export class EventSensorSystem extends System {
     const sensor = entity.getComponent('Sensor')
     for (const c of entity.getComponent('Collider').colliders) {
       c.notifier.addObserver(async (args: CollisionCallbackArgs) => {
-        if (!args.other.tag.has(PLAYER_SENSOR_TAG)) return
+        if (!args.other.hasTag(PLAYER_SENSOR_TAG)) return
         if (!sensor.isEnabled) return
         await this.fireEvent(sensor.event, args.me.entity)
         sensor.isEnabled = false

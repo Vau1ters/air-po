@@ -83,7 +83,7 @@ export class AirHolderSystem extends System {
     if (entity.hasComponent('Collider')) {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
-        if (c.tag.has(AIR_HOLDER_TAG)) {
+        if (c.hasTag(AIR_HOLDER_TAG)) {
           assert(
             c.category === 'airHolder',
             `Collider with '${AIR_HOLDER_TAG}' tag must have AIR_HOLDER category`
@@ -99,7 +99,7 @@ export class AirHolderSystem extends System {
     if (entity.hasComponent('Collider')) {
       const collider = entity.getComponent('Collider')
       for (const c of collider.colliders) {
-        if (c.tag.has(AIR_HOLDER_TAG)) {
+        if (c.hasTag(AIR_HOLDER_TAG)) {
           c.notifier.removeObserver(AirHolderSystem.airHolderSensor)
         }
       }
@@ -110,7 +110,7 @@ export class AirHolderSystem extends System {
     const { me: airHolderCollider, other: otherCollider } = args
     const { hitAirs } = args as CollisionResultAirAABB
     // collect air
-    if (otherCollider.tag.has(AIR_TAG)) {
+    if (otherCollider.hasTag(AIR_TAG)) {
       const airHolder = airHolderCollider.entity.getComponent('AirHolder')
       airHolder.hitAirs.push(...hitAirs)
     }

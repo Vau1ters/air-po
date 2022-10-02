@@ -5,6 +5,7 @@ import { World } from '@core/ecs/world'
 import { PositionComponent } from '@game/components/positionComponent'
 import { buildCollider, ColliderComponent } from '@game/components/colliderComponent'
 import { AirComponent } from '@game/components/airComponent'
+import { StringSet } from '@utils/stringSet'
 
 export const AIR_TAG = 'Air'
 
@@ -35,7 +36,7 @@ export class AirSystem extends System {
             world,
           },
           category: 'air',
-          tag: [AIR_TAG],
+          tag: new StringSet(AIR_TAG),
         })
       )
     )

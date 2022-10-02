@@ -18,7 +18,7 @@ export class LightSystem extends System {
 
     this.family.entityAddedEvent.addObserver((e: Entity) => {
       for (const c of e.getComponent('Collider').colliders) {
-        if (c.tag.has(LIGHT_TAG)) {
+        if (c.hasTag(LIGHT_TAG)) {
           assert(
             c.category === 'light',
             `Collider with '${LIGHT_TAG}' tag must have LIGHT category`
@@ -30,7 +30,7 @@ export class LightSystem extends System {
     })
     this.family.entityAddedEvent.removeObserver((e: Entity) => {
       for (const c of e.getComponent('Collider').colliders) {
-        if (c.tag.has(LIGHT_TAG)) {
+        if (c.hasTag(LIGHT_TAG)) {
           c.notifier.removeObserver(LightSystem.lightAirCollision)
         }
       }
@@ -45,7 +45,7 @@ export class LightSystem extends System {
 
   private static lightAirCollision(args: CollisionCallbackArgs): void {
     const { me, other } = args
-    if (!other.tag.has(AIR_TAG)) return
+    if (!other.hasTag(AIR_TAG)) return
     me.entity.getComponent('Light').intensity = 1
   }
 }

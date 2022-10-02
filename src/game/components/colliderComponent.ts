@@ -10,6 +10,7 @@ import { World } from '@core/ecs/world'
 import { Vec2 } from '@core/math/vec2'
 import { Category } from '@game/entities/category'
 import { EventNotifier } from '@utils/eventNotifier'
+import { StringSet } from '@utils/stringSet'
 
 export type CollisionCondition = (me: Collider, other: Collider) => boolean
 export type CollisionCallbackArgs = CollisionResult & {
@@ -44,8 +45,12 @@ export class Collider {
     this.option.condition = condition
   }
 
-  get tag(): Set<string> {
-    return this.option.tag
+  public hasTag(tag: string): boolean {
+    if (this.option.tag) {
+      return this.option.tag?.has(tag)
+    } else {
+      return false
+    }
   }
 
   get category(): Category {
@@ -68,7 +73,7 @@ export class Collider {
 export type ColliderOption = {
   condition: CollisionCondition
   callbacks: Set<CollisionCallback>
-  tag: Set<string>
+  tag?: StringSet
   category: Category
   mask: Set<Category>
   solveDir: Array<Vec2>
@@ -100,7 +105,7 @@ export type GeometryBuildOption =
 export type ColliderBuildOption = {
   condition?: CollisionCondition
   callbacks?: CollisionCallback[]
-  tag?: string[]
+  tag?: StringSet
   category: Category
   mask?: Set<Category>
   solveDir?: Array<Vec2>
@@ -125,7 +130,7 @@ export const buildCollider = (option: { entity: Entity } & ColliderBuildOption):
   return new Collider(option.entity, geometry.createBound(), geometry, {
     condition: option.condition ?? ((): boolean => true),
     callbacks: new Set<CollisionCallback>(option.callbacks),
-    tag: new Set<string>(option.tag),
+    tag: option.tag,
     category: option.category,
     mask: option.mask ?? new Set<Category>(),
     solveDir: option.solveDir ?? [],
@@ -152,12 +157,12 @@ export class ColliderComponent {
   }
 
   public getByTag(tag: string): Collider | undefined {
-    return this.colliders.find(c => c.tag.has(tag))
+    return this.colliders.find(c => c.hasTag(tag))
   }
 
   public removeByTag(tag: string): void {
     while (true) {
-      const idx = this.colliders.findIndex(c => c.tag.has(tag))
+      const idx = this.colliders.findIndex(c => c.hasTag(tag))
       if (idx === -1) return
       this.colliders.splice(idx, 1)
     }

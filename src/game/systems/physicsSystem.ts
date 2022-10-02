@@ -23,7 +23,7 @@ export default class PhysicsSystem extends System {
     this.family = new FamilyBuilder(world).include('Position', 'Collider', 'RigidBody').build()
     this.family.entityAddedEvent.addObserver((entity: Entity) => {
       for (const c of entity.getComponent('Collider').colliders) {
-        if (c.tag.has(PHYSICS_TAG)) {
+        if (c.hasTag(PHYSICS_TAG)) {
           switch (c.category) {
             case 'physics':
               assert(
